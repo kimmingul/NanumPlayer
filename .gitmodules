@@ -1,0 +1,8 @@
+[submodule "third_party/mpv"]
+	path = third_party/mpv
+	url = https://github.com/kimmingul/mpv.git
+	branch = nanum
+[submodule "third_party/whisper.cpp"]
+	path = third_party/whisper.cpp
+	url = https://github.com/kimmingul/whisper.cpp.git
+	branch = nanum

@@ -1,0 +1,4 @@
+# Root marker for the editor/agent LSP. Each code base selects its own compile
+# database in its subdirectory (third_party/mpv/.clangd, nanum_ai/.clangd).
+Diagnostics:
+  UnusedIncludes: None

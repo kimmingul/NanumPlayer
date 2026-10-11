@@ -1,0 +1,24 @@
+# Build outputs, packages, local data
+/build/
+/dist/
+/cache/
+/models/*.bin
+/.venv/
+/bin/
+/%SystemDrive%/
+__pycache__/
+*.pyc
+
+# MakeMKV's libmmbd renamed by the user: never committed or shipped
+libaacs.dll
+libbdplus.dll
+
+# Media, samples and screenshots used by local checks
+*.wav
+*.mka
+*.mkv
+*.m2ts
+*.png
+/poc/bd_backup/
+/poc/*.ass
+/poc/*.db

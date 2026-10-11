@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "cuda_major": 13,
+  "min_compute": 86,
+  "components": [
+    {
+      "id": "cublas",
+      "label": "NVIDIA cuBLAS",
+      "filename": "cublas64_13.dll",
+      "size": 51561584,
+      "sha256": "6abcf26071ff69bb01346613f05abac085778efb8a7a9f91e23da478e3938562",
+      "url": "https://github.com/kimmingul/NanumPlayer/releases/download/v1.2.0/cublas64_13.dll"
+    },
+    {
+      "id": "cublas_lt",
+      "label": "NVIDIA cuBLAS Lt",
+      "filename": "cublasLt64_13.dll",
+      "size": 480401520,
+      "sha256": "fdcaca4277a72f87607f9804bf845ea8bb77785c97abb74179bdab058028c046",
+      "url": "https://github.com/kimmingul/NanumPlayer/releases/download/v1.2.0/cublasLt64_13.dll"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+#include <winver.h>
+
+#define NANUM_VERSION "1.5.0"
+
+VS_VERSION_INFO VERSIONINFO
+    FILEVERSION 1, 5, 0, 0
+    PRODUCTVERSION 1, 5, 0, 0
+    FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+    FILEFLAGS 0
+    FILEOS VOS__WINDOWS32
+    FILETYPE VFT_APP
+    FILESUBTYPE 0
+    {
+        BLOCK "StringFileInfo" {
+            BLOCK "000004b0" {
+                VALUE "CompanyName", "NanumPlayer"
+                VALUE "FileDescription", "NanumPlayer YouTube"
+                VALUE "FileVersion", NANUM_VERSION
+                VALUE "InternalName", "nanum_youtube"
+                VALUE "OriginalFilename", "nanum_youtube.exe"
+                VALUE "ProductName", "NanumPlayer"
+                VALUE "ProductVersion", NANUM_VERSION
+            }
+        }
+        BLOCK "VarFileInfo" {
+            VALUE "Translation", 0, 1200
+        }
+    }
+
+1 ICON DISCARDABLE "nanum_youtube.ico"
+1 24 "nanum_youtube.manifest"

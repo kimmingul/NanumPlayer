@@ -1,0 +1,23 @@
+# The bundled CPU engine is built with MSVC via CMake/Ninja.
+# (tools/build_nanum_ai.bat); CMake writes the compile database below.
+CompileFlags:
+  CompilationDatabase: ../build/nanum_ai_cpu
+  # The database commands are cl.exe, so clangd runs in clang-cl mode, where
+  # system include dirs are given with /imsvc. clangd is started without the
+  # vcvars environment, hence the MSVC 14.44 and Windows SDK paths are named
+  # explicitly (same toolset as the build).
+  Add:
+    - /imsvc
+    - C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/include
+    - /imsvc
+    - C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt
+    - /imsvc
+    - C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um
+    - /imsvc
+    - C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared
+---
+# Vendored single-header JSON library: not ours to diagnose.
+If:
+  PathMatch: .*/third_party/.*
+Diagnostics:
+  Suppress: "*"

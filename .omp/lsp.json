@@ -1,0 +1,15 @@
+{
+  "servers": {
+    "clangd": {
+      "command": "C:/msys64/clang64/bin/clangd.exe",
+      "args": [
+        "--background-index",
+        "--header-insertion=never",
+        "--clang-tidy=false",
+        "--log=error"
+      ],
+      "fileTypes": [".c", ".h", ".cc", ".cpp", ".cxx", ".hpp"],
+      "rootMarkers": [".clangd"]
+    }
+  }
+}
