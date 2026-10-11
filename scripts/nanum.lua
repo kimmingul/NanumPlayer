@@ -102,6 +102,7 @@ local opts = {
     model_prompt = true,
     accel_prompt = true,
     cuda_license = false,
+    cuda_update_prompted = "",      -- app version for which the "CUDA engine update" prompt was shown
     acceleration = "auto",
     translate_style = "natural",
     translate_style_text = "",
@@ -1316,7 +1317,7 @@ AIM.MODE_DESC = {
     cuda = "CUDA 필수 — 쓸 수 없으면 AI 자막을 만들지 않음",
 }
 AIM.COMP_NAME = { cuda_engine = "CUDA 엔진", cublas = "cuBLAS", cublas_lt = "cuBLASLt" }
-AIM.COMP_SOURCE = { bundled = "앱에 포함", user = "내려받은 파일", reused = "이전 버전에서 복사", toolkit = "CUDA Toolkit 사용", app = "앱 폴더" }
+AIM.COMP_SOURCE = { user = "내려받은 파일", reused = "이전 버전에서 복사", toolkit = "CUDA Toolkit 사용", app = "앱 폴더" }
 AIM.TOOLKIT_URL = "https://developer.nvidia.com/cuda-downloads"
 
 -- "v13.4" of the installed CUDA Toolkit, "" if unknown.
@@ -1327,21 +1328,57 @@ function AIM.toolkit_label()
     return v ~= "" and ("v" .. v) or ""
 end
 
--- The CUDA engine is part of the app; cuBLAS comes from an installed CUDA 13 Toolkit (no download) or from
--- the cuBLAS download. This is what to do when neither is there.
-function AIM.toolkit_hint()
-    return "CUDA 13 Toolkit을 설치하면 다운로드 없이 GPU를 사용합니다 (또는 cuBLAS 약 " .. AIM.fmt_size(AIM.acc_bytes()) .. " 받기)"
+-- Components the CUDA path still needs: the engine (optional download) and the cuBLAS runtimes (an installed
+-- CUDA 13 Toolkit provides them without a download, else the cuBLAS download). -> engine bytes | nil, cuBLAS bytes | nil
+function AIM.missing_parts()
+    local engine, runtimes
+    for _, c in ipairs(AIM.acc_list()) do
+        if c.installed ~= true then
+            if c.id == "cuda_engine" then
+                engine = (engine or 0) + (tonumber(c.size) or 0)
+            else
+                runtimes = (runtimes or 0) + (tonumber(c.size) or 0)
+            end
+        end
+    end
+    return engine, runtimes
 end
 
--- The player's own notice for "CPU only, GPU would work after the Toolkit / cuBLAS" (auto mode), else nil.
-function AIM.toolkit_notice()
+-- The NVIDIA license matters only for the cuBLAS download.
+function AIM.cublas_missing()
+    local _, runtimes = AIM.missing_parts()
+    return runtimes ~= nil
+end
+
+-- What to do for GPU acceleration, from what is missing.
+function AIM.toolkit_hint()
+    local engine, runtimes = AIM.missing_parts()
+    if engine and runtimes then
+        return "CUDA 엔진(약 " .. AIM.fmt_size(engine) .. ")과 cuBLAS(약 " .. AIM.fmt_size(runtimes)
+            .. ")를 받으면 GPU를 사용합니다 (CUDA 13 Toolkit이 있으면 엔진만)"
+    elseif engine then
+        return "CUDA 엔진(약 " .. AIM.fmt_size(engine) .. ")을 받으면 GPU를 사용합니다"
+    end
+    return "CUDA 13 Toolkit을 설치하면 다운로드 없이 GPU를 사용합니다 (또는 cuBLAS 약 "
+        .. AIM.fmt_size(runtimes or AIM.acc_bytes()) .. " 받기)"
+end
+
+-- The player's own notice for "CPU only, GPU would work after a download / the Toolkit" (auto mode) or
+-- "engine update needed", else nil.
+function AIM.acc_notice()
     local a = AIM.acc
     local r = a and tostring(a.reason or "") or ""
     if a and a.cuda_available ~= true and a.busy ~= true and AIM.mode() == "auto" and not AIM.custom_dll()
-        and r:find("^CUDA 가속:") then
+        and (r:find("^CUDA 가속:") or r:find("^CUDA 엔진 업데이트 필요")) then
         return r
     end
     return nil
+end
+
+-- A CUDA engine exists but is not this version's and no verified copy could be migrated.
+function AIM.cuda_update_needed()
+    local a = AIM.acc
+    return a ~= nil and a.update_required == true and AIM.mode() ~= "cpu" and not AIM.custom_dll()
 end
 
 function AIM.mode()
@@ -1422,14 +1459,11 @@ function AIM.has_driver()
     return AIM.driver
 end
 
--- Why CUDA is not usable: "nodriver" | "noengine" (the bundled engine file is gone) | "missing" (cuBLAS: no
--- Toolkit, nothing downloaded) | "nocatalog" | "incompatible" (installed but the GPU/driver is not suitable).
+-- Why CUDA is not usable: "nodriver" | "missing" (engine and / or cuBLAS not downloaded, no Toolkit) |
+-- "nocatalog" | "incompatible" (installed but the GPU/driver is not suitable).
 function AIM.cuda_cause()
     local a = AIM.acc
     if not AIM.has_driver() then return "nodriver" end
-    for _, c in ipairs(AIM.acc_list()) do
-        if c.id == "cuda_engine" and c.installed ~= true then return "noengine" end
-    end
     local listed = #AIM.acc_list() > 0
     local needs = (listed and #AIM.acc_missing() > 0) or (not listed and (tonumber(a and a.download_size) or 0) > 0)
     -- the shipped component catalogue is unreadable: nothing can be downloaded
@@ -1488,10 +1522,8 @@ function AIM.accel_text(info)
         return head .. "CUDA 구성 요소 목록(components\\catalog.json)을 읽을 수 없어 내려받을 수 없습니다"
             .. ((info.catalog_error or "") ~= "" and (" (" .. info.catalog_error .. ")") or "")
             .. " — AI 자막 없이 재생합니다\nNanumPlayer를 다시 설치하세요" .. alt
-    elseif info.cause == "noengine" then
-        return head .. "CUDA 엔진 파일(nanum_ai_cuda.dll)이 앱에 없습니다 — AI 자막 없이 재생합니다\nNanumPlayer를 다시 설치하세요" .. alt
     elseif info.cause == "missing" then
-        return head .. AIM.toolkit_hint() .. " — AI 자막 없이 재생합니다\nCtrl+N → AI 구성 요소에서 cuBLAS를 받을 수 있습니다"
+        return head .. AIM.toolkit_hint() .. " — AI 자막 없이 재생합니다\nCtrl+N → AI 구성 요소에서 받을 수 있습니다"
             .. (info.cpu and " (또는 CPU 모드로 바꾸세요)" or "")
     end
     return head .. "이 PC의 GPU/드라이버에서는 CUDA를 사용할 수 없습니다" .. rs
@@ -1558,7 +1590,7 @@ function AIM.set_mode(mode)
 end
 
 function AIM.acc_download()
-    if not AIM.license_accepted() then         -- the NVIDIA CUDA license comes before the first download
+    if AIM.cublas_missing() and not AIM.license_accepted() then      -- the NVIDIA CUDA license comes before the cuBLAS download
         mp.add_timeout(0.1, AIM.open_license_dialog)
         return false
     end
@@ -1579,7 +1611,7 @@ function AIM.acc_download()
         return false
     end
     AIM.toast_at = 0
-    notify("cuBLAS 내려받기를 시작합니다 (" .. AIM.fmt_size(AIM.acc_bytes()) .. ")", 4, "busy", "accel-dl")
+    notify("CUDA 가속 구성 요소 " .. (AIM.cuda_update_needed() and "업데이트를" or "내려받기를") .. " 시작합니다 (" .. AIM.fmt_size(AIM.acc_bytes()) .. ")", 4, "busy", "accel-dl")
     return true
 end
 
@@ -1613,9 +1645,10 @@ function AIM.acc_status_text()
         if a.cuda_available == true then return "내려받기 완료 · 다음에 여는 파일부터 GPU 사용" end
         return "내려받기 완료 · 그러나 이 PC에서는 CUDA를 쓸 수 없음"
     end
+    if AIM.cuda_update_needed() then return (AIM.acc_notice() or "CUDA 엔진 업데이트 필요") .. " — 눌러서 내려받기" end
     local eff = AIM.effective(AIM.mode())
     if eff == "cuda" then return "다음 파일: CUDA(GPU)로 AI 자막" end
-    if eff == "cpu" then return "다음 파일: CPU로 AI 자막" .. (AIM.toolkit_notice() and (" · " .. AIM.toolkit_notice()) or "") end
+    if eff == "cpu" then return "다음 파일: CPU로 AI 자막" .. (AIM.acc_notice() and (" · " .. AIM.acc_notice()) or "") end
     return "다음 파일: AI 자막 사용 불가 (선택한 엔진 없음)"
 end
 
@@ -1626,6 +1659,30 @@ function AIM.components_summary()
         return "CUDA " .. AIM.acc_name(AIM.acc.current) .. (pct and (" " .. pct .. "%") or " 내려받는 중")
     end
     return "가속 " .. (AIM.MODE_LABEL[AIM.mode()] or AIM.mode()) .. " · " .. models
+end
+
+-- Once per app version: offer the engine for this version.
+function AIM.build_cuda_update_prompt()
+    if not AIM.cuda_update_needed() or AIM.acc.busy == true or AIM.any_active() then return nil end
+    return {
+        prompt = "새 버전용 CUDA 엔진을 받아야 GPU 가속을 계속 사용합니다 (약 " .. AIM.fmt_size(AIM.acc_bytes()) .. ")",
+        items = { "받기", "나중에" },
+        default_item = 1,
+        submit = function(i)
+            if i == 1 then AIM.acc_download() end
+        end,
+    }
+end
+
+function AIM.maybe_prompt_cuda_update()
+    local a = AIM.acc
+    if not (AIM.cuda_update_needed() and a.busy ~= true) then return end
+    local version = tostring(a.version or "")
+    if version == "" or opts.cuda_update_prompted == version then return end
+    opts.cuda_update_prompted = version
+    save_settings()
+    queue_prompt("cudaupdate", AIM.build_cuda_update_prompt)
+    mp.add_timeout(1.5, pump_prompts)
 end
 
 function AIM.on_acc_change(_, v)
@@ -1649,6 +1706,7 @@ function AIM.on_acc_change(_, v)
     if d then
         AIM.heartbeat()
         AIM.note_fallback()
+        AIM.maybe_prompt_cuda_update()
     end
     AIM.schedule_menu_update()
     publish_status()
@@ -1660,12 +1718,12 @@ function AIM.acc_done_notice()
     if not a then return end
     local mode = AIM.mode()
     if a.cuda_available == true then
-        local s = "cuBLAS 설치 완료 · 다음에 여는 파일부터 GPU를 사용합니다"
+        local s = "CUDA 가속 구성 요소 설치 완료 · 다음에 여는 파일부터 적용됩니다"
         if mode == "cpu" then s = s .. "\n현재 가속 모드는 'CPU만'입니다 — Ctrl+N → AI 구성 요소에서 바꿀 수 있습니다" end
         notify(s, 7, "ok", "accel-dl")
     else
         local r = tostring(a.reason or "")
-        local s = "cuBLAS를 설치했지만 이 PC에서는 CUDA를 사용할 수 없습니다" .. (r ~= "" and (": " .. r) or "")
+        local s = "CUDA 구성 요소를 설치했지만 이 PC에서는 CUDA를 사용할 수 없습니다" .. (r ~= "" and (": " .. r) or "")
         if mode == "cuda" then
             s = s .. "\nCUDA 필수 모드에서는 AI 자막이 꺼집니다 — Ctrl+N → AI 구성 요소에서 CPU 모드로 바꾸세요"
         else
@@ -1685,8 +1743,10 @@ function AIM.build_accel_prompt()
         actions[#actions + 1] = fn
     end
     if info.cause == "missing" and info.mode ~= "cpu" then
-        add("cuBLAS 내려받기 (" .. AIM.fmt_size(info.size) .. ")", function() AIM.acc_download() end)
-        add("CUDA 13 Toolkit 받는 곳 열기 (설치하면 다운로드 없이 GPU 사용)", function() SUBS.open_url(AIM.TOOLKIT_URL) end)
+        add("CUDA 가속 구성 요소 내려받기 (" .. AIM.fmt_size(info.size) .. ")", function() AIM.acc_download() end)
+        if AIM.cublas_missing() then
+            add("CUDA 13 Toolkit 받는 곳 열기 (설치하면 cuBLAS 다운로드 불필요)", function() SUBS.open_url(AIM.TOOLKIT_URL) end)
+        end
     end
     if info.mode == "cuda" and info.cpu then
         add("CPU 모드로 전환 (다음 파일부터)", function() AIM.set_mode("cpu") end)
@@ -1698,7 +1758,7 @@ function AIM.build_accel_prompt()
         save_settings()
     end)
     return {
-        prompt = info.mode == "cuda" and "CUDA를 사용할 수 없음" or "GPU 가속: CUDA 13 Toolkit 설치 또는 cuBLAS 받기",
+        prompt = info.mode == "cuda" and "CUDA를 사용할 수 없음" or "GPU 가속 구성 요소가 필요합니다",
         items = items,
         default_item = 1,
         submit = function(i)
@@ -1825,7 +1885,7 @@ end
 
 local function with_secondary(text, st)
     local extras = { secondary_text(st, true) or false, SUBS.pgs_text(st, true) or false,
-        (not AIM.acc_active() and AIM.toolkit_notice()) or false }
+        (not AIM.acc_active() and AIM.acc_notice()) or false }
     for _, extra in ipairs(extras) do
         if extra then text = text .. " · " .. extra end
     end
@@ -2229,7 +2289,7 @@ mp.add_key_binding("ctrl+k", "nanum-status", function()
     if imp then line = line .. "\n" .. imp end
     local ga = glossary_apply_text(st)
     if ga then line = line .. "\n" .. ga end
-    local tk = AIM.toolkit_notice()
+    local tk = AIM.acc_notice()
     if tk then line = line .. "\n" .. tk end
     local orig = original_text(st)
     if orig then line = line .. "\n" .. orig end
@@ -2288,6 +2348,7 @@ function save_settings()
     if opts.downloads_dir ~= "" then f:write("downloads_dir=" .. opts.downloads_dir .. "\n") end
     if opts.translate_style_text ~= "" then f:write("translate_style_text=" .. opts.translate_style_text .. "\n") end
     if opts.cuda_license then f:write("cuda_license=yes\n") end
+    if opts.cuda_update_prompted ~= "" then f:write("cuda_update_prompted=" .. opts.cuda_update_prompted .. "\n") end
     if opts.omp_model ~= "" then
         f:write("omp_model=" .. opts.omp_model .. "\n")
     end
@@ -4789,13 +4850,13 @@ function AIM.cuda_row_value()
     local a = AIM.acc
     if a.cuda_available == true then
         if a.toolkit == true then return "사용 가능 · cuBLAS: CUDA Toolkit " .. AIM.toolkit_label() .. " 사용" end
-        return "사용 가능 · 엔진은 앱에 포함, cuBLAS는 내려받은 파일"
+        return "사용 가능"
     end
+    if AIM.cuda_update_needed() then return "엔진 업데이트 필요 · 내려받기 " .. AIM.fmt_size(AIM.acc_bytes()) end
     local cause = AIM.cuda_cause()
     if cause == "nodriver" then return "사용 불가 · NVIDIA 드라이버를 찾을 수 없음" end
-    if cause == "noengine" then return "사용 불가 · 앱에 포함된 CUDA 엔진 파일이 없음" end
-    if cause == "nocatalog" then return "cuBLAS 목록을 읽을 수 없음 · CUDA 13 Toolkit을 설치하면 해결" end
-    if cause == "missing" then return "cuBLAS 필요 · Toolkit 설치 또는 " .. AIM.fmt_size(AIM.acc_bytes()) .. " 받기" end
+    if cause == "nocatalog" then return "미설치 · 구성 요소 목록을 읽을 수 없음" end
+    if cause == "missing" then return "미설치 · 내려받기 " .. AIM.fmt_size(AIM.acc_bytes()) end
     local r = tostring(a.reason or "")
     return "사용 불가 · " .. (r ~= "" and r or "GPU/드라이버가 CUDA 13 엔진을 지원하지 않음")
 end
@@ -4849,12 +4910,12 @@ function AIM.build_menu()
         local val
         if AIM.acc_active() then
             val = "진행 중"
-        elseif cause == "noengine" then
-            val = "엔진 파일 없음 · NanumPlayer를 다시 설치하세요"
         elseif cause == "nocatalog" then
             val = "내려받기 불가 · 구성 요소 목록(catalog.json)을 읽을 수 없음"
         elseif #missing > 0 or cause == "missing" then
-            val = string.format("필요 · %s (CUDA 13 Toolkit이 있으면 필요 없음)", AIM.fmt_size(AIM.acc_bytes()))
+            local engine, runtimes = AIM.missing_parts()
+            val = string.format("필요 %s · %s", #missing > 0 and (#missing .. "개") or "구성 요소", AIM.fmt_size(AIM.acc_bytes()))
+                .. ((engine and runtimes) and " (CUDA 13 Toolkit이 있으면 엔진만)" or "")
                 .. (cause == "nodriver" and " (NVIDIA 드라이버 미감지)" or "")
         elseif a.toolkit == true and a.cuda_available == true then
             val = "필요 없음 · CUDA Toolkit " .. AIM.toolkit_label() .. " 사용"
@@ -4863,7 +4924,7 @@ function AIM.build_menu()
         else
             val = "설치됨 · 이 PC에서는 사용 불가 (다시 받아도 해결되지 않음)"
         end
-        add("acc_install", "cuBLAS 내려받기: " .. val, function()
+        add("acc_install", "CUDA 가속 구성 요소 " .. (AIM.cuda_update_needed() and "업데이트: " or "내려받기: ") .. val, function()
             local cur = AIM.acc
             if not cur or AIM.acc_active() then
                 if cur then notify("이미 내려받는 중입니다", 3, "warn") end
@@ -4871,13 +4932,9 @@ function AIM.build_menu()
             end
             local miss = AIM.acc_missing()
             local c = cur.cuda_available ~= true and AIM.cuda_cause() or nil
-            if c == "noengine" then
-                notify("앱에 포함된 CUDA 엔진 파일(nanum_ai_cuda.dll)이 없습니다 — NanumPlayer를 다시 설치하세요", 7, "warn")
-            elseif #miss == 0 and c ~= "missing" and c ~= "nocatalog" then
-                if cur.toolkit == true and cur.cuda_available == true then
-                    notify("CUDA Toolkit " .. AIM.toolkit_label() .. "의 cuBLAS를 사용하므로 내려받을 필요가 없습니다", 4, "ok")
-                elseif cur.cuda_available == true then
-                    notify("cuBLAS가 이미 설치되어 있습니다", 3, "ok")
+            if #miss == 0 and c ~= "missing" and c ~= "nocatalog" then
+                if cur.cuda_available == true then
+                    notify("CUDA 구성 요소가 이미 설치되어 있습니다" .. (cur.toolkit == true and (" (cuBLAS는 CUDA Toolkit " .. AIM.toolkit_label() .. " 사용)") or ""), 4, "ok")
                 else
                     notify("구성 요소는 설치되어 있지만 이 PC의 GPU/드라이버에서 CUDA를 쓸 수 없습니다. 다시 받아도 해결되지 않습니다", 6, "warn")
                 end
@@ -4891,7 +4948,7 @@ function AIM.build_menu()
                 AIM.acc_download()
             end
         end)
-        if a.toolkit ~= true then
+        if AIM.cublas_missing() or a.toolkit ~= true then
             add("license", "NVIDIA CUDA 라이선스 (cuBLAS 내려받기용): " .. (AIM.license_accepted() and "동의함 · 보기" or "동의 필요 · 보기"),
                 AIM.open_license_file)
         end
@@ -4909,19 +4966,14 @@ function AIM.build_menu()
                     progress[key] = AIM.acc_fraction() or 0
                 end
             elseif c.installed then
-                cval = (c.source == "bundled" and "앱에 포함")
-                    or (c.source == "toolkit" and ("CUDA Toolkit " .. AIM.toolkit_label() .. " 사용"))
+                cval = (c.source == "toolkit" and ("CUDA Toolkit " .. AIM.toolkit_label() .. " 사용"))
                     or ("설치됨 · " .. AIM.fmt_size(c.size) .. " · " .. (AIM.COMP_SOURCE[c.source] or tostring(c.source or "")))
-            elseif c.id == "cuda_engine" then
-                cval = "없음 · NanumPlayer를 다시 설치하세요"
             else
                 cval = "미설치 · " .. AIM.fmt_size(c.size)
             end
             add(key, (c.installed and "● " or "  ") .. tostring(c.label or AIM.acc_name(c.id)) .. ": " .. cval, function()
                 if c.installed then
                     notify(tostring(c.path or c.filename or ""), 5)
-                elseif c.id == "cuda_engine" then
-                    notify("앱에 포함된 CUDA 엔진 파일이 없습니다 — NanumPlayer를 다시 설치하세요", 6, "warn")
                 else
                     AIM.acc_download()
                 end

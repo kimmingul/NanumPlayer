@@ -32,8 +32,8 @@ Closing the menu does not cancel a download. Normal playback works without model
 completed downloads enable speech recognition on the next file without a restart.
 Explicit custom model paths and existing app-folder models are not overwritten.
 
-CUDA acceleration: the CUDA engine ships with NanumPlayer; it needs NVIDIA's cuBLAS
-(a CUDA 13 Toolkit, or the optional download). Select it at install time or use
+CUDA acceleration: the CUDA engine (~53 MiB) is an optional verified download; it also
+needs NVIDIA's cuBLAS (a CUDA 13 Toolkit, or the optional download). Select it at install time or use
 Ctrl+N > AI 구성 요소 관리. Modes: Auto (CUDA when usable, otherwise CPU), CPU,
 CUDA required. Missing CUDA never disables CPU processing or external translation.
 CUDA-required mode shows an actionable error without blocking ordinary playback.
@@ -45,10 +45,11 @@ external subtitle file releases preroll even when shorter than the requested lea
 The optional engine requires compute capability 8.6+ and a compatible NVIDIA driver.
 
 An installed CUDA 13 Toolkit (found via CUDA_PATH_V13_*/CUDA_PATH, the registry
-environment or %ProgramFiles%\NVIDIA GPU Computing Toolkit) is used in place, so Auto
-mode uses the GPU on the first file with no download and no license step; CUDA 12 is not
-enough. Without a Toolkit the app uses the CPU and offers the cuBLAS download (~507 MiB,
-NVIDIA terms must be accepted). Files are size/SHA-256 verified, cancel-safe and cached
+environment or %ProgramFiles%\NVIDIA GPU Computing Toolkit) is used in place for cuBLAS,
+so only the engine (~53 MiB) is downloaded and no NVIDIA license step is needed; CUDA 12
+is not enough. Without a Toolkit the app uses the CPU and offers the engine plus the cuBLAS
+download (~507 MiB, NVIDIA terms must be accepted). A newer engine release asks for the
+engine update. Files are size/SHA-256 verified, cancel-safe and cached
 under %LOCALAPPDATA%\NanumPlayer\accelerators\cuda\13 (independent of the app version;
 old per-version folders are migrated by a verified copy); uninstall retains them.
 Quitting during playback no longer waits for a running speech-recognition pass.
@@ -56,6 +57,10 @@ Downloads and mode changes activate on the next opened file, not during playback
 Silent install: /TASKS=cuda_accel requests CUDA downloads and accepts the bundled
 NVIDIA terms. /TASKS= installs the CPU player without optional downloads.
 Requested download failures return an installation error, not silent success.
+Setup checks what is already installed: installed models, VAD and the cuBLAS cache
+are shown as "이미 설치됨" and not downloaded again; with a CUDA 13 Toolkit the CUDA
+download is not needed; current YouTube tools are not re-downloaded. The Ready page
+lists models, CUDA (Toolkit, driver, GPU), YouTube tools, WebView2, Ollama and MakeMKV.
 
 Glossary and style (Ctrl+N): the translation model identifies the film from its
 title and builds a glossary of characters (family, given and full names) and

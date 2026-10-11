@@ -52,7 +52,7 @@ Name: "model_english"; Description: "영어 음성 인식: Whisper small.en + Si
 Name: "model_multilingual"; Description: "다국어 음성 인식: Whisper small + Silero VAD (약 466 MiB 다운로드)"; GroupDescription: "AI 모델 다운로드 (선택, 인터넷 연결 필요):"; Flags: unchecked
 Name: "model_multilingual_large"; Description: "다국어 고정밀 음성 인식: Whisper large-v3-turbo + Silero VAD (약 548 MiB 다운로드, 외국어 영상 권장)"; GroupDescription: "AI 모델 다운로드 (선택, 인터넷 연결 필요):"; Flags: unchecked
 Name: "model_vad"; Description: "음성 감지 모델만: Silero VAD (약 0.8 MiB 다운로드)"; GroupDescription: "AI 모델 다운로드 (선택, 인터넷 연결 필요):"; Flags: unchecked
-Name: "cuda_accel"; Description: "NVIDIA CUDA 가속: cuBLAS 다운로드 (약 507 MiB, CUDA 13 Toolkit이 있으면 필요 없음)"; GroupDescription: "AI 가속 (선택, 인터넷 연결 필요):"; Flags: unchecked
+Name: "cuda_accel"; Description: "NVIDIA CUDA 가속: 엔진 다운로드 (약 53 MiB, CUDA 13 Toolkit 없으면 cuBLAS 약 507 MiB 추가)"; GroupDescription: "AI 가속 (선택, 인터넷 연결 필요):"; Flags: unchecked
 Name: "youtube_tools"; Description: "YouTube 재생 구성 요소: yt-dlp + Deno (약 60 MiB 다운로드, 설치 시점의 최신 공식 릴리스)"; GroupDescription: "YouTube (선택, 인터넷 연결 필요):"; Flags: unchecked
 
 [Files]
@@ -92,6 +92,9 @@ var
   CudaLicenseMemo: TNewMemo;
   CudaLicenseAccept: TNewCheckBox;
   DriverAsked: Boolean;
+  TasksAnnotated: Boolean;
+  ToolkitKnown: Boolean;
+  ToolkitMemo: String;
 
 #include ModelCatalogFile
 #include ComponentCatalogFile
@@ -179,7 +182,7 @@ end;
 
 // CUDA_PATH_V13_<n> (highest first), CUDA_PATH, then the default install folders.
 // '' when there is no compatible Toolkit.
-function FindToolkitDirectory: String;
+function FindToolkitDirectoryUncached: String;
 var
   N: Integer;
 begin
@@ -197,19 +200,112 @@ begin
   end;
 end;
 
-// The cuBLAS download is only needed (and its NVIDIA license only asked) without a Toolkit.
-function CudaDownloadWanted: Boolean;
+// The Toolkit does not change while the wizard runs; look once (registry + a few file stats).
+function FindToolkitDirectory: String;
 begin
-  Result := CudaWanted and (FindToolkitDirectory = '');
+  if not ToolkitKnown then begin
+    ToolkitMemo := FindToolkitDirectoryUncached;
+    ToolkitKnown := True;
+  end;
+  Result := ToolkitMemo;
 end;
 
-function ComponentWanted(Index: Integer; const ToolkitDir: String): Boolean;
+// "13.4" out of ...\CUDA\v13.4\bin\x64 ('' if the folder is not named like that).
+function ToolkitVersionOf(const Dir: String): String;
+var
+  P, I: Integer;
+  S: String;
 begin
-  Result := CudaWanted;
-  // cuBLAS comes from a compatible Toolkit when there is one; the engine always comes from the release
-  if Result and (ToolkitDir <> '') and
-     ((ComponentID(Index) = 'cublas') or (ComponentID(Index) = 'cublas_lt')) then
-    Result := False;
+  Result := '';
+  P := Pos('\v13.', Dir);
+  if P = 0 then Exit;
+  S := Copy(Dir, P + 2, 16);
+  I := Pos('\', S);
+  if I > 0 then S := Copy(S, 1, I - 1);
+  Result := S;
+end;
+
+function ModelIndex(const Id: String): Integer;
+var
+  I: Integer;
+begin
+  Result := -1;
+  for I := 0 to {#ModelCount} - 1 do
+    if ModelID(I) = Id then Result := I;
+end;
+
+// Read-only existence check by size (the SHA-256 is verified when something is downloaded).
+function FileHasSize(const Filename: String; Size: Int64): Boolean;
+var
+  Actual: Int64;
+begin
+  Result := FileExists(Filename) and FileSize64(Filename, Actual) and (Actual = Size);
+end;
+
+// The model in the user model folder, or (older installs) in <app>\models.
+function ModelFileOk(Index: Integer): Boolean;
+begin
+  Result := (Index >= 0) and
+    (FileHasSize(ModelDirectory + '\' + ModelFilename(Index), ModelSize(Index)) or
+     FileHasSize(AddBackslash(WizardDirValue) + 'models\' + ModelFilename(Index), ModelSize(Index)));
+end;
+
+// A Whisper task counts as installed when its model and the VAD model are both there.
+function ModelTaskInstalled(const TaskId: String): Boolean;
+begin
+  if TaskId = 'vad' then
+    Result := ModelFileOk(ModelIndex('vad'))
+  else
+    Result := ModelFileOk(ModelIndex(TaskId)) and ModelFileOk(ModelIndex('vad'));
+end;
+
+function EngineIndex: Integer;
+var
+  I: Integer;
+begin
+  Result := -1;
+  for I := 0 to {#ComponentCount} - 1 do
+    if ComponentID(I) = 'cuda_engine' then Result := I;
+end;
+
+// The CUDA engine in the cache (size only; the SHA-256 is checked when it is downloaded, and
+// by the player, which asks for the update of an older engine).
+function CudaEngineInstalled: Boolean;
+begin
+  Result := (EngineIndex >= 0) and
+    FileHasSize(CudaDirectory + '\' + ComponentFilename(EngineIndex), ComponentSize(EngineIndex));
+end;
+
+// The downloaded cuBLAS pair (the Toolkit's is looked for separately).
+function CudaCacheComplete: Boolean;
+var
+  I: Integer;
+begin
+  Result := True;
+  for I := 0 to {#ComponentCount} - 1 do
+    if (I <> EngineIndex) and
+       not FileHasSize(CudaDirectory + '\' + ComponentFilename(I), ComponentSize(I)) then
+      Result := False;
+end;
+
+// cuBLAS (and with it NVIDIA's license) is only needed without a Toolkit and without the
+// downloaded copy.
+function CudaRuntimeWanted: Boolean;
+begin
+  Result := CudaWanted and (FindToolkitDirectory = '') and not CudaCacheComplete;
+end;
+
+function CudaDownloadWanted: Boolean;
+begin
+  Result := CudaWanted and (not CudaEngineInstalled or CudaRuntimeWanted);
+end;
+
+function ComponentWanted(Index: Integer): Boolean;
+begin
+  if Index = EngineIndex then
+    Result := CudaWanted
+  else
+    Result := CudaRuntimeWanted;
 end;
 
 function NvidiaDriverPresent: Boolean;
@@ -241,7 +337,10 @@ var
   Partial, Source: String;
   Downloaded: Boolean;
 begin
-  if VerifiedFile(Destination, Size, Hash) then Exit;
+  if VerifiedFile(Destination, Size, Hash) then begin
+    Log('Already installed and verified, not downloaded again: ' + Destination);
+    Exit;
+  end;
   Partial := Destination + '.setup.part';
   Downloaded := False;
   try
@@ -278,6 +377,23 @@ end;
 function YoutubeDirectory: String;
 begin
   Result := ExpandConstant('{localappdata}\NanumPlayer\youtube\bin');
+end;
+
+// Tag recorded in <Exe>.version ("<tag>\n<size>\n") if the file still has that size, else ''.
+function StampTagOf(const Exe: String): String;
+var
+  Text: AnsiString;
+  S: String;
+  P: Integer;
+  Size: Int64;
+begin
+  Result := '';
+  if not (FileExists(Exe) and LoadStringFromFile(Exe + '.version', Text)) then Exit;
+  S := String(Text);
+  P := Pos(#10, S);
+  if P = 0 then Exit;
+  if FileSize64(Exe, Size) and (Trim(Copy(S, P + 1, 40)) = IntToStr(Size)) then
+    Result := Trim(Copy(S, 1, P - 1));
 end;
 
 function LatestTag(const Repository: String): String;
@@ -377,15 +493,22 @@ begin
     RaiseException('YouTube 폴더를 만들 수 없습니다: ' + Dir);
 
   Tag := LatestTag('yt-dlp/yt-dlp');
-  Base := 'https://github.com/yt-dlp/yt-dlp/releases/download/' + Tag + '/';
-  DownloadTemporaryFile(Base + 'SHA2-256SUMS', 'ytdlp-SHA2-256SUMS', '', nil);
-  Hash := ChecksumOf(ExpandConstant('{tmp}\ytdlp-SHA2-256SUMS'), 'yt-dlp.exe');
-  if Hash = '' then RaiseException('yt-dlp 릴리스의 체크섬에서 yt-dlp.exe를 찾을 수 없습니다.');
-  EnsureFile(Base + 'yt-dlp.exe', 'yt-dlp.exe', Hash, -1, Dir + '\yt-dlp.exe', '', Interactive);
-  WriteVersionStamp(Dir + '\yt-dlp.exe', Tag);
+  if StampTagOf(Dir + '\yt-dlp.exe') = Tag then
+    Log('yt-dlp ' + Tag + ' is already installed (latest), not downloaded again')
+  else begin
+    Base := 'https://github.com/yt-dlp/yt-dlp/releases/download/' + Tag + '/';
+    DownloadTemporaryFile(Base + 'SHA2-256SUMS', 'ytdlp-SHA2-256SUMS', '', nil);
+    Hash := ChecksumOf(ExpandConstant('{tmp}\ytdlp-SHA2-256SUMS'), 'yt-dlp.exe');
+    if Hash = '' then RaiseException('yt-dlp 릴리스의 체크섬에서 yt-dlp.exe를 찾을 수 없습니다.');
+    EnsureFile(Base + 'yt-dlp.exe', 'yt-dlp.exe', Hash, -1, Dir + '\yt-dlp.exe', '', Interactive);
+    WriteVersionStamp(Dir + '\yt-dlp.exe', Tag);
+  end;
 
   // Deno (the JavaScript runtime yt-dlp needs for YouTube) is only fetched when missing.
-  if FileExists(Dir + '\deno.exe') then Exit;
+  if FileExists(Dir + '\deno.exe') then begin
+    Log('Deno is already installed, not downloaded again: ' + Dir + '\deno.exe');
+    Exit;
+  end;
   Tag := LatestTag('denoland/deno');
   Base := 'https://github.com/denoland/deno/releases/download/' + Tag + '/';
   DownloadTemporaryFile(Base + DenoZip + '.sha256sum', 'deno.sha256sum', '', nil);
@@ -440,16 +563,230 @@ begin
   if CudaDownloadWanted then begin
     if not ForceDirectories(CudaDirectory) then
       RaiseException('CUDA 구성 요소 폴더를 만들 수 없습니다: ' + CudaDirectory);
-    ToolkitDir := '';
     for I := 0 to {#ComponentCount} - 1 do begin
-      if ComponentWanted(I, ToolkitDir) then
+      if ComponentWanted(I) then
         EnsureFile(ComponentURL(I), ComponentFilename(I), ComponentHash(I), ComponentSize(I),
           CudaDirectory + '\' + ComponentFilename(I), '', Interactive);
     end;
-    License := ExpandConstant('{tmp}\LICENSE-NVIDIA-CUDA.txt');
-    if FileExists(License) then
-      CopyFile(License, CudaDirectory + '\LICENSE-NVIDIA-CUDA.txt', False);
+    if CudaRuntimeWanted then begin
+      License := ExpandConstant('{tmp}\LICENSE-NVIDIA-CUDA.txt');
+      if FileExists(License) then
+        CopyFile(License, CudaDirectory + '\LICENSE-NVIDIA-CUDA.txt', False);
+    end;
   end;
+end;
+
+{ ---- What is already on this PC (read-only, logged) ---------------------------- }
+
+function NvidiaGpuName: String;
+var
+  I: Integer;
+  Desc: String;
+begin
+  Result := '';
+  for I := 0 to 9 do
+    if (Result = '') and
+       RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\000' +
+                           IntToStr(I), 'DriverDesc', Desc) and (Pos('NVIDIA', Uppercase(Desc)) > 0) then
+      Result := Desc;
+end;
+
+// Microsoft Edge WebView2 Runtime (Evergreen): its version, '' if not installed.
+function WebView2Version: String;
+var
+  Key, V: String;
+begin
+  Result := '';
+  Key := 'Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}';
+  if RegQueryStringValue(HKLM, 'SOFTWARE\WOW6432Node\' + Key, 'pv', V) then Result := V;
+  if (Result = '') and RegQueryStringValue(HKLM, 'SOFTWARE\' + Key, 'pv', V) then Result := V;
+  if (Result = '') and RegQueryStringValue(HKCU, 'Software\' + Key, 'pv', V) then Result := V;
+  if Result = '0.0.0.0' then Result := '';
+end;
+
+// ollama.exe of a per-user or machine-wide install, or on PATH. '' if none.
+function OllamaPath: String;
+begin
+  Result := ExpandConstant('{localappdata}\Programs\Ollama\ollama.exe');
+  if not FileExists(Result) then Result := ExpandConstant('{commonpf64}\Ollama\ollama.exe');
+  if not FileExists(Result) then Result := FileSearch('ollama.exe', GetEnv('PATH'));
+end;
+
+// MakeMKV's libmmbd64.dll in the standard folders (as the player's auto-detection). '' if none.
+function MakeMkvPath: String;
+begin
+  Result := ExpandConstant('{commonpf64}\MakeMKV\libmmbd64.dll');
+  if not FileExists(Result) then Result := ExpandConstant('{commonpf32}\MakeMKV\libmmbd64.dll');
+  if not FileExists(Result) then Result := '';
+end;
+
+function YtdlpTag: String;
+begin
+  Result := StampTagOf(YoutubeDirectory + '\yt-dlp.exe');
+end;
+
+function DenoTag: String;
+begin
+  Result := StampTagOf(YoutubeDirectory + '\deno.exe');
+end;
+
+function YoutubeToolsInstalled: Boolean;
+begin
+  Result := FileExists(YoutubeDirectory + '\yt-dlp.exe') and FileExists(YoutubeDirectory + '\deno.exe');
+end;
+
+// "설치됨(a, b) / 없음(c)" for the speech models.
+function ModelSummary: String;
+var
+  I: Integer;
+  Have, Lack, Name: String;
+begin
+  Have := '';
+  Lack := '';
+  for I := 0 to {#ModelCount} - 1 do begin
+    Name := ModelID(I);
+    if Name = 'english' then Name := 'small.en'
+    else if Name = 'multilingual' then Name := 'small'
+    else if Name = 'multilingual_large' then Name := 'large-v3-turbo'
+    else if Name = 'vad' then Name := 'VAD';
+    if ModelFileOk(I) then begin
+      if Have <> '' then Have := Have + ', ';
+      Have := Have + Name;
+    end else begin
+      if Lack <> '' then Lack := Lack + ', ';
+      Lack := Lack + Name;
+    end;
+  end;
+  Result := '';
+  if Have <> '' then Result := '설치됨 (' + Have + ')';
+  if Lack <> '' then begin
+    if Result <> '' then Result := Result + ' / ';
+    Result := Result + '없음 (' + Lack + ')';
+  end;
+end;
+
+function CudaSummary: String;
+var
+  Tk, Gpu: String;
+begin
+  Tk := FindToolkitDirectory;
+  Result := '엔진: ';
+  if CudaEngineInstalled then Result := Result + '설치됨' else Result := Result + '없음 (약 53 MiB 받을 수 있음)';
+  Result := Result + '; cuBLAS: ';
+  if Tk <> '' then Result := Result + 'CUDA Toolkit v' + ToolkitVersionOf(Tk)
+  else if CudaCacheComplete then Result := Result + '캐시 설치됨'
+  else Result := Result + '없음 (CPU 사용, 약 507 MiB 받을 수 있음)';
+  Result := Result + '; 드라이버: ';
+  if NvidiaDriverPresent then begin
+    Gpu := NvidiaGpuName;
+    if Gpu <> '' then Result := Result + Gpu else Result := Result + '있음';
+  end else
+    Result := Result + '없음 (GPU 가속 불가)';
+end;
+
+function YoutubeSummary: String;
+begin
+  if YoutubeToolsInstalled then
+    Result := '설치됨 (yt-dlp ' + YtdlpTag + ', Deno ' + DenoTag + ')'
+  else if FileExists(YoutubeDirectory + '\yt-dlp.exe') or FileExists(YoutubeDirectory + '\deno.exe') then
+    Result := '일부만 설치됨'
+  else
+    Result := '없음 (YouTube 재생에 필요)';
+end;
+
+// One line of the "설치 전 확인" block (0..5): the state of a library or program.
+function PreflightLine(Index: Integer): String;
+var
+  V: String;
+begin
+  Result := '';
+  case Index of
+    0: Result := '음성 모델: ' + ModelSummary;
+    1: Result := 'CUDA: ' + CudaSummary;
+    2: Result := 'YouTube 도구: ' + YoutubeSummary;
+    3: begin
+         V := WebView2Version;
+         if V <> '' then Result := 'WebView2 런타임: 설치됨 (' + V + ')'
+         else Result := 'WebView2 런타임: 없음 (YouTube 창에 필요 - Windows 업데이트 또는 Microsoft에서 설치)';
+       end;
+    4: begin
+         V := OllamaPath;
+         if V <> '' then Result := 'Ollama: 설치됨 (' + V + ')'
+         else Result := 'Ollama: 없음 (번역에 필요 - https://ollama.com)';
+       end;
+    5: begin
+         V := MakeMkvPath;
+         if V <> '' then Result := 'MakeMKV: 설치됨 (' + V + ')'
+         else Result := 'MakeMKV: 없음 (Blu-ray 재생에 필요)';
+       end;
+  end;
+end;
+
+// The "설치 전 확인" block: information only, nothing is installed without the user's choice.
+function PreflightText(const Space, NewLine: String): String;
+var
+  I: Integer;
+begin
+  Result := '설치 전 확인:';
+  for I := 0 to 5 do
+    Result := Result + NewLine + Space + PreflightLine(I);
+end;
+
+procedure LogDetection;
+var
+  I: Integer;
+begin
+  for I := 0 to 5 do
+    Log('Detect: ' + PreflightLine(I));
+  for I := 0 to {#ModelCount} - 1 do
+    Log('Task model_' + ModelID(I) + ' selected: ' + IntToStr(Ord(WizardIsTaskSelected('model_' + ModelID(I)))) +
+        ', model wanted: ' + IntToStr(Ord(ModelWanted(I))));
+  Log('Task cuda_accel selected: ' + IntToStr(Ord(CudaWanted)) + ', download wanted: ' + IntToStr(Ord(CudaDownloadWanted)));
+  Log('Task youtube_tools selected: ' + IntToStr(Ord(YoutubeWanted)));
+end;
+
+// Appends the state to the task's caption; Block unchecks and disables it (so a silent
+// /TASKS request for something that is already satisfied is skipped too).
+procedure AnnotateTask(const Prefix, Note: String; Block: Boolean);
+var
+  I: Integer;
+begin
+  with WizardForm.TasksList do
+    for I := 0 to Items.Count - 1 do
+      if Pos(Prefix, ItemCaption[I]) = 1 then begin
+        if Block then
+          Log('Task not needed' + Note + ': ' + ItemCaption[I])
+        else
+          Log('Task note' + Note + ': ' + ItemCaption[I]);
+        ItemCaption[I] := ItemCaption[I] + Note;
+        if Block then begin
+          Checked[I] := False;
+          ItemEnabled[I] := False;
+        end;
+      end;
+end;
+
+procedure AnnotateTasks;
+var
+  Tk: String;
+begin
+  if ModelTaskInstalled('english') then AnnotateTask('영어 음성 인식', ' — 이미 설치됨', True);
+  if ModelTaskInstalled('multilingual') then AnnotateTask('다국어 음성 인식', ' — 이미 설치됨', True);
+  if ModelTaskInstalled('multilingual_large') then AnnotateTask('다국어 고정밀', ' — 이미 설치됨', True);
+  if ModelTaskInstalled('vad') then AnnotateTask('음성 감지 모델만', ' — 이미 설치됨', True);
+  Tk := FindToolkitDirectory;
+  if CudaEngineInstalled and (Tk <> '') then
+    AnnotateTask('NVIDIA CUDA 가속', ' — 이미 설치됨 (엔진 + CUDA Toolkit v' + ToolkitVersionOf(Tk) + ')', True)
+  else if CudaEngineInstalled and CudaCacheComplete then
+    AnnotateTask('NVIDIA CUDA 가속', ' — 이미 설치됨', True)
+  else if not NvidiaDriverPresent then
+    AnnotateTask('NVIDIA CUDA 가속', ' — NVIDIA 드라이버 없음', True)
+  else if Tk <> '' then
+    AnnotateTask('NVIDIA CUDA 가속', ' — CUDA Toolkit v' + ToolkitVersionOf(Tk) + ' 감지됨, 엔진만 받음', False)
+  else if CudaEngineInstalled then
+    AnnotateTask('NVIDIA CUDA 가속', ' — 엔진은 설치됨, cuBLAS를 받음', False);
+  if YoutubeToolsInstalled then
+    AnnotateTask('YouTube 재생', ' — 이미 설치됨 (선택하면 최신 버전으로 업데이트)', False);
 end;
 
 { ---- Wizard ---------------------------------------------------------------- }
@@ -483,11 +820,19 @@ begin
   CudaLicenseAccept.Checked := False;
 end;
 
+procedure CurPageChanged(CurPageID: Integer);
+begin
+  if (CurPageID = wpSelectTasks) and not TasksAnnotated then begin
+    TasksAnnotated := True;
+    AnnotateTasks;
+  end;
+end;
+
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
   Result := False;
   if PageID = CudaLicensePage.ID then
-    Result := not CudaDownloadWanted;
+    Result := not CudaRuntimeWanted;
 end;
 
 function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo,
@@ -497,7 +842,7 @@ var
   Bytes: Int64;
   ToolkitDir: String;
 begin
-  Result := '';
+  Result := PreflightText(Space, NewLine) + NewLine + NewLine;
   if MemoDirInfo <> '' then Result := Result + MemoDirInfo + NewLine + NewLine;
   if MemoGroupInfo <> '' then Result := Result + MemoGroupInfo + NewLine + NewLine;
   if MemoTasksInfo <> '' then Result := Result + MemoTasksInfo;
@@ -505,15 +850,20 @@ begin
     ToolkitDir := FindToolkitDirectory;
     Bytes := 0;
     for I := 0 to {#ComponentCount} - 1 do
-      if ComponentWanted(I, ToolkitDir) and
-         not FileExists(CudaDirectory + '\' + ComponentFilename(I)) then
+      if ComponentWanted(I) and
+         not FileHasSize(CudaDirectory + '\' + ComponentFilename(I), ComponentSize(I)) then
         Bytes := Bytes + ComponentSize(I);
     Result := Result + NewLine + NewLine + 'CUDA 가속 구성 요소:' + NewLine;
+    if Bytes > 0 then Result := Result + Space + '설치 위치: ' + CudaDirectory + NewLine;
+    if CudaEngineInstalled then Result := Result + Space + '엔진: 이미 설치됨' + NewLine
+    else Result := Result + Space + '엔진: 내려받기' + NewLine;
     if ToolkitDir <> '' then
       Result := Result + Space + 'cuBLAS: CUDA Toolkit 사용 (' + ToolkitDir + ') - 내려받기 없음' + NewLine
+    else if CudaCacheComplete then
+      Result := Result + Space + 'cuBLAS: 이미 설치됨' + NewLine
     else
-      Result := Result + Space + '설치 위치: ' + CudaDirectory + NewLine +
-        Space + 'cuBLAS: 내려받기, 약 ' + IntToStr((Bytes + 1048575) div 1048576) + ' MiB';
+      Result := Result + Space + 'cuBLAS: 내려받기 (NVIDIA 라이선스 동의 필요)' + NewLine;
+    Result := Result + Space + '내려받기 필요: 약 ' + IntToStr((Bytes + 1048575) div 1048576) + ' MiB';
   end;
 end;
 
@@ -571,6 +921,7 @@ end;
 function PrepareToInstall(var NeedsRestart: Boolean): String;
 begin
   Result := '';
+  LogDetection;
   if WizardSilent and (AnyModelWanted or CudaDownloadWanted or YoutubeWanted) then begin
     try
       if CudaDownloadWanted and not NvidiaDriverPresent then

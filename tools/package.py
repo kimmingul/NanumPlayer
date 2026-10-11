@@ -6,6 +6,7 @@ Usage: python tools/package.py [version] [--no-installer] [--sign <certificate S
 --sign signs NanumPlayer's own binaries in the stage, the installer and its uninstaller
 (Windows SDK signtool, SHA-256, RFC 3161 timestamp). Third-party DLLs keep their own state.
 """
+import hashlib
 import json
 import os
 import re
@@ -20,7 +21,7 @@ VC_REDIST = r"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Redist\
 ISCC = os.path.join(os.environ.get("LOCALAPPDATA", ""), "Programs", "Inno Setup 6", "ISCC.exe")
 SIGNTOOL = r"C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe"
 TIMESTAMP = "http://timestamp.digicert.com"
-OWN_BINARIES = ("NanumPlayer.exe", "nanum_youtube.exe", "nanum_ai_cpu.dll", "nanum_ai_cuda.dll")
+OWN_BINARIES = ("NanumPlayer.exe", "nanum_youtube.exe", "nanum_ai_cpu.dll")
 thumbprint = sys.argv[sys.argv.index("--sign") + 1] if "--sign" in sys.argv else None
 
 
@@ -31,7 +32,7 @@ def sign_command(thumb):
 # MakeMKV's libmmbd (renamed to libaacs/libbdplus) is the user's own; never ship it.
 NEVER_SHIP = {"libaacs.dll", "libbdplus.dll"}
 
-version = next((a for a in sys.argv[1:] if not a.startswith("--")), "1.6.0")
+version = next((a for a in sys.argv[1:] if not a.startswith("--")), "1.6.1")
 stage = os.path.join(ROOT, "dist", f"NanumPlayer-{version}")
 
 
@@ -107,11 +108,16 @@ ai_dll = os.path.join(ROOT, "build", "nanum_ai_cpu", "nanum_ai_cpu.dll")
 copy(ai_dll, bindir)
 for p in closure(ai_dll).values():
     copy(p, bindir)
-# The CUDA engine is part of the application (the optional download is NVIDIA's cuBLAS only).
+# The CUDA engine is an optional verified download (components/catalog.json pins the file that is
+# uploaded to the release). It is not shipped; refuse to package a catalog that does not describe
+# the engine that was built and signed.
 cuda_dll = os.path.join(ROOT, "build", "nanum_ai_cuda", "nanum_ai_cuda.dll")
-if not os.path.isfile(cuda_dll):
-    raise SystemExit(f"Missing {cuda_dll}; run tools\\build_nanum_ai.bat first.")
-copy(cuda_dll, bindir)
+engine_pin = next(c for c in component_catalogue["components"] if c["id"] == "cuda_engine")
+with open(cuda_dll, "rb") as f:
+    engine_bytes = f.read()
+if len(engine_bytes) != engine_pin["size"] or hashlib.sha256(engine_bytes).hexdigest() != engine_pin["sha256"]:
+    raise SystemExit(f"components/catalog.json does not match {cuda_dll} (size/SHA-256); "
+                     "pin the signed engine that is uploaded to the release.")
 for sub, n in (("Microsoft.VC143.CRT", "msvcp140.dll"), ("Microsoft.VC143.CRT", "vcruntime140.dll"),
                ("Microsoft.VC143.CRT", "vcruntime140_1.dll"), ("Microsoft.VC143.OpenMP", "vcomp140.dll")):
     copy(os.path.join(VC_REDIST, sub, n), bindir)
@@ -137,7 +143,7 @@ with open(cleanup, "w", encoding="utf-8") as f:
     for name in sorted(obsolete):
         if name.lower() not in NEVER_SHIP:
             f.write(f'Type: files; Name: "{{app}}\\bin\\{name}"\n')
-    for name in ("nanum_ai.dll", "cublas64_13.dll",
+    for name in ("nanum_ai.dll", "nanum_ai_cuda.dll", "cublas64_13.dll",
                  "cublasLt64_13.dll", "mpv.exe", "mpv.com", "libmpv-2.dll"):
         f.write(f'Type: files; Name: "{{app}}\\{name}"\n')
 
