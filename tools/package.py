@@ -32,7 +32,7 @@ def sign_command(thumb):
 # MakeMKV's libmmbd (renamed to libaacs/libbdplus) is the user's own; never ship it.
 NEVER_SHIP = {"libaacs.dll", "libbdplus.dll"}
 
-version = next((a for a in sys.argv[1:] if not a.startswith("--")), "1.6.1")
+version = next((a for a in sys.argv[1:] if not a.startswith("--")), "1.6.2")
 stage = os.path.join(ROOT, "dist", f"NanumPlayer-{version}")
 
 

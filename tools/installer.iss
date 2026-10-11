@@ -91,6 +91,9 @@ var
   CudaLicensePage: TWizardPage;
   CudaLicenseMemo: TNewMemo;
   CudaLicenseAccept: TNewCheckBox;
+  BluRayPage: TWizardPage;
+  BluRayText: TNewMemo;
+  BluRayButton: TNewButton;
   DriverAsked: Boolean;
   TasksAnnotated: Boolean;
   ToolkitKnown: Boolean;
@@ -791,6 +794,13 @@ end;
 
 { ---- Wizard ---------------------------------------------------------------- }
 
+procedure BluRayButtonClick(Sender: TObject);
+var
+  Code: Integer;
+begin
+  ShellExec('open', 'https://www.makemkv.com/download/', '', '', SW_SHOWNORMAL, ewNoWait, Code);
+end;
+
 procedure InitializeWizard;
 begin
   ModelDownloadPage := CreateDownloadPage('AI 구성 요소 다운로드',
@@ -818,6 +828,31 @@ begin
   CudaLicenseAccept.Height := ScaleY(20);
   CudaLicenseAccept.Caption := '위 NVIDIA CUDA 라이선스 조건에 동의합니다';
   CudaLicenseAccept.Checked := False;
+
+  // Shown after the task/license pages when MakeMKV (libmmbd64.dll) is not installed.
+  BluRayPage := CreateCustomPage(CudaLicensePage.ID, 'Blu-ray 재생 준비',
+    'MakeMKV가 설치되어 있지 않습니다.');
+  BluRayText := TNewMemo.Create(BluRayPage);
+  BluRayText.Parent := BluRayPage.Surface;
+  BluRayText.Left := 0;
+  BluRayText.Top := 0;
+  BluRayText.Width := BluRayPage.SurfaceWidth;
+  BluRayText.Height := ScaleY(110);
+  BluRayText.ScrollBars := ssNone;
+  BluRayText.ReadOnly := True;
+  BluRayText.WordWrap := True;
+  BluRayText.Text :=
+    '암호화된 Blu-ray를 재생하려면 MakeMKV가 필요합니다. MakeMKV는 별도 프로그램이라 NanumPlayer에 포함되지 않습니다. ' +
+    '설치 후 한 번 실행해 활성화(베타 키 또는 구매 키)하세요. 동영상 파일·YouTube·암호화되지 않은 디스크는 ' +
+    'MakeMKV 없이 재생됩니다. Blu-ray를 쓰지 않으면 다음을 누르세요.';
+  BluRayButton := TNewButton.Create(BluRayPage);
+  BluRayButton.Parent := BluRayPage.Surface;
+  BluRayButton.Left := 0;
+  BluRayButton.Top := BluRayText.Height + ScaleY(8);
+  BluRayButton.Width := ScaleX(220);
+  BluRayButton.Height := ScaleY(26);
+  BluRayButton.Caption := 'MakeMKV 받기 페이지 열기';
+  BluRayButton.OnClick := @BluRayButtonClick;
 end;
 
 procedure CurPageChanged(CurPageID: Integer);
@@ -833,6 +868,10 @@ begin
   Result := False;
   if PageID = CudaLicensePage.ID then
     Result := not CudaRuntimeWanted;
+  // Blu-ray preparation: only when MakeMKV is missing, never in a silent setup (the
+  // detection line in the log says it).
+  if PageID = BluRayPage.ID then
+    Result := WizardSilent or (MakeMkvPath <> '');
 end;
 
 function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo,

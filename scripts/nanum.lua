@@ -2133,10 +2133,11 @@ mp.register_event("end-file", function(event)
     stop_wait(true)                    -- cancel the timer and release only our pause
     if event.reason == "error" then
         if SUBS.yt.on_play_error() then return end
+        if SUBS.disc.on_play_error() then return end
         local detail = event.file_error or "알 수 없는 오류"
         mp.msg.error("재생 실패: " .. detail)
         notify("재생 실패: " .. detail ..
-            "\nBlu-ray는 MakeMKV 설치/활성화를 확인하세요." ..
+            "\nBlu-ray라면 디스크와 MakeMKV 상태를 확인하세요." ..
             "\n상세 로그: %APPDATA%\\NanumPlayer\\last-playback.log", 12, "error")
     end
 end)
@@ -4682,6 +4683,95 @@ mp.observe_property("user-data/nanum/youtube", "native", YT.on_change)
 mp.enable_messages("warn")
 mp.register_event("log-message", YT.on_log)
 mp.add_periodic_timer(1, YT.heartbeat)
+end
+
+----------------------------------------------------------------------------
+-- Encrypted Blu-ray failures: the libbluray messages tell missing decryption
+-- (MakeMKV not installed) from a failing one (installed but not activated / key
+-- expired / disc not supported). Own scope: main chunk is near Lua's 200 locals.
+----------------------------------------------------------------------------
+do
+local DISC = { log = {}, path = nil }
+SUBS.disc = DISC
+DISC.DOWNLOAD_URL = "https://www.makemkv.com/download/"
+
+-- <Program Files>\MakeMKV folder of an installed MakeMKV, or nil.
+function DISC.makemkv_dir()
+    local utils = require 'mp.utils'
+    for _, var in ipairs({ "ProgramFiles(x86)", "ProgramFiles", "ProgramW6432" }) do
+        local base = os.getenv(var)
+        if base and base ~= "" then
+            local dir = base .. "\\MakeMKV"
+            if utils.file_info(dir .. "\\libmmbd64.dll") then return dir end
+        end
+    end
+    return nil
+end
+
+function DISC.on_log(e)
+    if e.prefix ~= "bd" or (e.level ~= "error" and e.level ~= "fatal") then return end
+    local log = DISC.log
+    log[#log + 1] = tostring(e.text or "")
+    while #log > 8 do table.remove(log, 1) end
+end
+
+-- missing: no decryption library at all; failed: present but could not decrypt.
+function DISC.classify(text)
+    if text:find("cannot find libaacs", 1, true) or text:find("cannot find libbdplus", 1, true) then
+        return "missing"
+    end
+    if text:find("AACS error", 1, true) or text:find("Cannot decrypt BD+", 1, true) then
+        return "failed"
+    end
+    return nil
+end
+
+-- -> true if the failure was an encrypted-disc one and has been explained.
+function DISC.on_play_error()
+    local kind = DISC.classify(table.concat(DISC.log, "\n"))
+    local path = DISC.path
+    DISC.log = {}
+    if not kind then return false end
+    local dir = DISC.makemkv_dir()
+    local title, text
+    if kind == "missing" or not dir then
+        title = "MakeMKV가 설치되어 있지 않습니다"
+        text = "암호화된 Blu-ray를 재생하려면 MakeMKV가 필요합니다. 설치 후 한 번 실행해 활성화(베타 키 또는 구매 키)하세요."
+    else
+        title = "MakeMKV로 디스크 암호를 풀지 못했습니다"
+        text = "MakeMKV는 설치되어 있지만 활성화되지 않았거나 키(베타 키)가 만료됐을 수 있습니다. MakeMKV를 실행해 등록 상태를 확인하세요."
+    end
+    mp.set_property_native("user-data/nanum/error-handled", true)
+    mp.msg.error(title)
+    notify(title .. "\n" .. text, 12, "error", "disc")
+    local items, actions = {}, {}
+    local function add(label, fn)
+        items[#items + 1] = label
+        actions[#actions + 1] = fn
+    end
+    if kind == "failed" and dir then
+        add("MakeMKV 실행 (등록·키 확인)", function()
+            mp.command_native_async({ name = "subprocess", args = { dir .. "\\makemkv.exe" },
+                playback_only = false, detach = true }, function() end)
+        end)
+    end
+    add("MakeMKV 받기 페이지 열기", function() SUBS.open_url(DISC.DOWNLOAD_URL) end)
+    if path then
+        add("다시 시도", function() mp.commandv("loadfile", path, "replace") end)
+    end
+    add("닫기", function() end)
+    mp.add_timeout(0.6, function()
+        if fluent.modal_busy() then return end
+        input.select({ prompt = title, items = items, submit = function(i) actions[i]() end })
+    end)
+    return true
+end
+
+mp.register_event("start-file", function()
+    DISC.log = {}
+    DISC.path = mp.get_property("path")
+end)
+mp.register_event("log-message", DISC.on_log)
 end
 
 ----------------------------------------------------------------------------
