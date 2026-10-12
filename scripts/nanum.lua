@@ -31,6 +31,8 @@
 --   translate_style       natural | polite | casual | literal | custom (translation speech style, applied immediately)
 --   translate_style_text  instruction used by the "custom" style
 --   secondary     also make subtitles from the original-language audio of media with several audio languages (yes/no)
+--   bar_hide      playback bar auto-hide delay: short (1.2 s) | normal (2 s) | long (3 s); applied at once
+--   ai_tags       show the AI info tags (recognition device / source / translation) above the playback bar (yes/no)
 
 local mp = require 'mp'
 local options = require 'mp.options'
@@ -108,12 +110,15 @@ local opts = {
     translate_style_text = "",
     secondary = true,
     pgs = true,
+    bar_hide = "short",         -- playback bar auto-hide: short | normal | long (1.2 / 2 / 3 s)
+    ai_tags = true,             -- AI info tags above the playback bar
     downloads_dir = "",
 }
 options.read_options(opts, "nanum")
 if opts.input_mode ~= "stt" then opts.input_mode = "auto" end
 if opts.full_engine ~= "omp" then opts.full_engine = "ollama" end
 if opts.display ~= "bilingual" and opts.display ~= "source" then opts.display = "translation" end
+if opts.bar_hide ~= "normal" and opts.bar_hide ~= "long" then opts.bar_hide = "short" end
 if opts.acceleration ~= "cpu" and opts.acceleration ~= "cuda" then opts.acceleration = "auto" end
 
 local STYLES = {
@@ -2294,6 +2299,9 @@ mp.add_key_binding("ctrl+k", "nanum-status", function()
     if tk then line = line .. "\n" .. tk end
     local orig = original_text(st)
     if orig then line = line .. "\n" .. orig end
+    local ver = mp.get_property_native("user-data/nanum/app-version")
+    ver = type(ver) == "string" and ver or ""
+    if ver ~= "" then line = "NanumPlayer " .. ver .. "\n" .. line end
     notify(line, 4)
 end)
 
@@ -2346,6 +2354,7 @@ function save_settings()
     f:write(string.format("acceleration=%s\naccel_prompt=%s\n", opts.acceleration, opts.accel_prompt and "yes" or "no"))
     f:write(string.format("translate_style=%s\nsecondary=%s\n", opts.translate_style, opts.secondary and "yes" or "no"))
     f:write("pgs=" .. (opts.pgs and "yes" or "no") .. "\n")
+    f:write(string.format("bar_hide=%s\nai_tags=%s\n", opts.bar_hide, opts.ai_tags and "yes" or "no"))
     if opts.downloads_dir ~= "" then f:write("downloads_dir=" .. opts.downloads_dir .. "\n") end
     if opts.translate_style_text ~= "" then f:write("translate_style_text=" .. opts.translate_style_text .. "\n") end
     if opts.cuda_license then f:write("cuda_license=yes\n") end
@@ -2443,7 +2452,7 @@ local function ask_number(label, key)
     })
 end
 
-local function ask_text(e)
+local function ask_text(e, standalone)
     input.get({
         prompt = e.label .. ":",
         default_text = engine_vals[e.key] ~= "" and engine_vals[e.key]
@@ -2454,7 +2463,7 @@ local function ask_text(e)
             mp.set_property("options/" .. e.opt, text)
             save_settings()
             notify(e.label .. ": 다음에 여는 파일부터 적용", 3, "ok")
-            reopen_menu()
+            if not standalone then reopen_menu() end
         end,
     })
 end
@@ -3885,12 +3894,12 @@ local function parse_ollama_models(text, current)
 end
 
 local fetching_ollama = false
-local function open_ollama_picker(e)
+local function open_ollama_picker(e, standalone)
     if fetching_ollama then return end
     local endpoint = mp.get_property("options/nanum-translate-endpoint") or ""
     if endpoint == "" then
         notify("번역 서버 주소가 비어 있어 모델 목록을 가져올 수 없습니다", 4, "warn")
-        ask_text(e)
+        ask_text(e, standalone)
         return
     end
     fetching_ollama = true
@@ -3905,7 +3914,7 @@ local function open_ollama_picker(e)
         local list = (success and res and res.status == 0) and parse_ollama_models(res.stdout, current)
         if not list then
             notify("Ollama에 연결하지 못했습니다 (" .. endpoint .. ") — 모델 이름을 직접 입력하세요", 5, "error")
-            ask_text(e)
+            ask_text(e, standalone)
             return
         end
         local items, default = {}, nil
@@ -3920,18 +3929,226 @@ local function open_ollama_picker(e)
             default_item = default,
             submit = function(i)
                 if i > #list then
-                    mp.add_timeout(0.1, function() ask_text(e) end)
+                    mp.add_timeout(0.1, function() ask_text(e, standalone) end)
                     return
                 end
                 engine_vals[e.key] = list[i].name
                 mp.set_property("options/" .. e.opt, list[i].name)
                 save_settings()
                 notify("번역 모델: " .. list[i].name .. " (다음에 여는 파일부터 적용)", 3, "ok")
-                reopen_menu()
+                if not standalone then reopen_menu() end
             end,
         })
     end)
 end
+
+----------------------------------------------------------------------------
+-- Interface preferences and the AI info tags above the playback bar (drawn by nanum-fluent.lua; this script
+-- publishes user-data/nanum-ui/prefs and user-data/nanum-ui/tags for it).
+----------------------------------------------------------------------------
+
+local TAGS = { ps = nil, ps_at = -100, ps_busy = false, sig = nil, bar_vis = 0, endpoint = nil }
+
+TAGS.BAR_HIDE = {
+    { key = "short", label = "짧게 (1.2초)" },
+    { key = "normal", label = "보통 (2초)" },
+    { key = "long", label = "길게 (3초)" },
+}
+
+function TAGS.bar_hide_label()
+    for _, b in ipairs(TAGS.BAR_HIDE) do
+        if b.key == opts.bar_hide then return b.label end
+    end
+    return opts.bar_hide
+end
+
+function TAGS.publish_prefs()
+    pcall(mp.set_property_native, "user-data/nanum-ui/prefs", { bar_hide = opts.bar_hide, ai_tags = opts.ai_tags })
+end
+
+-- Next auto-hide delay; applies at once.
+function TAGS.cycle_bar_hide()
+    for i, b in ipairs(TAGS.BAR_HIDE) do
+        if b.key == opts.bar_hide then
+            opts.bar_hide = TAGS.BAR_HIDE[i % #TAGS.BAR_HIDE + 1].key
+            break
+        end
+    end
+    save_settings()
+    TAGS.publish_prefs()
+    notify("재생 바 자동 숨김: " .. TAGS.bar_hide_label(), 2, "ok")
+end
+
+function TAGS.set_ai_tags(on)
+    opts.ai_tags = on
+    save_settings()
+    TAGS.publish_prefs()
+    TAGS.update()
+end
+
+-- "ggml-large-v3-turbo-q5_0.bin" -> "large-v3-turbo"
+function TAGS.model_short(path)
+    local b = tostring(path or ""):match("([^/\\]*)$") or ""
+    b = b:gsub("%.bin$", ""):gsub("^ggml%-", ""):gsub("%-q%d[%w_]*$", "")
+    return b
+end
+
+-- "gemma4" and "gemma4:latest" are the same Ollama model.
+local function model_key(n)
+    return (tostring(n or ""):gsub(":latest$", ""))
+end
+
+-- Cloud model by name, or a server that is not this PC.
+function TAGS.is_cloud(model, endpoint)
+    local m = model:lower()
+    if m:find(":cloud$") or m:find("%-cloud$") then return true end
+    local hostport = endpoint:lower():match("^%a[%w+.-]*://([^/]+)") or endpoint:lower()
+    local host = hostport:match("^%[([^%]]+)%]") or (hostport:gsub(":%d+$", ""))
+    return not (host == "127.0.0.1" or host == "localhost" or host == "::1" or host == "0.0.0.0")
+end
+
+-- Where a local model runs, from Ollama's /api/ps: -> text, kind
+function TAGS.where(model, endpoint)
+    if TAGS.is_cloud(model, endpoint) then return "클라우드", "info" end
+    local entry
+    for _, m in ipairs(TAGS.ps or {}) do
+        if model_key(m.name or m.model) == model_key(model) then
+            entry = m
+            break
+        end
+    end
+    if not entry then return "로컬", "info" end            -- not loaded (yet)
+    local size, vram = tonumber(entry.size) or 0, tonumber(entry.size_vram) or 0
+    if size > 0 and vram >= size * 0.95 then return "로컬 GPU", "ok" end
+    if vram > 0 then return "로컬 GPU 일부", "info" end
+    return "로컬 CPU", "warn"
+end
+
+function TAGS.poll(endpoint)
+    if TAGS.ps_busy then return end
+    TAGS.ps_busy = true
+    TAGS.ps_at = mp.get_time()
+    mp.command_native_async({ name = "subprocess", playback_only = false, capture_stdout = true, capture_stderr = true,
+        args = { "curl.exe", "-s", "--max-time", "3", (endpoint:gsub("/+$", "")) .. "/api/ps" } }, function(ok, res)
+        TAGS.ps_busy = false
+        local data = ok and res and res.status == 0 and require('mp.utils').parse_json(res.stdout or "") or nil
+        TAGS.ps = (type(data) == "table" and type(data.models) == "table") and data.models or nil
+        TAGS.update()
+    end)
+end
+
+-- Language of the audio the speech recognition works on (like AIM.needed).
+local function stt_language(tracks)
+    local lang = get_opt("nanum-language")
+    if lang and lang ~= "" and lang ~= "auto" then return norm_lang(lang) end
+    return ai_audio_language(tracks)
+end
+
+function TAGS.stt_model(lang)
+    local english = lang == nil or lang == "en"
+    local s = TAGS.model_short(get_opt(english and "nanum-stt-model" or "nanum-stt-model-multilingual"))
+    if s ~= "" then return s end
+    if english then return "small.en" end
+    local large = AIM.by_id("multilingual_large")
+    return (large and large.installed == true) and "large-v3-turbo" or "small"
+end
+
+-- Tags of the selected AI subtitle track: { { text, kind = ok|info|warn, tip, action }, ... }
+function TAGS.compute()
+    if not (opts.ai_tags and file_active and file_loaded) or ai_disabled or not AIM.engine_enabled() then return {} end
+    local st = cache_state()
+    if not st then return {} end
+    refresh_ai_ids(st)
+    local tracks = mp.get_property_native("track-list") or {}
+    local role
+    for _, t in ipairs(tracks) do
+        if t.type == "sub" and t.selected then
+            role = ai_role(t)
+            break
+        end
+    end
+    if not role then return {} end
+    local tags = {}
+    local function add(text, kind, tip, action)
+        tags[#tags + 1] = { text = text, kind = kind, tip = tip, action = action }
+    end
+    local active = st["nanum-input-active"]
+    if role == "primary" and active == nil then active = resolve_choice(tracks).input end
+    local stt = (role == "primary" and active ~= "sub") or role == "secondary"
+
+    -- 1: where the speech recognition runs
+    local backend = st["nanum-ai-backend"]
+    if stt and (backend == "cuda" or backend == "cpu") then
+        if backend == "cuda" then
+            add("음성 인식 · GPU", "ok", "음성 인식을 GPU(CUDA)로 처리하고 있습니다 — 눌러서 AI 구성 요소 관리", "nanum-models")
+        elseif (AIM.file_mode or AIM.mode()) ~= "cpu" and AIM.has_driver() then
+            add("음성 인식 · CPU ⚠", "warn", "GPU를 쓸 수 있는 PC인데 CPU로 인식 중입니다 — 눌러서 원인 확인", "nanum-models")
+        else
+            add("음성 인식 · CPU", "info", "음성 인식을 CPU로 처리하고 있습니다 — 눌러서 AI 구성 요소 관리", "nanum-models")
+        end
+    end
+
+    -- 2: what the AI subtitles are made from
+    if role == "primary" and not stt then
+        add("자막 기반", "info", "영상의 자막 트랙을 번역한 자막입니다 — 눌러서 AI 구성 요소 관리", "nanum-models")
+    elseif role == "primary" or role == "secondary" then
+        local lang = role == "secondary" and norm_lang(st["nanum-secondary-language"]) or stt_language(tracks)
+        local m = TAGS.stt_model(lang)
+        add(m, "info", "음성 인식 모델: " .. m .. " — 눌러서 AI 구성 요소 관리", "nanum-models")
+    elseif role == "pgs" then
+        add("디스크 자막 OCR", "info", "디스크의 그림 자막을 문자 인식한 자막입니다", "nanum-models")
+    elseif role == "import" then
+        local origin = tostring(st["nanum-import-origin"] or "")
+        add(origin ~= "" and origin or "가져온 자막", "info", "직접 가져온 자막 파일입니다", "nanum-models")
+    elseif role == "full" then
+        add("전체 번역", "info", "영상 전체를 미리 번역한 자막입니다", "nanum-models")
+    end
+
+    -- 3: the translation model and where it runs
+    local endpoint = get_opt("nanum-translate-endpoint") or ""
+    TAGS.endpoint = nil
+    if role == "import" and tostring(st["nanum-import-language"] or "") == "ko" then
+        return tags                                  -- a Korean file needs no translation
+    elseif endpoint == "" then
+        add("번역 끔", "info", "번역 서버 주소가 비어 있어 번역하지 않습니다", "nanum-ollama-models")
+    elseif role == "full" and opts.full_engine == "omp" then
+        local m = opts.omp_model ~= "" and opts.omp_model or "omp"
+        add("번역 · " .. ellipsize(m, 30) .. " · 클라우드", "info", "전체 번역 모델(oh-my-pi): " .. m, "nanum-ollama-models")
+    else
+        local model = get_opt("nanum-translate-model") or ""
+        local where, kind = TAGS.where(model, endpoint)
+        if not TAGS.is_cloud(model, endpoint) then TAGS.endpoint = endpoint end
+        add("번역 · " .. ellipsize(model, 30) .. " · " .. where, kind, "번역 모델: " .. model .. " — 눌러서 모델 바꾸기", "nanum-ollama-models")
+    end
+    return tags
+end
+
+function TAGS.update()
+    local tags = TAGS.compute()
+    local sig = ""
+    for _, t in ipairs(tags) do sig = sig .. t.text .. "|" .. t.kind .. "|" .. t.tip .. "\n" end
+    if sig == TAGS.sig then return end
+    TAGS.sig = sig
+    pcall(mp.set_property_native, "user-data/nanum-ui/tags", tags)
+end
+
+-- Every second; /api/ps is asked only while the bar is shown, at most every 10 s.
+function TAGS.tick()
+    TAGS.update()
+    if TAGS.endpoint and TAGS.bar_vis >= 0.5 and not TAGS.ps_busy and mp.get_time() - TAGS.ps_at >= 10 then
+        TAGS.poll(TAGS.endpoint)
+    end
+end
+
+TAGS.publish_prefs()
+mp.add_periodic_timer(1, TAGS.tick)
+mp.observe_property("sid", "native", function() TAGS.update() end)
+mp.observe_property("user-data/fluent/bar-vis", "native", function(_, v) TAGS.bar_vis = tonumber(v) or 0 end)
+mp.add_key_binding(nil, "nanum-ollama-models", function()
+    for _, e in ipairs(ENGINE) do
+        if e.key == "translate_model" then open_ollama_picker(e, true) end
+    end
+end)
 
 
 local SM = { actions = {}, keys = {} }      -- rows of the open settings menu (replaced by live updates)
@@ -3950,6 +4167,14 @@ local function build_settings()
     end
     add("models", "AI 구성 요소 관리: " .. AIM.components_summary(), function() mp.add_timeout(0.1, AIM.open_menu) end)
     add("display", "자막 표시: " .. display_label(opts.display), function() mp.add_timeout(0.1, open_display_menu) end)
+    add("bar_hide", "재생 바 자동 숨김: " .. TAGS.bar_hide_label(), function()
+        TAGS.cycle_bar_hide()
+        reopen_menu()
+    end)
+    add("ai_tags", "AI 정보 태그 표시: " .. (opts.ai_tags and "켬" or "끔"), function()
+        TAGS.set_ai_tags(not opts.ai_tags)
+        reopen_menu()
+    end)
     add("style", "번역 말투: " .. style_label(), function() mp.add_timeout(0.1, open_style_menu) end)
     local sec = secondary_text(st)
     add("secondary", "원어 음성으로도 자막 만들기: " .. (opts.secondary and "켬" or "끔")
@@ -4068,6 +4293,17 @@ local function build_settings()
         local open = e.key == "translate_model" and function() mp.add_timeout(0.1, function() open_ollama_picker(e) end) end
             or function() ask_text(e) end
         add("engine_" .. e.key, string.format("%s: %s", e.label, mp.get_property("options/" .. e.opt) or ""), open)
+    end
+    local ver = mp.get_property_native("user-data/nanum/app-version")
+    ver = type(ver) == "string" and ver or ""
+    if ver ~= "" then
+        local mpv_ver = tostring(mp.get_property("mpv-version") or ""):match("(%d+%.%d+%.?%d*)") or ""
+        local backend = cache_state() and cache_state()["nanum-ai-backend"] or (AIM.acc and AIM.acc.backend)
+        add("about", "정보: NanumPlayer " .. ver .. (mpv_ver ~= "" and (" · mpv " .. mpv_ver) or "")
+            .. " · 엔진 " .. (backend == "cuda" and "CUDA" or (backend == "cpu" and "CPU" or "—")), function()
+            SUBS.open_url("https://github.com/kimmingul/NanumPlayer/releases")
+            reopen_menu()
+        end)
     end
     return items, actions, keys
 end
@@ -5219,7 +5455,7 @@ if rawget(_G, "NANUM_TEST") then
         set_display = set_display, pin_audio = pin_audio, ai_audio_language = ai_audio_language,
         ai_role = ai_role, refresh_ai_ids = refresh_ai_ids, secondary_text = secondary_text,
         original_text = original_text, glossary_clean = glossary_clean, sanitize_name = sanitize_name,
-        compute_status = compute_status, style_label = style_label, AIM = AIM, SUBS = SUBS,
+        compute_status = compute_status, style_label = style_label, AIM = AIM, SUBS = SUBS, TAGS = TAGS,
         glossary_parse = glossary_parse, glossary_format = glossary_format, glossary_related = glossary_related,
         glossary_entry_parse = glossary_entry_parse, glossary_apply_text = glossary_apply_text,
         set_style = set_style, set_secondary = set_secondary, edit_glossary = edit_glossary,

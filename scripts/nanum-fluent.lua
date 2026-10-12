@@ -50,7 +50,8 @@ local I = F.icons
 local clamp, in_rect, fit, text_w = F.clamp, F.in_rect, F.fit, F.text_w
 local floor, ceil, min, max = math.floor, math.ceil, math.min, math.max
 
-local HIDE_DELAY = 2.6
+-- Seconds without mouse movement before the bar hides (Ctrl+N → 재생 바 자동 숨김).
+local HIDE_DELAYS = { short = 1.2, normal = 2.0, long = 3.0 }
 
 ----------------------------------------------------------------------------
 -- State
@@ -60,6 +61,12 @@ local S = {
     vis = 0,                    -- toolbar opacity 0..1
     last_tick = mp.get_time(),
     last_move = -1e9,
+    hide_delay = HIDE_DELAYS.short,
+    in_window = false,          -- the pointer is inside the window (mouse-pos hover)
+    left = false,               -- the pointer left the window: hide without waiting
+    over_panel = false,         -- the pointer is over the bar
+    tags = {},                  -- AI info tags of the selected AI subtitle track: { text, kind, tip, action }
+    tags_on = true,
     force_until = 0,
     hide_override = false,
     modal = false,
@@ -87,6 +94,7 @@ local S = {
     click_timer = nil,
     first_vol = true,
     quiet_until = 0,
+    app_version = "",           -- user-data/nanum/app-version
 }
 
 local overlay = mp.create_osd_overlay("ass-events")
@@ -303,6 +311,9 @@ local function activate(id)
         track_menu("sub", el and L.panel and { x = el.x + el.w / 2, y = L.panel.y })
     elseif id == "chip" and S.status and S.status.action == "models" then
         run("script-binding", "nanum-models")
+    elseif id:find("^tag%d$") then
+        local tg = S.tags[tonumber(id:sub(4))]
+        if tg and tg.action then run("script-binding", tg.action) end
     elseif id == "card_yt" then
         open_youtube()
     elseif id == "ai" or id == "chip" or id == "card_ai" then
@@ -344,6 +355,27 @@ local function layout_play(m)
     local cy1 = py + 34
     L.seek = { x0 = px + 24 + 56, x1 = px + pw - 24 - 56, cy = cy1 }
     add_el(L, "seek", L.seek.x0 - 8, cy1 - 14, L.seek.x1 - L.seek.x0 + 16, 28, nil, { kind = "slider" })
+
+    -- AI info tags just above the bar, right aligned; the right-most ones are dropped when there is no room
+    L.ntags = 0
+    local ty = py - 36
+    if S.tags_on and #S.tags > 0 and ty >= 70 then
+        local ws, total = {}, 0
+        for i, tg in ipairs(S.tags) do
+            local w = floor(10 + 9 + text_w(tg.text, 12) + 14)
+            local need = w + (i > 1 and 6 or 0)
+            if total + need > pw then break end
+            total = total + need
+            ws[i] = w
+        end
+        local x = px + pw - total
+        L.tagrect = { x = x, y = ty, w = total, h = 22 }
+        for i = 1, #ws do
+            add_el(L, "tag" .. i, x, ty, ws[i], 22, S.tags[i].tip, { kind = "tag" })
+            x = x + ws[i] + 6
+        end
+        L.ntags = #ws
+    end
 
     local show_slider, show_open, show_labels = pw >= 760, pw >= 620, pw >= 500
     local cy2 = py + 80
@@ -410,6 +442,7 @@ local function layout_idle(m)
     local ax = floor((W - (2 * aw + agap)) / 2)
     add_el(L, "card_yt", ax, cy + ch + 22 * f, aw, 44 * f, nil, { kind = "card" })
     add_el(L, "card_ai", ax + aw + agap, cy + ch + 22 * f, aw, 44 * f, nil, { kind = "card" })
+    L.ver_y = cy + ch + 22 * f + 44 * f + 22 * f
     return L
 end
 
@@ -473,6 +506,9 @@ local function draw_idle(A, L)
     end
     pill(L.byid.card_yt, I.youtube, "YouTube", "Ctrl+Y")
     pill(L.byid.card_ai, I.sparkle, "AI 자막 설정", "Ctrl+N")
+    if S.app_version ~= "" and L.ver_y + 10 < H - 52 * f - 12 * f then
+        A:text(W / 2, L.ver_y, "NanumPlayer " .. S.app_version, { size = 12 * f, color = C.text3, an = 5, a = 0.9 })
+    end
 
     A:text(W / 2, H - 52 * f, "파일이나 Blu-ray 폴더를 이 창으로 끌어다 놓아도 재생됩니다",
         { size = 13 * f, color = C.text3, an = 5 })
@@ -506,9 +542,19 @@ local function draw_status_chip(A, el, pulse)
     A:text(el.x + 28, el.y + el.h / 2, fit(st.text, 12.5, el.w - 36), { size = 12.5, color = C.text })
 end
 
+local function draw_tag(A, el, tag)
+    local hot = S.hover == el.id
+    local col = tag.kind == "ok" and C.ok or (tag.kind == "warn" and C.warn or C.text3)
+    A:rrect(el.x, el.y, el.w, el.h, el.h / 2, {
+        fill = hot and C.card2 or C.card, fa = 0.9, stroke = col, sa = hot and 0.85 or 0.4, sw = 1,
+    })
+    A:circle(el.x + 10, el.y + el.h / 2, 3, { fill = col, fa = 1 })
+    A:text(el.x + 19, el.y + el.h / 2, tag.text, { size = 12, color = C.text })
+end
+
 local function draw_toasts(A, L)
     local t0 = now()
-    local y = L.H - 20 - 112 - 24
+    local y = L.H - 20 - 112 - 24 - ((L.ntags or 0) > 0 and 30 or 0)      -- above the AI tags when they are drawn
     if L.kind ~= "play" then y = L.H - 110 end
     for i = #S.toasts, 1, -1 do
         local t = S.toasts[i]
@@ -590,6 +636,8 @@ local function draw_play(A, L, m)
         -- panel
         TA:shadow(pnl.x, pnl.y, pnl.w, pnl.h, 16, 0.5)
         TA:rrect(pnl.x, pnl.y, pnl.w, pnl.h, 16, { fill = C.card, fa = 0.92, stroke = C.white, sa = 0.1, sw = 1 })
+
+        for i = 1, L.ntags or 0 do draw_tag(TA, L.byid["tag" .. i], S.tags[i]) end
 
         -- timeline
         local sk = L.seek
@@ -760,9 +808,12 @@ local function update_pointer()
         S.mouse = { x = mx, y = my }
         local el = (S.idle or S.vis > 0.05) and hit_element(mx, my) or nil
         S.hover = el and el.id or nil
+        local pn = S.L and S.L.panel
+        S.over_panel = S.vis > 0.05 and pn ~= nil and S.L.kind == "play" and in_rect(mx, my, pn.x, pn.y, pn.w, pn.h)
     else
         S.mouse = nil
         S.hover = nil
+        S.over_panel = false
     end
     if S.hover ~= prev then S.hover_since = now() end
 end
@@ -855,7 +906,7 @@ local function update_sections(L)
     elseif S.vis > 0.3 or S.want then
         -- the panel slides in: accept clicks at its final position as soon as controls are wanted
         local slide = floor((1 - S.vis) * 14)
-        rects = { { x = L.panel.x, y = L.panel.y - slide, w = L.panel.w, h = L.panel.h + slide }, L.byid.chip }
+        rects = { { x = L.panel.x, y = L.panel.y - slide, w = L.panel.w, h = L.panel.h + slide }, L.byid.chip, L.tagrect }
     end
     for i, name in ipairs(SECTIONS) do
         set_section(name, rects[i])
@@ -877,18 +928,21 @@ local function want_controls(t)
     if S.modal or S.drag then return true end
     if S.hide_override then return false end
     if mp.get_property_bool("pause") then return true end
-    if S.hover then return true end
-    if t - S.last_move < HIDE_DELAY then return true end
+    if S.hover or S.over_panel then return true end
     if t < S.force_until then return true end
+    if S.left then return false end                 -- the pointer left the window: no waiting
+    if t - S.last_move < S.hide_delay then return true end
     return false
 end
 
-local function apply_sub_margin(lift)
-    if lift == S.sub_lifted then return end
-    S.sub_lifted = lift
+-- Subtitles sit above the bar while it is shown, and above the AI tags when those are drawn too.
+local function apply_sub_margin(lift, tags)
+    local key = lift and (tags and 2 or 1) or 0
+    if key == S.sub_lifted then return end
+    S.sub_lifted = key
     if not S.sub_base then S.sub_base = mp.get_property_number("sub-margin-y") or 22 end
     if lift and S.m then
-        local extra = (112 + 20 + 14) * S.m.ky * 720 / S.m.ph
+        local extra = (112 + 20 + 14 + (tags and 28 or 0)) * S.m.ky * 720 / S.m.ph
         mp.set_property_number("sub-margin-y", floor(S.sub_base + extra))
     else
         mp.set_property_number("sub-margin-y", S.sub_base)
@@ -970,8 +1024,15 @@ local function tick()
     local want = want_controls(t)
     S.want = want
     local prev = S.vis
-    if want then S.vis = min(1, S.vis + dt * 7) else S.vis = max(0, S.vis - dt * 2.5) end
-    if S.vis ~= prev then dirty() end
+    if want then S.vis = min(1, S.vis + dt * 7) else S.vis = max(0, S.vis - dt * 4) end
+    if S.vis ~= prev then
+        dirty()
+        local pub = floor(S.vis * 100 + 0.5) / 100
+        if pub ~= S.vis_pub then
+            S.vis_pub = pub
+            pcall(mp.set_property_native, "user-data/fluent/bar-vis", pub)
+        end
+    end
     -- animations: busy chip, loading dots, toasts
     local animating = #S.toasts > 0 or not S.loaded or (S.vis > 0 and S.status and S.status.kind == "busy")
         or mp.get_property_bool("paused-for-cache") or mp.get_property_bool("seeking")
@@ -987,7 +1048,7 @@ local function tick()
         end
     end
     if S.dirty then render() end
-    apply_sub_margin(not S.idle and S.loaded and S.vis > 0.5 and S.has_video)
+    apply_sub_margin(not S.idle and S.loaded and S.vis > 0.5 and S.has_video, S.L ~= nil and (S.L.ntags or 0) > 0)
 end
 
 mp.add_periodic_timer(1 / 30, tick)
@@ -998,6 +1059,15 @@ mp.add_periodic_timer(1 / 30, tick)
 
 mp.observe_property("mouse-pos", "native", function(_, p)
     local t = now()
+    if p then
+        if p.hover then
+            if not S.in_window and not S.modal then S.last_move = t end
+            S.left = false
+        elseif S.in_window then
+            S.left = true
+        end
+        S.in_window = p.hover == true
+    end
     if p and p.hover and (p.x ~= S.px or p.y ~= S.py) then
         S.px, S.py = p.x, p.y
         if not S.modal then
@@ -1090,10 +1160,34 @@ mp.register_event("end-file", function(ev)
     dirty()
 end)
 mp.register_event("seek", function()
-    S.force_until = now() + 2
+    S.force_until = now() + 1
     dirty()
 end)
 mp.register_event("playback-restart", function() dirty() end)
+
+mp.observe_property("user-data/nanum/app-version", "native", function(_, v)
+    S.app_version = type(v) == "string" and v or ""
+    dirty()
+end)
+
+-- Preferences and AI info tags come from nanum.lua (user-data/nanum-ui/*), whatever script loads first.
+mp.observe_property("user-data/nanum-ui/prefs", "native", function(_, v)
+    if type(v) ~= "table" then return end
+    S.hide_delay = HIDE_DELAYS[v.bar_hide] or HIDE_DELAYS.short
+    S.tags_on = v.ai_tags ~= false
+    S.layout_key = nil
+    dirty()
+end)
+mp.observe_property("user-data/nanum-ui/tags", "native", function(_, v)
+    S.tags = {}
+    if type(v) == "table" then
+        for _, tg in ipairs(v) do
+            if type(tg) == "table" and type(tg.text) == "string" then S.tags[#S.tags + 1] = tg end
+        end
+    end
+    S.layout_key = nil
+    dirty()
+end)
 
 ----------------------------------------------------------------------------
 -- Modal coordination, messages, key bindings

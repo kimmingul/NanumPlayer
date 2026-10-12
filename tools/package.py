@@ -3,6 +3,7 @@
 Prerequisites: built mpv (third_party/mpv/build), CPU engine (tools/build_nanum_ai.bat cpu),
 MSYS2 CLANG64 (DLL dependency closure), Inno Setup 6 (installer).
 Usage: python tools/package.py [version] [--no-installer] [--sign <certificate SHA-1 thumbprint>]
+The version is NANUM_VERSION in third_party/mpv/osdep/nanum-version.h; a given [version] must equal it.
 --sign signs NanumPlayer's own binaries in the stage, the installer and its uninstaller
 (Windows SDK signtool, SHA-256, RFC 3161 timestamp). Third-party DLLs keep their own state.
 """
@@ -32,7 +33,24 @@ def sign_command(thumb):
 # MakeMKV's libmmbd (renamed to libaacs/libbdplus) is the user's own; never ship it.
 NEVER_SHIP = {"libaacs.dll", "libbdplus.dll"}
 
-version = next((a for a in sys.argv[1:] if not a.startswith("--")), "1.6.2")
+
+def header_version():
+    """The release version in third_party/mpv/osdep/nanum-version.h (what NanumPlayer.exe reports)."""
+    with open(os.path.join(ROOT, "third_party", "mpv", "osdep", "nanum-version.h"), encoding="utf-8") as f:
+        text = f.read()
+    parts = [re.search(rf"#define NANUM_VERSION_{n} (\d+)", text) for n in ("MAJOR", "MINOR", "PATCH")]
+    string = re.search(r'#define NANUM_VERSION "([^"]+)"', text)
+    if not string or not all(parts) or string.group(1) != ".".join(p.group(1) for p in parts):
+        sys.exit("nanum-version.h: NANUM_VERSION does not match NANUM_VERSION_MAJOR/MINOR/PATCH")
+    return string.group(1)
+
+
+version = header_version()
+given = [a for i, a in enumerate(sys.argv[1:], 1)
+         if not a.startswith("--") and sys.argv[i - 1] != "--sign"]
+if given and given[0] != version:
+    sys.exit(f"version {given[0]} differs from NANUM_VERSION {version} in nanum-version.h "
+             "(the built NanumPlayer.exe reports the latter; change the header and rebuild)")
 stage = os.path.join(ROOT, "dist", f"NanumPlayer-{version}")
 
 
