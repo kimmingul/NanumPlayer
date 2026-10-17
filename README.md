@@ -9,8 +9,8 @@ Blu-ray / 파일 ─▶ mpv demuxer (선읽기 N초)
                     └─▶ nanum 탭: 오디오 패킷 복사 (락 안에서는 복사만)
                            │ 별도 스레드: libavcodec 디코드 → 16 kHz 모노(센터 채널 가중)
                            ▼
-                      nanum_ai_cpu.dll / 선택 CUDA 엔진 (MSVC, 공통 C ABI)
-                        Silero VAD → whisper.cpp(STT) → 번역(Ollama API, 배치) → JSONL 캐시
+                      nanum_ai_cpu.dll / nanum_ai_cuda.dll (내장, MSVC, 공통 C ABI)
+                        Silero VAD → whisper.cpp(STT) → 번역(Ollama API, 배치) → 메모리 캐시
                            │ 절대 PTS 이벤트 (선읽기 구간만큼 재생보다 앞서 도착)
                            ▼
                       demux.c: 가상 ASS 스트림(재생 음성 기반, 원어 음성 기반)에 주입 → libass 렌더
@@ -24,7 +24,7 @@ Blu-ray / 파일 ─▶ mpv demuxer (선읽기 N초)
 | `third_party/whisper.cpp` | 서브모듈: [kimmingul/whisper.cpp](https://github.com/kimmingul/whisper.cpp) `nanum` 브랜치 (STT 엔진, 정적 링크; CPU 계산 중단 콜백 패치) |
 | `nanum_ai/` | CPU/CUDA 엔진 소스: `nanum_ai.h`(C ABI), STT/VAD 워커, `translator.*`, 테스트 하네스 |
 | `tools/build_nanum_ai.bat` | CPU 기본 엔진 및 선택 CUDA 엔진 빌드 (VS 2022 MSVC 14.44) |
-| `youtube/` | YouTube 브라우저 도우미 `nanum_youtube.exe` (Win32 + WebView2): 영상 선택/로그인, 쿠키 내보내기(`cookies.txt`), mpv IPC로 `nanum-youtube-open` 전달 |
+| `youtube/` | YouTube·웹페이지 브라우저 도우미 `nanum_youtube.exe` (Win32 + WebView2): 영상 선택/로그인, iframe의 미디어·HLS/DASH 주소 감지, 영상별 쿠키와 mpv IPC 전달 |
 | `tools/build_youtube.bat` | 도우미 빌드 (VS 2022 MSVC). `Microsoft.Web.WebView2` NuGet 패키지를 버전 고정 + SHA-256 확인 후 `build/youtube`에 받아 정적 로더로 링크 |
 | `poc/` | 검증 스크립트 (`phase1_check.py`, `phase2_check.py`, `phase2_disc_check.py`, `phase3_lang_check.py`, `exit_check.py`). 샘플 오디오·영상은 저장소에 포함하지 않습니다 |
 | `tools/package.py` | 포터블 배포본·설치 파일 생성, `--sign <인증서 지문>`으로 코드 서명 |
@@ -49,8 +49,9 @@ tools\build_youtube.bat
 ```
 ```bash
 # mpv (MSYS2 CLANG64 셸)
+pacman -S --needed mingw-w64-clang-x86_64-libdvdcss mingw-w64-clang-x86_64-libdvdread mingw-w64-clang-x86_64-libdvdnav
 cd third_party/mpv
-meson setup build -Dlibmpv=false -Dlibbluray=enabled   # 최초 1회
+meson setup build -Dlibmpv=false -Dlibbluray=enabled -Ddvdnav=enabled -Ddvda=enabled
 meson compile -C build                               # -> build/NanumPlayer.exe
 ```
 필요 모델: `ggml-small.en.bin`(영어 Whisper), `ggml-small.bin`(다국어, `--nanum-stt-model-multilingual`), `ggml-silero-v5.1.2.bin`(VAD). 개발용 `models/`의 기존 모델도 사용할 수 있으며, 배포본은 다운로드한 `%LOCALAPPDATA%\NanumPlayer\models`의 파일을 기본으로 사용합니다.
@@ -61,15 +62,31 @@ meson compile -C build                               # -> build/NanumPlayer.exe
 
 `python tools/package.py [버전] [--sign <인증서 SHA-1 지문>]` → `dist/NanumPlayer-<버전>/`(포터블 폴더: `NanumPlayer.exe`, CPU·CUDA 엔진, YouTube 도우미, 재생/VC 런타임은 루트, UI는 `scripts/`)와 `dist/NanumPlayer-Setup-<버전>.exe`(사용자 단위 설치). cuBLAS·음성 모델·YouTube 도구는 번들하지 않습니다. 전제: 네이티브 플레이어·CPU/CUDA 엔진·YouTube 도우미 빌드, MSYS2 CLANG64, Inno Setup 6. 기존 배포 폴더가 있으면 중단합니다.
 `--sign`은 Windows SDK `signtool`(SHA-256, RFC 3161 타임스탬프)로 NanumPlayer 자체 바이너리(`NanumPlayer.exe`, `nanum_youtube.exe`, `nanum_ai_cpu.dll`, `nanum_ai_cuda.dll`)와 설치 파일·제거 프로그램에 서명합니다. 서드파티 DLL은 그대로 둡니다.
-설정 우선순위는 기본값 < 사용자 설정 < 명령행이며 사용자 설정은 `%APPDATA%\NanumPlayer`에 둡니다. 복호화 DLL은 번들하지 않고 설치된 MakeMKV를 자동 연결합니다. CPU 엔진은 AVX2 x64, 선택 CUDA 엔진은 compute 8.6 이상과 호환 드라이버가 필요합니다.
+CUDA 엔진은 패키징 전에 `components/catalog.json`의 크기/SHA-256을 빌드 결과에 맞춰 고정해야 합니다. 서명 배포는 먼저 CUDA DLL을 서명하고 그 최종 바이트를 고정하세요. 패키저는 이미 유효하게 서명된 엔진을 다시 서명하지 않으며, 포장 전후 해시가 달라지면 배포를 중단합니다.
+패키저는 `tools/prepare_disc.py`로 독립 libaacs/libbdplus와 해당 소스·라이선스의 SHA-256을 확인하고, `tools/disc-libbluray.patch`를 적용한 libbluray를 빌드합니다. 이 패치는 복호화 실패 시 MakeMKV DLL을 다시 찾는 upstream fallback을 제거합니다. MSYS2 CLANG64의 Meson/clang과 Git for Windows의 patch가 필요합니다. 디스크 실행 검증은 `python tools/package.py --no-installer`가 만든 포터블 폴더에서 하세요. 원본 MSYS2 libbluray를 PATH에서 쓰는 개발 실행은 독립 배포본과 같지 않습니다.
+설정 우선순위는 기본값 < 사용자 설정 < 명령행이며 사용자 설정은 `%APPDATA%\NanumPlayer`에 둡니다. 디스크 처리는 플레이어 프로세스 안에서 독립 libbluray/libaacs/libbdplus, libdvdnav/libdvdread/libdvdcss를 사용합니다. MakeMKV 실행 파일·DLL·등록 키·평가 기간은 사용하지 않습니다. CPU 엔진은 AVX2 x64, 선택 CUDA 엔진은 compute 8.6 이상과 호환 드라이버가 필요합니다.
 
 Whisper·Silero 모델 파일은 설치파일과 포터블 배포에서 제외합니다. 설치 화면에서 영어 Whisper+Silero(약 466 MiB), 다국어 Whisper+Silero(약 466 MiB), 다국어 고정밀 Whisper large-v3-turbo(q5_0, 약 548 MiB)+Silero, Silero만(약 0.8 MiB)을 선택 다운로드할 수 있습니다. 기본은 다운로드하지 않습니다. large-v3-turbo가 설치되면 영어가 아닌 입력(일본어 등)은 small 대신 이 모델을 사용합니다. 공식 저장소의 고정 리비전 URL과 크기·SHA-256은 `models/catalog.json`으로 관리합니다. 모델은 `%LOCALAPPDATA%\NanumPlayer\models`에 검증 후 저장하고 재설치 때 재사용하며, 앱을 삭제해도 유지합니다. 기존 설치 폴더의 검증된 모델도 재다운로드하지 않고 옮겨 사용할 수 있습니다. Ollama 번역 모델은 별도 준비가 필요합니다.
 
 설치 중 다운로드를 건너뛰었으면 **Ctrl+N → AI 구성 요소 관리**에서 전체/개별 모델을 받습니다. 실제 다운로드 진행률·무결성 검증·오류·취소 상태를 표시하며 메뉴를 닫아도 다운로드는 계속됩니다. 영어/다국어 Whisper를 선택하면 VAD도 함께 준비합니다. 모델이 없거나 AI가 꺼져 있으면 프리롤 대기 없이 일반 재생하며, 다운로드 완료 후 다음에 여는 파일부터 음성 인식을 사용할 수 있습니다. 앱 재시작은 필요 없습니다. 사용자 지정 모델 경로와 기존 설치 폴더의 모델은 덮어쓰지 않습니다.
 
+### GPU 영상 업스케일
+
+**Ctrl+N → 영상 업스케일 → 방식**에서 선택합니다. AI 음성 인식의 CUDA 가속과는 별개이며, 영상 업스케일에는 CUDA Toolkit을 설치할 필요가 없습니다.
+
+- **기본**: 추가 처리를 해제하고 이 기능이 변경했던 렌더러·스케일러 설정을 복원합니다. 기존 사용자 필터와 셰이더는 보존합니다.
+- **고품질 크기 조정**: GPU 렌더러에서 `ewa_lanczossharp`와 링잉 억제 0.6을 사용합니다. AI 복원 방식은 아닙니다.
+- **NVIDIA RTX 업스케일**: `gpu-next`·D3D11·D3D11VA와 `d3d11vpp`의 NVIDIA 확장을 사용합니다. 지원되는 NVIDIA GPU와 드라이버가 필요하며 NVIDIA 앱/제어판에서 RTX Video Super Resolution을 켜 두세요. 상태의 **요청됨**은 필터 요청을 뜻하며 드라이버 내부의 실제 AI 처리를 확인했다는 뜻은 아닙니다.
+- **사용자 셰이더**: 목록 관리에서 mpv 호환 `.glsl`·`.hook`·`.frag` 파일을 하나씩 추가합니다. 항목을 눌러 순서 변경·제거할 수 있습니다. Anime4K/FSRCNNX 등의 셰이더는 번들하지 않습니다. 기존 셰이더 뒤에 선택한 순서로 추가합니다.
+
+RTX 배율은 **자동 / 1.5x / 2x / 3x**입니다. 자동은 원본과 창의 크기로 계산하며, 0.25배 단위로 올림하여 최대 4배로 제한하고 확대가 필요하지 않으면 필터를 제거합니다. 창 크기 변경은 잠시 멈춘 뒤 반영합니다. 고정 2배는 1080p → 4K처럼 가로·세로 각각 2배입니다. 원본보다 작은 화면이나 이미 4K인 영상에 고정 배율을 무조건 적용하지 마세요.
+
+선택은 재생 중 적용되고 `~~/script-opts/nanum-upscale.conf`(기본 `%APPDATA%\NanumPlayer\script-opts`)에 저장됩니다. 렌더러 전환 시 화면이 잠깐 재생성될 수 있습니다. 지원되지 않는 GPU·셰이더 컴파일 오류는 상태에 표시하고 이 기능이 추가한 처리를 해제합니다. RTX HDR 변환은 켜지 않으며, HDR·10비트 입력의 지원 여부는 드라이버와 영상 처리 경로에 달려 있습니다. 음성 인식·로컬 번역과 GPU를 함께 쓰면 프레임 드롭이 늘 수 있으므로 배율을 낮추거나 고품질 모드와 비교하세요.
+
 ### 선택 CUDA 가속
 
 CPU 엔진과 CUDA 엔진(`nanum_ai_cuda.dll`, 약 53 MiB)이 모두 앱에 포함됩니다. CUDA 엔진에 필요한 cuBLAS(`cublas64_13.dll`, `cublasLt64_13.dll`)는 설치된 **CUDA 13 Toolkit**에서 그대로 사용합니다. Toolkit은 프로세스 환경 변수(`CUDA_PATH`, `CUDA_PATH_V13_*`), 레지스트리 환경 변수(Toolkit을 앱 실행 후 설치한 경우 대비), `%ProgramFiles%\NVIDIA GPU Computing Toolkit\CUDA\v13.*` 순으로 찾고 최신 버전을 우선합니다. Toolkit과 호환 GPU가 있으면 자동 모드에서 첫 파일부터 다운로드·확인 창 없이 GPU를 씁니다. CUDA 12 Toolkit만으로는 부족합니다.
+앱에 포함된 CUDA 엔진의 크기/SHA-256을 확인한 뒤 로드합니다. 예전 캐시의 엔진은 사용하지 않으며, 내장 엔진이 없거나 손상되면 앱을 다시 설치해야 합니다.
 
 Toolkit이 없으면 설정의 **AI 구성 요소 관리** 또는 설치 화면에서 cuBLAS만(약 507 MiB) 받을 수 있습니다. 다운로드 전 NVIDIA 조건에 동의하며, 크기/SHA-256(`components/catalog.json`)을 검증한 뒤 앱 버전과 무관한 `%LOCALAPPDATA%\NanumPlayer\accelerators\cuda\13`에 저장합니다. 예전 버전 폴더에 검증된 cuBLAS가 있으면 내려받지 않고 복사합니다. 제거 시 유지합니다.
 
@@ -77,11 +94,11 @@ Toolkit이 없으면 설정의 **AI 구성 요소 관리** 또는 설치 화면�
 
 ### 디스크 읽기·탐색 진단
 
-기본 `%APPDATA%\NanumPlayer\last-playback.log`는 정보·경고·오류만 기록하며 8 MiB에서 순환하고 이전 파일 2개를 유지합니다. Fluent 레이아웃과 패킷 단위 로그는 기본 기록하지 않습니다. 사용자가 명시한 `--log-file`은 기존 mpv 로그 정책을 유지합니다.
+기본 재생 로그는 저장하지 않습니다. 사용자가 명시한 `--log-file`은 기존 mpv 로그 정책을 사용하며 주소·파일명 등이 포함될 수 있으므로 비공개 재생에서는 지정하지 마세요.
 
 **Ctrl+N → 진단 로그(디스크 읽기 상세)**로 켜거나 IPC 명령 `nanum-diagnostics on`/`off`/`toggle`, 시작 환경 변수 `NANUMPLAYER_DIAGNOSTICS=1`을 사용합니다. 상세 로그는 `~~/diagnostics/disc-날짜-시간-PID.log`에 저장하며 파일당 최대 8 MiB, 최근 8개만 유지합니다. 설정 경로를 지정하지 않으면 `~~`는 `%APPDATA%\NanumPlayer`입니다.
 
-상세 로그는 탐색 요청·실제 착지·첫 데이터 도착, 읽기 오프셋·길이·소요 시간, 실패한 Windows `ReadFile`의 오류 코드, 드라이브 모델·펌웨어·연결 종류를 기록합니다. 실패 후 관련 Windows 이벤트와 접근 가능한 MakeMKV 로그의 제한된 부분을 수집하며 키·미디어 내용·드라이브 일련번호는 기록하지 않습니다. 파일 읽기가 성공했는데 AACS 복호화가 실패한 경우와 실제 OS 읽기 실패를 구분합니다. 드라이브의 SCSI sense 데이터는 이 파일 I/O 계층에서 제공되지 않으므로 오류 코드를 지어내지 않습니다.
+상세 로그는 탐색 요청·실제 착지·첫 데이터 도착, 읽기 오프셋·길이·소요 시간, 실패한 Windows `ReadFile`의 오류 코드, 드라이브 모델·펌웨어·연결 종류를 기록합니다. 실패 후 관련 Windows 저장장치 이벤트를 수집하며 키·미디어 내용·드라이브 일련번호는 기록하지 않습니다. 파일 읽기가 성공했는데 AACS 복호화가 실패한 경우와 실제 OS 읽기 실패를 구분합니다. 드라이브의 SCSI sense 데이터는 이 파일 I/O 계층에서 제공되지 않으므로 오류 코드를 지어내지 않습니다.
 
 
 1.0.1: 배포본의 `cannot find libaacs` 오류를 수정했습니다. MakeMKV 자동 연결, 파일 종료/실패 시 AI 대기 해제, 화면 오류 안내 및 `%APPDATA%\NanumPlayer\last-playback.log` 기록을 추가했습니다. 실행 중인 구 배포본을 삭제하지 않도록 패키징 출력도 버전별 폴더로 분리했습니다.
@@ -109,7 +126,21 @@ Whisper·Silero 모델은 번들에서 제외하고 설치 및 설정 메뉴의 
 
 1.6.3: 재생 바가 마우스를 멈춘 뒤 1.2초(설정: 짧게/보통 2초/길게 3초)에 사라지고, 커서가 창 밖으로 나가면 바로 사라집니다(일시정지·바 위 커서는 유지). 재생 바 위에 선택한 AI 자막 트랙의 처리 방식 태그(음성 인식 GPU/CPU, 원문 모델·출처, 번역 모델과 로컬 GPU/GPU 일부/CPU/클라우드)를 표시하고, 눌러서 해당 설정으로 갑니다(Ctrl+N에서 끄기 가능). 앱 버전을 시작 화면, Ctrl+N 정보 항목, Ctrl+K에 표시합니다. 버전은 `third_party/mpv/osdep/nanum-version.h` 한 곳에서 관리합니다(플레이어·YouTube 도우미 파일 정보, 패키징 공통).
 
+1.7.0: MakeMKV 실행 파일·DLL 의존성을 제거하고 독립 디스크 라이브러리와 자동 AACS 키 DB 다운로드로 전환했습니다. Ctrl+B에서 Blu-ray/DVD 제목을 골라 플레이어 내부에서 MKV로 저장합니다(재인코딩 없음, 음성·자막·챕터 유지). 진행률·Ctrl+C 취소·기존 파일 보존을 지원합니다. DVD 저장은 누락된 영상 PTS를 FFmpeg로 생성하고, 다음 제목으로 넘어가는 DVD 명령을 실제 제목 경계에서 끊어 프레임 누락과 다른 제목의 혼입을 막습니다.
+
+1.8.0: Ctrl+Shift+Y 또는 Ctrl+N → **웹페이지 영상 주소로 재생**으로 사이트를 열고, 페이지에서 영상을 재생한 뒤 **NanumPlayer에서 재생**을 누르면 실제 미디어 주소를 넘깁니다. iframe과 감지된 HLS/DASH 매니페스트를 처리하며, 해당 영상의 쿠키·Referer·User-Agent만 파일별로 적용합니다. 다음 파일에는 남지 않습니다. 자막은 사이트 위가 아니라 NanumPlayer의 기존 음성 인식·번역 경로로 표시합니다.
+
+1.8.1: 첫 화면에 **웹페이지에서 재생하기**를 추가했습니다. 번역 모델이 추론 내용과 초안 JSON을 답변 앞에 붙이는 경우 최종 번역을 정상 처리하며, 언어 정보가 없는 웹 음성은 처음부터 다국어 자동 감지로 시작합니다. 수정된 CPU·CUDA 엔진을 앱에 함께 포함해 예전 캐시 엔진이 사용되지 않게 했습니다. 타임라인·방향키 탐색 후에는 AI 자막을 기다리며 자동으로 멈추지 않고 기존 재생/일시정지 상태를 유지합니다.
+
+1.8.2: YouTube·웹 창을 항상 InPrivate로 열고, 세션 종료 시 로그인·쿠키·브라우저 임시 데이터를 정리합니다. 일반 웹 영상의 쿠키는 파일 대신 메모리로 전달합니다. 재생 로그·방문/재생 위치 기록·번역 JSONL·자막 라이브러리·GPU 디스크 캐시·충돌 덤프의 자동 저장을 끄고, 전체 번역 결과는 종료 시 지우는 임시 폴더로 옮겼습니다.
+
+1.9.0: 시작 화면 왼쪽 위와 재생 컨트롤의 상단에 앱 버전을 표시합니다. 한국어·영어·일본어·중국어 간체·중국어 번체·스페인어로 메뉴·설정·네이티브 대화상자·웹 창·설치 화면을 제공합니다. 시작 화면 오른쪽 위의 언어 버튼, **Ctrl+Alt+L**, 또는 Ctrl+N의 **인터페이스 언어**에서 바꿉니다. UI 언어는 음성 인식·자막 번역 언어와 독립적입니다.
+
+1.10.0: **Ctrl+N → 영상 업스케일**에 기본·고품질 GPU·NVIDIA RTX·사용자 셰이더를 추가했습니다. RTX 자동/1.5/2/3배, 셰이더 파일 선택·순서 변경·제거, 설정 저장과 기존 필터 보존을 지원합니다. 지원되지 않는 처리와 셰이더 컴파일 오류를 표시하며, RTX 상태는 드라이버 내부 AI 동작을 단정하지 않고 요청 여부를 보여 줍니다.
+
 ## 실행
+
+표시 언어는 최초 실행 시 Windows 표시 언어를 따르며, 설치 화면에서 선택한 언어가 있으면 이를 사용합니다. 지원하지 않는 Windows 언어는 영어로 표시합니다. 선택은 설정 폴더의 `ui-language.conf`에 저장되며 재실행 후에도 유지됩니다. **자동/Automatic**으로 Windows 언어를 다시 따를 수 있습니다. `--nanum-ui-language=es`처럼 지정하면 저장된 설정을 바꾸지 않고 해당 실행에서만 재정의합니다(`auto`, `ko`, `en`, `ja`, `zh-CN`, `zh-TW`, `es`). 웹 창의 앱 버튼은 즉시 바뀌며, WebView2 자체 메뉴의 언어는 다음 브라우저 세션부터 적용됩니다.
 
 ```bat
 NanumPlayer.exe bd://longest --bluray-device=E: --nanum ^
@@ -117,10 +148,27 @@ NanumPlayer.exe bd://longest --bluray-device=E: --nanum ^
   --nanum-stt-model=D:\repo\NanumPlayer\models\ggml-small.en.bin ^
   --nanum-vad-model=D:\repo\NanumPlayer\models\ggml-silero-v5.1.2.bin ^
   --nanum-translate-model=nemotron-3-super:cloud ^
-  --nanum-cache=D:\repo\NanumPlayer\cache\tr_cache.jsonl ^
   --demuxer-readahead-secs=120 --demuxer-max-bytes=1500MiB --slang=kor
 ```
-Blu-ray 복호화는 설치·활성화된 MakeMKV의 `libmmbd64.dll`을 사용합니다. 플레이어는 표준 설치 경로를 자동 탐색합니다. 앱 루트 또는 기존 `bin`에 직접 설치한 `libaacs.dll`/`libbdplus.dll`이나 `LIBAACS_PATH`/`LIBBDPLUS_PATH` 환경변수가 있으면 우선 사용합니다. 사용자 지정 MakeMKV 경로는 이 환경변수에 `.dll` 확장자를 뺀 절대 경로로 지정하세요(libbluray가 Windows에서 확장자를 붙입니다). 복호화 DLL은 재배포하지 않습니다.
+Blu-ray는 `disc/libaacs.dll`과 `disc/libbdplus.dll`만 사용합니다. 수동 키 입력 없이, AACS 키가 필요하면 [FindVUK 공개 DB](https://fvonline-db.bplaced.net/fv_download.php?lang=eng)를 HTTPS로 자동 받아 `%APPDATA%\NanumPlayer\disc\KEYDB.cfg`에 저장합니다. 약 25 MB 다운로드·65 MB 저장 공간이 필요하며 ZIP 구조·크기·CRC를 확인한 뒤 원자적으로 교체합니다. 유효한 캐시로 열리는 디스크는 네트워크를 쓰지 않습니다. 다운로드 실패는 기존 DB를 보존합니다. 최근 한 시간 안에 받은 DB로 열리지 않는 디스크는 같은 DB를 다시 받지 않고 오류로 알립니다.
+
+공개 DB에 키가 없는 디스크, 필요한 BD+ VM 데이터가 없는 디스크, 지원되지 않는 AACS 버전·드라이브 인증은 오류로 중단합니다. 모든 BD+/UHD 디스크나 LibreDrive 기능까지 MakeMKV와 동등하다는 뜻은 아닙니다. 외부 MakeMKV 설치나 기존 `LIBAACS_PATH`/`LIBBDPLUS_PATH`/`MAKEMKVCON` 설정으로 되돌아가지 않습니다.
+
+**Ctrl+B → 드라이브 → 제목/모든 제목**으로 `%USERPROFILE%\Videos\NanumPlayer`에 MKV를 저장합니다. 2분 이상인 제목을 나열하며, 기본 앵글의 영상·음성·자막·챕터를 재인코딩 없이 옮깁니다. Ctrl+C는 진행 중인 저장/검색을 취소하며 이미 완료한 파일은 남깁니다. 같은 이름이 있으면 번호를 붙이고 덮어쓰지 않습니다.
+
+### 웹페이지 영상 재생·AI 자막
+
+1. 첫 화면의 **웹페이지에서 재생하기**, **Ctrl+Shift+Y**, 또는 Ctrl+N → **웹페이지 영상 주소로 재생…**을 선택하고 페이지 주소를 붙여넣습니다.
+2. 내장 WebView2 창에서 필요한 로그인을 하고 **사이트의 영상을 재생**합니다.
+3. 위쪽 **NanumPlayer에서 재생**을 누릅니다. NanumPlayer에서 영상과 소리를 재생하며 기존 AI 자막 설정을 사용합니다. 음성 모델과 번역 서버는 일반 파일 재생과 동일하게 필요합니다.
+
+YouTube 전용 창(Ctrl+Y)과 yt-dlp 경로는 그대로입니다. 일반 웹페이지 경로는 yt-dlp 지원 여부와 무관하게 브라우저에서 실제 로딩한 미디어를 사용합니다. DRM 영상, 재생 가능한 미디어/매니페스트 주소가 노출되지 않는 사이트, 브라우저 밖 재생을 차단하는 서버는 지원하지 않습니다. 주소가 만료되면 페이지에서 다시 불러오세요. 모든 사이트의 재생이나 만료 주소의 재사용을 보장하지 않습니다.
+
+YouTube·웹페이지는 **시크릿(InPrivate) 세션**을 공유합니다. 로그인은 해당 세션에서만 유지됩니다. 일반 웹 영상의 쿠키는 도메인·경로 범위를 유지한 메모리 데이터로 전달합니다. YouTube 쿠키는 브라우저 세션 임시 파일과 플레이어 소유의 추출용 임시 사본만 사용하며, 각각의 세션 종료 시 삭제합니다. yt-dlp가 종료하며 쿠키를 다시 써도 브라우저의 삭제된 파일을 되살리지 않습니다. Ctrl+N → YouTube → **시크릿 웹 세션 종료 (로그아웃)**으로 종료할 수 있습니다. WebView2가 임시 파일을 만들 수 있으나 브라우저 프로세스 종료 뒤 세션 폴더를 삭제하고, 비정상 종료로 남은 브라우저 세션은 다음 실행에서 정리합니다.
+
+기본적으로 재생 주소·위치·자막 번역 기록을 영구 저장하지 않습니다. 기존 기본 경로의 재생 로그·번역 캐시·자막 라이브러리와 브라우저 프로필은 새 버전 실행 시 정리합니다. 모델·설정·다운로드한 실행 도구·디스크 키 DB와 사용자가 직접 저장한 영상/자막은 유지합니다. 자막은 다시 재생할 때 새로 생성합니다.
+
+시크릿 모드는 익명화나 보안 삭제가 아닙니다. 사이트·통신망·번역 서버의 기록, OS의 메모리 페이징·삭제 파일 복구 가능성까지 막지 않습니다. 외부 브라우저로 여는 온라인 자막 검색은 해당 브라우저의 개인정보 설정을 따릅니다. 명시적인 로그·라이브러리 저장 옵션은 기본 비공개 정책을 변경하므로 주의하세요.
 
 ### 옵션 (`--nanum-*`)
 
@@ -134,7 +182,7 @@ Blu-ray 복호화는 설치·활성화된 MakeMKV의 `libmmbd64.dll`을 사용�
 | `nanum-translate-endpoint` | `http://127.0.0.1:11434` | Ollama 호환 `/api/generate`. 빈 값이면 번역 끔 |
 | `nanum-translate-model` | `gemma4:latest` | 번역 모델 |
 | `nanum-target-language` | `Korean` | 목표 언어 |
-| `nanum-cache` | – | 번역 캐시(JSONL). 실패 결과는 저장하지 않음 |
+| `nanum-cache` | – (저장 안 함) | 명시적으로 지정한 로컬 미디어 번역 캐시(JSONL). 웹 미디어에는 사용하지 않음 |
 | `nanum-test-subs` | no | 고정 테스트 자막 (개발용) |
 
 선읽기(`demuxer-readahead-secs`)가 곧 자막 선행 시간입니다. 기본값(1초)이면 자막이 재생보다 늦게 도착합니다.
@@ -150,7 +198,7 @@ AI 자막의 원문은 **음성 인식(STT)** 또는 **텍스트 자막 트랙**
 - 재생 중 Ctrl+N 메뉴에서 입력 소스(자동/STT/특정 자막 트랙)를 바꿀 수 있습니다. 바꾸면 현재 위치에서 다시 시작합니다.
 - 외부 자막 파일은 mpv가 언어를 알려 주지 않으면 파일명 접미사(`movie.en.srt`)로 언어를 추정합니다.
 
-**전체 번역(`nanum-full=yes`, 메뉴에서 켜기)**: 재생 중 별도 디먹서/엔진이 원문 대본을 모읍니다. 원문을 SQLite에 먼저 저장한 뒤 용어집 + 60줄 창(5줄 겹침)으로 번역합니다. 완성 자막은 `nanum-full-dir`(기본 `%LOCALAPPDATA%\NanumPlayer\full`)에 `.ass`로 출력하며 `ko (AI full)` 트랙을 선택합니다. 다음 재생에는 저장본 사용·원문 재번역·음성 재인식·AI 끄기를 선택합니다. 저장본 자동 사용은 선택적으로 켤 수 있습니다.
+**전체 번역(`nanum-full=yes`, 메뉴에서 켜기)**: 별도 디먹서/엔진이 원문 대본을 모아 메모리에서 용어집 + 60줄 창(5줄 겹침)으로 번역합니다. 완성 자막은 세션 임시 폴더에 `.ass`로 출력하고 `ko (AI full)` 트랙을 선택합니다. 다음 파일이나 정상 종료 때 임시 결과를 지우며, 비정상 종료로 남은 결과 폴더는 다음 실행에서 정리합니다. 로컬 미디어의 영구 저장은 `--nanum-library-db=<경로>` 또는 `--nanum-full-dir=<경로>`를 명시한 경우에만 사용하며 웹 미디어는 항상 임시 처리합니다.
 전체 번역 엔진은 `nanum-full-engine=ollama`(기본, 라이브와 같은 서버/모델) 또는 `omp`(oh-my-pi; `nanum-omp-model`에 이미 로그인된 모델의 selector, 메뉴에서 `omp models --json` 목록으로 선택). 라이브 번역은 항상 Ollama입니다(omp는 호출당 수 초 걸려 부적합).
 
 | 옵션 (런타임 변경 가능) | 기본값 | 설명 |
@@ -158,7 +206,7 @@ AI 자막의 원문은 **음성 인식(STT)** 또는 **텍스트 자막 트랙**
 | `nanum-input` | stt | `stt` / `sub` |
 | `nanum-sub-id`, `nanum-sub-file` | – | `sub` 입력의 트랙(`track-list`의 `src-id`) 또는 외부 자막 파일 |
 | `nanum-full` | no | 전체 번역 켜기 |
-| `nanum-full-dir` | `%LOCALAPPDATA%\NanumPlayer\full` | 결과 `.ass` 저장 위치 |
+| `nanum-full-dir` | 세션 임시 폴더 | 로컬 미디어의 결과 `.ass` 저장 경로를 명시적으로 변경; 웹은 항상 임시 폴더 |
 | `nanum-full-engine` | ollama | `ollama` / `omp` |
 | `nanum-omp-model`, `nanum-omp-command` | –, `omp` | omp 모델 selector, 실행 파일 |
 
@@ -168,7 +216,7 @@ AI 자막의 원문은 **음성 인식(STT)** 또는 **텍스트 자막 트랙**
 ### 원어 음성 기반 자막·용어집·말투 (1.3.0)
 
 - **두 자막 트랙**: 재생(또는 지정) 음성이 우선 입력, 원어 음성이 보조 입력입니다. 원어는 작품 제목(디스크 이름·제목 태그·파일명)과 음성 언어 목록을 번역 모델에 물어 판별하고, 판별하지 못하면 음성 언어가 정확히 둘일 때 재생 음성이 아닌 쪽을 씁니다. 보조 입력은 같은 디먹서 패킷을 쓰므로 디스크를 추가로 읽지 않으며, 우선 입력이 재생보다 30초 이상 앞서거나 쉴 때만 인식·번역합니다. 기본 선택은 재생 음성 기반이며 자막 메뉴에서 바꿉니다. 번역+원문 표시는 각 트랙의 원문을 보여 줍니다. Ctrl+N → **원어 음성으로도 자막 만들기**(`nanum-secondary`)로 끕니다.
-- **영화별 저장**: 두 입력의 자막과 실제 분석한 시간 구간을 라이브러리에 저장합니다(스키마 v2, 이 DB는 1.2.x에서 열 수 없음). 다시 열면 저장된 자막을 바로 보여 주고 그 구간은 다시 분석하지 않으며 프리롤도 준비된 것으로 봅니다.
+- **저장 정책**: 두 입력의 자막과 분석 구간은 기본적으로 현재 재생에서만 사용합니다. 로컬 미디어에 `--nanum-library-db=<경로>`를 명시한 경우에만 영화별 저장과 저장본 재사용을 켭니다. 웹 미디어는 라이브러리에 저장하지 않습니다.
 - **용어집**: 작품 식별과 함께 등장인물·지명·단체·고유 용어를 원어 표기, 영어/로마자 표기(두 이름 순서), 성·이름 단독 표기까지 하나의 한국어 표기로 맞춰 만듭니다. 실시간 번역에는 해당 줄에 나오는 항목과 주요 인물 목록을, 전체 번역에는 전체 용어집을 넣습니다. Ctrl+N → **용어집**에서 목록 보기, 항목 추가·수정·삭제, 메모장 일괄 편집, AI로 다시 만들기를 할 수 있습니다. 한 이름을 고치면 같은 인물의 성·이름·전체 이름 항목을 함께 고칠지 묻습니다. 수정하면 그 이름이 들어간 기존 자막(두 트랙, 저장본, 전체 번역)을 다시 번역해 바로 바꿉니다. 품질은 번역 모델에 따라 다르며 로컬 `gemma4`는 작품의 등장인물을 잘 모르면 항목을 지어낼 수 있으니 확인 후 고치세요.
 - **번역 말투**(`nanum-translate-style`): 자연스럽게(기본, 인물 관계에 맞춰 존댓말/반말 유지) / 존댓말 / 반말 / 원문에 충실 / 직접 입력(`nanum-translate-style-text`). 바꾸면 이후 번역부터 바로 적용하며 캐시는 말투·용어집별로 구분합니다.
 - 상태는 `demuxer-cache-state`의 `nanum-track-primary/secondary`(가상 트랙 src-id), `nanum-secondary-state/language/ready-until/reason`, `nanum-original-language`, `nanum-profile-state/work`, `nanum-glossary`, `nanum-glossary-count`, `nanum-glossary-apply-state/progress/changed/error`로 노출합니다. 용어집 변경은 `nanum-glossary-request=regenerate|file:<경로>`로 요청합니다.
@@ -177,9 +225,9 @@ AI 자막의 원문은 **음성 인식(STT)** 또는 **텍스트 자막 트랙**
 
 ### 디스크 자막 OCR·온라인 자막 가져오기 (1.4.0)
 
-- **디스크 이미지 자막(PGS)**: 같은 디먹서의 자막 패킷을 libavcodec으로 디코드해 흰 바탕 검은 글씨로 바꾸고, 작은 글씨는 확대해 Windows.Media.Ocr로 읽습니다(모델 번들 없음). 강제 자막이 아닌 영어 트랙을 우선 고릅니다. 영어 OCR 언어 팩이 없으면 설치된 라틴 문자 인식기(한국어 Windows의 `ko` 등)로 읽고, 흔한 오인식(`50`→`So`, `505`→`SOS`, `tO`→`to`, `TeII`→`Tell`, `donlt`→`don't` 등)을 교정합니다. Ctrl+N에서 **영어 OCR 언어 팩 설치(관리자 권한)**를 고르면 정확도가 높아집니다. 일본어 트랙은 일본어 팩이 필요합니다. 우선 입력 다음 순서로 처리하며 결과와 분석 구간을 영화별로 저장합니다. `nanum-pgs`로 끕니다.
+- **디스크 이미지 자막(PGS)**: 같은 디먹서의 자막 패킷을 libavcodec으로 디코드해 흰 바탕 검은 글씨로 바꾸고, 작은 글씨는 확대해 Windows.Media.Ocr로 읽습니다(모델 번들 없음). 강제 자막이 아닌 영어 트랙을 우선 고릅니다. 영어 OCR 언어 팩이 없으면 설치된 라틴 문자 인식기(한국어 Windows의 `ko` 등)로 읽고, 흔한 오인식(`50`→`So`, `505`→`SOS`, `tO`→`to`, `TeII`→`Tell`, `donlt`→`don't` 등)을 교정합니다. Ctrl+N에서 **영어 OCR 언어 팩 설치(관리자 권한)**를 고르면 정확도가 높아집니다. 일본어 트랙은 일본어 팩이 필요합니다. 우선 입력 다음 순서로 처리하며 결과는 기본적으로 현재 재생에서만 유지합니다. `nanum-pgs`로 끕니다.
 - **온라인 자막**: Ctrl+N → **온라인 자막 찾기**에서 OpenSubtitles(영어·일본어·한국어) 또는 Jimaku(일본어 애니메이션)를 고르면 작품명으로 검색 페이지를 엽니다(Jimaku는 주소 검색을 지원하지 않아 홈을 열고 검색어를 클립보드에 복사). 사용자가 직접 내려받은 `.srt/.ass/.ssa/.vtt/.sub/.zip`을 다운로드 폴더(메뉴에서 변경 가능)에서 20분 동안 감시해 가져옵니다. **자막 파일 가져오기…**와 창에 끌어 놓기도 됩니다.
-- **가져오기 처리**: 인코딩(UTF-8/UTF-16/CP949/Shift-JIS/CP1252)과 언어를 판별하고, 음성 인식 자막의 시작 시각과 비교해 오프셋(±240초)과 속도 배율(23.976/24/25 fps 변환)을 자동으로 맞춥니다. 신뢰도가 낮으면 맞추지 않고 알리며, **자막 시간 미세 조정**(±0.1/±1초)으로 고칠 수 있습니다. 한국어 자막은 그대로, 다른 언어는 말투·용어집을 적용해 전체 번역합니다. 새로 가져오면 이전 가져온 트랙을 대체하고 라이브러리에는 모두 남습니다.
+- **가져오기 처리**: 인코딩(UTF-8/UTF-16/CP949/Shift-JIS/CP1252)과 언어를 판별하고, 음성 인식 자막의 시작 시각과 비교해 오프셋(±240초)과 속도 배율(23.976/24/25 fps 변환)을 자동으로 맞춥니다. 신뢰도가 낮으면 맞추지 않고 알리며, **자막 시간 미세 조정**(±0.1/±1초)으로 고칠 수 있습니다. 한국어 자막은 그대로, 다른 언어는 말투·용어집을 적용해 전체 번역합니다. 새로 가져오면 이전 가져온 트랙을 대체하며 처리용 임시 사본은 종료 시 삭제합니다. 사용자가 직접 내려받은 원본 파일은 삭제하지 않습니다.
 - 상태: `nanum-track-pgs`, `nanum-pgs-state/language/reason/ready-until`, `nanum-track-import`, `nanum-import-state/progress/error/note/offset/scale/confidence/low-confidence/language/origin/lines`. 요청: `nanum-import-sub=<경로>|<언어>|<출처>`, `nanum-import-adjust=<초>`.
 
 ### 표시·입력 음성·저장 자막 (1.0.2)
@@ -190,7 +238,7 @@ AI 자막의 원문은 **음성 인식(STT)** 또는 **텍스트 자막 트랙**
 - 원문 대본이 있으면 **저장된 원문으로 다시 번역**으로 디스크 읽기·STT를 생략합니다. 새 생성이 실패하거나 취소되면 이전 완성 번역은 유지합니다.
 - 파일 식별은 크기 + SHA-256 콘텐츠 지문입니다. 16MiB 이하는 전체, 큰 파일은 양 끝 4MiB와 16개 256KiB 표본을 읽습니다. 표본 밖 수정은 탐지하지 못할 수 있습니다. 이동된 동일 파일은 재사용하며 경로만 같다는 이유로 재사용하지 않습니다.
 - Blu-ray 식별은 libbluray의 디스크 ID·볼륨·선택 타이틀/플레이리스트·클립·트랙 정보입니다. 드라이브 문자만으로 재사용하지 않습니다. 식별할 수 없는 입력은 재사용을 거부하며 저장 실패는 오류로 알립니다. 구 URL 기반 ASS 파일은 자동으로 가져오지 않습니다.
-- 현재 실행 파일은 DVD 재생 라이브러리 없이 빌드돼 `dvd://`를 지원하지 않습니다. DVD 트랙별 저장은 libdvdnav/libdvdread가 있는 빌드가 선행돼야 합니다. 일반 파일로 연 VOB는 파일 지문으로 식별합니다.
+- DVD 재생은 `dvd://`와 libdvdnav/libdvdread/libdvdcss를 사용합니다. 일반 파일로 연 VOB는 파일 지문으로 식별합니다.
 
 런타임 옵션: `nanum-display=translation|bilingual|source`, `nanum-audio-id=<입력 트랙 src-id>`, `nanum-library-action=ask|use|retranslate|regenerate|disable`, `nanum-library-auto-use=yes|no`. `demuxer-cache-state`의 `nanum-library-*` 필드에 저장본 유무·입력 언어·오류를 노출합니다.
 
@@ -210,6 +258,7 @@ AI 자막의 원문은 **음성 인식(STT)** 또는 **텍스트 자막 트랙**
 - 1.2.1 추가: 두 컷 외부 자막의 기본 30초 프리롤이 전체 번역 완료 후 즉시 해제되고, 모델·CUDA 없는 실제 영상 창에 한국어가 렌더링됨을 확인했습니다. 공개 1.2.1 엔진 다운로드·SHA-256 일치·Toolkit 재사용, 버퍼링된 오디오로 CPU 텍스트→CUDA 음성→CPU 텍스트 두 차례 전환 및 정상 종료, 70초 지점의 실제 음성 인식 한국어 자막을 확인했습니다.
 - 1.2.1 최종 설치: 패키저가 자산 목록의 버전을 설치 파일에 전달하며 무인 CUDA 선택 설치가 실제 `cuda/1.2.1` 캐시를 만들고 SHA-256이 일치했습니다. 설치된 플레이어의 CUDA 음성 한국어 자막·정상 종료, 제거 후 CUDA 캐시 유지, CUDA 없는 배포본의 CPU 음성 한국어 자막도 확인했습니다.
 - 1.3.0 (실제 E: 디스크, CUDA, `nemotron-3-super:cloud`): 440초부터 재생 시 `한국어 (영어 음성 기반)`·`한국어 (일본어 음성 기반)` 두 트랙이 모두 438.5초부터 분석·저장되고 일본어 기반이 영어 기반을 따라잡았습니다. 작품 `The Disappearance of Haruhi Suzumiya`·원어 `ja`·용어집 64개, 일본어 장문 대사는 최장 3.9초·26자로 나뉘고 화면 두 줄 겹침 0회였습니다. 다시 열면 저장본으로 15초 만에 473초까지 준비됐습니다. 디스크 오디오의 뒤로 탐색 반복(`120,rel-7,rel-11,rel-5`)에서 저장 자막 겹침 0쌍, 메뉴에서 `小泉 => 코이즈미` 추가 시 기존 자막 `소이즈`가 `코이즈미`로 재번역·저장됐습니다. 사용자 캐시의 `<0xHH>` 3줄은 번역 서버 없이 `눈치챘네`·`훠궈`로 복원 표시됐습니다. 설치(선택 다운로드 없음)·실행·제거와 1.3.0 CUDA 엔진·large-v3-turbo 실제 다운로드 SHA-256 일치를 확인했습니다.
+- 1.7.0: MakeMKV 없는 배포본·빈 키 캐시에서 다운로드 취소/임시 파일 정리, 자동 키 확보, 실제 E: Blu-ray 재생과 123초 제목 저장·전체 디코딩을 확인했습니다. 본편 발췌 테스트 디스크의 121초 MKV는 TrueHD 2개·AC3 2개·PGS 2개·챕터를 유지하고 영상·음성 전체 디코딩을 통과했습니다. 실제 메뉴의 진행률·Ctrl+C 취소·완료 파일 보존도 확인했습니다. 합성 DVD 두 제목은 원본 영상 3,626/3,746프레임과 음성별 3,782/3,907패킷을 보존하고, 다음 제목으로 자동 이동하는 명령에서도 별도 파일로 분리됐습니다. 실물 CSS DVD, 다중 PGC/앵글 DVD와 모든 BD+/UHD 디스크는 검증하지 않았습니다.
 
 ## 알려진 한계
 
@@ -218,10 +267,10 @@ AI 자막의 원문은 **음성 인식(STT)** 또는 **텍스트 자막 트랙**
 - 재생 중 **원어 음성으로도 자막 만들기**를 새로 켜면 이미 미리 읽은 구간(약 2분)은 건너뛰고 그 뒤부터 분석합니다. 건너뛴 구간은 탐색으로 다시 읽을 때 분석됩니다.
 - 한국어 OCR 인식기로 영문 이미지 자막을 읽으면 교정 후에도 일부 단어를 잘못 읽습니다(예: `cold`→`00년`). 영어 OCR 언어 팩을 설치하면 좋아집니다. 사이트 자막은 판본에 따라 대사·편집이 달라 시간 자동 맞춤의 신뢰도가 낮을 수 있습니다.
 - 번역 서버(Ollama, `ollama serve`)가 꺼져 있으면 `transport error`로 번역이 전부 실패하고 프리롤이 timeout(90초)까지 대기함. 실행 전에 서버를 띄워야 함.
-- 프리롤은 `scripts/nanum.lua`(`--script=`)가 담당: 시작 시 `preroll`(30초), 탐색 후 `seek_preroll`(8초)만큼 자막이 준비될 때까지 재생을 멈춤. 스크립트 없이는 시작 직후 약 20초 자막이 늦음.
+- 프리롤은 `scripts/nanum.lua`(`--script=`)가 파일을 처음 열 때만 담당합니다. 시작 시 `preroll`(30초)만큼 자막이 준비될 때까지 기다리며, 타임라인·방향키 탐색은 기다리지 않고 기존 재생/일시정지 상태를 유지합니다. 아직 처리되지 않은 구간의 자막은 뒤늦게 도착할 수 있습니다.
 - 긴 발화(최대 15초)는 `split.h`가 문장 끝에서 나눠 시간을 글자 수로 배분함 (`nanum_ai_test --selftest`로 검증).
 - 다국어 small 모델의 일본어 인식은 부정확합니다. Whisper large-v3-turbo(선택 다운로드)를 받으면 크게 좋아지지만 GPU 메모리를 더 쓰므로 8 GB GPU에서 로컬 번역 모델과 함께 쓰면 느려질 수 있습니다.
-- 종료 시 `0xC0000005`가 150초 실디스크 측정 1회에서 관찰됨. 이후 재측정, 종료 스트레스(총 45회 이상), 실디스크 phase3 검증 2회에서는 재현되지 않음. 원인 미확정. 재발하면 `%LOCALAPPDATA%\NanumPlayer\dumps`에 미니덤프가 자동 저장되므로 `cdb -z <dmp> -c ".ecxr;k"`로 분석할 수 있음 (`NANUM_CRASH_TEST=1`로 경로 확인 가능).
+- 종료 시 `0xC0000005`가 150초 실디스크 측정 1회에서 관찰됐고 이후 반복 검증에서는 재현되지 않았습니다. 원인은 미확정입니다. 개인정보 보호를 위해 충돌 덤프는 기본 저장하지 않습니다. 진단이 필요한 경우에만 `NANUMPLAYER_CRASH_DUMP_DIR`로 출력 폴더를 명시하세요. 덤프에는 주소·쿠키 등 프로세스 메모리의 민감한 내용이 포함될 수 있습니다.
 - 설정 UI는 `scripts/nanum.lua`의 메뉴(Ctrl+n)입니다. `~~/script-opts/nanum.conf`에 저장됩니다. **번역 모델**은 번역 서버의 `/api/tags` 목록(로컬 모델은 크기·파라미터 수 표시, 클라우드 모델 구분)에서 고르며, 서버에 연결할 수 없거나 목록에 없는 모델은 직접 입력합니다. 번역 모델·서버·목표 언어는 다음에 여는 파일부터, 말투·원어 자막·용어집은 즉시 적용됩니다. 그 외 엔진 옵션(모델 경로 등)은 `mpv.conf`로 설정합니다.
 
 ## 개발 환경 (LSP)

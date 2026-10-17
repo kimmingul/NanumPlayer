@@ -1,0 +1,787 @@
+{
+  "UI 오류 (%s): %s": {
+    "en": "UI error (%s): %s",
+    "ja": "UIエラー (%s): %s",
+    "zh-CN": "界面错误 (%s)：%s",
+    "zh-TW": "介面錯誤 (%s)：%s",
+    "es": "Error de interfaz (%s): %s"
+  },
+  "입력": {
+    "en": "Input",
+    "ja": "入力",
+    "zh-CN": "输入",
+    "zh-TW": "輸入",
+    "es": "Entrada"
+  },
+  "선택": {
+    "en": "Select",
+    "ja": "選択",
+    "zh-CN": "选择",
+    "zh-TW": "選擇",
+    "es": "Seleccionar"
+  },
+  "(비어 있음)": {
+    "en": "(empty)",
+    "ja": "(空)",
+    "zh-CN": "（空）",
+    "zh-TW": "（空）",
+    "es": "(vacío)"
+  },
+  "켬": {
+    "en": "On",
+    "ja": "オン",
+    "zh-CN": "开",
+    "zh-TW": "開",
+    "es": "Activado"
+  },
+  "끔": {
+    "en": "Off",
+    "ja": "オフ",
+    "zh-CN": "关",
+    "zh-TW": "關",
+    "es": "Desactivado"
+  },
+  "입력하여 검색": {
+    "en": "Type to search",
+    "ja": "入力して検索",
+    "zh-CN": "输入以搜索",
+    "zh-TW": "輸入以搜尋",
+    "es": "Escribe para buscar"
+  },
+  "일치하는 항목이 없습니다": {
+    "en": "No matching items",
+    "ja": "一致する項目がありません",
+    "zh-CN": "没有匹配的项目",
+    "zh-TW": "沒有相符的項目",
+    "es": "No hay elementos coincidentes"
+  },
+  "↑↓ 이동   Enter 선택   Esc 닫기": {
+    "en": "↑↓ Move   Enter Select   Esc Close",
+    "ja": "↑↓ 移動   Enter 選択   Esc 閉じる",
+    "zh-CN": "↑↓ 移动   Enter 选择   Esc 关闭",
+    "zh-TW": "↑↓ 移動   Enter 選擇   Esc 關閉",
+    "es": "↑↓ Mover   Enter Seleccionar   Esc Cerrar"
+  },
+  "취소": {
+    "en": "Cancel",
+    "ja": "キャンセル",
+    "zh-CN": "取消",
+    "zh-TW": "取消",
+    "es": "Cancelar"
+  },
+  "확인": {
+    "en": "OK",
+    "ja": "OK",
+    "zh-CN": "确定",
+    "zh-TW": "確定",
+    "es": "Aceptar"
+  },
+  "Enter 확인   Esc 취소": {
+    "en": "Enter OK   Esc Cancel",
+    "ja": "Enter 決定   Esc キャンセル",
+    "zh-CN": "Enter 确定   Esc 取消",
+    "zh-TW": "Enter 確定   Esc 取消",
+    "es": "Enter Aceptar   Esc Cancelar"
+  },
+  "영어": {
+    "en": "English",
+    "ja": "英語",
+    "zh-CN": "英语",
+    "zh-TW": "英語",
+    "es": "Inglés"
+  },
+  "일본어": {
+    "en": "Japanese",
+    "ja": "日本語",
+    "zh-CN": "日语",
+    "zh-TW": "日語",
+    "es": "Japonés"
+  },
+  "한국어": {
+    "en": "Korean",
+    "ja": "韓国語",
+    "zh-CN": "韩语",
+    "zh-TW": "韓語",
+    "es": "Coreano"
+  },
+  "중국어": {
+    "en": "Chinese",
+    "ja": "中国語",
+    "zh-CN": "中文",
+    "zh-TW": "中文",
+    "es": "Chino"
+  },
+  "광둥어": {
+    "en": "Cantonese",
+    "ja": "広東語",
+    "zh-CN": "粤语",
+    "zh-TW": "粵語",
+    "es": "Cantonés"
+  },
+  "스페인어": {
+    "en": "Spanish",
+    "ja": "スペイン語",
+    "zh-CN": "西班牙语",
+    "zh-TW": "西班牙語",
+    "es": "Español"
+  },
+  "프랑스어": {
+    "en": "French",
+    "ja": "フランス語",
+    "zh-CN": "法语",
+    "zh-TW": "法語",
+    "es": "Francés"
+  },
+  "독일어": {
+    "en": "German",
+    "ja": "ドイツ語",
+    "zh-CN": "德语",
+    "zh-TW": "德語",
+    "es": "Alemán"
+  },
+  "이탈리아어": {
+    "en": "Italian",
+    "ja": "イタリア語",
+    "zh-CN": "意大利语",
+    "zh-TW": "義大利語",
+    "es": "Italiano"
+  },
+  "포르투갈어": {
+    "en": "Portuguese",
+    "ja": "ポルトガル語",
+    "zh-CN": "葡萄牙语",
+    "zh-TW": "葡萄牙語",
+    "es": "Portugués"
+  },
+  "러시아어": {
+    "en": "Russian",
+    "ja": "ロシア語",
+    "zh-CN": "俄语",
+    "zh-TW": "俄語",
+    "es": "Ruso"
+  },
+  "태국어": {
+    "en": "Thai",
+    "ja": "タイ語",
+    "zh-CN": "泰语",
+    "zh-TW": "泰語",
+    "es": "Tailandés"
+  },
+  "베트남어": {
+    "en": "Vietnamese",
+    "ja": "ベトナム語",
+    "zh-CN": "越南语",
+    "zh-TW": "越南語",
+    "es": "Vietnamita"
+  },
+  "아랍어": {
+    "en": "Arabic",
+    "ja": "アラビア語",
+    "zh-CN": "阿拉伯语",
+    "zh-TW": "阿拉伯語",
+    "es": "Árabe"
+  },
+  "힌디어": {
+    "en": "Hindi",
+    "ja": "ヒンディー語",
+    "zh-CN": "印地语",
+    "zh-TW": "印地語",
+    "es": "Hindi"
+  },
+  "네덜란드어": {
+    "en": "Dutch",
+    "ja": "オランダ語",
+    "zh-CN": "荷兰语",
+    "zh-TW": "荷蘭語",
+    "es": "Neerlandés"
+  },
+  "폴란드어": {
+    "en": "Polish",
+    "ja": "ポーランド語",
+    "zh-CN": "波兰语",
+    "zh-TW": "波蘭語",
+    "es": "Polaco"
+  },
+  "튀르키예어": {
+    "en": "Turkish",
+    "ja": "トルコ語",
+    "zh-CN": "土耳其语",
+    "zh-TW": "土耳其語",
+    "es": "Turco"
+  },
+  "스웨덴어": {
+    "en": "Swedish",
+    "ja": "スウェーデン語",
+    "zh-CN": "瑞典语",
+    "zh-TW": "瑞典語",
+    "es": "Sueco"
+  },
+  "덴마크어": {
+    "en": "Danish",
+    "ja": "デンマーク語",
+    "zh-CN": "丹麦语",
+    "zh-TW": "丹麥語",
+    "es": "Danés"
+  },
+  "핀란드어": {
+    "en": "Finnish",
+    "ja": "フィンランド語",
+    "zh-CN": "芬兰语",
+    "zh-TW": "芬蘭語",
+    "es": "Finlandés"
+  },
+  "노르웨이어": {
+    "en": "Norwegian",
+    "ja": "ノルウェー語",
+    "zh-CN": "挪威语",
+    "zh-TW": "挪威語",
+    "es": "Noruego"
+  },
+  "체코어": {
+    "en": "Czech",
+    "ja": "チェコ語",
+    "zh-CN": "捷克语",
+    "zh-TW": "捷克語",
+    "es": "Checo"
+  },
+  "그리스어": {
+    "en": "Greek",
+    "ja": "ギリシャ語",
+    "zh-CN": "希腊语",
+    "zh-TW": "希臘語",
+    "es": "Griego"
+  },
+  "히브리어": {
+    "en": "Hebrew",
+    "ja": "ヘブライ語",
+    "zh-CN": "希伯来语",
+    "zh-TW": "希伯來語",
+    "es": "Hebreo"
+  },
+  "헝가리어": {
+    "en": "Hungarian",
+    "ja": "ハンガリー語",
+    "zh-CN": "匈牙利语",
+    "zh-TW": "匈牙利語",
+    "es": "Húngaro"
+  },
+  "인도네시아어": {
+    "en": "Indonesian",
+    "ja": "インドネシア語",
+    "zh-CN": "印度尼西亚语",
+    "zh-TW": "印尼語",
+    "es": "Indonesio"
+  },
+  "우크라이나어": {
+    "en": "Ukrainian",
+    "ja": "ウクライナ語",
+    "zh-CN": "乌克兰语",
+    "zh-TW": "烏克蘭語",
+    "es": "Ucraniano"
+  },
+  "루마니아어": {
+    "en": "Romanian",
+    "ja": "ルーマニア語",
+    "zh-CN": "罗马尼亚语",
+    "zh-TW": "羅馬尼亞語",
+    "es": "Rumano"
+  },
+  "모노": {
+    "en": "Mono",
+    "ja": "モノラル",
+    "zh-CN": "单声道",
+    "zh-TW": "單聲道",
+    "es": "Mono"
+  },
+  "스테레오": {
+    "en": "Stereo",
+    "ja": "ステレオ",
+    "zh-CN": "立体声",
+    "zh-TW": "立體聲",
+    "es": "Estéreo"
+  },
+  "%d채널": {
+    "en": "%d ch",
+    "ja": "%dch",
+    "zh-CN": "%d 声道",
+    "zh-TW": "%d 聲道",
+    "es": "%d canales"
+  },
+  "외부": {
+    "en": "External",
+    "ja": "外部",
+    "zh-CN": "外部",
+    "zh-TW": "外部",
+    "es": "Externo"
+  },
+  "알 수 없음": {
+    "en": "Unknown",
+    "ja": "不明",
+    "zh-CN": "未知",
+    "zh-TW": "未知",
+    "es": "Desconocido"
+  },
+  "강제": {
+    "en": "Forced",
+    "ja": "強制",
+    "zh-CN": "强制",
+    "zh-TW": "強制",
+    "es": "Forzado"
+  },
+  "실행하지 못했습니다: %s": {
+    "en": "Could not run: %s",
+    "ja": "実行できませんでした: %s",
+    "zh-CN": "无法执行：%s",
+    "zh-TW": "無法執行：%s",
+    "es": "No se pudo ejecutar: %s"
+  },
+  "번역만": {
+    "en": "Translation only",
+    "ja": "翻訳のみ",
+    "zh-CN": "仅译文",
+    "zh-TW": "僅譯文",
+    "es": "Solo traducción"
+  },
+  "번역+원문": {
+    "en": "Translation + original",
+    "ja": "翻訳+原文",
+    "zh-CN": "译文+原文",
+    "zh-TW": "譯文+原文",
+    "es": "Traducción + original"
+  },
+  "원문만": {
+    "en": "Original only",
+    "ja": "原文のみ",
+    "zh-CN": "仅原文",
+    "zh-TW": "僅原文",
+    "es": "Solo original"
+  },
+  "자막 끄기": {
+    "en": "Subtitles off",
+    "ja": "字幕をオフ",
+    "zh-CN": "关闭字幕",
+    "zh-TW": "關閉字幕",
+    "es": "Sin subtítulos"
+  },
+  "재생할 음성 트랙이 없습니다": {
+    "en": "There is no audio track to play",
+    "ja": "再生できる音声トラックがありません",
+    "zh-CN": "没有可播放的音轨",
+    "zh-TW": "沒有可播放的音軌",
+    "es": "No hay pistas de audio para reproducir"
+  },
+  "이 영상에는 자막 트랙이 없습니다 (AI 자막은 준비되면 표시됩니다)": {
+    "en": "This video has no subtitle tracks (AI subtitles appear when ready)",
+    "ja": "この動画には字幕トラックがありません（AI字幕は準備ができ次第表示されます）",
+    "zh-CN": "此视频没有字幕轨道（AI 字幕准备好后会显示）",
+    "zh-TW": "此影片沒有字幕軌（AI 字幕準備好後會顯示）",
+    "es": "Este vídeo no tiene pistas de subtítulos (los subtítulos de IA aparecerán cuando estén listos)"
+  },
+  "자막 표시 방식: %s": {
+    "en": "Subtitle display: %s",
+    "ja": "字幕の表示方式: %s",
+    "zh-CN": "字幕显示方式：%s",
+    "zh-TW": "字幕顯示方式：%s",
+    "es": "Modo de subtítulos: %s"
+  },
+  "음성 트랙": {
+    "en": "Audio track",
+    "ja": "音声トラック",
+    "zh-CN": "音轨",
+    "zh-TW": "音軌",
+    "es": "Pista de audio"
+  },
+  "자막 트랙": {
+    "en": "Subtitle track",
+    "ja": "字幕トラック",
+    "zh-CN": "字幕轨道",
+    "zh-TW": "字幕軌",
+    "es": "Pista de subtítulos"
+  },
+  "자막": {
+    "en": "Subtitles",
+    "ja": "字幕",
+    "zh-CN": "字幕",
+    "zh-TW": "字幕",
+    "es": "Subtítulos"
+  },
+  "음성": {
+    "en": "Audio",
+    "ja": "音声",
+    "zh-CN": "音频",
+    "zh-TW": "音訊",
+    "es": "Audio"
+  },
+  "재생 / 일시정지": {
+    "en": "Play / Pause",
+    "ja": "再生 / 一時停止",
+    "zh-CN": "播放 / 暂停",
+    "zh-TW": "播放 / 暫停",
+    "es": "Reproducir / Pausar"
+  },
+  "10초 뒤로": {
+    "en": "Back 10 seconds",
+    "ja": "10秒戻る",
+    "zh-CN": "后退 10 秒",
+    "zh-TW": "後退 10 秒",
+    "es": "Retroceder 10 s"
+  },
+  "10초 앞으로": {
+    "en": "Forward 10 seconds",
+    "ja": "10秒進む",
+    "zh-CN": "快进 10 秒",
+    "zh-TW": "快轉 10 秒",
+    "es": "Avanzar 10 s"
+  },
+  "음소거": {
+    "en": "Mute",
+    "ja": "ミュート",
+    "zh-CN": "静音",
+    "zh-TW": "靜音",
+    "es": "Silenciar"
+  },
+  "음소거됨": {
+    "en": "Muted",
+    "ja": "ミュート中",
+    "zh-CN": "已静音",
+    "zh-TW": "已靜音",
+    "es": "Silenciado",
+    "ko": "음소거"
+  },
+  "음소거 해제": {
+    "en": "Unmuted",
+    "ja": "ミュート解除",
+    "zh-CN": "已取消静音",
+    "zh-TW": "已取消靜音",
+    "es": "Sonido activado"
+  },
+  "볼륨": {
+    "en": "Volume",
+    "ja": "音量",
+    "zh-CN": "音量",
+    "zh-TW": "音量",
+    "es": "Volumen"
+  },
+  "볼륨 %d%%": {
+    "en": "Volume %d%%",
+    "ja": "音量 %d%%",
+    "zh-CN": "音量 %d%%",
+    "zh-TW": "音量 %d%%",
+    "es": "Volumen %d%%"
+  },
+  "재생 속도 %.2fx": {
+    "en": "Speed %.2fx",
+    "ja": "再生速度 %.2fx",
+    "zh-CN": "播放速度 %.2fx",
+    "zh-TW": "播放速度 %.2fx",
+    "es": "Velocidad %.2fx"
+  },
+  "음성: %s": {
+    "en": "Audio: %s",
+    "ja": "音声: %s",
+    "zh-CN": "音频：%s",
+    "zh-TW": "音訊：%s",
+    "es": "Audio: %s"
+  },
+  "자막: %s": {
+    "en": "Subtitles: %s",
+    "ja": "字幕: %s",
+    "zh-CN": "字幕：%s",
+    "zh-TW": "字幕：%s",
+    "es": "Subtítulos: %s"
+  },
+  "전체 화면": {
+    "en": "Fullscreen",
+    "ja": "全画面",
+    "zh-CN": "全屏",
+    "zh-TW": "全螢幕",
+    "es": "Pantalla completa"
+  },
+  "AI 자막 설정": {
+    "en": "AI subtitle settings",
+    "ja": "AI字幕設定",
+    "zh-CN": "AI 字幕设置",
+    "zh-TW": "AI 字幕設定",
+    "es": "Ajustes de subtítulos IA"
+  },
+  "꺼짐": {
+    "en": "Off",
+    "ja": "オフ",
+    "zh-CN": "关闭",
+    "zh-TW": "關閉",
+    "es": "Desactivado"
+  },
+  "Blu-ray 열기": {
+    "en": "Open Blu-ray",
+    "ja": "Blu-rayを開く",
+    "zh-CN": "打开 Blu-ray",
+    "zh-TW": "開啟 Blu-ray",
+    "es": "Abrir Blu-ray"
+  },
+  "파일 열기": {
+    "en": "Open file",
+    "ja": "ファイルを開く",
+    "zh-CN": "打开文件",
+    "zh-TW": "開啟檔案",
+    "es": "Abrir archivo"
+  },
+  "AI 구성 요소 관리 열기": {
+    "en": "Open AI component manager",
+    "ja": "AIコンポーネント管理を開く",
+    "zh-CN": "打开 AI 组件管理",
+    "zh-TW": "開啟 AI 元件管理",
+    "es": "Abrir gestor de componentes IA"
+  },
+  "AI 자막 설정 열기": {
+    "en": "Open AI subtitle settings",
+    "ja": "AI字幕設定を開く",
+    "zh-CN": "打开 AI 字幕设置",
+    "zh-TW": "開啟 AI 字幕設定",
+    "es": "Abrir ajustes de subtítulos IA"
+  },
+  "Blu-ray 디스크": {
+    "en": "Blu-ray disc",
+    "ja": "Blu-rayディスク",
+    "zh-CN": "Blu-ray 光盘",
+    "zh-TW": "Blu-ray 光碟",
+    "es": "Disco Blu-ray"
+  },
+  "오디오 재생 중": {
+    "en": "Playing audio",
+    "ja": "音声を再生中",
+    "zh-CN": "正在播放音频",
+    "zh-TW": "正在播放音訊",
+    "es": "Reproduciendo audio"
+  },
+  "불러오는 중": {
+    "en": "Loading",
+    "ja": "読み込み中",
+    "zh-CN": "正在加载",
+    "zh-TW": "正在載入",
+    "es": "Cargando"
+  },
+  "Blu-ray는 디스크 인증 때문에 시간이 걸릴 수 있습니다": {
+    "en": "Blu-ray discs can take a while because of disc authentication",
+    "ja": "Blu-rayはディスク認証のため時間がかかる場合があります",
+    "zh-CN": "Blu-ray 因需要光盘认证，可能需要一些时间",
+    "zh-TW": "Blu-ray 因需要光碟驗證，可能需要一些時間",
+    "es": "Blu-ray puede tardar por la autenticación del disco"
+  },
+  "버퍼링 중": {
+    "en": "Buffering",
+    "ja": "バッファリング中",
+    "zh-CN": "缓冲中",
+    "zh-TW": "緩衝中",
+    "es": "Almacenando en búfer"
+  },
+  "챕터 %d": {
+    "en": "Chapter %d",
+    "ja": "チャプター %d",
+    "zh-CN": "章节 %d",
+    "zh-TW": "章節 %d",
+    "es": "Capítulo %d"
+  },
+  "재생하지 못했습니다": {
+    "en": "Playback failed",
+    "ja": "再生できませんでした",
+    "zh-CN": "无法播放",
+    "zh-TW": "無法播放",
+    "es": "No se pudo reproducir"
+  },
+  "AI 한국어 자막과 함께 즐기는 미디어 플레이어": {
+    "en": "A media player with AI Korean subtitles",
+    "ja": "AI韓国語字幕で楽しむメディアプレーヤー",
+    "zh-CN": "搭载 AI 韩语字幕的媒体播放器",
+    "zh-TW": "搭載 AI 韓語字幕的媒體播放器",
+    "es": "Reproductor multimedia con subtítulos de IA en coreano"
+  },
+  "동영상·음악 파일 재생": {
+    "en": "Play video and music files",
+    "ja": "動画・音楽ファイルを再生",
+    "zh-CN": "播放视频和音乐文件",
+    "zh-TW": "播放影片和音樂檔案",
+    "es": "Reproduce vídeo y música"
+  },
+  "디스크의 영화 바로 재생": {
+    "en": "Play a disc from the drive",
+    "ja": "ドライブのディスクを再生",
+    "zh-CN": "播放光驱中的光盘",
+    "zh-TW": "播放光碟機中的光碟",
+    "es": "Reproduce un disco"
+  },
+  "웹페이지에서 재생하기": {
+    "en": "Play from a web page",
+    "ja": "Webページから再生",
+    "zh-CN": "播放网页中的视频",
+    "zh-TW": "播放網頁中的影片",
+    "es": "Abrir vídeo web"
+  },
+  "파일이나 Blu-ray 폴더를 이 창으로 끌어다 놓아도 재생됩니다": {
+    "en": "Drag a file or Blu-ray folder into this window to play it",
+    "ja": "ファイルやBlu-rayフォルダーをこのウィンドウにドラッグして再生することもできます",
+    "zh-CN": "也可以将文件或 Blu-ray 文件夹拖放到此窗口播放",
+    "zh-TW": "也可以將檔案或 Blu-ray 資料夾拖放到此視窗播放",
+    "es": "También puedes arrastrar un archivo o carpeta Blu-ray a esta ventana"
+  },
+  "Space 재생·일시정지   F 전체 화면   Ctrl+N AI 자막 설정   Ctrl+Alt+L 언어": {
+    "en": "Space Play/Pause   F Fullscreen   Ctrl+N AI subtitles   Ctrl+Alt+L Language",
+    "ja": "Space 再生/一時停止   F 全画面   Ctrl+N AI字幕設定   Ctrl+Alt+L 言語",
+    "zh-CN": "Space 播放/暂停   F 全屏   Ctrl+N AI 字幕设置   Ctrl+Alt+L 语言",
+    "zh-TW": "Space 播放/暫停   F 全螢幕   Ctrl+N AI 字幕設定   Ctrl+Alt+L 語言",
+    "es": "Espacio Reproducir/Pausa   F Pantalla completa   Ctrl+N Subtítulos IA   Ctrl+Alt+L Idioma"
+  },
+  "취소 중... 현재 저장 중인 임시 파일을 정리합니다.": {
+    "en": "Cancelling... cleaning up the temporary file being saved.",
+    "ja": "キャンセル中... 保存中の一時ファイルを整理しています。",
+    "zh-CN": "正在取消... 正在清理保存中的临时文件。",
+    "zh-TW": "正在取消... 正在清理儲存中的暫存檔案。",
+    "es": "Cancelando... limpiando el archivo temporal que se está guardando."
+  },
+  "이미 디스크 작업이 진행 중입니다. Ctrl+C로 취소할 수 있습니다.": {
+    "en": "A disc task is already running. Press Ctrl+C to cancel.",
+    "ja": "すでにディスク作業が進行中です。Ctrl+Cでキャンセルできます。",
+    "zh-CN": "已有光盘任务正在进行。可按 Ctrl+C 取消。",
+    "zh-TW": "已有光碟作業正在進行。可按 Ctrl+C 取消。",
+    "es": "Ya hay una tarea de disco en curso. Pulsa Ctrl+C para cancelar."
+  },
+  "취소됨 — 이미 완료된 파일 %d개는 유지됩니다.": {
+    "en": "Cancelled — %d completed file(s) are kept.",
+    "ja": "キャンセルしました — 完了済みの%d個のファイルは保持されます。",
+    "zh-CN": "已取消 — 已完成的 %d 个文件将保留。",
+    "zh-TW": "已取消 — 已完成的 %d 個檔案將保留。",
+    "es": "Cancelado: se conservan los %d archivos ya completados."
+  },
+  "디스크 작업이 취소되었습니다.": {
+    "en": "The disc task was cancelled.",
+    "ja": "ディスク作業がキャンセルされました。",
+    "zh-CN": "光盘任务已取消。",
+    "zh-TW": "光碟作業已取消。",
+    "es": "La tarea de disco se canceló."
+  },
+  "디스크 작업 실패: %s": {
+    "en": "Disc task failed: %s",
+    "ja": "ディスク作業に失敗しました: %s",
+    "zh-CN": "光盘任务失败：%s",
+    "zh-TW": "光碟作業失敗：%s",
+    "es": "Falló la tarea de disco: %s"
+  },
+  "알 수 없는 오류": {
+    "en": "Unknown error",
+    "ja": "不明なエラー",
+    "zh-CN": "未知错误",
+    "zh-TW": "未知錯誤",
+    "es": "Error desconocido"
+  },
+  "%s\n제목 %d/%d — %d%% (Ctrl+C로 취소)": {
+    "en": "%s\nTitle %d/%d — %d%% (Ctrl+C to cancel)",
+    "ja": "%s\nタイトル %d/%d — %d%% (Ctrl+Cでキャンセル)",
+    "zh-CN": "%s\n标题 %d/%d — %d%%（按 Ctrl+C 取消）",
+    "zh-TW": "%s\n標題 %d/%d — %d%%（按 Ctrl+C 取消）",
+    "es": "%s\nTítulo %d/%d — %d%% (Ctrl+C para cancelar)"
+  },
+  "디스크 저장": {
+    "en": "Save disc",
+    "ja": "ディスクを保存",
+    "zh-CN": "保存光盘",
+    "zh-TW": "儲存光碟",
+    "es": "Guardar disco"
+  },
+  "디스크·제목 확인 중... (처음에는 키 DB를 자동으로 받을 수 있습니다)\nCtrl+C로 취소": {
+    "en": "Checking disc and titles... (the key database may download automatically the first time)\nCtrl+C to cancel",
+    "ja": "ディスクとタイトルを確認中... (初回はキーDBが自動的にダウンロードされることがあります)\nCtrl+Cでキャンセル",
+    "zh-CN": "正在检查光盘和标题...（首次可能会自动下载密钥数据库）\n按 Ctrl+C 取消",
+    "zh-TW": "正在檢查光碟和標題...（首次可能會自動下載金鑰資料庫）\n按 Ctrl+C 取消",
+    "es": "Comprobando disco y títulos... (la primera vez puede descargarse automáticamente la base de claves)\nCtrl+C para cancelar"
+  },
+  "기본 동영상 폴더를 찾을 수 없습니다.": {
+    "en": "Could not find the default Videos folder.",
+    "ja": "既定のビデオフォルダーが見つかりません。",
+    "zh-CN": "找不到默认的视频文件夹。",
+    "zh-TW": "找不到預設的影片資料夾。",
+    "es": "No se encontró la carpeta Vídeos predeterminada."
+  },
+  "저장 완료 — %d개 파일\n%s": {
+    "en": "Saved — %d file(s)\n%s",
+    "ja": "保存完了 — %d個のファイル\n%s",
+    "zh-CN": "保存完成 — %d 个文件\n%s",
+    "zh-TW": "儲存完成 — %d 個檔案\n%s",
+    "es": "Guardado: %d archivo(s)\n%s"
+  },
+  "제목을 분석 중입니다...": {
+    "en": "Analyzing titles...",
+    "ja": "タイトルを解析中です...",
+    "zh-CN": "正在分析标题...",
+    "zh-TW": "正在分析標題...",
+    "es": "Analizando títulos..."
+  },
+  "저장 가능한 제목이 없습니다.": {
+    "en": "There are no titles that can be saved.",
+    "ja": "保存できるタイトルがありません。",
+    "zh-CN": "没有可保存的标题。",
+    "zh-TW": "沒有可儲存的標題。",
+    "es": "No hay títulos que se puedan guardar."
+  },
+  "모든 제목": {
+    "en": "All titles",
+    "ja": "すべてのタイトル",
+    "zh-CN": "所有标题",
+    "zh-TW": "所有標題",
+    "es": "Todos los títulos"
+  },
+  "%d. %s  %s  %.2f GiB  (%d 챕터)": {
+    "en": "%d. %s  %s  %.2f GiB  (%d chapters)",
+    "ja": "%d. %s  %s  %.2f GiB  (%d チャプター)",
+    "zh-CN": "%d. %s  %s  %.2f GiB  （%d 个章节）",
+    "zh-TW": "%d. %s  %s  %.2f GiB  （%d 個章節）",
+    "es": "%d. %s  %s  %.2f GiB  (%d capítulos)"
+  },
+  "제목": {
+    "en": "Title",
+    "ja": "タイトル",
+    "zh-CN": "标题",
+    "zh-TW": "標題",
+    "es": "Título"
+  },
+  "저장할 제목: %s": {
+    "en": "Title to save: %s",
+    "ja": "保存するタイトル: %s",
+    "zh-CN": "要保存的标题：%s",
+    "zh-TW": "要儲存的標題：%s",
+    "es": "Título que guardar: %s"
+  },
+  "NanumPlayer 화면에서 디스크 저장을 실행하세요.": {
+    "en": "Start the disc save from the NanumPlayer window.",
+    "ja": "NanumPlayerの画面からディスク保存を実行してください。",
+    "zh-CN": "请在 NanumPlayer 窗口中执行光盘保存。",
+    "zh-TW": "請在 NanumPlayer 視窗中執行光碟儲存。",
+    "es": "Inicia el guardado de disco desde la ventana de NanumPlayer."
+  },
+  "디스크 드라이브 확인 중...": {
+    "en": "Checking disc drives...",
+    "ja": "ディスクドライブを確認中...",
+    "zh-CN": "正在检查光驱...",
+    "zh-TW": "正在檢查光碟機...",
+    "es": "Comprobando unidades de disco..."
+  },
+  "디스크": {
+    "en": "Disc",
+    "ja": "ディスク",
+    "zh-CN": "光盘",
+    "zh-TW": "光碟",
+    "es": "Disco"
+  },
+  "미디어가 들어 있는 광학 드라이브가 없습니다.": {
+    "en": "No optical drive contains media.",
+    "ja": "メディアが入っている光学ドライブがありません。",
+    "zh-CN": "没有装有介质的光驱。",
+    "zh-TW": "沒有放入媒體的光碟機。",
+    "es": "Ninguna unidad óptica tiene un disco."
+  },
+  "드라이브 선택:": {
+    "en": "Select a drive:",
+    "ja": "ドライブを選択:",
+    "zh-CN": "选择驱动器：",
+    "zh-TW": "選擇光碟機：",
+    "es": "Selecciona una unidad:"
+  }
+}

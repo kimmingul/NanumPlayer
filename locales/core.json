@@ -1,0 +1,4454 @@
+{
+ "  직접 입력...": {
+  "en": "  Type it in...",
+  "es": "  Escribirlo...",
+  "ja": "  直接入力...",
+  "zh-CN": "  手动输入...",
+  "zh-TW": "  手動輸入..."
+ },
+ " [엔진: %s]": {
+  "en": " [engine: %s]",
+  "es": " [motor: %s]",
+  "ja": " [エンジン: %s]",
+  "zh-CN": " [引擎：%s]",
+  "zh-TW": " [引擎：%s]"
+ },
+ " [입력: 음성 인식]": {
+  "en": " [input: speech recognition]",
+  "es": " [entrada: reconocimiento de voz]",
+  "ja": " [入力: 音声認識]",
+  "zh-CN": " [输入：语音识别]",
+  "zh-TW": " [輸入：語音辨識]"
+ },
+ " [입력: 자막]": {
+  "en": " [input: subtitles]",
+  "es": " [entrada: subtítulos]",
+  "ja": " [入力: 字幕]",
+  "zh-CN": " [输入：字幕]",
+  "zh-TW": " [輸入：字幕]"
+ },
+ " · 자동 정렬 신뢰도 %d%%": {
+  "en": " · auto-alignment confidence %d%%",
+  "es": " · confianza de la alineación automática %d%%",
+  "ja": " · 自動整列の信頼度 %d%%",
+  "zh-CN": " · 自动对齐置信度 %d%%",
+  "zh-TW": " · 自動對齊信賴度 %d%%"
+ },
+ "# NanumPlayer 용어집 — 이 영상의 인물·고유명사를 항상 같은 번역으로 옮기기 위한 표입니다.\n# 한 줄에 하나씩 '원문 => 번역' 형식으로 적습니다. 예)  Hikari => 히카리\n# 음성 인식이 잘못 받아적는 철자도 같은 번역으로 적어 두면 효과적입니다.\n# '#'으로 시작하는 줄과 빈 줄은 무시됩니다.\n# 저장하면 바로 적용되고, 메모장을 닫을 때 마지막으로 한 번 더 적용됩니다.": {
+  "en": "# NanumPlayer glossary — a table that keeps the characters and proper nouns of this video translated the same way.\n# Write one entry per line as 'original => translation'. Example:  Hikari => 히카리\n# It also helps to list spellings that speech recognition gets wrong with the same translation.\n# Lines starting with '#' and blank lines are ignored.\n# Changes apply as soon as you save, and once more when you close Notepad.",
+  "es": "# Glosario de NanumPlayer — una tabla para traducir siempre igual los personajes y nombres propios de este vídeo.\n# Escribe una entrada por línea con el formato 'original => traducción'. Ejemplo:  Hikari => 히카리\n# También ayuda añadir con la misma traducción las grafías que el reconocimiento de voz transcribe mal.\n# Las líneas que empiezan por '#' y las líneas vacías se ignoran.\n# Los cambios se aplican al guardar y una vez más al cerrar el Bloc de notas.",
+  "ja": "# NanumPlayer 用語集 — この動画の人物や固有名詞を常に同じ訳語にするための表です。\n# 1行に1件、「原文 => 訳語」の形式で書きます。例)  Hikari => 히카리\n# 音声認識が誤って書き取る綴りも同じ訳語で書いておくと効果的です。\n# 「#」で始まる行と空行は無視されます。\n# 保存するとすぐに適用され、メモ帳を閉じるときにもう一度適用されます。",
+  "zh-CN": "# NanumPlayer 术语表 — 用于让本视频中的人物和专有名词始终使用相同译法的表格。\n# 每行写一条，格式为“原文 => 译文”。例如：  Hikari => 히카리\n# 把语音识别容易听错的拼写也用相同译文写上会更有效。\n# 以“#”开头的行和空行会被忽略。\n# 保存后立即生效，关闭记事本时会再应用一次。",
+  "zh-TW": "# NanumPlayer 術語表 — 用於讓此影片中的人物和專有名詞始終使用相同譯法的表格。\n# 每行寫一筆，格式為「原文 => 譯文」。例如：  Hikari => 히카리\n# 把語音辨識容易聽錯的拼寫也用相同譯文寫上會更有效。\n# 以「#」開頭的行和空行會被忽略。\n# 儲存後立即生效，關閉記事本時會再套用一次。"
+ },
+ "%+.1f초": {
+  "en": "%+.1f s",
+  "es": "%+.1f s",
+  "ja": "%+.1f秒",
+  "zh-CN": "%+.1f 秒",
+  "zh-TW": "%+.1f 秒"
+ },
+ "%s\n설치된 Toolkit은 읽기만 하며 변경하지 않습니다": {
+  "en": "%s\nThe installed Toolkit is only read, never modified",
+  "es": "%s\nEl Toolkit instalado solo se lee, nunca se modifica",
+  "ja": "%s\nインストール済みのToolkitは読み取りのみで、変更しません",
+  "zh-CN": "%s\n仅读取已安装的 Toolkit，不会进行修改",
+  "zh-TW": "%s\n僅讀取已安裝的 Toolkit，不會進行修改"
+ },
+ "%s (초):": {
+  "en": "%s (s):",
+  "es": "%s (s):",
+  "ja": "%s (秒):",
+  "zh-CN": "%s（秒）：",
+  "zh-TW": "%s（秒）："
+ },
+ "%s OCR 언어 팩 설치 (관리자 권한)": {
+  "en": "Install the %s OCR language pack (administrator)",
+  "es": "Instalar el paquete de idioma OCR de %s (administrador)",
+  "ja": "%sのOCR言語パックをインストール (管理者権限)",
+  "zh-CN": "安装 %s OCR 语言包（需要管理员权限）",
+  "zh-TW": "安裝 %s OCR 語言套件（需要系統管理員權限）"
+ },
+ "%s OCR 언어 팩 설치 (관리자 권한, 인식 정확도 향상)": {
+  "en": "Install the %s OCR language pack (administrator, improves accuracy)",
+  "es": "Instalar el paquete de idioma OCR de %s (administrador, mejora la precisión)",
+  "ja": "%sのOCR言語パックをインストール (管理者権限、認識精度が向上)",
+  "zh-CN": "安装 %s OCR 语言包（需要管理员权限，可提高识别准确度）",
+  "zh-TW": "安裝 %s OCR 語言套件（需要系統管理員權限，可提高辨識準確度）"
+ },
+ "%s — AI 자막 없이 재생합니다\nCtrl+N → AI 구성 요소에서 받을 수 있습니다": {
+  "en": "%s — playing without AI subtitles\nYou can get it in Ctrl+N → AI components",
+  "es": "%s — se reproduce sin subtítulos IA\nPuedes obtenerlo en Ctrl+N → Componentes de IA",
+  "ja": "%s — AI字幕なしで再生します\nCtrl+N → AIコンポーネントで入手できます",
+  "zh-CN": "%s — 将在没有 AI 字幕的情况下播放\n可在 Ctrl+N → AI 组件中获取",
+  "zh-TW": "%s — 將在沒有 AI 字幕的情況下播放\n可在 Ctrl+N → AI 元件中取得"
+ },
+ "%s — AI 자막 없이 재생합니다\nCtrl+N → AI 구성 요소에서 받을 수 있습니다 (또는 CPU 모드로 바꾸세요)": {
+  "en": "%s — playing without AI subtitles\nYou can get it in Ctrl+N → AI components (or switch to CPU mode)",
+  "es": "%s — se reproduce sin subtítulos IA\nPuedes obtenerlo en Ctrl+N → Componentes de IA (o cambiar al modo CPU)",
+  "ja": "%s — AI字幕なしで再生します\nCtrl+N → AIコンポーネントで入手できます (またはCPUモードに切り替えてください)",
+  "zh-CN": "%s — 将在没有 AI 字幕的情况下播放\n可在 Ctrl+N → AI 组件中获取（或切换到 CPU 模式）",
+  "zh-TW": "%s — 將在沒有 AI 字幕的情況下播放\n可在 Ctrl+N → AI 元件中取得（或切換到 CPU 模式）"
+ },
+ "%s 검증 중": {
+  "en": "Verifying %s",
+  "es": "Verificando %s",
+  "ja": "%sを検証中",
+  "zh-CN": "正在校验 %s",
+  "zh-TW": "正在驗證 %s"
+ },
+ "%s 기반": {
+  "en": "Based on %s",
+  "es": "Basado en %s",
+  "ja": "%sベース",
+  "zh-CN": "基于%s",
+  "zh-TW": "基於%s"
+ },
+ "%s 내려받는 중": {
+  "en": "Downloading %s",
+  "es": "Descargando %s",
+  "ja": "%sをダウンロード中",
+  "zh-CN": "正在下载 %s",
+  "zh-TW": "正在下載 %s"
+ },
+ "%s 내려받는 중 %d%% (%s / %s)": {
+  "en": "Downloading %s %d%% (%s / %s)",
+  "es": "Descargando %s %d%% (%s / %s)",
+  "ja": "%sをダウンロード中 %d%% (%s / %s)",
+  "zh-CN": "正在下载 %s %d%%（%s / %s）",
+  "zh-TW": "正在下載 %s %d%%（%s / %s）"
+ },
+ "%s 대기 중 (기본 자막이 앞서가면 시작)": {
+  "en": "%s waiting (starts once the main subtitles are ahead)",
+  "es": "%s en espera (empieza cuando los subtítulos principales van por delante)",
+  "ja": "%s待機中 (基本字幕が先行したら開始)",
+  "zh-CN": "%s 等待中（主字幕领先后开始）",
+  "zh-TW": "%s 等待中（主字幕領先後開始）"
+ },
+ "%s 디스크 자막 기반": {
+  "en": "Based on %s disc subtitles",
+  "es": "Basado en subtítulos de disco en %s",
+  "ja": "%sのディスク字幕ベース",
+  "zh-CN": "基于%s光盘字幕",
+  "zh-TW": "基於%s光碟字幕"
+ },
+ "%s 모델 내려받기를 시작합니다": {
+  "en": "Starting the %s model download",
+  "es": "Iniciando la descarga del modelo %s",
+  "ja": "%sモデルのダウンロードを開始します",
+  "zh-CN": "开始下载 %s 模型",
+  "zh-TW": "開始下載 %s 模型"
+ },
+ "%s 모델 내려받기를 시작합니다 (VAD 포함)": {
+  "en": "Starting the %s model download (VAD included)",
+  "es": "Iniciando la descarga del modelo %s (incluye VAD)",
+  "ja": "%sモデルのダウンロードを開始します (VAD含む)",
+  "zh-CN": "开始下载 %s 模型（包含 VAD）",
+  "zh-TW": "開始下載 %s 模型（包含 VAD）"
+ },
+ "%s 무결성 검증 중": {
+  "en": "Verifying %s",
+  "es": "Verificando la integridad de %s",
+  "ja": "%sの整合性を検証中",
+  "zh-CN": "正在校验 %s 的完整性",
+  "zh-TW": "正在驗證 %s 的完整性"
+ },
+ "%s 분석 중": {
+  "en": "%s analyzing",
+  "es": "%s analizando",
+  "ja": "%sを解析中",
+  "zh-CN": "%s 分析中",
+  "zh-TW": "%s 分析中"
+ },
+ "%s 사용 불가": {
+  "en": "%s unavailable",
+  "es": "%s no disponible",
+  "ja": "%sは使用不可",
+  "zh-CN": "%s 不可用",
+  "zh-TW": "%s 無法使用"
+ },
+ "%s 사용 불가 (%s)": {
+  "en": "%s unavailable (%s)",
+  "es": "%s no disponible (%s)",
+  "ja": "%sは使用不可 (%s)",
+  "zh-CN": "%s 不可用（%s）",
+  "zh-TW": "%s 無法使用（%s）"
+ },
+ "%s 압축 푸는 중": {
+  "en": "Extracting %s",
+  "es": "Extrayendo %s",
+  "ja": "%sを展開中",
+  "zh-CN": "正在解压 %s",
+  "zh-TW": "正在解壓縮 %s"
+ },
+ "%s 준비 완료": {
+  "en": "%s ready",
+  "es": "%s listo",
+  "ja": "%sの準備完了",
+  "zh-CN": "%s 已就绪",
+  "zh-TW": "%s 已就緒"
+ },
+ "%s 준비 중 · %.0f초 앞": {
+  "en": "%s preparing · %.0f s ahead",
+  "es": "%s preparando · %.0f s por delante",
+  "ja": "%sを準備中 · %.0f秒先",
+  "zh-CN": "%s 准备中 · 领先 %.0f 秒",
+  "zh-TW": "%s 準備中 · 領先 %.0f 秒"
+ },
+ "%s:": {
+  "en": "%s:",
+  "es": "%s:",
+  "ja": "%s:",
+  "zh-CN": "%s：",
+  "zh-TW": "%s："
+ },
+ "%s: %s": {
+  "en": "%s: %s",
+  "es": "%s: %s",
+  "ja": "%s: %s",
+  "zh-CN": "%s：%s",
+  "zh-TW": "%s：%s"
+ },
+ "%s: %s — 한국어 부분을 찾지 못해 직접 수정 필요": {
+  "en": "%s: %s — the Korean part was not found; edit it by hand",
+  "es": "%s: %s — no se encontró la parte en coreano; hay que editarla a mano",
+  "ja": "%s: %s — 韓国語の部分が見つからないため手動で修正が必要",
+  "zh-CN": "%s：%s — 未找到韩语部分，需要手动修改",
+  "zh-TW": "%s：%s — 找不到韓語部分，需要手動修改"
+ },
+ "%s: AI가 작품 정보 조회 중": {
+  "en": "%s: AI is looking up the work info",
+  "es": "%s: la IA está buscando la información de la obra",
+  "ja": "%s: AIが作品情報を照会中",
+  "zh-CN": "%s：AI 正在查询作品信息",
+  "zh-TW": "%s：AI 正在查詢作品資訊"
+ },
+ "%s: 다음에 여는 파일부터 적용": {
+  "en": "%s: applies from the next file you open",
+  "es": "%s: se aplica desde el siguiente archivo que abras",
+  "ja": "%s: 次に開くファイルから適用",
+  "zh-CN": "%s：从下次打开的文件起生效",
+  "zh-TW": "%s：從下次開啟的檔案起生效"
+ },
+ "%s를 열었습니다 — 검색창에 '%s'를 입력하세요\n(%s 폴더를 최대 20분 지켜봅니다 · 내려받으면 자동으로 가져옵니다)": {
+  "en": "Opened %s — type '%s' in the search box\n(Watching the %s folder for up to 20 minutes · downloaded files are imported automatically)",
+  "es": "Se abrió %s — escribe «%s» en el cuadro de búsqueda\n(Se vigila la carpeta %s hasta 20 minutos · los archivos descargados se importan automáticamente)",
+  "ja": "%sを開きました — 検索ボックスに「%s」と入力してください\n(%s フォルダーを最大20分間監視します · ダウンロードすると自動で取り込みます)",
+  "zh-CN": "已打开 %s — 请在搜索框中输入“%s”\n（最多监视 %s 文件夹 20 分钟 · 下载后自动导入）",
+  "zh-TW": "已開啟 %s — 請在搜尋框中輸入「%s」\n（最多監視 %s 資料夾 20 分鐘 · 下載後自動匯入）"
+ },
+ "%s를 열었습니다 — 검색창에 붙여넣으세요 (Ctrl+V): %s\n(%s 폴더를 최대 20분 지켜봅니다 · 내려받으면 자동으로 가져옵니다)": {
+  "en": "Opened %s — paste into the search box (Ctrl+V): %s\n(Watching the %s folder for up to 20 minutes · downloaded files are imported automatically)",
+  "es": "Se abrió %s — pégalo en el cuadro de búsqueda (Ctrl+V): %s\n(Se vigila la carpeta %s hasta 20 minutos · los archivos descargados se importan automáticamente)",
+  "ja": "%sを開きました — 検索ボックスに貼り付けてください (Ctrl+V): %s\n(%s フォルダーを最大20分間監視します · ダウンロードすると自動で取り込みます)",
+  "zh-CN": "已打开 %s — 请粘贴到搜索框（Ctrl+V）：%s\n（最多监视 %s 文件夹 20 分钟 · 下载后自动导入）",
+  "zh-TW": "已開啟 %s — 請貼到搜尋框（Ctrl+V）：%s\n（最多監視 %s 資料夾 20 分鐘 · 下載後自動匯入）"
+ },
+ "%s에서 '%s'를 찾는 중 — 브라우저에서 자막을 내려받으면 자동으로 가져옵니다\n(%s 폴더를 최대 20분 지켜봅니다)": {
+  "en": "Searching %s for '%s' — subtitles you download in the browser are imported automatically\n(Watching the %s folder for up to 20 minutes)",
+  "es": "Buscando en %s «%s» — los subtítulos que descargues en el navegador se importan automáticamente\n(Se vigila la carpeta %s hasta 20 minutos)",
+  "ja": "%sで「%s」を検索中 — ブラウザーで字幕をダウンロードすると自動で取り込みます\n(%s フォルダーを最大20分間監視します)",
+  "zh-CN": "正在 %s 中搜索“%s” — 在浏览器中下载字幕后会自动导入\n（最多监视 %s 文件夹 20 分钟）",
+  "zh-TW": "正在 %s 中搜尋「%s」 — 在瀏覽器中下載字幕後會自動匯入\n（最多監視 %s 資料夾 20 分鐘）"
+ },
+ "'%s' OCR 언어 팩을 설치할까요?": {
+  "en": "Install the '%s' OCR language pack?",
+  "es": "¿Instalar el paquete de idioma OCR de «%s»?",
+  "ja": "「%s」のOCR言語パックをインストールしますか?",
+  "zh-CN": "要安装“%s”OCR 语言包吗？",
+  "zh-TW": "要安裝「%s」OCR 語言套件嗎？"
+ },
+ "'%s'의 번역:": {
+  "en": "Translation of '%s':",
+  "es": "Traducción de «%s»:",
+  "ja": "「%s」の訳語:",
+  "zh-CN": "“%s”的译文：",
+  "zh-TW": "「%s」的譯文："
+ },
+ "'NanumPlayer로 열기' 북마클릿 복사 (다른 브라우저용)": {
+  "en": "Copy the 'Open with NanumPlayer' bookmarklet (for other browsers)",
+  "es": "Copiar el bookmarklet «Abrir con NanumPlayer» (para otros navegadores)",
+  "ja": "「NanumPlayerで開く」ブックマークレットをコピー (他のブラウザー用)",
+  "zh-CN": "复制“用 NanumPlayer 打开”书签小工具（用于其他浏览器）",
+  "zh-TW": "複製「用 NanumPlayer 開啟」書籤小工具（用於其他瀏覽器）"
+ },
+ "'원문 => 번역' 형식으로 입력하세요 (양쪽 모두 필요)": {
+  "en": "Enter it as 'original => translation' (both sides are required)",
+  "es": "Escríbelo con el formato 'original => traducción' (se necesitan ambos lados)",
+  "ja": "「原文 => 訳語」の形式で入力してください (両方必要です)",
+  "zh-CN": "请按“原文 => 译文”的格式输入（两边都需要）",
+  "zh-TW": "請按「原文 => 譯文」的格式輸入（兩邊都需要）"
+ },
+ "(NVIDIA 드라이버 미감지)": {
+  "en": "(NVIDIA driver not detected)",
+  "es": "(controlador de NVIDIA no detectado)",
+  "ja": "(NVIDIAドライバー未検出)",
+  "zh-CN": "（未检测到 NVIDIA 驱动）",
+  "zh-TW": "（未偵測到 NVIDIA 驅動程式）"
+ },
+ "(선택 안 됨)": {
+  "en": "(not selected)",
+  "es": "(sin seleccionar)",
+  "ja": "(未選択)",
+  "zh-CN": "（未选择）",
+  "zh-TW": "（未選擇）"
+ },
+ "(선택)": {
+  "en": "(optional)",
+  "es": "(opcional)",
+  "ja": "(任意)",
+  "zh-CN": "（可选）",
+  "zh-TW": "（選用）"
+ },
+ "(알 수 없음)": {
+  "en": "(unknown)",
+  "es": "(desconocida)",
+  "ja": "(不明)",
+  "zh-CN": "（未知）",
+  "zh-TW": "（未知）"
+ },
+ "(없음)": {
+  "en": "(none)",
+  "es": "(ninguno)",
+  "ja": "(なし)",
+  "zh-CN": "（无）",
+  "zh-TW": "（無）"
+ },
+ "--nanum-ai-dll로 지정한 엔진을 그대로 사용합니다 (자동 교체 없음)": {
+  "en": "The engine given with --nanum-ai-dll is used as is (no automatic replacement)",
+  "es": "Se usa tal cual el motor indicado con --nanum-ai-dll (sin sustitución automática)",
+  "ja": "--nanum-ai-dllで指定したエンジンをそのまま使用します (自動置き換えなし)",
+  "zh-CN": "将直接使用通过 --nanum-ai-dll 指定的引擎（不自动替换）",
+  "zh-TW": "將直接使用透過 --nanum-ai-dll 指定的引擎（不自動取代）"
+ },
+ "1. 브라우저 북마크 표시줄에서 '새 북마크'(또는 즐겨찾기 추가)를 만듭니다": {
+  "en": "1. In the browser's bookmarks bar, create a 'New bookmark' (or add a favorite)",
+  "es": "1. En la barra de marcadores del navegador, crea un «Nuevo marcador» (o añade un favorito)",
+  "ja": "1. ブラウザーのブックマークバーで「新しいブックマーク」(またはお気に入りに追加) を作成します",
+  "zh-CN": "1. 在浏览器的书签栏中新建书签（或添加收藏）",
+  "zh-TW": "1. 在瀏覽器的書籤列中新增書籤（或加入我的最愛）"
+ },
+ "2. 이름: NanumPlayer로 열기 / 주소(URL): 복사한 내용을 붙여넣습니다 (Ctrl+V)": {
+  "en": "2. Name: Open with NanumPlayer / Address (URL): paste the copied text (Ctrl+V)",
+  "es": "2. Nombre: Abrir con NanumPlayer / Dirección (URL): pega el texto copiado (Ctrl+V)",
+  "ja": "2. 名前: NanumPlayerで開く / アドレス (URL): コピーした内容を貼り付けます (Ctrl+V)",
+  "zh-CN": "2. 名称：用 NanumPlayer 打开 / 网址（URL）：粘贴复制的内容（Ctrl+V）",
+  "zh-TW": "2. 名稱：用 NanumPlayer 開啟 / 網址（URL）：貼上複製的內容（Ctrl+V）"
+ },
+ "20분 동안 새 자막 파일이 내려받아지지 않아 다운로드 감시를 끝냈습니다": {
+  "en": "No new subtitle file was downloaded for 20 minutes, so download watching ended",
+  "es": "No se descargó ningún archivo de subtítulos nuevo en 20 minutos, así que se dejó de vigilar las descargas",
+  "ja": "20分間新しい字幕ファイルがダウンロードされなかったため、ダウンロードの監視を終了しました",
+  "zh-CN": "20 分钟内没有下载新的字幕文件，已结束下载监视",
+  "zh-TW": "20 分鐘內沒有下載新的字幕檔案，已結束下載監視"
+ },
+ "3. 브라우저에서 YouTube 영상을 연 뒤 그 북마크를 누르면 NanumPlayer에서 재생됩니다": {
+  "en": "3. Open a YouTube video in the browser and click that bookmark — it plays in NanumPlayer",
+  "es": "3. Abre un vídeo de YouTube en el navegador y pulsa ese marcador: se reproduce en NanumPlayer",
+  "ja": "3. ブラウザーでYouTube動画を開いてそのブックマークをクリックすると、NanumPlayerで再生されます",
+  "zh-CN": "3. 在浏览器中打开 YouTube 视频后点击该书签，即可在 NanumPlayer 中播放",
+  "zh-TW": "3. 在瀏覽器中開啟 YouTube 影片後點擊該書籤，即可在 NanumPlayer 中播放"
+ },
+ "AI 가속 모드 (다음에 여는 파일부터 적용):": {
+  "en": "AI acceleration mode (applies from the next file you open):",
+  "es": "Modo de aceleración IA (se aplica desde el siguiente archivo que abras):",
+  "ja": "AI高速化モード (次に開くファイルから適用):",
+  "zh-CN": "AI 加速模式（从下次打开的文件起生效）：",
+  "zh-TW": "AI 加速模式（從下次開啟的檔案起生效）："
+ },
+ "AI 가속 모드 변경됨 · 다음 파일부터 적용": {
+  "en": "AI acceleration mode changed · applies from the next file",
+  "es": "Modo de aceleración IA cambiado · se aplica desde el siguiente archivo",
+  "ja": "AI高速化モードを変更 · 次のファイルから適用",
+  "zh-CN": "AI 加速模式已更改 · 从下个文件起生效",
+  "zh-TW": "AI 加速模式已變更 · 從下個檔案起生效"
+ },
+ "AI 가속 모드: %s": {
+  "en": "AI acceleration mode: %s",
+  "es": "Modo de aceleración IA: %s",
+  "ja": "AI高速化モード: %s",
+  "zh-CN": "AI 加速模式：%s",
+  "zh-TW": "AI 加速模式：%s"
+ },
+ "AI 가속 모드: %s (이 엔진은 적용 불가)": {
+  "en": "AI acceleration mode: %s (not applicable to this engine)",
+  "es": "Modo de aceleración IA: %s (no aplicable a este motor)",
+  "ja": "AI高速化モード: %s (このエンジンでは適用不可)",
+  "zh-CN": "AI 加速模式：%s（此引擎无法应用）",
+  "zh-TW": "AI 加速模式：%s（此引擎無法套用）"
+ },
+ "AI 가속 모드: %s · 다음에 여는 파일부터 적용": {
+  "en": "AI acceleration mode: %s · applies from the next file you open",
+  "es": "Modo de aceleración IA: %s · se aplica desde el siguiente archivo que abras",
+  "ja": "AI高速化モード: %s · 次に開くファイルから適用",
+  "zh-CN": "AI 加速模式：%s · 从下次打开的文件起生效",
+  "zh-TW": "AI 加速模式：%s · 從下次開啟的檔案起生效"
+ },
+ "AI 구성 요소 관리 열기": {
+  "en": "Open AI component manager",
+  "es": "Abrir gestión de componentes de IA",
+  "ja": "AIコンポーネント管理を開く",
+  "zh-CN": "打开 AI 组件管理",
+  "zh-TW": "開啟 AI 元件管理"
+ },
+ "AI 구성 요소 관리:": {
+  "en": "AI component manager:",
+  "es": "Gestión de componentes de IA:",
+  "ja": "AIコンポーネント管理:",
+  "zh-CN": "AI 组件管理：",
+  "zh-TW": "AI 元件管理："
+ },
+ "AI 구성 요소 관리: %s": {
+  "en": "AI component manager: %s",
+  "es": "Gestión de componentes de IA: %s",
+  "ja": "AIコンポーネント管理: %s",
+  "zh-CN": "AI 组件管理：%s",
+  "zh-TW": "AI 元件管理：%s"
+ },
+ "AI 모델 내려받기 실패": {
+  "en": "AI model download failed",
+  "es": "Falló la descarga de modelos de IA",
+  "ja": "AIモデルのダウンロードに失敗しました",
+  "zh-CN": "AI 模型下载失败",
+  "zh-TW": "AI 模型下載失敗"
+ },
+ "AI 모델 내려받기 완료 · 다음에 여는 파일부터 AI 자막을 만듭니다": {
+  "en": "AI model download complete · AI subtitles will be made from the next file you open",
+  "es": "Descarga de modelos de IA completada · los subtítulos IA se crearán desde el siguiente archivo que abras",
+  "ja": "AIモデルのダウンロード完了 · 次に開くファイルからAI字幕を作成します",
+  "zh-CN": "AI 模型下载完成 · 从下次打开的文件起生成 AI 字幕",
+  "zh-TW": "AI 模型下載完成 · 從下次開啟的檔案起產生 AI 字幕"
+ },
+ "AI 모델 내려받기를 시작합니다 (VAD · 영어 · 다국어)": {
+  "en": "Starting the AI model download (VAD · English · Multilingual)",
+  "es": "Iniciando la descarga de modelos de IA (VAD · inglés · multilingüe)",
+  "ja": "AIモデルのダウンロードを開始します (VAD · 英語 · 多言語)",
+  "zh-CN": "开始下载 AI 模型（VAD · 英语 · 多语言）",
+  "zh-TW": "開始下載 AI 模型（VAD · 英語 · 多語言）"
+ },
+ "AI 모델 내려받기를 취소했습니다": {
+  "en": "AI model download cancelled",
+  "es": "Descarga de modelos de IA cancelada",
+  "ja": "AIモデルのダウンロードをキャンセルしました",
+  "zh-CN": "已取消 AI 模型下载",
+  "zh-TW": "已取消 AI 模型下載"
+ },
+ "AI 모델 내려받는 중": {
+  "en": "Downloading AI models",
+  "es": "Descargando modelos de IA",
+  "ja": "AIモデルをダウンロード中",
+  "zh-CN": "正在下载 AI 模型",
+  "zh-TW": "正在下載 AI 模型"
+ },
+ "AI 모델 설치됨 · 다음 파일부터 적용": {
+  "en": "AI models installed · applies from the next file",
+  "es": "Modelos de IA instalados · se aplican desde el siguiente archivo",
+  "ja": "AIモデルをインストール済み · 次のファイルから適用",
+  "zh-CN": "AI 模型已安装 · 从下个文件起生效",
+  "zh-TW": "AI 模型已安裝 · 從下個檔案起生效"
+ },
+ "AI 모델 없음": {
+  "en": "AI models missing",
+  "es": "Faltan modelos de IA",
+  "ja": "AIモデルがありません",
+  "zh-CN": "缺少 AI 模型",
+  "zh-TW": "缺少 AI 模型"
+ },
+ "AI 모델 없음 (%s) — 음성 자막 없이 재생합니다\nCtrl+N → AI 구성 요소에서 모델을 내려받을 수 있습니다": {
+  "en": "AI models missing (%s) — playing without speech subtitles\nYou can download the models in Ctrl+N → AI components",
+  "es": "Faltan modelos de IA (%s) — se reproduce sin subtítulos de voz\nPuedes descargar los modelos en Ctrl+N → Componentes de IA",
+  "ja": "AIモデルがありません (%s) — 音声字幕なしで再生します\nCtrl+N → AIコンポーネントでモデルをダウンロードできます",
+  "zh-CN": "缺少 AI 模型（%s）— 将在没有语音字幕的情况下播放\n可在 Ctrl+N → AI 组件中下载模型",
+  "zh-TW": "缺少 AI 模型（%s）— 將在沒有語音字幕的情況下播放\n可在 Ctrl+N → AI 元件中下載模型"
+ },
+ "AI 모델 없음 · 눌러서 설치": {
+  "en": "AI models missing · click to install",
+  "es": "Faltan modelos de IA · pulsa para instalar",
+  "ja": "AIモデルなし · クリックしてインストール",
+  "zh-CN": "缺少 AI 模型 · 点击安装",
+  "zh-TW": "缺少 AI 模型 · 點擊安裝"
+ },
+ "AI 모델 오류: %s": {
+  "en": "AI model error: %s",
+  "es": "Error de modelos de IA: %s",
+  "ja": "AIモデルのエラー: %s",
+  "zh-CN": "AI 模型错误：%s",
+  "zh-TW": "AI 模型錯誤：%s"
+ },
+ "AI 모델: %s": {
+  "en": "AI models: %s",
+  "es": "Modelos de IA: %s",
+  "ja": "AIモデル: %s",
+  "zh-CN": "AI 模型：%s",
+  "zh-TW": "AI 模型：%s"
+ },
+ "AI 모델을 내려받는 중입니다 · 재생은 그대로 진행되며 완료 후 다음에 여는 파일부터 AI 자막이 켜집니다": {
+  "en": "Downloading AI models · playback continues, and AI subtitles turn on from the next file you open after it finishes",
+  "es": "Descargando modelos de IA · la reproducción continúa y los subtítulos IA se activarán desde el siguiente archivo que abras tras terminar",
+  "ja": "AIモデルをダウンロード中です · 再生はそのまま続き、完了後に次に開くファイルからAI字幕がオンになります",
+  "zh-CN": "正在下载 AI 模型 · 播放不受影响，完成后从下次打开的文件起启用 AI 字幕",
+  "zh-TW": "正在下載 AI 模型 · 播放不受影響，完成後從下次開啟的檔案起啟用 AI 字幕"
+ },
+ "AI 엔진 사용 가능 · 다음 파일부터 적용": {
+  "en": "AI engine available · applies from the next file",
+  "es": "Motor de IA disponible · se aplica desde el siguiente archivo",
+  "ja": "AIエンジンが使用可能 · 次のファイルから適用",
+  "zh-CN": "AI 引擎可用 · 从下个文件起生效",
+  "zh-TW": "AI 引擎可用 · 從下個檔案起生效"
+ },
+ "AI 엔진 사용 불가 · 눌러서 확인": {
+  "en": "AI engine unavailable · click to check",
+  "es": "Motor de IA no disponible · pulsa para comprobar",
+  "ja": "AIエンジンが使用不可 · クリックして確認",
+  "zh-CN": "AI 引擎不可用 · 点击查看",
+  "zh-TW": "AI 引擎無法使用 · 點擊查看"
+ },
+ "AI 엔진을 사용할 수 없어 AI 자막 없이 재생합니다": {
+  "en": "The AI engine is unavailable — playing without AI subtitles",
+  "es": "El motor de IA no está disponible — se reproduce sin subtítulos IA",
+  "ja": "AIエンジンを使用できないため、AI字幕なしで再生します",
+  "zh-CN": "AI 引擎不可用 — 将在没有 AI 字幕的情况下播放",
+  "zh-TW": "AI 引擎無法使用 — 將在沒有 AI 字幕的情況下播放"
+ },
+ "AI 용어집 생성에 실패했습니다 (번역 서버 확인) — 기존 용어집을 유지합니다": {
+  "en": "AI glossary generation failed (check the translation server) — the existing glossary is kept",
+  "es": "Falló la generación del glosario con IA (revisa el servidor de traducción) — se conserva el glosario existente",
+  "ja": "AI用語集の生成に失敗しました (翻訳サーバーを確認) — 既存の用語集を維持します",
+  "zh-CN": "AI 术语表生成失败（请检查翻译服务器）— 保留现有术语表",
+  "zh-TW": "AI 術語表產生失敗（請檢查翻譯伺服器）— 保留現有術語表"
+ },
+ "AI 원문 수집 중 %d%%": {
+  "en": "AI collecting source text %d%%",
+  "es": "IA recopilando texto original %d%%",
+  "ja": "AIが原文を収集中 %d%%",
+  "zh-CN": "AI 正在收集原文 %d%%",
+  "zh-TW": "AI 正在收集原文 %d%%"
+ },
+ "AI 입력 음성: #%s %s (재생 음성으로 변경…)": {
+  "en": "AI input audio: #%s %s (change to the playing audio…)",
+  "es": "Audio de entrada de la IA: #%s %s (cambiar al audio en reproducción…)",
+  "ja": "AI入力音声: #%s %s (再生中の音声に変更…)",
+  "zh-CN": "AI 输入音轨：#%s %s（改为当前播放的音轨…）",
+  "zh-TW": "AI 輸入音軌：#%s %s（改為目前播放的音軌…）"
+ },
+ "AI 자막 꺼짐": {
+  "en": "AI subtitles off",
+  "es": "Subtítulos IA desactivados",
+  "ja": "AI字幕オフ",
+  "zh-CN": "AI 字幕已关闭",
+  "zh-TW": "AI 字幕已關閉"
+ },
+ "AI 자막 라이브러리 오류": {
+  "en": "AI subtitle library error",
+  "es": "Error en la biblioteca de subtítulos IA",
+  "ja": "AI字幕ライブラリのエラー",
+  "zh-CN": "AI 字幕库出错",
+  "zh-TW": "AI 字幕庫出錯"
+ },
+ "AI 자막 라이브러리 오류: %s": {
+  "en": "AI subtitle library error: %s",
+  "es": "Error en la biblioteca de subtítulos IA: %s",
+  "ja": "AI字幕ライブラリのエラー: %s",
+  "zh-CN": "AI 字幕库出错：%s",
+  "zh-TW": "AI 字幕庫出錯：%s"
+ },
+ "AI 자막 분석 중": {
+  "en": "AI subtitles analyzing",
+  "es": "Analizando subtítulos IA",
+  "ja": "AI字幕を解析中",
+  "zh-CN": "AI 字幕分析中",
+  "zh-TW": "AI 字幕分析中"
+ },
+ "AI 자막 엔진 대기 중": {
+  "en": "AI subtitle engine idle",
+  "es": "Motor de subtítulos IA en espera",
+  "ja": "AI字幕エンジン待機中",
+  "zh-CN": "AI 字幕引擎等待中",
+  "zh-TW": "AI 字幕引擎等待中"
+ },
+ "AI 자막 입력 소스:": {
+  "en": "AI subtitle input source:",
+  "es": "Fuente de entrada de subtítulos IA:",
+  "ja": "AI字幕の入力ソース:",
+  "zh-CN": "AI 字幕输入源：",
+  "zh-TW": "AI 字幕輸入來源："
+ },
+ "AI 자막 자동 선택: %s": {
+  "en": "Select AI subtitles automatically: %s",
+  "es": "Seleccionar automáticamente los subtítulos IA: %s",
+  "ja": "AI字幕を自動選択: %s",
+  "zh-CN": "自动选择 AI 字幕：%s",
+  "zh-TW": "自動選擇 AI 字幕：%s"
+ },
+ "AI 자막 준비 중 %.0f / %d초": {
+  "en": "Preparing AI subtitles %.0f / %d s",
+  "es": "Preparando subtítulos IA %.0f / %d s",
+  "ja": "AI字幕を準備中 %.0f / %d秒",
+  "zh-CN": "正在准备 AI 字幕 %.0f / %d 秒",
+  "zh-TW": "正在準備 AI 字幕 %.0f / %d 秒"
+ },
+ "AI 자막 준비 중... %.0f / %d초": {
+  "en": "Preparing AI subtitles... %.0f / %d s",
+  "es": "Preparando subtítulos IA... %.0f / %d s",
+  "ja": "AI字幕を準備中... %.0f / %d秒",
+  "zh-CN": "正在准备 AI 字幕... %.0f / %d 秒",
+  "zh-TW": "正在準備 AI 字幕... %.0f / %d 秒"
+ },
+ "AI 자막 준비됨 · %.0f초 앞": {
+  "en": "AI subtitles ready · %.0f s ahead",
+  "es": "Subtítulos IA listos · %.0f s por delante",
+  "ja": "AI字幕の準備完了 · %.0f秒先",
+  "zh-CN": "AI 字幕已就绪 · 领先 %.0f 秒",
+  "zh-TW": "AI 字幕已就緒 · 領先 %.0f 秒"
+ },
+ "AI 자막: %.0f초 앞까지 준비됨 (재생 %.0f초)": {
+  "en": "AI subtitles: ready %.0f s ahead (playing at %.0f s)",
+  "es": "Subtítulos IA: listos %.0f s por delante (reproduciendo en %.0f s)",
+  "ja": "AI字幕: %.0f秒先まで準備完了 (再生位置 %.0f秒)",
+  "zh-CN": "AI 字幕：已准备到前方 %.0f 秒（当前播放 %.0f 秒）",
+  "zh-TW": "AI 字幕：已準備到前方 %.0f 秒（目前播放 %.0f 秒）"
+ },
+ "AI 자막: 분석 중이거나 사용 불가": {
+  "en": "AI subtitles: analyzing or unavailable",
+  "es": "Subtítulos IA: analizando o no disponibles",
+  "ja": "AI字幕: 解析中または使用不可",
+  "zh-CN": "AI 字幕：分析中或不可用",
+  "zh-TW": "AI 字幕：分析中或無法使用"
+ },
+ "AI 작품 정보 조회 실패 — 다시 만들기로 재시도할 수 있습니다": {
+  "en": "AI work info lookup failed — you can retry with Rebuild",
+  "es": "Falló la búsqueda de información de la obra por IA — puedes reintentarlo con Regenerar",
+  "ja": "AIによる作品情報の照会に失敗しました — 「作り直す」で再試行できます",
+  "zh-CN": "AI 查询作品信息失败 — 可通过“重新生成”重试",
+  "zh-TW": "AI 查詢作品資訊失敗 — 可透過「重新產生」重試"
+ },
+ "AI 전체 번역 오류": {
+  "en": "AI full translation error",
+  "es": "Error en la traducción completa por IA",
+  "ja": "AI全体翻訳エラー",
+  "zh-CN": "AI 全片翻译出错",
+  "zh-TW": "AI 全片翻譯出錯"
+ },
+ "AI 전체 번역 완료": {
+  "en": "AI full translation done",
+  "es": "Traducción completa por IA terminada",
+  "ja": "AI全体翻訳完了",
+  "zh-CN": "AI 全片翻译完成",
+  "zh-TW": "AI 全片翻譯完成"
+ },
+ "AI 전체 번역 자막을 적용했습니다": {
+  "en": "Applied the AI full-translation subtitles",
+  "es": "Se aplicaron los subtítulos de traducción completa por IA",
+  "ja": "AI全体翻訳字幕を適用しました",
+  "zh-CN": "已应用 AI 全片翻译字幕",
+  "zh-TW": "已套用 AI 全片翻譯字幕"
+ },
+ "AI 전체 번역 중 %d%%": {
+  "en": "AI full translation in progress %d%%",
+  "es": "Traducción completa por IA %d%%",
+  "ja": "AI全体翻訳中 %d%%",
+  "zh-CN": "AI 全片翻译中 %d%%",
+  "zh-TW": "AI 全片翻譯中 %d%%"
+ },
+ "AI 정보 태그 표시: %s": {
+  "en": "Show AI info tags: %s",
+  "es": "Mostrar etiquetas de información de IA: %s",
+  "ja": "AI情報タグを表示: %s",
+  "zh-CN": "显示 AI 信息标签：%s",
+  "zh-TW": "顯示 AI 資訊標籤：%s"
+ },
+ "AI가 식별한 작품 정보 없음": {
+  "en": "No work info identified by the AI",
+  "es": "La IA no ha identificado información de la obra",
+  "ja": "AIが識別した作品情報はありません",
+  "zh-CN": "AI 未识别出作品信息",
+  "zh-TW": "AI 未識別出作品資訊"
+ },
+ "AI가 작품 정보를 조회하는 중…": {
+  "en": "The AI is looking up the work info…",
+  "es": "La IA está buscando la información de la obra…",
+  "ja": "AIが作品情報を照会しています…",
+  "zh-CN": "AI 正在查询作品信息…",
+  "zh-TW": "AI 正在查詢作品資訊…"
+ },
+ "AI가 작품 정보와 용어집을 다시 만드는 중입니다 (시간이 걸릴 수 있습니다)": {
+  "en": "The AI is rebuilding the work info and glossary (this may take a while)",
+  "es": "La IA está regenerando la información de la obra y el glosario (puede tardar un poco)",
+  "ja": "AIが作品情報と用語集を作り直しています (時間がかかる場合があります)",
+  "zh-CN": "AI 正在重新生成作品信息和术语表（可能需要一些时间）",
+  "zh-TW": "AI 正在重新產生作品資訊和術語表（可能需要一些時間）"
+ },
+ "AI로 가져오기 (영상에 시간을 맞추고 한국어로 번역)": {
+  "en": "Import with AI (sync to the video and translate into Korean)",
+  "es": "Importar con IA (sincronizar con el vídeo y traducir al coreano)",
+  "ja": "AIで取り込む (動画にタイミングを合わせて韓国語に翻訳)",
+  "zh-CN": "用 AI 导入（与视频对齐时间并翻译成韩语）",
+  "zh-TW": "用 AI 匯入（與影片對齊時間並翻譯成韓語）"
+ },
+ "AI로 다시 만들기 (직접 편집한 내용은 대체됩니다)": {
+  "en": "Rebuild with AI (manual edits will be replaced)",
+  "es": "Regenerar con IA (se reemplazarán las ediciones manuales)",
+  "ja": "AIで作り直す (手動編集の内容は置き換えられます)",
+  "zh-CN": "用 AI 重新生成（手动编辑的内容将被替换）",
+  "zh-TW": "用 AI 重新產生（手動編輯的內容將被取代）"
+ },
+ "CPU / CUDA 가속 정보: %s": {
+  "en": "CPU / CUDA acceleration info: %s",
+  "es": "Información de aceleración CPU / CUDA: %s",
+  "ja": "CPU / CUDA高速化の情報: %s",
+  "zh-CN": "CPU / CUDA 加速信息：%s",
+  "zh-TW": "CPU / CUDA 加速資訊：%s"
+ },
+ "CPU AI 엔진을 사용할 수 없어 AI 자막 없이 재생합니다": {
+  "en": "The CPU AI engine is unavailable — playing without AI subtitles",
+  "es": "El motor de IA de CPU no está disponible — se reproduce sin subtítulos IA",
+  "ja": "CPU AIエンジンを使用できないため、AI字幕なしで再生します",
+  "zh-CN": "CPU AI 引擎不可用 — 将在没有 AI 字幕的情况下播放",
+  "zh-TW": "CPU AI 引擎無法使用 — 將在沒有 AI 字幕的情況下播放"
+ },
+ "CPU 모드로 전환 (다음 파일부터)": {
+  "en": "Switch to CPU mode (from the next file)",
+  "es": "Cambiar al modo CPU (desde el siguiente archivo)",
+  "ja": "CPUモードに切り替え (次のファイルから)",
+  "zh-CN": "切换到 CPU 模式（从下个文件起）",
+  "zh-TW": "切換到 CPU 模式（從下個檔案起）"
+ },
+ "CPU 엔진: %s": {
+  "en": "CPU engine: %s",
+  "es": "Motor de CPU: %s",
+  "ja": "CPUエンジン: %s",
+  "zh-CN": "CPU 引擎：%s",
+  "zh-TW": "CPU 引擎：%s"
+ },
+ "CPU로 계속 사용합니다": {
+  "en": "Continuing on the CPU",
+  "es": "Se sigue usando la CPU",
+  "ja": "CPUで引き続き使用します",
+  "zh-CN": "将继续使用 CPU",
+  "zh-TW": "將繼續使用 CPU"
+ },
+ "CPU만": {
+  "en": "CPU only",
+  "es": "Solo CPU",
+  "ja": "CPUのみ",
+  "zh-CN": "仅 CPU",
+  "zh-TW": "僅 CPU"
+ },
+ "CPU만 — 항상 내장 CPU 엔진": {
+  "en": "CPU only — always the built-in CPU engine",
+  "es": "Solo CPU — siempre el motor de CPU integrado",
+  "ja": "CPUのみ — 常に内蔵CPUエンジン",
+  "zh-CN": "仅 CPU — 始终使用内置 CPU 引擎",
+  "zh-TW": "僅 CPU — 一律使用內建 CPU 引擎"
+ },
+ "CUDA %s 내려받는 중": {
+  "en": "Downloading CUDA %s",
+  "es": "Descargando CUDA %s",
+  "ja": "CUDA %sをダウンロード中",
+  "zh-CN": "正在下载 CUDA %s",
+  "zh-TW": "正在下載 CUDA %s"
+ },
+ "CUDA 13 Toolkit 받는 곳 열기 (설치하면 cuBLAS 다운로드 불필요)": {
+  "en": "Open the CUDA 13 Toolkit download page (no cuBLAS download needed once installed)",
+  "es": "Abrir la descarga de CUDA 13 Toolkit (con él instalado no hace falta descargar cuBLAS)",
+  "ja": "CUDA 13 Toolkitの入手先を開く (インストールすればcuBLASのダウンロードは不要)",
+  "zh-CN": "打开 CUDA 13 Toolkit 下载页面（安装后无需下载 cuBLAS）",
+  "zh-TW": "開啟 CUDA 13 Toolkit 下載頁面（安裝後無需下載 cuBLAS）"
+ },
+ "CUDA 13 Toolkit을 설치하면 다운로드 없이 GPU를 사용합니다 (또는 cuBLAS 약 %s 받기)": {
+  "en": "Install the CUDA 13 Toolkit to use the GPU without downloading (or download cuBLAS, about %s)",
+  "es": "Instala el CUDA 13 Toolkit para usar la GPU sin descargar (o descarga cuBLAS, unos %s)",
+  "ja": "CUDA 13 ToolkitをインストールするとダウンロードなしでGPUを使用できます (またはcuBLAS 約%sをダウンロード)",
+  "zh-CN": "安装 CUDA 13 Toolkit 后无需下载即可使用 GPU（或下载 cuBLAS，约 %s）",
+  "zh-TW": "安裝 CUDA 13 Toolkit 後無需下載即可使用 GPU（或下載 cuBLAS，約 %s）"
+ },
+ "CUDA Toolkit %s 사용": {
+  "en": "Using CUDA Toolkit %s",
+  "es": "Usando CUDA Toolkit %s",
+  "ja": "CUDA Toolkit %sを使用",
+  "zh-CN": "使用 CUDA Toolkit %s",
+  "zh-TW": "使用 CUDA Toolkit %s"
+ },
+ "CUDA Toolkit %s: 감지 · %s": {
+  "en": "CUDA Toolkit %s: detected · %s",
+  "es": "CUDA Toolkit %s: detectado · %s",
+  "ja": "CUDA Toolkit %s: 検出 · %s",
+  "zh-CN": "CUDA Toolkit %s：已检测到 · %s",
+  "zh-TW": "CUDA Toolkit %s：已偵測到 · %s"
+ },
+ "CUDA Toolkit 13: 설치되어 있지 않음 (설치하면 cuBLAS를 받지 않아도 GPU 사용)": {
+  "en": "CUDA Toolkit 13: not installed (installing it lets the GPU be used without downloading cuBLAS)",
+  "es": "CUDA Toolkit 13: no instalado (al instalarlo se puede usar la GPU sin descargar cuBLAS)",
+  "ja": "CUDA Toolkit 13: インストールされていません (インストールするとcuBLASをダウンロードしなくてもGPUを使用できます)",
+  "zh-CN": "CUDA Toolkit 13：未安装（安装后无需下载 cuBLAS 即可使用 GPU）",
+  "zh-TW": "CUDA Toolkit 13：未安裝（安裝後無需下載 cuBLAS 即可使用 GPU）"
+ },
+ "CUDA Toolkit 사용": {
+  "en": "Using CUDA Toolkit",
+  "es": "Usando CUDA Toolkit",
+  "ja": "CUDA Toolkitを使用",
+  "zh-CN": "使用 CUDA Toolkit",
+  "zh-TW": "使用 CUDA Toolkit"
+ },
+ "CUDA 가속 구성 요소 내려받기 (%s)": {
+  "en": "Download CUDA acceleration components (%s)",
+  "es": "Descargar componentes de aceleración CUDA (%s)",
+  "ja": "CUDA高速化コンポーネントをダウンロード (%s)",
+  "zh-CN": "下载 CUDA 加速组件（%s）",
+  "zh-TW": "下載 CUDA 加速元件（%s）"
+ },
+ "CUDA 가속 구성 요소 설치 완료 · 다음에 여는 파일부터 적용됩니다": {
+  "en": "CUDA acceleration components installed · applies from the next file you open",
+  "es": "Componentes de aceleración CUDA instalados · se aplican desde el siguiente archivo que abras",
+  "ja": "CUDA高速化コンポーネントのインストール完了 · 次に開くファイルから適用",
+  "zh-CN": "CUDA 加速组件安装完成 · 从下次打开的文件起生效",
+  "zh-TW": "CUDA 加速元件安裝完成 · 從下次開啟的檔案起生效"
+ },
+ "CUDA 가속: %s": {
+  "en": "CUDA acceleration: %s",
+  "es": "Aceleración CUDA: %s",
+  "ja": "CUDA高速化: %s",
+  "zh-CN": "CUDA 加速：%s",
+  "zh-TW": "CUDA 加速：%s"
+ },
+ "CUDA 구성 요소 내려받기 실패": {
+  "en": "CUDA component download failed",
+  "es": "Falló la descarga del componente CUDA",
+  "ja": "CUDAコンポーネントのダウンロードに失敗しました",
+  "zh-CN": "CUDA 组件下载失败",
+  "zh-TW": "CUDA 元件下載失敗"
+ },
+ "CUDA 구성 요소 내려받기를 취소하는 중...": {
+  "en": "Cancelling the CUDA component download...",
+  "es": "Cancelando la descarga del componente CUDA...",
+  "ja": "CUDAコンポーネントのダウンロードをキャンセルしています...",
+  "zh-CN": "正在取消 CUDA 组件下载...",
+  "zh-TW": "正在取消 CUDA 元件下載..."
+ },
+ "CUDA 구성 요소 내려받기를 취소했습니다 (받은 파일은 유지됩니다)": {
+  "en": "CUDA component download cancelled (downloaded files are kept)",
+  "es": "Descarga del componente CUDA cancelada (los archivos descargados se conservan)",
+  "ja": "CUDAコンポーネントのダウンロードをキャンセルしました (ダウンロード済みのファイルは保持されます)",
+  "zh-CN": "已取消 CUDA 组件下载（已下载的文件会保留）",
+  "zh-TW": "已取消 CUDA 元件下載（已下載的檔案會保留）"
+ },
+ "CUDA 구성 요소 내려받는 중": {
+  "en": "Downloading CUDA components",
+  "es": "Descargando componentes CUDA",
+  "ja": "CUDAコンポーネントをダウンロード中",
+  "zh-CN": "正在下载 CUDA 组件",
+  "zh-TW": "正在下載 CUDA 元件"
+ },
+ "CUDA 구성 요소 목록(components\\catalog.json)을 읽을 수 없습니다%s\nNanumPlayer를 다시 설치하세요": {
+  "en": "The CUDA component list (components\\catalog.json) cannot be read%s\nReinstall NanumPlayer",
+  "es": "No se puede leer la lista de componentes CUDA (components\\catalog.json)%s\nReinstala NanumPlayer",
+  "ja": "CUDAコンポーネント一覧 (components\\catalog.json) を読み取れません%s\nNanumPlayerを再インストールしてください",
+  "zh-CN": "无法读取 CUDA 组件列表（components\\catalog.json）%s\n请重新安装 NanumPlayer",
+  "zh-TW": "無法讀取 CUDA 元件清單（components\\catalog.json）%s\n請重新安裝 NanumPlayer"
+ },
+ "CUDA 구성 요소 목록(components\\catalog.json)을 읽을 수 없어 내려받을 수 없습니다%s — AI 자막 없이 재생합니다\nNanumPlayer를 다시 설치하세요": {
+  "en": "The CUDA component list (components\\catalog.json) cannot be read, so nothing can be downloaded%s — playing without AI subtitles\nReinstall NanumPlayer",
+  "es": "No se puede leer la lista de componentes CUDA (components\\catalog.json), por lo que no se puede descargar%s — se reproduce sin subtítulos IA\nReinstala NanumPlayer",
+  "ja": "CUDAコンポーネント一覧 (components\\catalog.json) を読み取れずダウンロードできません%s — AI字幕なしで再生します\nNanumPlayerを再インストールしてください",
+  "zh-CN": "无法读取 CUDA 组件列表（components\\catalog.json），因此无法下载%s — 将在没有 AI 字幕的情况下播放\n请重新安装 NanumPlayer",
+  "zh-TW": "無法讀取 CUDA 元件清單（components\\catalog.json），因此無法下載%s — 將在沒有 AI 字幕的情況下播放\n請重新安裝 NanumPlayer"
+ },
+ "CUDA 구성 요소 목록을 읽을 수 없어 내려받을 수 없습니다 — NanumPlayer를 다시 설치하세요": {
+  "en": "The CUDA component list cannot be read, so nothing can be downloaded — reinstall NanumPlayer",
+  "es": "No se puede leer la lista de componentes CUDA, por lo que no se puede descargar — reinstala NanumPlayer",
+  "ja": "CUDAコンポーネント一覧を読み取れずダウンロードできません — NanumPlayerを再インストールしてください",
+  "zh-CN": "无法读取 CUDA 组件列表，因此无法下载 — 请重新安装 NanumPlayer",
+  "zh-TW": "無法讀取 CUDA 元件清單，因此無法下載 — 請重新安裝 NanumPlayer"
+ },
+ "CUDA 구성 요소 오류: %s": {
+  "en": "CUDA component error: %s",
+  "es": "Error de componentes CUDA: %s",
+  "ja": "CUDAコンポーネントのエラー: %s",
+  "zh-CN": "CUDA 组件错误：%s",
+  "zh-TW": "CUDA 元件錯誤：%s"
+ },
+ "CUDA 구성 요소 저장 위치: %s": {
+  "en": "CUDA component storage location: %s",
+  "es": "Ubicación de los componentes CUDA: %s",
+  "ja": "CUDAコンポーネントの保存場所: %s",
+  "zh-CN": "CUDA 组件存储位置：%s",
+  "zh-TW": "CUDA 元件儲存位置：%s"
+ },
+ "CUDA 구성 요소: %s": {
+  "en": "CUDA components: %s",
+  "es": "Componentes CUDA: %s",
+  "ja": "CUDAコンポーネント: %s",
+  "zh-CN": "CUDA 组件：%s",
+  "zh-TW": "CUDA 元件：%s"
+ },
+ "CUDA 구성 요소가 이미 설치되어 있습니다": {
+  "en": "The CUDA components are already installed",
+  "es": "Los componentes CUDA ya están instalados",
+  "ja": "CUDAコンポーネントはすでにインストールされています",
+  "zh-CN": "CUDA 组件已安装",
+  "zh-TW": "CUDA 元件已安裝"
+ },
+ "CUDA 구성 요소가 이미 설치되어 있습니다 (cuBLAS는 CUDA Toolkit %s 사용)": {
+  "en": "The CUDA components are already installed (cuBLAS uses CUDA Toolkit %s)",
+  "es": "Los componentes CUDA ya están instalados (cuBLAS usa CUDA Toolkit %s)",
+  "ja": "CUDAコンポーネントはすでにインストールされています (cuBLASはCUDA Toolkit %sを使用)",
+  "zh-CN": "CUDA 组件已安装（cuBLAS 使用 CUDA Toolkit %s）",
+  "zh-TW": "CUDA 元件已安裝（cuBLAS 使用 CUDA Toolkit %s）"
+ },
+ "CUDA 구성 요소를 내려받는 중입니다 · 재생은 그대로 진행되며 완료 후 다음에 여는 파일부터 적용됩니다": {
+  "en": "Downloading CUDA components · playback continues and they apply from the next file you open after it finishes",
+  "es": "Descargando componentes CUDA · la reproducción continúa y se aplicarán desde el siguiente archivo que abras tras terminar",
+  "ja": "CUDAコンポーネントをダウンロード中です · 再生はそのまま続き、完了後に次に開くファイルから適用されます",
+  "zh-CN": "正在下载 CUDA 组件 · 播放不受影响，完成后从下次打开的文件起生效",
+  "zh-TW": "正在下載 CUDA 元件 · 播放不受影響，完成後從下次開啟的檔案起生效"
+ },
+ "CUDA 구성 요소를 다시 받아도 해결되지 않습니다. 가속 모드를 자동/CPU만으로 쓰세요": {
+  "en": "Downloading the CUDA components again will not fix this. Use the Automatic or CPU only acceleration mode",
+  "es": "Volver a descargar los componentes CUDA no lo soluciona. Usa el modo de aceleración Automático o Solo CPU",
+  "ja": "CUDAコンポーネントを再ダウンロードしても解決しません。高速化モードを「自動」または「CPUのみ」にしてください",
+  "zh-CN": "重新下载 CUDA 组件也无法解决。请将加速模式设为“自动”或“仅 CPU”",
+  "zh-TW": "重新下載 CUDA 元件也無法解決。請將加速模式設為「自動」或「僅 CPU」"
+ },
+ "CUDA 구성 요소를 설치했지만 이 PC에서는 CUDA를 사용할 수 없습니다": {
+  "en": "The CUDA components were installed, but CUDA cannot be used on this PC",
+  "es": "Se instalaron los componentes CUDA, pero no se puede usar CUDA en este PC",
+  "ja": "CUDAコンポーネントをインストールしましたが、このPCではCUDAを使用できません",
+  "zh-CN": "已安装 CUDA 组件，但此电脑无法使用 CUDA",
+  "zh-TW": "已安裝 CUDA 元件，但此電腦無法使用 CUDA"
+ },
+ "CUDA 엔진": {
+  "en": "CUDA engine",
+  "es": "Motor CUDA",
+  "ja": "CUDAエンジン",
+  "zh-CN": "CUDA 引擎",
+  "zh-TW": "CUDA 引擎"
+ },
+ "CUDA 엔진 복구 필요 — NanumPlayer를 다시 설치하세요": {
+  "en": "The CUDA engine needs repair — reinstall NanumPlayer",
+  "es": "El motor CUDA necesita reparación — reinstala NanumPlayer",
+  "ja": "CUDAエンジンの修復が必要です — NanumPlayerを再インストールしてください",
+  "zh-CN": "CUDA 引擎需要修复 — 请重新安装 NanumPlayer",
+  "zh-TW": "CUDA 引擎需要修復 — 請重新安裝 NanumPlayer"
+ },
+ "CUDA 필수": {
+  "en": "CUDA required",
+  "es": "CUDA obligatorio",
+  "ja": "CUDA必須",
+  "zh-CN": "必须 CUDA",
+  "zh-TW": "必須 CUDA"
+ },
+ "CUDA 필수 — 쓸 수 없으면 AI 자막을 만들지 않음": {
+  "en": "CUDA required — no AI subtitles if it is unavailable",
+  "es": "CUDA obligatorio — sin subtítulos IA si no está disponible",
+  "ja": "CUDA必須 — 使えない場合はAI字幕を作成しない",
+  "zh-CN": "必须 CUDA — 不可用时不生成 AI 字幕",
+  "zh-TW": "必須 CUDA — 不可用時不產生 AI 字幕"
+ },
+ "CUDA 필수 모드: %s": {
+  "en": "CUDA required mode: %s",
+  "es": "Modo CUDA obligatorio: %s",
+  "ja": "CUDA必須モード: %s",
+  "zh-CN": "必须 CUDA 模式：%s",
+  "zh-TW": "必須 CUDA 模式：%s"
+ },
+ "CUDA 필수 모드에서는 AI 자막이 꺼집니다 — Ctrl+N → AI 구성 요소에서 CPU 모드로 바꾸세요": {
+  "en": "In CUDA required mode AI subtitles are turned off — switch to CPU mode in Ctrl+N → AI components",
+  "es": "En modo CUDA obligatorio los subtítulos IA se desactivan — cambia al modo CPU en Ctrl+N → Componentes de IA",
+  "ja": "CUDA必須モードではAI字幕がオフになります — Ctrl+N → AIコンポーネントでCPUモードに切り替えてください",
+  "zh-CN": "在必须 CUDA 模式下 AI 字幕会关闭 — 请在 Ctrl+N → AI 组件中切换到 CPU 模式",
+  "zh-TW": "在必須 CUDA 模式下 AI 字幕會關閉 — 請在 Ctrl+N → AI 元件中切換到 CPU 模式"
+ },
+ "CUDA 필요 · AI 꺼짐 · 눌러서 설치": {
+  "en": "CUDA needed · AI off · click to install",
+  "es": "Se necesita CUDA · IA desactivada · pulsa para instalar",
+  "ja": "CUDAが必要 · AIオフ · クリックしてインストール",
+  "zh-CN": "需要 CUDA · AI 已关闭 · 点击安装",
+  "zh-TW": "需要 CUDA · AI 已關閉 · 點擊安裝"
+ },
+ "CUDA/엔진 안내 팝업: %s": {
+  "en": "CUDA/engine notice popup: %s",
+  "es": "Aviso emergente de CUDA/motor: %s",
+  "ja": "CUDA/エンジンの案内ポップアップ: %s",
+  "zh-CN": "CUDA/引擎提示弹窗：%s",
+  "zh-TW": "CUDA/引擎提示彈出視窗：%s"
+ },
+ "CUDA를 사용할 수 없음": {
+  "en": "CUDA is unavailable",
+  "es": "CUDA no está disponible",
+  "ja": "CUDAを使用できません",
+  "zh-CN": "无法使用 CUDA",
+  "zh-TW": "無法使用 CUDA"
+ },
+ "Ctrl+N → AI 구성 요소에서 '자동' 모드로 바꾸면 CUDA로 만들 수 있습니다": {
+  "en": "Switch to Automatic mode in Ctrl+N → AI components to use CUDA",
+  "es": "Cambia al modo Automático en Ctrl+N → Componentes de IA para usar CUDA",
+  "ja": "Ctrl+N → AIコンポーネントで「自動」モードに切り替えるとCUDAで作成できます",
+  "zh-CN": "在 Ctrl+N → AI 组件中切换到“自动”模式即可使用 CUDA",
+  "zh-TW": "在 Ctrl+N → AI 元件中切換到「自動」模式即可使用 CUDA"
+ },
+ "Ctrl+N → AI 구성 요소에서 CPU 모드로 바꿀 수 있습니다": {
+  "en": "You can switch to CPU mode in Ctrl+N → AI components",
+  "es": "Puedes cambiar al modo CPU en Ctrl+N → Componentes de IA",
+  "ja": "Ctrl+N → AIコンポーネントでCPUモードに切り替えられます",
+  "zh-CN": "可在 Ctrl+N → AI 组件中切换到 CPU 模式",
+  "zh-TW": "可在 Ctrl+N → AI 元件中切換到 CPU 模式"
+ },
+ "Ctrl+N → AI 구성 요소에서 다시 시도할 수 있습니다": {
+  "en": "You can try again in Ctrl+N → AI components",
+  "es": "Puedes reintentarlo en Ctrl+N → Componentes de IA",
+  "ja": "Ctrl+N → AIコンポーネントで再試行できます",
+  "zh-CN": "可在 Ctrl+N → AI 组件中重试",
+  "zh-TW": "可在 Ctrl+N → AI 元件中重試"
+ },
+ "Ctrl+N → AI 구성 요소에서 다시 시도할 수 있습니다 (받은 파일은 유지됩니다)": {
+  "en": "You can try again in Ctrl+N → AI components (downloaded files are kept)",
+  "es": "Puedes reintentarlo en Ctrl+N → Componentes de IA (los archivos descargados se conservan)",
+  "ja": "Ctrl+N → AIコンポーネントで再試行できます (ダウンロード済みのファイルは保持されます)",
+  "zh-CN": "可在 Ctrl+N → AI 组件中重试（已下载的文件会保留）",
+  "zh-TW": "可在 Ctrl+N → AI 元件中重試（已下載的檔案會保留）"
+ },
+ "Ctrl+N → YouTube에서 구성 요소를 내려받으세요": {
+  "en": "Download the components in Ctrl+N → YouTube",
+  "es": "Descarga los componentes en Ctrl+N → YouTube",
+  "ja": "Ctrl+N → YouTubeでコンポーネントをダウンロードしてください",
+  "zh-CN": "请在 Ctrl+N → YouTube 中下载组件",
+  "zh-TW": "請在 Ctrl+N → YouTube 中下載元件"
+ },
+ "Ctrl+N → YouTube에서 다시 시도할 수 있습니다": {
+  "en": "You can try again in Ctrl+N → YouTube",
+  "es": "Puedes reintentarlo en Ctrl+N → YouTube",
+  "ja": "Ctrl+N → YouTubeで再試行できます",
+  "zh-CN": "可在 Ctrl+N → YouTube 中重试",
+  "zh-TW": "可在 Ctrl+N → YouTube 中重試"
+ },
+ "Ctrl+N → 저장 자막 다시 조회 / 새로 생성": {
+  "en": "Ctrl+N → Look up saved subtitles again / Regenerate",
+  "es": "Ctrl+N → Buscar de nuevo los subtítulos guardados / Regenerar",
+  "ja": "Ctrl+N → 保存字幕を再照会 / 新規生成",
+  "zh-CN": "Ctrl+N → 重新查询已保存字幕 / 重新生成",
+  "zh-TW": "Ctrl+N → 重新查詢已儲存字幕 / 重新產生"
+ },
+ "Ctrl+N → 저장된 원문으로 다시 번역": {
+  "en": "Ctrl+N → Re-translate from saved source text",
+  "es": "Ctrl+N → Volver a traducir desde el texto original guardado",
+  "ja": "Ctrl+N → 保存された原文から再翻訳",
+  "zh-CN": "Ctrl+N → 用已保存的原文重新翻译",
+  "zh-TW": "Ctrl+N → 用已儲存的原文重新翻譯"
+ },
+ "Ctrl+N: AI 자막 설정": {
+  "en": "Ctrl+N: AI subtitle settings",
+  "es": "Ctrl+N: ajustes de subtítulos IA",
+  "ja": "Ctrl+N: AI字幕の設定",
+  "zh-CN": "Ctrl+N: AI 字幕设置",
+  "zh-TW": "Ctrl+N: AI 字幕設定"
+ },
+ "GPU 가속 구성 요소가 필요합니다": {
+  "en": "GPU acceleration components are required",
+  "es": "Se necesitan componentes de aceleración por GPU",
+  "ja": "GPU高速化コンポーネントが必要です",
+  "zh-CN": "需要 GPU 加速组件",
+  "zh-TW": "需要 GPU 加速元件"
+ },
+ "GPU 가속 없이 CPU로 AI 자막을 만듭니다\n%s": {
+  "en": "Making AI subtitles on the CPU without GPU acceleration\n%s",
+  "es": "Se crean los subtítulos IA con la CPU, sin aceleración por GPU\n%s",
+  "ja": "GPU高速化なしでCPUを使ってAI字幕を作成します\n%s",
+  "zh-CN": "不使用 GPU 加速，将用 CPU 生成 AI 字幕\n%s",
+  "zh-TW": "不使用 GPU 加速，將用 CPU 產生 AI 字幕\n%s"
+ },
+ "GPU/드라이버가 CUDA 13 엔진을 지원하지 않음": {
+  "en": "The GPU/driver does not support the CUDA 13 engine",
+  "es": "La GPU/controlador no admite el motor CUDA 13",
+  "ja": "GPU/ドライバーがCUDA 13エンジンに対応していません",
+  "zh-CN": "GPU/驱动不支持 CUDA 13 引擎",
+  "zh-TW": "GPU/驅動程式不支援 CUDA 13 引擎"
+ },
+ "GPU를 쓸 수 있는 PC인데 CPU로 인식 중입니다 — 눌러서 원인 확인": {
+  "en": "This PC can use a GPU but recognition is running on the CPU — click to see why",
+  "es": "Este PC puede usar GPU, pero el reconocimiento se ejecuta en la CPU — pulsa para ver el motivo",
+  "ja": "GPUを使えるPCですがCPUで認識中です — クリックして原因を確認",
+  "zh-CN": "此电脑可使用 GPU，但正在用 CPU 识别 — 点击查看原因",
+  "zh-TW": "此電腦可使用 GPU，但正在用 CPU 辨識 — 點擊查看原因"
+ },
+ "JavaScript 런타임(deno)": {
+  "en": "JavaScript runtime (deno)",
+  "es": "Entorno de ejecución de JavaScript (deno)",
+  "ja": "JavaScriptランタイム (deno)",
+  "zh-CN": "JavaScript 运行时（deno）",
+  "zh-TW": "JavaScript 執行階段（deno）"
+ },
+ "Jimaku · 일본어 (애니메이션)": {
+  "en": "Jimaku · Japanese (anime)",
+  "es": "Jimaku · japonés (anime)",
+  "ja": "Jimaku · 日本語 (アニメ)",
+  "zh-CN": "Jimaku · 日语（动画）",
+  "zh-TW": "Jimaku · 日語（動畫）"
+ },
+ "NVIDIA CUDA 라이선스 (cuBLAS 내려받기용): %s": {
+  "en": "NVIDIA CUDA license (for the cuBLAS download): %s",
+  "es": "Licencia de NVIDIA CUDA (para la descarga de cuBLAS): %s",
+  "ja": "NVIDIA CUDAライセンス (cuBLASダウンロード用): %s",
+  "zh-CN": "NVIDIA CUDA 许可证（用于下载 cuBLAS）：%s",
+  "zh-TW": "NVIDIA CUDA 授權條款（用於下載 cuBLAS）：%s"
+ },
+ "NVIDIA CUDA 라이선스에 동의해야 내려받을 수 있습니다": {
+  "en": "You must accept the NVIDIA CUDA license before downloading",
+  "es": "Debes aceptar la licencia de NVIDIA CUDA para poder descargar",
+  "ja": "ダウンロードするにはNVIDIA CUDAライセンスへの同意が必要です",
+  "zh-CN": "需要同意 NVIDIA CUDA 许可证才能下载",
+  "zh-TW": "需要同意 NVIDIA CUDA 授權條款才能下載"
+ },
+ "NVIDIA 드라이버를 찾을 수 없습니다": {
+  "en": "The NVIDIA driver was not found",
+  "es": "No se encontró el controlador de NVIDIA",
+  "ja": "NVIDIAドライバーが見つかりません",
+  "zh-CN": "找不到 NVIDIA 驱动",
+  "zh-TW": "找不到 NVIDIA 驅動程式"
+ },
+ "NVIDIA 드라이버를 찾을 수 없어 CUDA를 쓸 수 없습니다 — AI 자막 없이 재생합니다\nNVIDIA 드라이버를 설치하세요": {
+  "en": "The NVIDIA driver was not found, so CUDA cannot be used — playing without AI subtitles\nInstall the NVIDIA driver",
+  "es": "No se encontró el controlador de NVIDIA, así que no se puede usar CUDA — se reproduce sin subtítulos IA\nInstala el controlador de NVIDIA",
+  "ja": "NVIDIAドライバーが見つからずCUDAを使用できません — AI字幕なしで再生します\nNVIDIAドライバーをインストールしてください",
+  "zh-CN": "找不到 NVIDIA 驱动，无法使用 CUDA — 将在没有 AI 字幕的情况下播放\n请安装 NVIDIA 驱动",
+  "zh-TW": "找不到 NVIDIA 驅動程式，無法使用 CUDA — 將在沒有 AI 字幕的情況下播放\n請安裝 NVIDIA 驅動程式"
+ },
+ "NanumPlayer 설정:": {
+  "en": "NanumPlayer settings:",
+  "es": "Ajustes de NanumPlayer:",
+  "ja": "NanumPlayer の設定:",
+  "zh-CN": "NanumPlayer 设置：",
+  "zh-TW": "NanumPlayer 設定："
+ },
+ "NanumPlayer를 다시 설치하세요 (nanum_ai_cpu.dll 확인)": {
+  "en": "Reinstall NanumPlayer (check nanum_ai_cpu.dll)",
+  "es": "Reinstala NanumPlayer (comprueba nanum_ai_cpu.dll)",
+  "ja": "NanumPlayerを再インストールしてください (nanum_ai_cpu.dllを確認)",
+  "zh-CN": "请重新安装 NanumPlayer（检查 nanum_ai_cpu.dll）",
+  "zh-TW": "請重新安裝 NanumPlayer（檢查 nanum_ai_cpu.dll）"
+ },
+ "NanumPlayer를 다시 설치해 CPU 엔진을 복구하세요": {
+  "en": "Reinstall NanumPlayer to repair the CPU engine",
+  "es": "Reinstala NanumPlayer para reparar el motor de CPU",
+  "ja": "NanumPlayerを再インストールしてCPUエンジンを修復してください",
+  "zh-CN": "请重新安装 NanumPlayer 以修复 CPU 引擎",
+  "zh-TW": "請重新安裝 NanumPlayer 以修復 CPU 引擎"
+ },
+ "NanumPlayer의 disc 폴더가 누락되었거나 손상되었습니다. 배포본을 다시 설치하세요.": {
+  "en": "NanumPlayer's disc folder is missing or damaged. Reinstall the distribution.",
+  "es": "Falta la carpeta disc de NanumPlayer o está dañada. Reinstala la distribución.",
+  "ja": "NanumPlayerのdiscフォルダーが見つからないか破損しています。配布版を再インストールしてください。",
+  "zh-CN": "NanumPlayer 的 disc 文件夹缺失或已损坏。请重新安装发行版。",
+  "zh-TW": "NanumPlayer 的 disc 資料夾遺失或已損毀。請重新安裝發行版。"
+ },
+ "OCR 언어 팩 설치 창을 열었습니다 — 허용하면 설치가 진행되고, 다음에 여는 파일부터 적용됩니다": {
+  "en": "The OCR language pack installer window is open — allow it to install; it applies from the next file you open",
+  "es": "Se abrió la ventana de instalación del paquete de idioma OCR — permítela para instalar; se aplica desde el siguiente archivo que abras",
+  "ja": "OCR言語パックのインストールウィンドウを開きました — 許可するとインストールが進み、次に開くファイルから適用されます",
+  "zh-CN": "已打开 OCR 语言包安装窗口 — 允许后开始安装，从下次打开的文件起生效",
+  "zh-TW": "已開啟 OCR 語言套件安裝視窗 — 允許後開始安裝，從下次開啟的檔案起生效"
+ },
+ "Ollama 모델 목록을 불러오는 중...": {
+  "en": "Loading the Ollama model list...",
+  "es": "Cargando la lista de modelos de Ollama...",
+  "ja": "Ollamaのモデル一覧を読み込み中...",
+  "zh-CN": "正在加载 Ollama 模型列表...",
+  "zh-TW": "正在載入 Ollama 模型清單..."
+ },
+ "Ollama에 연결하지 못했습니다 (%s) — 모델 이름을 직접 입력하세요": {
+  "en": "Could not connect to Ollama (%s) — type the model name yourself",
+  "es": "No se pudo conectar con Ollama (%s) — escribe el nombre del modelo",
+  "ja": "Ollamaに接続できませんでした (%s) — モデル名を直接入力してください",
+  "zh-CN": "无法连接到 Ollama（%s）— 请手动输入模型名称",
+  "zh-TW": "無法連線到 Ollama（%s）— 請手動輸入模型名稱"
+ },
+ "OpenSubtitles · 영어": {
+  "en": "OpenSubtitles · English",
+  "es": "OpenSubtitles · inglés",
+  "ja": "OpenSubtitles · 英語",
+  "zh-CN": "OpenSubtitles · 英语",
+  "zh-TW": "OpenSubtitles · 英語"
+ },
+ "OpenSubtitles · 일본어": {
+  "en": "OpenSubtitles · Japanese",
+  "es": "OpenSubtitles · japonés",
+  "ja": "OpenSubtitles · 日本語",
+  "zh-CN": "OpenSubtitles · 日语",
+  "zh-TW": "OpenSubtitles · 日語"
+ },
+ "OpenSubtitles · 한국어": {
+  "en": "OpenSubtitles · Korean",
+  "es": "OpenSubtitles · coreano",
+  "ja": "OpenSubtitles · 韓国語",
+  "zh-CN": "OpenSubtitles · 韩语",
+  "zh-TW": "OpenSubtitles · 韓語"
+ },
+ "Referer가 올바르지 않습니다": {
+  "en": "The Referer is invalid",
+  "es": "El Referer no es válido",
+  "ja": "Refererが正しくありません",
+  "zh-CN": "Referer 不正确",
+  "zh-TW": "Referer 不正確"
+ },
+ "User-Agent가 올바르지 않습니다": {
+  "en": "The User-Agent is invalid",
+  "es": "El User-Agent no es válido",
+  "ja": "User-Agentが正しくありません",
+  "zh-CN": "User-Agent 不正确",
+  "zh-TW": "User-Agent 不正確"
+ },
+ "YouTube · 시크릿 웹:": {
+  "en": "YouTube · Private web:",
+  "es": "YouTube · Web privada:",
+  "ja": "YouTube · プライベートWeb:",
+  "zh-CN": "YouTube · 隐私网页：",
+  "zh-TW": "YouTube · 私密網頁："
+ },
+ "YouTube 구성 요소 내려받기": {
+  "en": "Download the YouTube components",
+  "es": "Descargar los componentes de YouTube",
+  "ja": "YouTubeコンポーネントをダウンロード",
+  "zh-CN": "下载 YouTube 组件",
+  "zh-TW": "下載 YouTube 元件"
+ },
+ "YouTube 구성 요소 내려받기 실패": {
+  "en": "YouTube component download failed",
+  "es": "Falló la descarga de los componentes de YouTube",
+  "ja": "YouTubeコンポーネントのダウンロードに失敗しました",
+  "zh-CN": "YouTube 组件下载失败",
+  "zh-TW": "YouTube 元件下載失敗"
+ },
+ "YouTube 구성 요소 내려받기를 시작합니다": {
+  "en": "Starting the YouTube component download",
+  "es": "Iniciando la descarga de los componentes de YouTube",
+  "ja": "YouTubeコンポーネントのダウンロードを開始します",
+  "zh-CN": "开始下载 YouTube 组件",
+  "zh-TW": "開始下載 YouTube 元件"
+ },
+ "YouTube 구성 요소 내려받기를 시작합니다 (%s)": {
+  "en": "Starting the YouTube component download (%s)",
+  "es": "Iniciando la descarga de los componentes de YouTube (%s)",
+  "ja": "YouTubeコンポーネントのダウンロードを開始します (%s)",
+  "zh-CN": "开始下载 YouTube 组件（%s）",
+  "zh-TW": "開始下載 YouTube 元件（%s）"
+ },
+ "YouTube 구성 요소 내려받기를 취소하는 중...": {
+  "en": "Cancelling the YouTube component download...",
+  "es": "Cancelando la descarga de los componentes de YouTube...",
+  "ja": "YouTubeコンポーネントのダウンロードをキャンセルしています...",
+  "zh-CN": "正在取消 YouTube 组件下载...",
+  "zh-TW": "正在取消 YouTube 元件下載..."
+ },
+ "YouTube 구성 요소 내려받기를 취소했습니다": {
+  "en": "YouTube component download cancelled",
+  "es": "Descarga de los componentes de YouTube cancelada",
+  "ja": "YouTubeコンポーネントのダウンロードをキャンセルしました",
+  "zh-CN": "已取消 YouTube 组件下载",
+  "zh-TW": "已取消 YouTube 元件下載"
+ },
+ "YouTube 구성 요소 업데이트를 시작합니다": {
+  "en": "Starting the YouTube component update",
+  "es": "Iniciando la actualización de los componentes de YouTube",
+  "ja": "YouTubeコンポーネントの更新を開始します",
+  "zh-CN": "开始更新 YouTube 组件",
+  "zh-TW": "開始更新 YouTube 元件"
+ },
+ "YouTube 구성 요소 업데이트를 시작합니다 (%s)": {
+  "en": "Starting the YouTube component update (%s)",
+  "es": "Iniciando la actualización de los componentes de YouTube (%s)",
+  "ja": "YouTubeコンポーネントの更新を開始します (%s)",
+  "zh-CN": "开始更新 YouTube 组件（%s）",
+  "zh-TW": "開始更新 YouTube 元件（%s）"
+ },
+ "YouTube 구성 요소 오류: %s": {
+  "en": "YouTube component error: %s",
+  "es": "Error en los componentes de YouTube: %s",
+  "ja": "YouTubeコンポーネントのエラー: %s",
+  "zh-CN": "YouTube 组件错误：%s",
+  "zh-TW": "YouTube 元件錯誤：%s"
+ },
+ "YouTube 구성 요소 준비 완료": {
+  "en": "YouTube components are ready",
+  "es": "Los componentes de YouTube están listos",
+  "ja": "YouTubeコンポーネントの準備完了",
+  "zh-CN": "YouTube 组件已准备就绪",
+  "zh-TW": "YouTube 元件已準備就緒"
+ },
+ "YouTube 구성 요소 준비 완료 · yt-dlp %s": {
+  "en": "YouTube components are ready · yt-dlp %s",
+  "es": "Los componentes de YouTube están listos · yt-dlp %s",
+  "ja": "YouTubeコンポーネントの準備完了 · yt-dlp %s",
+  "zh-CN": "YouTube 组件已准备就绪 · yt-dlp %s",
+  "zh-TW": "YouTube 元件已準備就緒 · yt-dlp %s"
+ },
+ "YouTube 구성 요소: %s": {
+  "en": "YouTube components: %s",
+  "es": "Componentes de YouTube: %s",
+  "ja": "YouTubeコンポーネント: %s",
+  "zh-CN": "YouTube 组件：%s",
+  "zh-TW": "YouTube 元件：%s"
+ },
+ "YouTube 구성 요소가 필요합니다": {
+  "en": "YouTube components are required",
+  "es": "Se necesitan los componentes de YouTube",
+  "ja": "YouTubeコンポーネントが必要です",
+  "zh-CN": "需要 YouTube 组件",
+  "zh-TW": "需要 YouTube 元件"
+ },
+ "YouTube 브라우저(nanum_youtube.exe)를 찾을 수 없습니다 — NanumPlayer를 다시 설치하세요": {
+  "en": "The YouTube browser (nanum_youtube.exe) was not found — reinstall NanumPlayer",
+  "es": "No se encontró el navegador de YouTube (nanum_youtube.exe) — reinstala NanumPlayer",
+  "ja": "YouTubeブラウザー (nanum_youtube.exe) が見つかりません — NanumPlayerを再インストールしてください",
+  "zh-CN": "找不到 YouTube 浏览器（nanum_youtube.exe）— 请重新安装 NanumPlayer",
+  "zh-TW": "找不到 YouTube 瀏覽器（nanum_youtube.exe）— 請重新安裝 NanumPlayer"
+ },
+ "YouTube 시크릿 창 열기 (로그인은 이번 세션에서만 유지)": {
+  "en": "Open a private YouTube window (sign-in lasts only for this session)",
+  "es": "Abrir una ventana privada de YouTube (el inicio de sesión solo dura esta sesión)",
+  "ja": "YouTubeのプライベートウィンドウを開く (ログインはこのセッションのみ有効)",
+  "zh-CN": "打开 YouTube 隐私窗口（登录仅在本次会话中保留）",
+  "zh-TW": "開啟 YouTube 私密視窗（登入僅在本次工作階段中保留）"
+ },
+ "YouTube 영상 주소가 아닙니다: %s\n(https://www.youtube.com/watch?v=… 또는 https://youtu.be/… 형식)": {
+  "en": "Not a YouTube video address: %s\n(use the form https://www.youtube.com/watch?v=… or https://youtu.be/…)",
+  "es": "No es una dirección de vídeo de YouTube: %s\n(usa el formato https://www.youtube.com/watch?v=… o https://youtu.be/…)",
+  "ja": "YouTube動画のアドレスではありません: %s\n(https://www.youtube.com/watch?v=… または https://youtu.be/… の形式)",
+  "zh-CN": "不是 YouTube 视频地址：%s\n（格式为 https://www.youtube.com/watch?v=… 或 https://youtu.be/…）",
+  "zh-TW": "不是 YouTube 影片網址：%s\n（格式為 https://www.youtube.com/watch?v=… 或 https://youtu.be/…）"
+ },
+ "YouTube 영상을 불러오는 중…": {
+  "en": "Loading the YouTube video…",
+  "es": "Cargando el vídeo de YouTube…",
+  "ja": "YouTube動画を読み込み中…",
+  "zh-CN": "正在加载 YouTube 视频…",
+  "zh-TW": "正在載入 YouTube 影片…"
+ },
+ "YouTube 영상을 불러오는 중… (%d초부터)": {
+  "en": "Loading the YouTube video… (from %d s)",
+  "es": "Cargando el vídeo de YouTube… (desde %d s)",
+  "ja": "YouTube動画を読み込み中… (%d秒から)",
+  "zh-CN": "正在加载 YouTube 视频…（从 %d 秒开始）",
+  "zh-TW": "正在載入 YouTube 影片…（從 %d 秒開始）"
+ },
+ "YouTube 재생에 실패했습니다": {
+  "en": "YouTube playback failed",
+  "es": "Falló la reproducción de YouTube",
+  "ja": "YouTubeの再生に失敗しました",
+  "zh-CN": "YouTube 播放失败",
+  "zh-TW": "YouTube 播放失敗"
+ },
+ "YouTube 재생에 실패했습니다: %s": {
+  "en": "YouTube playback failed: %s",
+  "es": "Falló la reproducción de YouTube: %s",
+  "ja": "YouTubeの再生に失敗しました: %s",
+  "zh-CN": "YouTube 播放失败：%s",
+  "zh-TW": "YouTube 播放失敗：%s"
+ },
+ "YouTube 재생에 필요한 구성 요소가 없습니다": {
+  "en": "The components needed to play YouTube are missing",
+  "es": "Faltan los componentes necesarios para reproducir YouTube",
+  "ja": "YouTubeの再生に必要なコンポーネントがありません",
+  "zh-CN": "缺少播放 YouTube 所需的组件",
+  "zh-TW": "缺少播放 YouTube 所需的元件"
+ },
+ "YouTube 주소 (복사한 주소를 붙여넣으세요):": {
+  "en": "YouTube address (paste the address you copied):",
+  "es": "Dirección de YouTube (pega la dirección copiada):",
+  "ja": "YouTubeのアドレス (コピーしたアドレスを貼り付けてください):",
+  "zh-CN": "YouTube 地址（请粘贴复制的地址）：",
+  "zh-TW": "YouTube 網址（請貼上複製的網址）："
+ },
+ "YouTube 주소로 재생…": {
+  "en": "Play from a YouTube address…",
+  "es": "Reproducir desde una dirección de YouTube…",
+  "ja": "YouTubeのアドレスから再生…",
+  "zh-CN": "通过 YouTube 地址播放…",
+  "zh-TW": "透過 YouTube 網址播放…"
+ },
+ "YouTube 창 열기 (로그인)": {
+  "en": "Open the YouTube window (sign in)",
+  "es": "Abrir la ventana de YouTube (iniciar sesión)",
+  "ja": "YouTubeウィンドウを開く (ログイン)",
+  "zh-CN": "打开 YouTube 窗口（登录）",
+  "zh-TW": "開啟 YouTube 視窗（登入）"
+ },
+ "YouTube 창·구성 요소·로그인: %s": {
+  "en": "YouTube window · components · sign-in: %s",
+  "es": "Ventana de YouTube · componentes · inicio de sesión: %s",
+  "ja": "YouTubeウィンドウ・コンポーネント・ログイン: %s",
+  "zh-CN": "YouTube 窗口·组件·登录：%s",
+  "zh-TW": "YouTube 視窗·元件·登入：%s"
+ },
+ "YouTube 창에서 로그인 후 다시 시도하세요": {
+  "en": "Sign in in the YouTube window and try again",
+  "es": "Inicia sesión en la ventana de YouTube y vuelve a intentarlo",
+  "ja": "YouTubeウィンドウでログインしてからもう一度お試しください",
+  "zh-CN": "请在 YouTube 窗口中登录后重试",
+  "zh-TW": "請在 YouTube 視窗中登入後重試"
+ },
+ "YouTube 창을 엽니다 — 영상을 고르면 NanumPlayer에서 재생합니다": {
+  "en": "Opening the YouTube window — pick a video and NanumPlayer will play it",
+  "es": "Abriendo la ventana de YouTube — elige un vídeo y NanumPlayer lo reproducirá",
+  "ja": "YouTubeウィンドウを開きます — 動画を選ぶとNanumPlayerで再生します",
+  "zh-CN": "正在打开 YouTube 窗口 — 选择视频后将在 NanumPlayer 中播放",
+  "zh-TW": "正在開啟 YouTube 視窗 — 選擇影片後將在 NanumPlayer 中播放"
+ },
+ "YouTube가 로봇이 아닌지 확인을 요구합니다": {
+  "en": "YouTube is asking to confirm you are not a robot",
+  "es": "YouTube pide confirmar que no eres un robot",
+  "ja": "YouTubeがロボットでないことの確認を求めています",
+  "zh-CN": "YouTube 要求确认您不是机器人",
+  "zh-TW": "YouTube 要求確認您不是機器人"
+ },
+ "[명령줄 지정]": {
+  "en": "[set on command line]",
+  "es": "[indicado en la línea de comandos]",
+  "ja": "[コマンドラインで指定]",
+  "zh-CN": "[命令行指定]",
+  "zh-TW": "[命令列指定]"
+ },
+ "[외부]": {
+  "en": "[external]",
+  "es": "[externo]",
+  "ja": "[外部]",
+  "zh-CN": "[外部]",
+  "zh-TW": "[外部]"
+ },
+ "cuBLAS 내려받기: %s": {
+  "en": "Download cuBLAS: %s",
+  "es": "Descargar cuBLAS: %s",
+  "ja": "cuBLASをダウンロード: %s",
+  "zh-CN": "下载 cuBLAS：%s",
+  "zh-TW": "下載 cuBLAS：%s"
+ },
+ "cuBLAS 내려받기를 시작합니다 (%s)": {
+  "en": "Starting the cuBLAS download (%s)",
+  "es": "Iniciando la descarga de cuBLAS (%s)",
+  "ja": "cuBLASのダウンロードを開始します (%s)",
+  "zh-CN": "开始下载 cuBLAS（%s）",
+  "zh-TW": "開始下載 cuBLAS（%s）"
+ },
+ "oh-my-pi 모델:": {
+  "en": "oh-my-pi model:",
+  "es": "Modelo de oh-my-pi:",
+  "ja": "oh-my-pi モデル:",
+  "zh-CN": "oh-my-pi 模型：",
+  "zh-TW": "oh-my-pi 模型："
+ },
+ "oh-my-pi 모델: %s": {
+  "en": "oh-my-pi model: %s",
+  "es": "Modelo de oh-my-pi: %s",
+  "ja": "oh-my-pi モデル: %s",
+  "zh-CN": "oh-my-pi 模型：%s",
+  "zh-TW": "oh-my-pi 模型：%s"
+ },
+ "omp 모델 목록을 가져오지 못했습니다 (omp 설치/로그인 확인)": {
+  "en": "Could not get the omp model list (check that omp is installed and signed in)",
+  "es": "No se pudo obtener la lista de modelos de omp (comprueba que omp esté instalado y con sesión iniciada)",
+  "ja": "ompのモデル一覧を取得できませんでした (ompのインストール/ログインを確認)",
+  "zh-CN": "无法获取 omp 模型列表（请检查 omp 是否已安装并登录）",
+  "zh-TW": "無法取得 omp 模型清單（請檢查 omp 是否已安裝並登入）"
+ },
+ "yt-dlp 구성 요소를 찾을 수 없습니다": {
+  "en": "The yt-dlp component was not found",
+  "es": "No se encontró el componente yt-dlp",
+  "ja": "yt-dlpコンポーネントが見つかりません",
+  "zh-CN": "找不到 yt-dlp 组件",
+  "zh-TW": "找不到 yt-dlp 元件"
+ },
+ "yt-dlp가 YouTube의 변경을 따라가지 못했습니다": {
+  "en": "yt-dlp could not keep up with a change on YouTube",
+  "es": "yt-dlp no ha podido seguir un cambio de YouTube",
+  "ja": "yt-dlpがYouTubeの変更に追従できていません",
+  "zh-CN": "yt-dlp 未能适应 YouTube 的变更",
+  "zh-TW": "yt-dlp 未能適應 YouTube 的變更"
+ },
+ "가속 %s · %s": {
+  "en": "Acceleration %s · %s",
+  "es": "Aceleración %s · %s",
+  "ja": "高速化 %s · %s",
+  "zh-CN": "加速 %s · %s",
+  "zh-TW": "加速 %s · %s"
+ },
+ "가속기 상태: %s": {
+  "en": "Accelerator status: %s",
+  "es": "Estado del acelerador: %s",
+  "ja": "アクセラレーターの状態: %s",
+  "zh-CN": "加速器状态：%s",
+  "zh-TW": "加速器狀態：%s"
+ },
+ "가져온 자막": {
+  "en": "Imported subtitles",
+  "es": "Subtítulos importados",
+  "ja": "取り込んだ字幕",
+  "zh-CN": "导入的字幕",
+  "zh-TW": "匯入的字幕"
+ },
+ "가져온 자막 번역 중 %d%%": {
+  "en": "Translating imported subtitles %d%%",
+  "es": "Traduciendo los subtítulos importados %d%%",
+  "ja": "取り込んだ字幕を翻訳中 %d%%",
+  "zh-CN": "正在翻译导入的字幕 %d%%",
+  "zh-TW": "正在翻譯匯入的字幕 %d%%"
+ },
+ "가져온 자막 시간 맞추는 중 %d%%": {
+  "en": "Aligning imported subtitle timing %d%%",
+  "es": "Sincronizando los subtítulos importados %d%%",
+  "ja": "取り込んだ字幕のタイミングを調整中 %d%%",
+  "zh-CN": "正在对齐导入字幕的时间 %d%%",
+  "zh-TW": "正在對齊匯入字幕的時間 %d%%"
+ },
+ "가져온 자막 시간 미세 조정:": {
+  "en": "Fine-tune imported subtitle timing:",
+  "es": "Ajuste fino del tiempo de los subtítulos importados:",
+  "ja": "取り込んだ字幕のタイミング微調整:",
+  "zh-CN": "微调导入字幕的时间：",
+  "zh-TW": "微調匯入字幕的時間："
+ },
+ "가져온 자막 오류": {
+  "en": "Imported subtitle error",
+  "es": "Error en los subtítulos importados",
+  "ja": "取り込んだ字幕のエラー",
+  "zh-CN": "导入字幕出错",
+  "zh-TW": "匯入字幕出錯"
+ },
+ "가져온 자막 준비 완료": {
+  "en": "Imported subtitles ready",
+  "es": "Subtítulos importados listos",
+  "ja": "取り込んだ字幕の準備完了",
+  "zh-CN": "导入的字幕已就绪",
+  "zh-TW": "匯入的字幕已就緒"
+ },
+ "가져온 자막: %s": {
+  "en": "Imported subtitles: %s",
+  "es": "Subtítulos importados: %s",
+  "ja": "取り込んだ字幕: %s",
+  "zh-CN": "导入的字幕：%s",
+  "zh-TW": "匯入的字幕：%s"
+ },
+ "가져온 자막이 없습니다 — Ctrl+N → 온라인 자막 찾기 / 자막 파일 가져오기": {
+  "en": "There are no imported subtitles — Ctrl+N → Find online subtitles / Import a subtitle file",
+  "es": "No hay subtítulos importados — Ctrl+N → Buscar subtítulos en línea / Importar un archivo de subtítulos",
+  "ja": "取り込んだ字幕がありません — Ctrl+N → オンライン字幕検索 / 字幕ファイルの取り込み",
+  "zh-CN": "没有导入的字幕 — Ctrl+N → 在线查找字幕 / 导入字幕文件",
+  "zh-TW": "沒有匯入的字幕 — Ctrl+N → 線上尋找字幕 / 匯入字幕檔案"
+ },
+ "가져온 자막이 준비되었습니다 — 자막 메뉴에서 선택하세요": {
+  "en": "The imported subtitles are ready — choose them in the subtitle menu",
+  "es": "Los subtítulos importados están listos — elígelos en el menú de subtítulos",
+  "ja": "取り込んだ字幕の準備ができました — 字幕メニューで選択してください",
+  "zh-CN": "导入的字幕已就绪 — 请在字幕菜单中选择",
+  "zh-TW": "匯入的字幕已就緒 — 請在字幕選單中選擇"
+ },
+ "가져올 자막 파일 선택": {
+  "en": "Choose a subtitle file to import",
+  "es": "Elige el archivo de subtítulos que importar",
+  "ja": "取り込む字幕ファイルを選択",
+  "zh-CN": "选择要导入的字幕文件",
+  "zh-TW": "選擇要匯入的字幕檔案"
+ },
+ "같은 인물의 다른 항목도 바꿀까요?": {
+  "en": "Change the other entries of the same character too?",
+  "es": "¿Cambiar también las demás entradas del mismo personaje?",
+  "ja": "同じ人物の他の項目も変更しますか?",
+  "zh-CN": "是否同时修改同一人物的其他条目？",
+  "zh-TW": "是否同時修改同一人物的其他項目？"
+ },
+ "검색어 (비우면 작품/파일 이름 사용):": {
+  "en": "Search text (leave empty to use the work/file name):",
+  "es": "Texto de búsqueda (vacío para usar el nombre de la obra/archivo):",
+  "ja": "検索語 (空にすると作品/ファイル名を使用):",
+  "zh-CN": "搜索词（留空则使用作品/文件名）：",
+  "zh-TW": "搜尋詞（留空則使用作品/檔案名稱）："
+ },
+ "검색어: %s [직접 입력] — 바꾸기": {
+  "en": "Search text: %s [typed] — change",
+  "es": "Texto de búsqueda: %s [escrito] — cambiar",
+  "ja": "検索語: %s [直接入力] — 変更",
+  "zh-CN": "搜索词：%s [手动输入] — 更改",
+  "zh-TW": "搜尋詞：%s [手動輸入] — 變更"
+ },
+ "검색어: %s — 바꾸기": {
+  "en": "Search text: %s — change",
+  "es": "Texto de búsqueda: %s — cambiar",
+  "ja": "検索語: %s — 変更",
+  "zh-CN": "搜索词：%s — 更改",
+  "zh-TW": "搜尋詞：%s — 變更"
+ },
+ "검색어를 알 수 없습니다 — 메뉴의 '검색어'에서 직접 입력하세요": {
+  "en": "The search text is unknown — type it in 'Search text' in the menu",
+  "es": "No se conoce el texto de búsqueda — escríbelo en «Texto de búsqueda» del menú",
+  "ja": "検索語がわかりません — メニューの「検索語」で直接入力してください",
+  "zh-CN": "无法确定搜索词 — 请在菜单的“搜索词”中手动输入",
+  "zh-TW": "無法確定搜尋詞 — 請在選單的「搜尋詞」中手動輸入"
+ },
+ "구성 요소 내려받기: %s": {
+  "en": "Download components: %s",
+  "es": "Descargar componentes: %s",
+  "ja": "コンポーネントをダウンロード: %s",
+  "zh-CN": "下载组件：%s",
+  "zh-TW": "下載元件：%s"
+ },
+ "구성 요소 미설치": {
+  "en": "Components not installed",
+  "es": "Componentes sin instalar",
+  "ja": "コンポーネント未インストール",
+  "zh-CN": "组件未安装",
+  "zh-TW": "元件未安裝"
+ },
+ "구성 요소 미설치 · %s": {
+  "en": "Components not installed · %s",
+  "es": "Componentes sin instalar · %s",
+  "ja": "コンポーネント未インストール · %s",
+  "zh-CN": "组件未安装 · %s",
+  "zh-TW": "元件未安裝 · %s"
+ },
+ "구성 요소 상태: %s": {
+  "en": "Component status: %s",
+  "es": "Estado de los componentes: %s",
+  "ja": "コンポーネントの状態: %s",
+  "zh-CN": "组件状态：%s",
+  "zh-TW": "元件狀態：%s"
+ },
+ "구성 요소 업데이트": {
+  "en": "Update the components",
+  "es": "Actualizar los componentes",
+  "ja": "コンポーネントを更新",
+  "zh-CN": "更新组件",
+  "zh-TW": "更新元件"
+ },
+ "구성 요소 업데이트: %s": {
+  "en": "Update components: %s",
+  "es": "Actualizar componentes: %s",
+  "ja": "コンポーネントを更新: %s",
+  "zh-CN": "更新组件：%s",
+  "zh-TW": "更新元件：%s"
+ },
+ "구성 요소 없이 계속 (재생이 실패할 수 있습니다)": {
+  "en": "Continue without the components (playback may fail)",
+  "es": "Continuar sin los componentes (la reproducción puede fallar)",
+  "ja": "コンポーネントなしで続行 (再生に失敗する可能性があります)",
+  "zh-CN": "不安装组件继续（播放可能失败）",
+  "zh-TW": "不安裝元件繼續（播放可能失敗）"
+ },
+ "구성 요소 확인 중…": {
+  "en": "Checking components…",
+  "es": "Comprobando componentes…",
+  "ja": "コンポーネントを確認中…",
+  "zh-CN": "正在检查组件…",
+  "zh-TW": "正在檢查元件…"
+ },
+ "구성 요소는 설치되어 있지만 이 PC의 GPU/드라이버에서 CUDA를 쓸 수 없습니다. 다시 받아도 해결되지 않습니다": {
+  "en": "The components are installed, but CUDA cannot be used with this PC's GPU/driver. Downloading again will not fix this",
+  "es": "Los componentes están instalados, pero no se puede usar CUDA con la GPU/controlador de este PC. Volver a descargar no lo soluciona",
+  "ja": "コンポーネントはインストールされていますが、このPCのGPU/ドライバーではCUDAを使用できません。再ダウンロードしても解決しません",
+  "zh-CN": "组件已安装，但此电脑的 GPU/驱动无法使用 CUDA。重新下载也无法解决",
+  "zh-TW": "元件已安裝，但此電腦的 GPU/驅動程式無法使用 CUDA。重新下載也無法解決"
+ },
+ "구성 요소를 업데이트하거나 YouTube 창에서 로그인한 뒤 다시 시도하세요": {
+  "en": "Update the components or sign in in the YouTube window, then try again",
+  "es": "Actualiza los componentes o inicia sesión en la ventana de YouTube y vuelve a intentarlo",
+  "ja": "コンポーネントを更新するかYouTubeウィンドウでログインしてからもう一度お試しください",
+  "zh-CN": "请更新组件或在 YouTube 窗口中登录后重试",
+  "zh-TW": "請更新元件或在 YouTube 視窗中登入後重試"
+ },
+ "구성 요소를 업데이트한 뒤 다시 시도하세요 (Ctrl+N → YouTube)": {
+  "en": "Update the components and try again (Ctrl+N → YouTube)",
+  "es": "Actualiza los componentes y vuelve a intentarlo (Ctrl+N → YouTube)",
+  "ja": "コンポーネントを更新してからもう一度お試しください (Ctrl+N → YouTube)",
+  "zh-CN": "请更新组件后重试（Ctrl+N → YouTube）",
+  "zh-TW": "請更新元件後重試（Ctrl+N → YouTube）"
+ },
+ "그대로 외부 자막으로 사용": {
+  "en": "Use as an external subtitle as is",
+  "es": "Usar tal cual como subtítulo externo",
+  "ja": "そのまま外部字幕として使用",
+  "zh-CN": "直接作为外部字幕使用",
+  "zh-TW": "直接作為外部字幕使用"
+ },
+ "그래도 CUDA 구성 요소 내려받기 (%s)": {
+  "en": "Download the CUDA components anyway (%s)",
+  "es": "Descargar los componentes CUDA de todos modos (%s)",
+  "ja": "それでもCUDAコンポーネントをダウンロード (%s)",
+  "zh-CN": "仍然下载 CUDA 组件（%s）",
+  "zh-TW": "仍然下載 CUDA 元件（%s）"
+ },
+ "길게 (3초)": {
+  "en": "Long (3 s)",
+  "es": "Largo (3 s)",
+  "ja": "長い (3秒)",
+  "zh-CN": "长（3 秒）",
+  "zh-TW": "長（3 秒）"
+ },
+ "끔": {
+  "en": "Off",
+  "es": "Desactivado",
+  "ja": "オフ",
+  "zh-CN": "关",
+  "zh-TW": "關"
+ },
+ "나중에": {
+  "en": "Later",
+  "es": "Más tarde",
+  "ja": "後で",
+  "zh-CN": "稍后",
+  "zh-TW": "稍後"
+ },
+ "내려받고 계속": {
+  "en": "Download and continue",
+  "es": "Descargar y continuar",
+  "ja": "ダウンロードして続行",
+  "zh-CN": "下载并继续",
+  "zh-TW": "下載並繼續"
+ },
+ "내려받고 계속 (%s)": {
+  "en": "Download and continue (%s)",
+  "es": "Descargar y continuar (%s)",
+  "ja": "ダウンロードして続行 (%s)",
+  "zh-CN": "下载并继续（%s）",
+  "zh-TW": "下載並繼續（%s）"
+ },
+ "내려받기 불가 · 구성 요소 목록(catalog.json)을 읽을 수 없음": {
+  "en": "Cannot download · the component list (catalog.json) cannot be read",
+  "es": "No se puede descargar · no se puede leer la lista de componentes (catalog.json)",
+  "ja": "ダウンロード不可 · コンポーネント一覧 (catalog.json) を読み取れません",
+  "zh-CN": "无法下载 · 无法读取组件列表（catalog.json）",
+  "zh-TW": "無法下載 · 無法讀取元件清單（catalog.json）"
+ },
+ "내려받기 완료 · 그러나 이 PC에서는 CUDA를 쓸 수 없음": {
+  "en": "Download complete · but CUDA cannot be used on this PC",
+  "es": "Descarga completada · pero no se puede usar CUDA en este PC",
+  "ja": "ダウンロード完了 · ただしこのPCではCUDAを使用できません",
+  "zh-CN": "下载完成 · 但此电脑无法使用 CUDA",
+  "zh-TW": "下載完成 · 但此電腦無法使用 CUDA"
+ },
+ "내려받기 완료 · 다음에 여는 파일부터 GPU 사용": {
+  "en": "Download complete · the GPU is used from the next file you open",
+  "es": "Descarga completada · se usará la GPU desde el siguiente archivo que abras",
+  "ja": "ダウンロード完了 · 次に開くファイルからGPUを使用",
+  "zh-CN": "下载完成 · 从下次打开的文件起使用 GPU",
+  "zh-TW": "下載完成 · 從下次開啟的檔案起使用 GPU"
+ },
+ "내려받기 완료 · 다음에 여는 파일부터 사용": {
+  "en": "Download complete · used from the next file you open",
+  "es": "Descarga completada · se usará desde el siguiente archivo que abras",
+  "ja": "ダウンロード完了 · 次に開くファイルから使用",
+  "zh-CN": "下载完成 · 从下次打开的文件起使用",
+  "zh-TW": "下載完成 · 從下次開啟的檔案起使用"
+ },
+ "내려받기 취소: %s": {
+  "en": "Cancel download: %s",
+  "es": "Cancelar descarga: %s",
+  "ja": "ダウンロードをキャンセル: %s",
+  "zh-CN": "取消下载：%s",
+  "zh-TW": "取消下載：%s"
+ },
+ "내려받기를 시작하지 못했습니다 (다른 작업이 진행 중일 수 있습니다)": {
+  "en": "Could not start the download (another task may be running)",
+  "es": "No se pudo iniciar la descarga (puede haber otra tarea en curso)",
+  "ja": "ダウンロードを開始できませんでした (別の処理が実行中の可能性があります)",
+  "zh-CN": "无法开始下载（可能有其他任务正在进行）",
+  "zh-TW": "無法開始下載（可能有其他工作正在進行）"
+ },
+ "내려받기를 취소하는 중...": {
+  "en": "Cancelling the download...",
+  "es": "Cancelando la descarga...",
+  "ja": "ダウンロードをキャンセルしています...",
+  "zh-CN": "正在取消下载...",
+  "zh-TW": "正在取消下載..."
+ },
+ "내려받는 중 %s · %s / %s": {
+  "en": "Downloading %s · %s / %s",
+  "es": "Descargando %s · %s / %s",
+  "ja": "ダウンロード中 %s · %s / %s",
+  "zh-CN": "正在下载 %s · %s / %s",
+  "zh-TW": "正在下載 %s · %s / %s"
+ },
+ "내려받은 압축 파일을 풀고 있습니다: %s": {
+  "en": "Extracting the downloaded archive: %s",
+  "es": "Extrayendo el archivo comprimido descargado: %s",
+  "ja": "ダウンロードしたアーカイブを展開しています: %s",
+  "zh-CN": "正在解压已下载的压缩文件：%s",
+  "zh-TW": "正在解壓縮已下載的壓縮檔：%s"
+ },
+ "내려받은 파일": {
+  "en": "Downloaded file",
+  "es": "Archivo descargado",
+  "ja": "ダウンロードしたファイル",
+  "zh-CN": "已下载的文件",
+  "zh-TW": "已下載的檔案"
+ },
+ "내장 디스크 라이브러리를 찾을 수 없습니다": {
+  "en": "The built-in disc library was not found",
+  "es": "No se encontró la biblioteca de disco integrada",
+  "ja": "内蔵のディスクライブラリが見つかりません",
+  "zh-CN": "找不到内置的光盘库",
+  "zh-TW": "找不到內建的光碟程式庫"
+ },
+ "네트워크 오류로 YouTube에 연결하지 못했습니다": {
+  "en": "Could not connect to YouTube because of a network error",
+  "es": "No se pudo conectar con YouTube por un error de red",
+  "ja": "ネットワークエラーでYouTubeに接続できませんでした",
+  "zh-CN": "由于网络错误，无法连接到 YouTube",
+  "zh-TW": "由於網路錯誤，無法連線到 YouTube"
+ },
+ "네트워크에서 미리 받는 중": {
+  "en": "Buffering from the network",
+  "es": "Almacenando en búfer desde la red",
+  "ja": "ネットワークから先読み中",
+  "zh-CN": "正在从网络预读",
+  "zh-TW": "正在從網路預讀"
+ },
+ "다국어": {
+  "en": "Multilingual",
+  "es": "Multilingüe",
+  "ja": "多言語",
+  "zh-CN": "多语言",
+  "zh-TW": "多語言"
+ },
+ "다국어 고정밀": {
+  "en": "Multilingual (high accuracy)",
+  "es": "Multilingüe (alta precisión)",
+  "ja": "多言語 (高精度)",
+  "zh-CN": "多语言（高精度）",
+  "zh-TW": "多語言（高精度）"
+ },
+ "다시 만들기": {
+  "en": "Rebuild",
+  "es": "Regenerar",
+  "ja": "作り直す",
+  "zh-CN": "重新生成",
+  "zh-TW": "重新產生"
+ },
+ "다시 묻지 않음": {
+  "en": "Don't ask again",
+  "es": "No volver a preguntar",
+  "ja": "今後確認しない",
+  "zh-CN": "不再询问",
+  "zh-TW": "不再詢問"
+ },
+ "다시 복사": {
+  "en": "Copy again",
+  "es": "Copiar de nuevo",
+  "ja": "もう一度コピー",
+  "zh-CN": "再次复制",
+  "zh-TW": "再次複製"
+ },
+ "다시 시도": {
+  "en": "Try again",
+  "es": "Reintentar",
+  "ja": "再試行",
+  "zh-CN": "重试",
+  "zh-TW": "重試"
+ },
+ "다운로드 감시를 중단했습니다": {
+  "en": "Stopped watching for downloads",
+  "es": "Se dejó de vigilar las descargas",
+  "ja": "ダウンロードの監視を停止しました",
+  "zh-CN": "已停止监视下载",
+  "zh-TW": "已停止監視下載"
+ },
+ "다운로드 기다리는 중 — 감시 중단": {
+  "en": "Waiting for a download — stop watching",
+  "es": "Esperando una descarga — dejar de vigilar",
+  "ja": "ダウンロードを待機中 — 監視を停止",
+  "zh-CN": "正在等待下载 — 停止监视",
+  "zh-TW": "正在等待下載 — 停止監視"
+ },
+ "다운로드 폴더: %s [자동] — 바꾸기": {
+  "en": "Download folder: %s [automatic] — change",
+  "es": "Carpeta de descargas: %s [automática] — cambiar",
+  "ja": "ダウンロードフォルダー: %s [自動] — 変更",
+  "zh-CN": "下载文件夹：%s [自动] — 更改",
+  "zh-TW": "下載資料夾：%s [自動] — 變更"
+ },
+ "다운로드 폴더: %s [직접 지정] — 바꾸기": {
+  "en": "Download folder: %s [custom] — change",
+  "es": "Carpeta de descargas: %s [personalizada] — cambiar",
+  "ja": "ダウンロードフォルダー: %s [指定済み] — 変更",
+  "zh-CN": "下载文件夹：%s [自定义] — 更改",
+  "zh-TW": "下載資料夾：%s [自訂] — 變更"
+ },
+ "다운로드 폴더를 찾을 수 없습니다: %s\nCtrl+N → 온라인 자막 찾기에서 폴더를 지정하세요": {
+  "en": "The download folder was not found: %s\nSet a folder in Ctrl+N → Find online subtitles",
+  "es": "No se encontró la carpeta de descargas: %s\nIndica una carpeta en Ctrl+N → Buscar subtítulos en línea",
+  "ja": "ダウンロードフォルダーが見つかりません: %s\nCtrl+N → オンライン字幕検索でフォルダーを指定してください",
+  "zh-CN": "找不到下载文件夹：%s\n请在 Ctrl+N → 在线查找字幕中指定文件夹",
+  "zh-TW": "找不到下載資料夾：%s\n請在 Ctrl+N → 線上尋找字幕中指定資料夾"
+ },
+ "다음 파일: AI 자막 사용 불가 (선택한 엔진 없음)": {
+  "en": "Next file: AI subtitles unavailable (the chosen engine is missing)",
+  "es": "Siguiente archivo: subtítulos IA no disponibles (falta el motor elegido)",
+  "ja": "次のファイル: AI字幕は使用不可 (選択したエンジンがありません)",
+  "zh-CN": "下个文件：AI 字幕不可用（缺少所选引擎）",
+  "zh-TW": "下個檔案：AI 字幕無法使用（缺少所選引擎）"
+ },
+ "다음 파일: CPU로 AI 자막": {
+  "en": "Next file: AI subtitles on the CPU",
+  "es": "Siguiente archivo: subtítulos IA con la CPU",
+  "ja": "次のファイル: CPUでAI字幕",
+  "zh-CN": "下个文件：用 CPU 生成 AI 字幕",
+  "zh-TW": "下個檔案：用 CPU 產生 AI 字幕"
+ },
+ "다음 파일: CPU로 AI 자막 · %s": {
+  "en": "Next file: AI subtitles on the CPU · %s",
+  "es": "Siguiente archivo: subtítulos IA con la CPU · %s",
+  "ja": "次のファイル: CPUでAI字幕 · %s",
+  "zh-CN": "下个文件：用 CPU 生成 AI 字幕 · %s",
+  "zh-TW": "下個檔案：用 CPU 產生 AI 字幕 · %s"
+ },
+ "다음 파일: CUDA(GPU)로 AI 자막": {
+  "en": "Next file: AI subtitles with CUDA (GPU)",
+  "es": "Siguiente archivo: subtítulos IA con CUDA (GPU)",
+  "ja": "次のファイル: CUDA (GPU) でAI字幕",
+  "zh-CN": "下个文件：用 CUDA（GPU）生成 AI 字幕",
+  "zh-TW": "下個檔案：用 CUDA（GPU）產生 AI 字幕"
+ },
+ "닫기": {
+  "en": "Close",
+  "es": "Cerrar",
+  "ja": "閉じる",
+  "zh-CN": "关闭",
+  "zh-TW": "關閉"
+ },
+ "대기 중": {
+  "en": "Idle",
+  "es": "En espera",
+  "ja": "待機中",
+  "zh-CN": "等待中",
+  "zh-TW": "等待中"
+ },
+ "독일어": {
+  "en": "German",
+  "es": "alemán",
+  "ja": "ドイツ語",
+  "zh-CN": "德语",
+  "zh-TW": "德語"
+ },
+ "동의 필요 · 보기": {
+  "en": "Acceptance needed · view",
+  "es": "Requiere aceptación · ver",
+  "ja": "同意が必要 · 表示",
+  "zh-CN": "需要同意 · 查看",
+  "zh-TW": "需要同意 · 檢視"
+ },
+ "동의하고 CUDA 구성 요소 내려받기 (%s)": {
+  "en": "Accept and download the CUDA components (%s)",
+  "es": "Aceptar y descargar los componentes CUDA (%s)",
+  "ja": "同意してCUDAコンポーネントをダウンロード (%s)",
+  "zh-CN": "同意并下载 CUDA 组件（%s）",
+  "zh-TW": "同意並下載 CUDA 元件（%s）"
+ },
+ "동의함 · 보기": {
+  "en": "Accepted · view",
+  "es": "Aceptada · ver",
+  "ja": "同意済み · 表示",
+  "zh-CN": "已同意 · 查看",
+  "zh-TW": "已同意 · 檢視"
+ },
+ "뒤로": {
+  "en": "Back",
+  "es": "Atrás",
+  "ja": "戻る",
+  "zh-CN": "返回",
+  "zh-TW": "返回"
+ },
+ "디스크 암호를 풀지 못했습니다": {
+  "en": "The disc could not be decrypted",
+  "es": "No se pudo descifrar el disco",
+  "ja": "ディスクの暗号を解除できませんでした",
+  "zh-CN": "无法解密光盘",
+  "zh-TW": "無法解密光碟"
+ },
+ "디스크 자막 OCR": {
+  "en": "Disc subtitle OCR",
+  "es": "OCR de subtítulos de disco",
+  "ja": "ディスク字幕OCR",
+  "zh-CN": "光盘字幕 OCR",
+  "zh-TW": "光碟字幕 OCR"
+ },
+ "디스크 자막 기반": {
+  "en": "Based on disc subtitles",
+  "es": "Basado en subtítulos de disco",
+  "ja": "ディスク字幕ベース",
+  "zh-CN": "基于光盘字幕",
+  "zh-TW": "基於光碟字幕"
+ },
+ "디스크 자막 문자 인식을 끕니다": {
+  "en": "Disc subtitle text recognition is turned off",
+  "es": "Se desactiva el reconocimiento de texto de subtítulos de disco",
+  "ja": "ディスク字幕の文字認識をオフにします",
+  "zh-CN": "关闭光盘字幕文字识别",
+  "zh-TW": "關閉光碟字幕文字辨識"
+ },
+ "디스크 자막(이미지) 문자 인식으로도 자막 만들기: %s": {
+  "en": "Also create subtitles using disc OCR: %s",
+  "es": "Crear también subtítulos con OCR del disco: %s",
+  "ja": "ディスク字幕 (画像) の文字認識でも字幕を作成: %s",
+  "zh-CN": "同时通过文字识别光盘（图像）字幕来生成字幕：%s",
+  "zh-TW": "同時透過文字辨識光碟（影像）字幕來產生字幕：%s"
+ },
+ "디스크 자막(이미지)을 문자 인식으로 읽어 자막을 만듭니다 (기본 자막이 앞선 뒤에 작업 · 자막 메뉴에서 선택)": {
+  "en": "Subtitles will be made by reading disc (image) subtitles with text recognition (worked on once the main subtitles are ahead · choose in the subtitle menu)",
+  "es": "Se crearán subtítulos leyendo con reconocimiento de texto los subtítulos de disco (imagen) (se procesan cuando los subtítulos principales van por delante · elígelos en el menú de subtítulos)",
+  "ja": "ディスク字幕 (画像) を文字認識で読み取って字幕を作成します (基本字幕が先行してから作業 · 字幕メニューで選択)",
+  "zh-CN": "将通过文字识别读取光盘（图像）字幕来生成字幕（主字幕领先后再处理 · 在字幕菜单中选择）",
+  "zh-TW": "將透過文字辨識讀取光碟（影像）字幕來產生字幕（主字幕領先後再處理 · 在字幕選單中選擇）"
+ },
+ "디스크의 그림 자막을 문자 인식한 자막입니다": {
+  "en": "Subtitles made by recognizing the disc's picture subtitles",
+  "es": "Subtítulos obtenidos reconociendo el texto de los subtítulos en imagen del disco",
+  "ja": "ディスクの画像字幕を文字認識した字幕です",
+  "zh-CN": "通过文字识别光盘图像字幕得到的字幕",
+  "zh-TW": "透過文字辨識光碟影像字幕得到的字幕"
+ },
+ "라이선스 보기 (LICENSE-NVIDIA-CUDA.txt)": {
+  "en": "View the license (LICENSE-NVIDIA-CUDA.txt)",
+  "es": "Ver la licencia (LICENSE-NVIDIA-CUDA.txt)",
+  "ja": "ライセンスを表示 (LICENSE-NVIDIA-CUDA.txt)",
+  "zh-CN": "查看许可证 (LICENSE-NVIDIA-CUDA.txt)",
+  "zh-TW": "檢視授權條款 (LICENSE-NVIDIA-CUDA.txt)"
+ },
+ "라이선스 파일을 찾을 수 없습니다 (앱 폴더의 LICENSE-NVIDIA-CUDA.txt)": {
+  "en": "The license file was not found (LICENSE-NVIDIA-CUDA.txt in the app folder)",
+  "es": "No se encontró el archivo de licencia (LICENSE-NVIDIA-CUDA.txt en la carpeta de la app)",
+  "ja": "ライセンスファイルが見つかりません (アプリフォルダーのLICENSE-NVIDIA-CUDA.txt)",
+  "zh-CN": "找不到许可证文件（应用文件夹中的 LICENSE-NVIDIA-CUDA.txt）",
+  "zh-TW": "找不到授權檔案（應用程式資料夾中的 LICENSE-NVIDIA-CUDA.txt）"
+ },
+ "러시아어": {
+  "en": "Russian",
+  "es": "ruso",
+  "ja": "ロシア語",
+  "zh-CN": "俄语",
+  "zh-TW": "俄語"
+ },
+ "로그인이 필요한 영상입니다": {
+  "en": "This video requires signing in",
+  "es": "Este vídeo requiere iniciar sesión",
+  "ja": "ログインが必要な動画です",
+  "zh-CN": "此视频需要登录",
+  "zh-TW": "此影片需要登入"
+ },
+ "로그인하면 볼 수 있는 영상일 수 있습니다 — YouTube 창에서 로그인해 보세요": {
+  "en": "It may be viewable after signing in — try signing in in the YouTube window",
+  "es": "Puede que se vea tras iniciar sesión — prueba a iniciar sesión en la ventana de YouTube",
+  "ja": "ログインすると見られる動画かもしれません — YouTubeウィンドウでログインしてみてください",
+  "zh-CN": "登录后可能可以观看 — 请尝试在 YouTube 窗口中登录",
+  "zh-TW": "登入後可能可以觀看 — 請嘗試在 YouTube 視窗中登入"
+ },
+ "로컬": {
+  "en": "Local",
+  "es": "Local",
+  "ja": "ローカル",
+  "zh-CN": "本地",
+  "zh-TW": "本機"
+ },
+ "로컬 %.1f GB": {
+  "en": "Local %.1f GB",
+  "es": "Local %.1f GB",
+  "ja": "ローカル %.1f GB",
+  "zh-CN": "本地 %.1f GB",
+  "zh-TW": "本機 %.1f GB"
+ },
+ "로컬 CPU": {
+  "en": "Local CPU",
+  "es": "CPU local",
+  "ja": "ローカル CPU",
+  "zh-CN": "本地 CPU",
+  "zh-TW": "本機 CPU"
+ },
+ "로컬 GPU": {
+  "en": "Local GPU",
+  "es": "GPU local",
+  "ja": "ローカル GPU",
+  "zh-CN": "本地 GPU",
+  "zh-TW": "本機 GPU"
+ },
+ "로컬 GPU 일부": {
+  "en": "Local GPU (partial)",
+  "es": "GPU local (parcial)",
+  "ja": "ローカル GPU (一部)",
+  "zh-CN": "本地 GPU（部分）",
+  "zh-TW": "本機 GPU（部分）"
+ },
+ "메모리 쿠키 형식이 올바르지 않습니다": {
+  "en": "The in-memory cookie format is invalid",
+  "es": "El formato de las cookies en memoria no es válido",
+  "ja": "メモリ上のCookieの形式が正しくありません",
+  "zh-CN": "内存 Cookie 格式不正确",
+  "zh-TW": "記憶體 Cookie 格式不正確"
+ },
+ "메모장에서 한꺼번에 편집": {
+  "en": "Edit everything in Notepad",
+  "es": "Editar todo en el Bloc de notas",
+  "ja": "メモ帳でまとめて編集",
+  "zh-CN": "在记事本中批量编辑",
+  "zh-TW": "在記事本中批次編輯"
+ },
+ "모델 상태: %s": {
+  "en": "Model status: %s",
+  "es": "Estado de los modelos: %s",
+  "ja": "モデルの状態: %s",
+  "zh-CN": "模型状态：%s",
+  "zh-TW": "模型狀態：%s"
+ },
+ "모델 없음 안내 팝업: %s": {
+  "en": "Missing-model notice popup: %s",
+  "es": "Aviso emergente de modelos que faltan: %s",
+  "ja": "モデルなしの案内ポップアップ: %s",
+  "zh-CN": "缺少模型提示弹窗：%s",
+  "zh-TW": "缺少模型提示彈出視窗：%s"
+ },
+ "모델 저장 위치: %s": {
+  "en": "Model storage location: %s",
+  "es": "Ubicación de los modelos: %s",
+  "ja": "モデルの保存場所: %s",
+  "zh-CN": "模型存储位置：%s",
+  "zh-TW": "模型儲存位置：%s"
+ },
+ "모두 설치됨": {
+  "en": "All installed",
+  "es": "Todo instalado",
+  "ja": "すべてインストール済み",
+  "zh-CN": "全部已安装",
+  "zh-TW": "全部已安裝"
+ },
+ "모든 모델 내려받기: %s": {
+  "en": "Download all models: %s",
+  "es": "Descargar todos los modelos: %s",
+  "ja": "すべてのモデルをダウンロード: %s",
+  "zh-CN": "下载所有模型：%s",
+  "zh-TW": "下載所有模型：%s"
+ },
+ "모든 모델 설치됨": {
+  "en": "All models installed",
+  "es": "Todos los modelos instalados",
+  "ja": "すべてのモデルがインストール済み",
+  "zh-CN": "所有模型均已安装",
+  "zh-TW": "所有模型均已安裝"
+ },
+ "모든 모델이 이미 설치되어 있습니다": {
+  "en": "All models are already installed",
+  "es": "Todos los modelos ya están instalados",
+  "ja": "すべてのモデルはすでにインストールされています",
+  "zh-CN": "所有模型均已安装",
+  "zh-TW": "所有模型均已安裝"
+ },
+ "목록 없음": {
+  "en": "No list",
+  "es": "Sin lista",
+  "ja": "一覧なし",
+  "zh-CN": "无列表",
+  "zh-TW": "無清單"
+ },
+ "목록으로 돌아가기": {
+  "en": "Back to the list",
+  "es": "Volver a la lista",
+  "ja": "一覧に戻る",
+  "zh-CN": "返回列表",
+  "zh-TW": "返回清單"
+ },
+ "목표 언어": {
+  "en": "Target language",
+  "es": "Idioma de destino",
+  "ja": "ターゲット言語",
+  "zh-CN": "目标语言",
+  "zh-TW": "目標語言"
+ },
+ "무결성 검증 중": {
+  "en": "Verifying integrity",
+  "es": "Verificando la integridad",
+  "ja": "整合性を検証中",
+  "zh-CN": "正在校验完整性",
+  "zh-TW": "正在驗證完整性"
+ },
+ "미설치 %d개 · %s": {
+  "en": "%d not installed · %s",
+  "es": "%d sin instalar · %s",
+  "ja": "未インストール %d個 · %s",
+  "zh-CN": "%d 个未安装 · %s",
+  "zh-TW": "%d 個未安裝 · %s"
+ },
+ "미설치 · %s": {
+  "en": "Not installed · %s",
+  "es": "Sin instalar · %s",
+  "ja": "未インストール · %s",
+  "zh-CN": "未安装 · %s",
+  "zh-TW": "未安裝 · %s"
+ },
+ "미설치 · %s (VAD 포함)": {
+  "en": "Not installed · %s (VAD included)",
+  "es": "Sin instalar · %s (incluye VAD)",
+  "ja": "未インストール · %s (VAD含む)",
+  "zh-CN": "未安装 · %s（包含 VAD）",
+  "zh-TW": "未安裝 · %s（包含 VAD）"
+ },
+ "미설치 · 구성 요소 목록을 읽을 수 없음": {
+  "en": "Not installed · the component list cannot be read",
+  "es": "Sin instalar · no se puede leer la lista de componentes",
+  "ja": "未インストール · コンポーネント一覧を読み取れません",
+  "zh-CN": "未安装 · 无法读取组件列表",
+  "zh-TW": "未安裝 · 無法讀取元件清單"
+ },
+ "미설치 · 내려받기 %s": {
+  "en": "Not installed · download %s",
+  "es": "Sin instalar · descarga de %s",
+  "ja": "未インストール · ダウンロード %s",
+  "zh-CN": "未安装 · 下载 %s",
+  "zh-TW": "未安裝 · 下載 %s"
+ },
+ "미설치 모델 모두 내려받기 (%s)": {
+  "en": "Download all missing models (%s)",
+  "es": "Descargar todos los modelos que faltan (%s)",
+  "ja": "未インストールのモデルをすべてダウンロード (%s)",
+  "zh-CN": "下载所有未安装的模型（%s）",
+  "zh-TW": "下載所有未安裝的模型（%s）"
+ },
+ "반말": {
+  "en": "Casual",
+  "es": "Informal",
+  "ja": "タメ口",
+  "zh-CN": "半语",
+  "zh-TW": "半語"
+ },
+ "번역 · %s · %s": {
+  "en": "Translation · %s · %s",
+  "es": "Traducción · %s · %s",
+  "ja": "翻訳 · %s · %s",
+  "zh-CN": "翻译 · %s · %s",
+  "zh-TW": "翻譯 · %s · %s"
+ },
+ "번역 끔": {
+  "en": "Translation off",
+  "es": "Traducción desactivada",
+  "ja": "翻訳オフ",
+  "zh-CN": "翻译已关闭",
+  "zh-TW": "翻譯已關閉"
+ },
+ "번역 말투 지시문 (예: 아이에게 말하듯 다정하게):": {
+  "en": "Translation style instruction (e.g. warm, as if speaking to a child):",
+  "es": "Instrucción de estilo de traducción (p. ej. cariñoso, como si hablaras con un niño):",
+  "ja": "翻訳の口調の指示文 (例: 子どもに話しかけるように優しく):",
+  "zh-CN": "翻译语气指令（例如：像对孩子说话一样温柔）：",
+  "zh-TW": "翻譯語氣指令（例如：像對孩子說話一樣溫柔）："
+ },
+ "번역 말투:": {
+  "en": "Translation style:",
+  "es": "Estilo de traducción:",
+  "ja": "翻訳の口調:",
+  "zh-CN": "翻译语气：",
+  "zh-TW": "翻譯語氣："
+ },
+ "번역 말투: %s": {
+  "en": "Translation style: %s",
+  "es": "Estilo de traducción: %s",
+  "ja": "翻訳の口調: %s",
+  "zh-CN": "翻译语气：%s",
+  "zh-TW": "翻譯語氣：%s"
+ },
+ "번역 말투: %s\n지금부터 번역되는 자막에 바로 적용됩니다 (이미 만든 자막은 그대로)": {
+  "en": "Translation style: %s\nApplies right away to subtitles translated from now on (existing subtitles are unchanged)",
+  "es": "Estilo de traducción: %s\nSe aplica de inmediato a los subtítulos que se traduzcan a partir de ahora (los ya creados no cambian)",
+  "ja": "翻訳の口調: %s\nこれから翻訳される字幕にすぐ適用されます (作成済みの字幕はそのまま)",
+  "zh-CN": "翻译语气：%s\n立即应用于之后翻译的字幕（已生成的字幕保持不变）",
+  "zh-TW": "翻譯語氣：%s\n立即套用於之後翻譯的字幕（已產生的字幕維持不變）"
+ },
+ "번역 모델": {
+  "en": "Translation model",
+  "es": "Modelo de traducción",
+  "ja": "翻訳モデル",
+  "zh-CN": "翻译模型",
+  "zh-TW": "翻譯模型"
+ },
+ "번역 모델 (Ollama에 설치된 모델):": {
+  "en": "Translation model (installed in Ollama):",
+  "es": "Modelo de traducción (instalado en Ollama):",
+  "ja": "翻訳モデル (Ollamaにインストール済みのモデル):",
+  "zh-CN": "翻译模型（Ollama 中已安装的模型）：",
+  "zh-TW": "翻譯模型（Ollama 中已安裝的模型）："
+ },
+ "번역 모델: %s (다음에 여는 파일부터 적용)": {
+  "en": "Translation model: %s (applies from the next file you open)",
+  "es": "Modelo de traducción: %s (se aplica desde el siguiente archivo que abras)",
+  "ja": "翻訳モデル: %s (次に開くファイルから適用)",
+  "zh-CN": "翻译模型：%s（从下次打开的文件起生效）",
+  "zh-TW": "翻譯模型：%s（從下次開啟的檔案起生效）"
+ },
+ "번역 모델: %s — 눌러서 모델 바꾸기": {
+  "en": "Translation model: %s — click to change the model",
+  "es": "Modelo de traducción: %s — pulsa para cambiar de modelo",
+  "ja": "翻訳モデル: %s — クリックしてモデルを変更",
+  "zh-CN": "翻译模型：%s — 点击更换模型",
+  "zh-TW": "翻譯模型：%s — 點擊更換模型"
+ },
+ "번역 서버 주소": {
+  "en": "Translation server address",
+  "es": "Dirección del servidor de traducción",
+  "ja": "翻訳サーバーのアドレス",
+  "zh-CN": "翻译服务器地址",
+  "zh-TW": "翻譯伺服器位址"
+ },
+ "번역 서버 주소가 비어 있어 모델 목록을 가져올 수 없습니다": {
+  "en": "The translation server address is empty, so the model list cannot be fetched",
+  "es": "La dirección del servidor de traducción está vacía, así que no se puede obtener la lista de modelos",
+  "ja": "翻訳サーバーのアドレスが空のためモデル一覧を取得できません",
+  "zh-CN": "翻译服务器地址为空，无法获取模型列表",
+  "zh-TW": "翻譯伺服器位址為空，無法取得模型清單"
+ },
+ "번역 서버 주소가 비어 있어 번역하지 않습니다": {
+  "en": "The translation server address is empty, so nothing is translated",
+  "es": "La dirección del servidor de traducción está vacía, así que no se traduce",
+  "ja": "翻訳サーバーのアドレスが空のため翻訳しません",
+  "zh-CN": "翻译服务器地址为空，因此不进行翻译",
+  "zh-TW": "翻譯伺服器位址為空，因此不進行翻譯"
+ },
+ "번역 수정": {
+  "en": "Edit translation",
+  "es": "Editar traducción",
+  "ja": "訳語を修正",
+  "zh-CN": "修改译文",
+  "zh-TW": "修改譯文"
+ },
+ "번역+원문": {
+  "en": "Translation + original",
+  "es": "Traducción + original",
+  "ja": "翻訳+原文",
+  "zh-CN": "译文+原文",
+  "zh-TW": "譯文+原文"
+ },
+ "번역만": {
+  "en": "Translation only",
+  "es": "Solo traducción",
+  "ja": "翻訳のみ",
+  "zh-CN": "仅译文",
+  "zh-TW": "僅譯文"
+ },
+ "번역이 비어 있어 바꾸지 않았습니다": {
+  "en": "The translation was empty, so nothing was changed",
+  "es": "La traducción estaba vacía, así que no se cambió nada",
+  "ja": "訳語が空のため変更しませんでした",
+  "zh-CN": "译文为空，未作更改",
+  "zh-TW": "譯文為空，未作變更"
+ },
+ "보통 (2초)": {
+  "en": "Normal (2 s)",
+  "es": "Normal (2 s)",
+  "ja": "普通 (2秒)",
+  "zh-CN": "普通（2 秒）",
+  "zh-TW": "普通（2 秒）"
+ },
+ "복사하지 못했습니다": {
+  "en": "Copy failed",
+  "es": "No se pudo copiar",
+  "ja": "コピーできませんでした",
+  "zh-CN": "复制失败",
+  "zh-TW": "複製失敗"
+ },
+ "북마클릿 (복사하지 못했습니다 — 아래 줄을 직접 복사하세요)": {
+  "en": "Bookmarklet (copy failed — copy the line below yourself)",
+  "es": "Bookmarklet (no se pudo copiar — copia tú mismo la línea de abajo)",
+  "ja": "ブックマークレット (コピーできませんでした — 下の行を直接コピーしてください)",
+  "zh-CN": "书签小工具（复制失败 — 请手动复制下面一行）",
+  "zh-TW": "書籤小工具（複製失敗 — 請手動複製下面一行）"
+ },
+ "북마클릿을 복사했습니다": {
+  "en": "The bookmarklet was copied",
+  "es": "Se copió el bookmarklet",
+  "ja": "ブックマークレットをコピーしました",
+  "zh-CN": "已复制书签小工具",
+  "zh-TW": "已複製書籤小工具"
+ },
+ "북마클릿을 클립보드에 복사했습니다": {
+  "en": "The bookmarklet was copied to the clipboard",
+  "es": "El bookmarklet se copió al portapapeles",
+  "ja": "ブックマークレットをクリップボードにコピーしました",
+  "zh-CN": "已将书签小工具复制到剪贴板",
+  "zh-TW": "已將書籤小工具複製到剪貼簿"
+ },
+ "불러오는 중...": {
+  "en": "Loading...",
+  "es": "Cargando...",
+  "ja": "読み込み中...",
+  "zh-CN": "加载中...",
+  "zh-TW": "載入中..."
+ },
+ "브라우저에서 찾기: %s": {
+  "en": "Search in the browser: %s",
+  "es": "Buscar en el navegador: %s",
+  "ja": "ブラウザーで検索: %s",
+  "zh-CN": "在浏览器中查找：%s",
+  "zh-TW": "在瀏覽器中尋找：%s"
+ },
+ "사용 가능": {
+  "en": "Available",
+  "es": "Disponible",
+  "ja": "使用可能",
+  "zh-CN": "可用",
+  "zh-TW": "可用"
+ },
+ "사용 가능 (앱에 포함)": {
+  "en": "Available (included in the app)",
+  "es": "Disponible (incluido en la app)",
+  "ja": "使用可能 (アプリに同梱)",
+  "zh-CN": "可用（随应用附带）",
+  "zh-TW": "可用（隨應用程式附帶）"
+ },
+ "사용 가능 · cuBLAS: CUDA Toolkit %s 사용": {
+  "en": "Available · cuBLAS: using CUDA Toolkit %s",
+  "es": "Disponible · cuBLAS: usando CUDA Toolkit %s",
+  "ja": "使用可能 · cuBLAS: CUDA Toolkit %sを使用",
+  "zh-CN": "可用 · cuBLAS：使用 CUDA Toolkit %s",
+  "zh-TW": "可用 · cuBLAS：使用 CUDA Toolkit %s"
+ },
+ "사용 불가 · %s": {
+  "en": "Unavailable · %s",
+  "es": "No disponible · %s",
+  "ja": "使用不可 · %s",
+  "zh-CN": "不可用 · %s",
+  "zh-TW": "無法使用 · %s"
+ },
+ "사용 불가 · NVIDIA 드라이버를 찾을 수 없음": {
+  "en": "Unavailable · the NVIDIA driver was not found",
+  "es": "No disponible · no se encontró el controlador de NVIDIA",
+  "ja": "使用不可 · NVIDIAドライバーが見つかりません",
+  "zh-CN": "不可用 · 找不到 NVIDIA 驱动",
+  "zh-TW": "無法使用 · 找不到 NVIDIA 驅動程式"
+ },
+ "사용 불가 — nanum_ai_cpu.dll을 불러오지 못함": {
+  "en": "Unavailable — nanum_ai_cpu.dll could not be loaded",
+  "es": "No disponible — no se pudo cargar nanum_ai_cpu.dll",
+  "ja": "使用不可 — nanum_ai_cpu.dllを読み込めません",
+  "zh-CN": "不可用 — 无法加载 nanum_ai_cpu.dll",
+  "zh-TW": "無法使用 — 無法載入 nanum_ai_cpu.dll"
+ },
+ "사용자 지정 AI DLL 사용 중: %s": {
+  "en": "Using a custom AI DLL: %s",
+  "es": "Usando una DLL de IA personalizada: %s",
+  "ja": "カスタムAI DLLを使用中: %s",
+  "zh-CN": "正在使用自定义 AI DLL：%s",
+  "zh-TW": "正在使用自訂 AI DLL：%s"
+ },
+ "사용할 AI 엔진이 없습니다 (CPU 엔진 불가) · %s": {
+  "en": "No AI engine is available (the CPU engine cannot run) · %s",
+  "es": "No hay ningún motor de IA disponible (el de CPU no puede ejecutarse) · %s",
+  "ja": "使用できるAIエンジンがありません (CPUエンジン不可) · %s",
+  "zh-CN": "没有可用的 AI 引擎（CPU 引擎不可用）· %s",
+  "zh-TW": "沒有可用的 AI 引擎（CPU 引擎無法使用）· %s"
+ },
+ "삭제": {
+  "en": "Delete",
+  "es": "Eliminar",
+  "ja": "削除",
+  "zh-CN": "删除",
+  "zh-TW": "刪除"
+ },
+ "새 버전 %s": {
+  "en": "New version %s",
+  "es": "Versión nueva %s",
+  "ja": "新バージョン %s",
+  "zh-CN": "新版本 %s",
+  "zh-TW": "新版本 %s"
+ },
+ "새 버전이 있습니다": {
+  "en": "A new version is available",
+  "es": "Hay una versión nueva",
+  "ja": "新しいバージョンがあります",
+  "zh-CN": "有新版本",
+  "zh-TW": "有新版本"
+ },
+ "설정 메뉴로 돌아가기": {
+  "en": "Back to the settings menu",
+  "es": "Volver al menú de ajustes",
+  "ja": "設定メニューに戻る",
+  "zh-CN": "返回设置菜单",
+  "zh-TW": "返回設定選單"
+ },
+ "설정 저장 실패: %s": {
+  "en": "Failed to save settings: %s",
+  "es": "No se pudieron guardar los ajustes: %s",
+  "ja": "設定の保存に失敗しました: %s",
+  "zh-CN": "保存设置失败：%s",
+  "zh-TW": "儲存設定失敗：%s"
+ },
+ "설치 (Windows가 관리자 권한을 묻습니다)": {
+  "en": "Install (Windows will ask for administrator permission)",
+  "es": "Instalar (Windows pedirá permisos de administrador)",
+  "ja": "インストール (Windowsが管理者権限を確認します)",
+  "zh-CN": "安装（Windows 会请求管理员权限）",
+  "zh-TW": "安裝（Windows 會要求系統管理員權限）"
+ },
+ "설치 상태 새로 확인: 파일 검사": {
+  "en": "Recheck install status: scan the files",
+  "es": "Volver a comprobar el estado de instalación: analizar archivos",
+  "ja": "インストール状態を再確認: ファイル検査",
+  "zh-CN": "重新检查安装状态：检查文件",
+  "zh-TW": "重新檢查安裝狀態：檢查檔案"
+ },
+ "설치 상태를 확인합니다": {
+  "en": "Checking the install status",
+  "es": "Comprobando el estado de instalación",
+  "ja": "インストール状態を確認します",
+  "zh-CN": "正在检查安装状态",
+  "zh-TW": "正在檢查安裝狀態"
+ },
+ "설치된 파일 확인 중…": {
+  "en": "Checking installed files…",
+  "es": "Comprobando los archivos instalados…",
+  "ja": "インストール済みファイルを確認中…",
+  "zh-CN": "正在检查已安装的文件…",
+  "zh-TW": "正在檢查已安裝的檔案…"
+ },
+ "설치됨": {
+  "en": "Installed",
+  "es": "Instalado",
+  "ja": "インストール済み",
+  "zh-CN": "已安装",
+  "zh-TW": "已安裝"
+ },
+ "설치됨 (최신 버전 여부는 '업데이트 확인'으로 확인)": {
+  "en": "Installed (use 'Check for updates' to see whether it is the latest)",
+  "es": "Instalado (usa «Buscar actualizaciones» para saber si es la última versión)",
+  "ja": "インストール済み (最新かどうかは「更新の確認」で確認)",
+  "zh-CN": "已安装（可通过“检查更新”确认是否为最新版本）",
+  "zh-TW": "已安裝（可透過「檢查更新」確認是否為最新版本）"
+ },
+ "설치됨 · %s": {
+  "en": "Installed · %s",
+  "es": "Instalado · %s",
+  "ja": "インストール済み · %s",
+  "zh-CN": "已安装 · %s",
+  "zh-TW": "已安裝 · %s"
+ },
+ "설치됨 · %s · %s": {
+  "en": "Installed · %s · %s",
+  "es": "Instalado · %s · %s",
+  "ja": "インストール済み · %s · %s",
+  "zh-CN": "已安装 · %s · %s",
+  "zh-TW": "已安裝 · %s · %s"
+ },
+ "설치됨 · 사용 가능": {
+  "en": "Installed · available",
+  "es": "Instalado · disponible",
+  "ja": "インストール済み · 使用可能",
+  "zh-CN": "已安装 · 可用",
+  "zh-TW": "已安裝 · 可用"
+ },
+ "설치됨 · 이 PC에서는 사용 불가 (다시 받아도 해결되지 않음)": {
+  "en": "Installed · unavailable on this PC (downloading again will not fix this)",
+  "es": "Instalado · no disponible en este PC (volver a descargar no lo soluciona)",
+  "ja": "インストール済み · このPCでは使用不可 (再ダウンロードしても解決しません)",
+  "zh-CN": "已安装 · 此电脑无法使用（重新下载也无法解决）",
+  "zh-TW": "已安裝 · 此電腦無法使用（重新下載也無法解決）"
+ },
+ "속도 보정 ×%.4f": {
+  "en": "Speed correction ×%.4f",
+  "es": "Corrección de velocidad ×%.4f",
+  "ja": "速度補正 ×%.4f",
+  "zh-CN": "速度校正 ×%.4f",
+  "zh-TW": "速度校正 ×%.4f"
+ },
+ "숫자가 아닙니다: %s": {
+  "en": "Not a number: %s",
+  "es": "No es un número: %s",
+  "ja": "数値ではありません: %s",
+  "zh-CN": "不是数字：%s",
+  "zh-TW": "不是數字：%s"
+ },
+ "스페인어": {
+  "en": "Spanish",
+  "es": "español",
+  "ja": "スペイン語",
+  "zh-CN": "西班牙语",
+  "zh-TW": "西班牙語"
+ },
+ "시간 %+.1f초": {
+  "en": "Offset %+.1f s",
+  "es": "Desfase %+.1f s",
+  "ja": "時間 %+.1f秒",
+  "zh-CN": "时间 %+.1f 秒",
+  "zh-TW": "時間 %+.1f 秒"
+ },
+ "시간 맞춤을 확신할 수 없어 보정하지 않았습니다 — Ctrl+N → 가져온 자막 → 시간 미세 조정": {
+  "en": "The timing could not be matched with confidence, so it was not corrected — see Ctrl+N → Imported subtitles → Fine-tune timing",
+  "es": "No se pudo ajustar el tiempo con seguridad, así que no se corrigió — ve a Ctrl+N → Subtítulos importados → Ajuste fino de tiempo",
+  "ja": "時間合わせに確信が持てないため補正しませんでした — Ctrl+N → 取り込んだ字幕 → 時間の微調整",
+  "zh-CN": "无法确定时间对齐是否准确，未进行校正 — 请见 Ctrl+N → 导入的字幕 → 微调时间",
+  "zh-TW": "無法確定時間對齊是否準確，未進行校正 — 請見 Ctrl+N → 匯入的字幕 → 微調時間"
+ },
+ "시작 프리롤": {
+  "en": "Start pre-roll",
+  "es": "Pre-carga inicial",
+  "ja": "開始プリロール",
+  "zh-CN": "起始预缓冲",
+  "zh-TW": "起始預緩衝"
+ },
+ "시작 프리롤: %d초": {
+  "en": "Start pre-roll: %d s",
+  "es": "Pre-carga inicial: %d s",
+  "ja": "開始プリロール: %d秒",
+  "zh-CN": "起始预缓冲：%d 秒",
+  "zh-TW": "起始預緩衝：%d 秒"
+ },
+ "시크릿 세션 정리를 완료하지 못했습니다. 웹 창을 닫고 다시 시도하세요": {
+  "en": "Could not finish cleaning up the private session. Close the web window and try again",
+  "es": "No se pudo terminar de limpiar la sesión privada. Cierra la ventana web y vuelve a intentarlo",
+  "ja": "プライベートセッションの整理を完了できませんでした。Webウィンドウを閉じてもう一度お試しください",
+  "zh-CN": "未能完成隐私会话清理。请关闭网页窗口后重试",
+  "zh-TW": "未能完成私密工作階段清理。請關閉網頁視窗後重試"
+ },
+ "시크릿 웹 세션 종료 (로그아웃)": {
+  "en": "End the private web session (sign out)",
+  "es": "Cerrar la sesión web privada (salir)",
+  "ja": "プライベートWebセッションを終了 (ログアウト)",
+  "zh-CN": "结束隐私网页会话（退出登录）",
+  "zh-TW": "結束私密網頁工作階段（登出）"
+ },
+ "시크릿 웹 세션을 종료하는 중…": {
+  "en": "Ending the private web session…",
+  "es": "Cerrando la sesión web privada…",
+  "ja": "プライベートWebセッションを終了しています…",
+  "zh-CN": "正在结束隐私网页会话…",
+  "zh-TW": "正在結束私密網頁工作階段…"
+ },
+ "시크릿 웹 세션을 종료할까요?": {
+  "en": "End the private web session?",
+  "es": "¿Cerrar la sesión web privada?",
+  "ja": "プライベートWebセッションを終了しますか?",
+  "zh-CN": "要结束隐私网页会话吗？",
+  "zh-TW": "要結束私密網頁工作階段嗎？"
+ },
+ "시크릿 웹 세션을 종료했습니다. 다음 창에서는 다시 로그인해야 합니다": {
+  "en": "The private web session was ended. You will need to sign in again in the next window",
+  "es": "Se cerró la sesión web privada. Tendrás que volver a iniciar sesión en la próxima ventana",
+  "ja": "プライベートWebセッションを終了しました。次のウィンドウでは再度ログインが必要です",
+  "zh-CN": "已结束隐私网页会话。下次打开窗口时需要重新登录",
+  "zh-TW": "已結束私密網頁工作階段。下次開啟視窗時需要重新登入"
+ },
+ "시크릿 웹페이지 주소 (영상이 있는 페이지):": {
+  "en": "Private web page address (the page that has the video):",
+  "es": "Dirección de la página web privada (la página con el vídeo):",
+  "ja": "プライベートWebページのアドレス (動画があるページ):",
+  "zh-CN": "隐私网页地址（包含视频的页面）：",
+  "zh-TW": "私密網頁網址（包含影片的頁面）："
+ },
+ "식별된 작품·원어: %s": {
+  "en": "Identified work · original language: %s",
+  "es": "Obra e idioma original identificados: %s",
+  "ja": "識別された作品・原語: %s",
+  "zh-CN": "识别出的作品·原语言：%s",
+  "zh-TW": "識別出的作品·原語言：%s"
+ },
+ "아니오 — 이 항목만 수정": {
+  "en": "No — change only this entry",
+  "es": "No — cambiar solo esta entrada",
+  "ja": "いいえ — この項目のみ修正",
+  "zh-CN": "否 — 只修改此条目",
+  "zh-TW": "否 — 只修改此項目"
+ },
+ "아직 확인하지 않음": {
+  "en": "Not checked yet",
+  "es": "Aún sin comprobar",
+  "ja": "まだ確認していません",
+  "zh-CN": "尚未检查",
+  "zh-TW": "尚未檢查"
+ },
+ "알 수 없는 오류": {
+  "en": "Unknown error",
+  "es": "Error desconocido",
+  "ja": "不明なエラー",
+  "zh-CN": "未知错误",
+  "zh-TW": "未知錯誤"
+ },
+ "알 수 없음": {
+  "en": "Unknown",
+  "es": "Desconocido",
+  "ja": "不明",
+  "zh-CN": "未知",
+  "zh-TW": "未知"
+ },
+ "압축 파일에 자막 파일이 없습니다: %s": {
+  "en": "The archive contains no subtitle file: %s",
+  "es": "El archivo comprimido no contiene ningún archivo de subtítulos: %s",
+  "ja": "アーカイブに字幕ファイルがありません: %s",
+  "zh-CN": "压缩文件中没有字幕文件：%s",
+  "zh-TW": "壓縮檔中沒有字幕檔案：%s"
+ },
+ "압축 푸는 중": {
+  "en": "Extracting",
+  "es": "Extrayendo",
+  "ja": "展開中",
+  "zh-CN": "正在解压",
+  "zh-TW": "正在解壓縮"
+ },
+ "압축을 풀지 못했습니다: %s": {
+  "en": "Could not extract the archive: %s",
+  "es": "No se pudo extraer el archivo comprimido: %s",
+  "ja": "アーカイブを展開できませんでした: %s",
+  "zh-CN": "无法解压压缩文件：%s",
+  "zh-TW": "無法解壓縮壓縮檔：%s"
+ },
+ "앱 폴더": {
+  "en": "App folder",
+  "es": "Carpeta de la app",
+  "ja": "アプリのフォルダー",
+  "zh-CN": "应用文件夹",
+  "zh-TW": "應用程式資料夾"
+ },
+ "앱에 포함": {
+  "en": "Included in the app",
+  "es": "Incluido en la app",
+  "ja": "アプリに同梱",
+  "zh-CN": "随应用附带",
+  "zh-TW": "隨應用程式附帶"
+ },
+ "앱에 포함된 CUDA 엔진이 없거나 손상되었습니다 — NanumPlayer를 다시 설치하세요": {
+  "en": "The CUDA engine bundled with the app is missing or damaged — reinstall NanumPlayer",
+  "es": "Falta el motor CUDA incluido en la app o está dañado — reinstala NanumPlayer",
+  "ja": "アプリに同梱のCUDAエンジンがないか破損しています — NanumPlayerを再インストールしてください",
+  "zh-CN": "应用内置的 CUDA 引擎缺失或已损坏 — 请重新安装 NanumPlayer",
+  "zh-TW": "應用程式內建的 CUDA 引擎遺失或已損毀 — 請重新安裝 NanumPlayer"
+ },
+ "앱의 CUDA 엔진 복구 필요 · NanumPlayer 재설치": {
+  "en": "The app's CUDA engine needs repair · reinstall NanumPlayer",
+  "es": "El motor CUDA de la app necesita reparación · reinstala NanumPlayer",
+  "ja": "アプリのCUDAエンジンの修復が必要 · NanumPlayerを再インストール",
+  "zh-CN": "应用的 CUDA 引擎需要修复 · 请重新安装 NanumPlayer",
+  "zh-TW": "應用程式的 CUDA 引擎需要修復 · 請重新安裝 NanumPlayer"
+ },
+ "업데이트 있음": {
+  "en": "update available",
+  "es": "hay actualización",
+  "ja": "更新あり",
+  "zh-CN": "有更新",
+  "zh-TW": "有更新"
+ },
+ "업데이트 확인: %s": {
+  "en": "Check for updates: %s",
+  "es": "Buscar actualizaciones: %s",
+  "ja": "更新の確認: %s",
+  "zh-CN": "检查更新：%s",
+  "zh-TW": "檢查更新：%s"
+ },
+ "영상 전체를 미리 번역한 자막입니다": {
+  "en": "Subtitles translated for the whole video in advance",
+  "es": "Subtítulos traducidos de antemano para todo el vídeo",
+  "ja": "動画全体を事前に翻訳した字幕です",
+  "zh-CN": "预先翻译整部视频得到的字幕",
+  "zh-TW": "預先翻譯整部影片得到的字幕"
+ },
+ "영상 주소가 올바른 http(s) 주소가 아닙니다": {
+  "en": "The video address is not a valid http(s) address",
+  "es": "La dirección del vídeo no es una dirección http(s) válida",
+  "ja": "動画のアドレスが有効なhttp(s)アドレスではありません",
+  "zh-CN": "视频地址不是有效的 http(s) 地址",
+  "zh-TW": "影片網址不是有效的 http(s) 網址"
+ },
+ "영상을 재생한 뒤에 사용할 수 있습니다": {
+  "en": "Available once a video is playing",
+  "es": "Disponible cuando se reproduce un vídeo",
+  "ja": "動画を再生すると使用できます",
+  "zh-CN": "播放视频后才能使用",
+  "zh-TW": "播放影片後才能使用"
+ },
+ "영상을 재생한 뒤에 용어집을 사용할 수 있습니다": {
+  "en": "The glossary is available once a video is playing",
+  "es": "El glosario está disponible cuando se reproduce un vídeo",
+  "ja": "動画を再生すると用語集を使用できます",
+  "zh-CN": "播放视频后才能使用术语表",
+  "zh-TW": "播放影片後才能使用術語表"
+ },
+ "영상의 자막 트랙을 번역한 자막입니다 — 눌러서 AI 구성 요소 관리": {
+  "en": "Subtitles translated from the video's subtitle track — click to manage AI components",
+  "es": "Subtítulos traducidos de la pista de subtítulos del vídeo — pulsa para gestionar los componentes de IA",
+  "ja": "動画の字幕トラックを翻訳した字幕です — クリックしてAIコンポーネントを管理",
+  "zh-CN": "由视频的字幕轨道翻译而成的字幕 — 点击管理 AI 组件",
+  "zh-TW": "由影片的字幕軌道翻譯而成的字幕 — 點擊管理 AI 元件"
+ },
+ "영어": {
+  "en": "English",
+  "es": "inglés",
+  "ja": "英語",
+  "zh-CN": "英语",
+  "zh-TW": "英語"
+ },
+ "예 — 같은 인물의 관련 항목 %d개도 함께 수정": {
+  "en": "Yes — also change the %d related entries of the same character",
+  "es": "Sí — cambiar también las %d entradas relacionadas del mismo personaje",
+  "ja": "はい — 同じ人物の関連項目%d件も一緒に修正",
+  "zh-CN": "是 — 同时修改同一人物的 %d 条相关条目",
+  "zh-TW": "是 — 同時修改同一人物的 %d 筆相關項目"
+ },
+ "오류": {
+  "en": "Error",
+  "es": "Error",
+  "ja": "エラー",
+  "zh-CN": "错误",
+  "zh-TW": "錯誤"
+ },
+ "오류 — %s": {
+  "en": "Error — %s",
+  "es": "Error — %s",
+  "ja": "エラー — %s",
+  "zh-CN": "错误 — %s",
+  "zh-TW": "錯誤 — %s"
+ },
+ "온라인 자막 찾기 (OpenSubtitles · Jimaku)": {
+  "en": "Find online subtitles (OpenSubtitles · Jimaku)",
+  "es": "Buscar subtítulos en línea (OpenSubtitles · Jimaku)",
+  "ja": "オンライン字幕検索 (OpenSubtitles · Jimaku)",
+  "zh-CN": "在线查找字幕（OpenSubtitles · Jimaku）",
+  "zh-TW": "線上尋找字幕（OpenSubtitles · Jimaku）"
+ },
+ "온라인 자막 찾기 (브라우저에서 직접 내려받습니다):": {
+  "en": "Find online subtitles (you download them yourself in the browser):",
+  "es": "Buscar subtítulos en línea (los descargas tú mismo en el navegador):",
+  "ja": "オンライン字幕検索 (ブラウザーで直接ダウンロードします):",
+  "zh-CN": "在线查找字幕（在浏览器中自行下载）：",
+  "zh-TW": "線上尋找字幕（在瀏覽器中自行下載）："
+ },
+ "온라인 자막 찾기 · 다운로드 기다리는 중": {
+  "en": "Find online subtitles · waiting for a download",
+  "es": "Buscar subtítulos en línea · esperando una descarga",
+  "ja": "オンライン字幕検索 · ダウンロード待機中",
+  "zh-CN": "在线查找字幕 · 正在等待下载",
+  "zh-TW": "線上尋找字幕 · 正在等待下載"
+ },
+ "완료": {
+  "en": "Done",
+  "es": "Completado",
+  "ja": "完了",
+  "zh-CN": "已完成",
+  "zh-TW": "已完成"
+ },
+ "요청 형식이 올바르지 않습니다": {
+  "en": "The request format is invalid",
+  "es": "El formato de la solicitud no es válido",
+  "ja": "リクエストの形式が正しくありません",
+  "zh-CN": "请求格式不正确",
+  "zh-TW": "要求格式不正確"
+ },
+ "용어집 (%d개)": {
+  "en": "Glossary (%d entries)",
+  "es": "Glosario (%d entradas)",
+  "ja": "用語集 (%d件)",
+  "zh-CN": "术语表（%d 条）",
+  "zh-TW": "術語表（%d 筆）"
+ },
+ "용어집 반영 실패": {
+  "en": "Failed to apply the glossary",
+  "es": "No se pudo aplicar el glosario",
+  "ja": "用語集の反映に失敗しました",
+  "zh-CN": "应用术语表失败",
+  "zh-TW": "套用術語表失敗"
+ },
+ "용어집 반영 완료 (바뀐 자막 없음)": {
+  "en": "Glossary applied (no subtitles changed)",
+  "es": "Glosario aplicado (ningún subtítulo cambió)",
+  "ja": "用語集を反映しました (変更された字幕はありません)",
+  "zh-CN": "术语表已应用（没有字幕变化）",
+  "zh-TW": "術語表已套用（沒有字幕變化）"
+ },
+ "용어집 반영 완료 (자막 %d줄 다시 번역)": {
+  "en": "Glossary applied (%d subtitle lines re-translated)",
+  "es": "Glosario aplicado (%d líneas de subtítulos retraducidas)",
+  "ja": "用語集を反映しました (字幕%d行を再翻訳)",
+  "zh-CN": "术语表已应用（重新翻译了 %d 行字幕）",
+  "zh-TW": "術語表已套用（重新翻譯了 %d 行字幕）"
+ },
+ "용어집 반영 중 %d%%": {
+  "en": "Applying glossary %d%%",
+  "es": "Aplicando el glosario %d%%",
+  "ja": "用語集を反映中 %d%%",
+  "zh-CN": "正在应用术语表 %d%%",
+  "zh-TW": "正在套用術語表 %d%%"
+ },
+ "용어집 적용 실패: %s": {
+  "en": "Failed to apply the glossary: %s",
+  "es": "No se pudo aplicar el glosario: %s",
+  "ja": "用語集の適用に失敗しました: %s",
+  "zh-CN": "应用术语表失败：%s",
+  "zh-TW": "套用術語表失敗：%s"
+ },
+ "용어집 파일을 만들 수 없습니다: %s": {
+  "en": "Cannot create the glossary file: %s",
+  "es": "No se puede crear el archivo del glosario: %s",
+  "ja": "用語集ファイルを作成できません: %s",
+  "zh-CN": "无法创建术语表文件：%s",
+  "zh-TW": "無法建立術語表檔案：%s"
+ },
+ "용어집 폴더를 만들 수 없습니다 (설정 폴더를 찾을 수 없음)": {
+  "en": "Cannot create the glossary folder (the settings folder was not found)",
+  "es": "No se puede crear la carpeta del glosario (no se encontró la carpeta de ajustes)",
+  "ja": "用語集フォルダーを作成できません (設定フォルダーが見つかりません)",
+  "zh-CN": "无法创建术语表文件夹（找不到设置文件夹）",
+  "zh-TW": "無法建立術語表資料夾（找不到設定資料夾）"
+ },
+ "용어집:": {
+  "en": "Glossary:",
+  "es": "Glosario:",
+  "ja": "用語集:",
+  "zh-CN": "术语表：",
+  "zh-TW": "術語表："
+ },
+ "용어집: 영상을 재생하면 사용할 수 있습니다": {
+  "en": "Glossary: available once a video is playing",
+  "es": "Glosario: disponible cuando se reproduce un vídeo",
+  "ja": "用語集: 動画を再生すると使用できます",
+  "zh-CN": "术语表：播放视频后可用",
+  "zh-TW": "術語表：播放影片後可用"
+ },
+ "용어집에서 삭제했습니다: %s": {
+  "en": "Deleted from the glossary: %s",
+  "es": "Eliminado del glosario: %s",
+  "ja": "用語集から削除しました: %s",
+  "zh-CN": "已从术语表删除：%s",
+  "zh-TW": "已從術語表刪除：%s"
+ },
+ "용어집을 AI로 다시 만들까요?": {
+  "en": "Rebuild the glossary with AI?",
+  "es": "¿Regenerar el glosario con IA?",
+  "ja": "用語集をAIで作り直しますか?",
+  "zh-CN": "要用 AI 重新生成术语表吗？",
+  "zh-TW": "要用 AI 重新產生術語表嗎？"
+ },
+ "용어집을 AI로 다시 만들었습니다": {
+  "en": "Rebuilt the glossary with AI",
+  "es": "Glosario regenerado con IA",
+  "ja": "用語集をAIで作り直しました",
+  "zh-CN": "已用 AI 重新生成术语表",
+  "zh-TW": "已用 AI 重新產生術語表"
+ },
+ "용어집을 AI로 다시 만들었습니다 · %d개": {
+  "en": "Rebuilt the glossary with AI · %d entries",
+  "es": "Glosario regenerado con IA · %d entradas",
+  "ja": "用語集をAIで作り直しました · %d件",
+  "zh-CN": "已用 AI 重新生成术语表 · %d 条",
+  "zh-TW": "已用 AI 重新產生術語表 · %d 筆"
+ },
+ "용어집을 AI로 다시 만들었습니다 · %s": {
+  "en": "Rebuilt the glossary with AI · %s",
+  "es": "Glosario regenerado con IA · %s",
+  "ja": "用語集をAIで作り直しました · %s",
+  "zh-CN": "已用 AI 重新生成术语表 · %s",
+  "zh-TW": "已用 AI 重新產生術語表 · %s"
+ },
+ "용어집을 AI로 다시 만들었습니다 · %s · %d개": {
+  "en": "Rebuilt the glossary with AI · %s · %d entries",
+  "es": "Glosario regenerado con IA · %s · %d entradas",
+  "ja": "用語集をAIで作り直しました · %s · %d件",
+  "zh-CN": "已用 AI 重新生成术语表 · %s · %d 条",
+  "zh-TW": "已用 AI 重新產生術語表 · %s · %d 筆"
+ },
+ "용어집을 메모장으로 엽니다 — 저장하면 적용됩니다\n%s": {
+  "en": "Opening the glossary in Notepad — changes apply when you save\n%s",
+  "es": "Abriendo el glosario en el Bloc de notas — los cambios se aplican al guardar\n%s",
+  "ja": "用語集をメモ帳で開きます — 保存すると適用されます\n%s",
+  "zh-CN": "正在用记事本打开术语表 — 保存后即生效\n%s",
+  "zh-TW": "正在用記事本開啟術語表 — 儲存後即生效\n%s"
+ },
+ "용어집을 반영해 자막 %d줄을 다시 번역했습니다": {
+  "en": "Applied the glossary and re-translated %d subtitle lines",
+  "es": "Se aplicó el glosario y se retradujeron %d líneas de subtítulos",
+  "ja": "用語集を反映して字幕%d行を再翻訳しました",
+  "zh-CN": "已应用术语表并重新翻译了 %d 行字幕",
+  "zh-TW": "已套用術語表並重新翻譯了 %d 行字幕"
+ },
+ "용어집을 반영했습니다 (바뀐 자막은 없습니다)": {
+  "en": "Glossary applied (no subtitles changed)",
+  "es": "Glosario aplicado (ningún subtítulo cambió)",
+  "ja": "用語集を反映しました (変更された字幕はありません)",
+  "zh-CN": "已应用术语表（没有字幕变化）",
+  "zh-TW": "已套用術語表（沒有字幕變化）"
+ },
+ "용어집을 전달했습니다 (%d개) · 바뀐 이름이 들어간 자막은 다시 번역됩니다": {
+  "en": "Glossary sent (%d entries) · subtitles containing changed names will be re-translated",
+  "es": "Glosario enviado (%d entradas) · se retraducirán los subtítulos con nombres modificados",
+  "ja": "用語集を渡しました (%d件) · 変更された名前を含む字幕は再翻訳されます",
+  "zh-CN": "已发送术语表（%d 条）· 含有已更改名称的字幕将重新翻译",
+  "zh-TW": "已傳送術語表（%d 筆）· 含有已變更名稱的字幕將重新翻譯"
+ },
+ "원문 수정": {
+  "en": "Edit original",
+  "es": "Editar original",
+  "ja": "原文を修正",
+  "zh-CN": "修改原文",
+  "zh-TW": "修改原文"
+ },
+ "원문 수정 ('%s'로 번역되는 원문):": {
+  "en": "Edit the original (the text that is translated to '%s'):",
+  "es": "Editar el original (el texto que se traduce como «%s»):",
+  "ja": "原文の修正 (「%s」に翻訳される原文):",
+  "zh-CN": "修改原文（翻译为“%s”的原文）：",
+  "zh-TW": "修改原文（翻譯為「%s」的原文）："
+ },
+ "원문만": {
+  "en": "Original only",
+  "es": "Solo original",
+  "ja": "原文のみ",
+  "zh-CN": "仅原文",
+  "zh-TW": "僅原文"
+ },
+ "원문에 충실": {
+  "en": "Faithful to the original",
+  "es": "Fiel al original",
+  "ja": "原文に忠実",
+  "zh-CN": "忠实原文",
+  "zh-TW": "忠實原文"
+ },
+ "원문이 비어 있거나 '=>'가 들어 있어 바꾸지 않았습니다": {
+  "en": "The original was empty or contains '=>', so nothing was changed",
+  "es": "El original estaba vacío o contiene '=>', así que no se cambió nada",
+  "ja": "原文が空か「=>」を含んでいるため変更しませんでした",
+  "zh-CN": "原文为空或包含“=>”，未作更改",
+  "zh-TW": "原文為空或包含「=>」，未作變更"
+ },
+ "원어 기반": {
+  "en": "Based on the original language",
+  "es": "Basado en el idioma original",
+  "ja": "原語ベース",
+  "zh-CN": "基于原语言",
+  "zh-TW": "基於原語言"
+ },
+ "원어 음성 자막을 만들지 않습니다": {
+  "en": "Subtitles will not be made from the original-language audio",
+  "es": "No se crearán subtítulos con el audio en el idioma original",
+  "ja": "原語音声の字幕は作成しません",
+  "zh-CN": "不再用原语言音轨生成字幕",
+  "zh-TW": "不再用原語言音軌產生字幕"
+ },
+ "원어 음성으로도 자막 만들기: %s": {
+  "en": "Also make subtitles from the original-language audio: %s",
+  "es": "Crear también subtítulos con el audio en el idioma original: %s",
+  "ja": "原語の音声からも字幕を作成: %s",
+  "zh-CN": "同时用原语言音轨生成字幕：%s",
+  "zh-TW": "同時用原語言音軌產生字幕：%s"
+ },
+ "원어 음성으로도 자막을 만듭니다 (기본 자막이 충분히 앞선 뒤에 작업 · 자막 메뉴에서 선택)": {
+  "en": "Subtitles will also be made from the original-language audio (worked on once the main subtitles are far enough ahead · choose in the subtitle menu)",
+  "es": "También se crearán subtítulos con el audio en el idioma original (se procesan cuando los subtítulos principales van bastante por delante · elígelos en el menú de subtítulos)",
+  "ja": "原語の音声からも字幕を作成します (基本字幕が十分先行してから作業 · 字幕メニューで選択)",
+  "zh-CN": "也将用原语言音轨生成字幕（主字幕领先足够多之后再处理 · 在字幕菜单中选择）",
+  "zh-TW": "也將用原語言音軌產生字幕（主字幕領先足夠多之後再處理 · 在字幕選單中選擇）"
+ },
+ "원어: %s": {
+  "en": "Original language: %s",
+  "es": "Idioma original: %s",
+  "ja": "原語: %s",
+  "zh-CN": "原语言：%s",
+  "zh-TW": "原語言：%s"
+ },
+ "웹 도우미를 찾을 수 없습니다": {
+  "en": "The web helper was not found",
+  "es": "No se encontró el asistente web",
+  "ja": "ウェブヘルパーが見つかりません",
+  "zh-CN": "找不到网页助手",
+  "zh-TW": "找不到網頁小幫手"
+ },
+ "웹페이지 영상 주소로 재생… (Ctrl+Shift+Y)": {
+  "en": "Play from a web page video address… (Ctrl+Shift+Y)",
+  "es": "Reproducir desde la dirección de un vídeo de una página web… (Ctrl+Shift+Y)",
+  "ja": "ウェブページの動画アドレスから再生… (Ctrl+Shift+Y)",
+  "zh-CN": "通过网页视频地址播放…（Ctrl+Shift+Y）",
+  "zh-TW": "透過網頁影片網址播放…（Ctrl+Shift+Y）"
+ },
+ "웹페이지 영상을 불러오는 중…": {
+  "en": "Loading the web page video…",
+  "es": "Cargando el vídeo de la página web…",
+  "ja": "ウェブページの動画を読み込み中…",
+  "zh-CN": "正在加载网页视频…",
+  "zh-TW": "正在載入網頁影片…"
+ },
+ "웹페이지 영상을 불러오는 중…\n%s": {
+  "en": "Loading the web page video…\n%s",
+  "es": "Cargando el vídeo de la página web…\n%s",
+  "ja": "ウェブページの動画を読み込み中…\n%s",
+  "zh-CN": "正在加载网页视频…\n%s",
+  "zh-TW": "正在載入網頁影片…\n%s"
+ },
+ "웹페이지 영상을 불러오지 못했습니다": {
+  "en": "Could not load the web page video",
+  "es": "No se pudo cargar el vídeo de la página web",
+  "ja": "ウェブページの動画を読み込めませんでした",
+  "zh-CN": "无法加载网页视频",
+  "zh-TW": "無法載入網頁影片"
+ },
+ "웹페이지 영상을 열지 못했습니다: %s": {
+  "en": "Could not open the web page video: %s",
+  "es": "No se pudo abrir el vídeo de la página web: %s",
+  "ja": "ウェブページの動画を開けませんでした: %s",
+  "zh-CN": "无法打开网页视频：%s",
+  "zh-TW": "無法開啟網頁影片：%s"
+ },
+ "웹페이지 주소(origin)가 올바르지 않습니다": {
+  "en": "The web page address (origin) is invalid",
+  "es": "La dirección de la página web (origin) no es válida",
+  "ja": "ウェブページのアドレス (origin) が正しくありません",
+  "zh-CN": "网页地址（origin）不正确",
+  "zh-TW": "網頁網址（origin）不正確"
+ },
+ "웹페이지 주소가 아닙니다 (http:// 또는 https:// 로 시작하는 주소)": {
+  "en": "Not a web page address (it must start with http:// or https://)",
+  "es": "No es una dirección web (debe empezar por http:// o https://)",
+  "ja": "ウェブページのアドレスではありません (http:// または https:// で始まるアドレス)",
+  "zh-CN": "不是网页地址（必须以 http:// 或 https:// 开头）",
+  "zh-TW": "不是網頁網址（必須以 http:// 或 https:// 開頭）"
+ },
+ "웹페이지 창을 엽니다 — 페이지에서 영상을 재생한 뒤 'NanumPlayer에서 재생'을 누르세요": {
+  "en": "Opening the web page window — play the video on the page, then click 'Play in NanumPlayer'",
+  "es": "Abriendo la ventana de la página web — reproduce el vídeo en la página y pulsa «Reproducir en NanumPlayer»",
+  "ja": "ウェブページのウィンドウを開きます — ページで動画を再生してから「NanumPlayerで再生」を押してください",
+  "zh-CN": "正在打开网页窗口 — 在页面中播放视频后，点击“在 NanumPlayer 中播放”",
+  "zh-TW": "正在開啟網頁視窗 — 在頁面中播放影片後，點擊「在 NanumPlayer 中播放」"
+ },
+ "유지": {
+  "en": "Keep",
+  "es": "Mantener",
+  "ja": "維持",
+  "zh-CN": "保留",
+  "zh-TW": "保留"
+ },
+ "유지 — AI 자막은 기존 입력 유지 (%s)": {
+  "en": "Keep — AI subtitles keep the existing input (%s)",
+  "es": "Mantener — los subtítulos IA conservan la entrada actual (%s)",
+  "ja": "維持 — AI字幕は既存の入力を維持 (%s)",
+  "zh-CN": "保持 — AI 字幕沿用原有输入（%s）",
+  "zh-TW": "保持 — AI 字幕沿用原有輸入（%s）"
+ },
+ "음성 인식 (STT)": {
+  "en": "Speech recognition (STT)",
+  "es": "Reconocimiento de voz (STT)",
+  "ja": "音声認識 (STT)",
+  "zh-CN": "语音识别 (STT)",
+  "zh-TW": "語音辨識 (STT)"
+ },
+ "음성 인식 · CPU": {
+  "en": "Speech recognition · CPU",
+  "es": "Reconocimiento de voz · CPU",
+  "ja": "音声認識 · CPU",
+  "zh-CN": "语音识别 · CPU",
+  "zh-TW": "語音辨識 · CPU"
+ },
+ "음성 인식 · CPU ⚠": {
+  "en": "Speech recognition · CPU ⚠",
+  "es": "Reconocimiento de voz · CPU ⚠",
+  "ja": "音声認識 · CPU ⚠",
+  "zh-CN": "语音识别 · CPU ⚠",
+  "zh-TW": "語音辨識 · CPU ⚠"
+ },
+ "음성 인식 · GPU": {
+  "en": "Speech recognition · GPU",
+  "es": "Reconocimiento de voz · GPU",
+  "ja": "音声認識 · GPU",
+  "zh-CN": "语音识别 · GPU",
+  "zh-TW": "語音辨識 · GPU"
+ },
+ "음성 인식 모델: %s — 눌러서 AI 구성 요소 관리": {
+  "en": "Speech recognition model: %s — click to manage AI components",
+  "es": "Modelo de reconocimiento de voz: %s — pulsa para gestionar los componentes de IA",
+  "ja": "音声認識モデル: %s — クリックしてAIコンポーネントを管理",
+  "zh-CN": "语音识别模型：%s — 点击管理 AI 组件",
+  "zh-TW": "語音辨識模型：%s — 點擊管理 AI 元件"
+ },
+ "음성 인식부터 새로 생성": {
+  "en": "Regenerate from speech recognition",
+  "es": "Regenerar desde el reconocimiento de voz",
+  "ja": "音声認識から新しく生成",
+  "zh-CN": "从语音识别重新生成",
+  "zh-TW": "從語音辨識重新產生"
+ },
+ "음성 인식부터 새로 생성합니다 (기존 자막은 완료될 때까지 유지)": {
+  "en": "Regenerating from speech recognition (the current subtitles stay until it finishes)",
+  "es": "Regenerando desde el reconocimiento de voz (los subtítulos actuales se conservan hasta terminar)",
+  "ja": "音声認識から新しく生成します (既存の字幕は完了するまで維持されます)",
+  "zh-CN": "将从语音识别重新生成（完成前保留现有字幕）",
+  "zh-TW": "將從語音辨識重新產生（完成前保留現有字幕）"
+ },
+ "음성 인식을 CPU로 처리하고 있습니다 — 눌러서 AI 구성 요소 관리": {
+  "en": "Speech recognition runs on the CPU — click to manage AI components",
+  "es": "El reconocimiento de voz se ejecuta en la CPU — pulsa para gestionar los componentes de IA",
+  "ja": "音声認識をCPUで処理しています — クリックしてAIコンポーネントを管理",
+  "zh-CN": "语音识别正由 CPU 处理 — 点击管理 AI 组件",
+  "zh-TW": "語音辨識正由 CPU 處理 — 點擊管理 AI 元件"
+ },
+ "음성 인식을 GPU(CUDA)로 처리하고 있습니다 — 눌러서 AI 구성 요소 관리": {
+  "en": "Speech recognition runs on the GPU (CUDA) — click to manage AI components",
+  "es": "El reconocimiento de voz se ejecuta en la GPU (CUDA) — pulsa para gestionar los componentes de IA",
+  "ja": "音声認識をGPU (CUDA) で処理しています — クリックしてAIコンポーネントを管理",
+  "zh-CN": "语音识别正由 GPU（CUDA）处理 — 点击管理 AI 组件",
+  "zh-TW": "語音辨識正由 GPU（CUDA）處理 — 點擊管理 AI 元件"
+ },
+ "이 PC에서는 CUDA를 사용할 수 없어 CPU로 AI 자막을 만듭니다%s\n구성 요소를 다시 받아도 해결되지 않습니다": {
+  "en": "CUDA cannot be used on this PC, so AI subtitles are made on the CPU%s\nDownloading the components again will not fix this",
+  "es": "No se puede usar CUDA en este PC, así que los subtítulos IA se crean con la CPU%s\nVolver a descargar los componentes no lo soluciona",
+  "ja": "このPCではCUDAを使用できないため、CPUでAI字幕を作成します%s\nコンポーネントを再ダウンロードしても解決しません",
+  "zh-CN": "此电脑无法使用 CUDA，将用 CPU 生成 AI 字幕%s\n重新下载组件也无法解决",
+  "zh-TW": "此電腦無法使用 CUDA，將用 CPU 產生 AI 字幕%s\n重新下載元件也無法解決"
+ },
+ "이 PC의 GPU/드라이버에서는 CUDA를 사용할 수 없습니다%s — AI 자막 없이 재생합니다\n구성 요소를 다시 받아도 해결되지 않습니다": {
+  "en": "CUDA cannot be used with this PC's GPU/driver%s — playing without AI subtitles\nDownloading the components again will not fix this",
+  "es": "No se puede usar CUDA con la GPU/controlador de este PC%s — se reproduce sin subtítulos IA\nVolver a descargar los componentes no lo soluciona",
+  "ja": "このPCのGPU/ドライバーではCUDAを使用できません%s — AI字幕なしで再生します\nコンポーネントを再ダウンロードしても解決しません",
+  "zh-CN": "此电脑的 GPU/驱动无法使用 CUDA%s — 将在没有 AI 字幕的情况下播放\n重新下载组件也无法解决",
+  "zh-TW": "此電腦的 GPU/驅動程式無法使用 CUDA%s — 將在沒有 AI 字幕的情況下播放\n重新下載元件也無法解決"
+ },
+ "이 엔진 버전은 CUDA 가속 관리를 지원하지 않습니다": {
+  "en": "This engine version does not support CUDA acceleration management",
+  "es": "Esta versión del motor no admite la gestión de la aceleración CUDA",
+  "ja": "このエンジンのバージョンはCUDA高速化の管理に対応していません",
+  "zh-CN": "此引擎版本不支持 CUDA 加速管理",
+  "zh-TW": "此引擎版本不支援 CUDA 加速管理"
+ },
+ "이 엔진 버전은 CUDA 가속 내려받기를 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support CUDA acceleration downloads (nanum update required)",
+  "es": "Esta versión del motor no admite la descarga de la aceleración CUDA (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンはCUDA高速化のダウンロードに対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持下载 CUDA 加速组件（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援下載 CUDA 加速元件（需要更新 nanum）"
+ },
+ "이 엔진 버전은 YouTube 구성 요소 관리를 지원하지 않습니다": {
+  "en": "This engine version does not support managing YouTube components",
+  "es": "Esta versión del motor no admite la gestión de los componentes de YouTube",
+  "ja": "このエンジンのバージョンはYouTubeコンポーネントの管理に対応していません",
+  "zh-CN": "此引擎版本不支持管理 YouTube 组件",
+  "zh-TW": "此引擎版本不支援管理 YouTube 元件"
+ },
+ "이 엔진 버전은 YouTube 구성 요소를 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support YouTube components (nanum update required)",
+  "es": "Esta versión del motor no admite los componentes de YouTube (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンはYouTubeコンポーネントに対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持 YouTube 组件（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援 YouTube 元件（需要更新 nanum）"
+ },
+ "이 엔진 버전은 가속 모드 선택을 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support choosing an acceleration mode (nanum update required)",
+  "es": "Esta versión del motor no admite elegir el modo de aceleración (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンは高速化モードの選択に対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持选择加速模式（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援選擇加速模式（需要更新 nanum）"
+ },
+ "이 엔진 버전은 디스크 자막 문자 인식을 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support disc subtitle text recognition (nanum update required)",
+  "es": "Esta versión del motor no admite el reconocimiento de texto de subtítulos de disco (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンはディスク字幕の文字認識に対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持光盘字幕文字识别（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援光碟字幕文字辨識（需要更新 nanum）"
+ },
+ "이 엔진 버전은 모델 관리를 지원하지 않습니다": {
+  "en": "This engine version does not support model management",
+  "es": "Esta versión del motor no admite la gestión de modelos",
+  "ja": "このエンジンのバージョンはモデル管理に対応していません",
+  "zh-CN": "此引擎版本不支持模型管理",
+  "zh-TW": "此引擎版本不支援模型管理"
+ },
+ "이 엔진 버전은 모델 내려받기를 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support model downloads (nanum update required)",
+  "es": "Esta versión del motor no admite la descarga de modelos (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンはモデルのダウンロードに対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持下载模型（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援下載模型（需要更新 nanum）"
+ },
+ "이 엔진 버전은 번역 말투 선택을 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support choosing a translation style (nanum update required)",
+  "es": "Esta versión del motor no admite elegir el estilo de traducción (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンは翻訳の口調の選択に対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持选择翻译语气（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援選擇翻譯語氣（需要更新 nanum）"
+ },
+ "이 엔진 버전은 용어집을 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support glossaries (nanum update required)",
+  "es": "Esta versión del motor no admite glosarios (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンは用語集に対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持术语表（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援術語表（需要更新 nanum）"
+ },
+ "이 엔진 버전은 원어 음성 자막을 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support original-language audio subtitles (nanum update required)",
+  "es": "Esta versión del motor no admite subtítulos del audio en el idioma original (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンは原語音声の字幕に対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持原语言音轨字幕（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援原語言音軌字幕（需要更新 nanum）"
+ },
+ "이 엔진 버전은 인터페이스 언어 선택을 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support choosing the interface language (nanum update required)",
+  "es": "Esta versión del motor no admite elegir el idioma de la interfaz (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンはインターフェース言語の選択に対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持选择界面语言（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援選擇介面語言（需要更新 nanum）"
+ },
+ "이 엔진 버전은 자막 가져오기를 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support importing subtitles (nanum update required)",
+  "es": "Esta versión del motor no admite importar subtítulos (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンは字幕の取り込みに対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持导入字幕（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援匯入字幕（需要更新 nanum）"
+ },
+ "이 엔진 버전은 자막 시간 조정을 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support subtitle timing adjustment (nanum update required)",
+  "es": "Esta versión del motor no admite ajustar el tiempo de los subtítulos (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンは字幕のタイミング調整に対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持字幕时间调整（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援字幕時間調整（需要更新 nanum）"
+ },
+ "이 엔진 버전은 자막 표시 방식 전환을 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support switching the subtitle display mode (nanum update required)",
+  "es": "Esta versión del motor no admite cambiar el modo de visualización de subtítulos (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンは字幕表示方式の切り替えに対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持切换字幕显示方式（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援切換字幕顯示方式（需要更新 nanum）"
+ },
+ "이 엔진 버전은 저장 자막 라이브러리를 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support the saved subtitle library (nanum update required)",
+  "es": "Esta versión del motor no admite la biblioteca de subtítulos guardados (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンは保存字幕ライブラリに対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持已保存字幕库（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援已儲存字幕庫（需要更新 nanum）"
+ },
+ "이 엔진 버전은 전체 번역을 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support full translation (nanum update required)",
+  "es": "Esta versión del motor no admite la traducción completa (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンは全体翻訳に対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持全片翻译（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援全片翻譯（需要更新 nanum）"
+ },
+ "이 엔진 버전은 지원하지 않음 (nanum 갱신 필요)": {
+  "en": "Not supported by this engine version (nanum update required)",
+  "es": "No admitido por esta versión del motor (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンは非対応 (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援（需要更新 nanum）"
+ },
+ "이 엔진 버전은 진단 로그를 지원하지 않습니다 (nanum 갱신 필요)": {
+  "en": "This engine version does not support the diagnostic log (nanum update required)",
+  "es": "Esta versión del motor no admite el registro de diagnóstico (hay que actualizar nanum)",
+  "ja": "このエンジンのバージョンは診断ログに対応していません (nanumの更新が必要)",
+  "zh-CN": "此引擎版本不支持诊断日志（需要更新 nanum）",
+  "zh-TW": "此引擎版本不支援診斷記錄（需要更新 nanum）"
+ },
+ "이 파일에서는 AI 자막을 사용하지 않습니다": {
+  "en": "AI subtitles are off for this file",
+  "es": "Los subtítulos IA están desactivados para este archivo",
+  "ja": "このファイルではAI字幕を使用しません",
+  "zh-CN": "此文件不使用 AI 字幕",
+  "zh-TW": "此檔案不使用 AI 字幕"
+ },
+ "이 파일은 AI 자막 끄기": {
+  "en": "Turn off AI subtitles for this file",
+  "es": "Desactivar los subtítulos IA en este archivo",
+  "ja": "このファイルのAI字幕をオフにする",
+  "zh-CN": "此文件关闭 AI 字幕",
+  "zh-TW": "此檔案關閉 AI 字幕"
+ },
+ "이 파일은 AI 자막 사용 안 함": {
+  "en": "Do not use AI subtitles for this file",
+  "es": "No usar subtítulos IA en este archivo",
+  "ja": "このファイルではAI字幕を使用しない",
+  "zh-CN": "此文件不使用 AI 字幕",
+  "zh-TW": "此檔案不使用 AI 字幕"
+ },
+ "이미 내려받는 중입니다": {
+  "en": "A download is already in progress",
+  "es": "Ya hay una descarga en curso",
+  "ja": "すでにダウンロード中です",
+  "zh-CN": "已在下载中",
+  "zh-TW": "已在下載中"
+ },
+ "이미 내려받는 중입니다 — 끝나거나 취소한 뒤 다시 선택하세요": {
+  "en": "A download is already in progress — choose again after it finishes or is cancelled",
+  "es": "Ya hay una descarga en curso — vuelve a elegir cuando termine o se cancele",
+  "ja": "すでにダウンロード中です — 完了またはキャンセル後に、もう一度選択してください",
+  "zh-CN": "已在下载中 — 请在完成或取消后再选择",
+  "zh-TW": "已在下載中 — 請在完成或取消後再選擇"
+ },
+ "이미 설치됨: %s": {
+  "en": "Already installed: %s",
+  "es": "Ya instalado: %s",
+  "ja": "インストール済み: %s",
+  "zh-CN": "已安装：%s",
+  "zh-TW": "已安裝：%s"
+ },
+ "이미 있는 원문이라 번역만 바꿨습니다: %s": {
+  "en": "That original already exists, so only the translation was changed: %s",
+  "es": "Ese original ya existe, así que solo se cambió la traducción: %s",
+  "ja": "すでに存在する原文のため訳語のみ変更しました: %s",
+  "zh-CN": "该原文已存在，仅更改了译文：%s",
+  "zh-TW": "該原文已存在，僅變更了譯文：%s"
+ },
+ "이미 있는 원문입니다: %s": {
+  "en": "That original already exists: %s",
+  "es": "Ese original ya existe: %s",
+  "ja": "すでに存在する原文です: %s",
+  "zh-CN": "该原文已存在：%s",
+  "zh-TW": "該原文已存在：%s"
+ },
+ "이전 버전에서 복사": {
+  "en": "Copied from a previous version",
+  "es": "Copiado de una versión anterior",
+  "ja": "以前のバージョンからコピー",
+  "zh-CN": "从旧版本复制",
+  "zh-TW": "從舊版本複製"
+ },
+ "이탈리아어": {
+  "en": "Italian",
+  "es": "italiano",
+  "ja": "イタリア語",
+  "zh-CN": "意大利语",
+  "zh-TW": "義大利語"
+ },
+ "인터넷 연결을 확인한 뒤 다시 시도하세요": {
+  "en": "Check your internet connection and try again",
+  "es": "Comprueba tu conexión a internet y vuelve a intentarlo",
+  "ja": "インターネット接続を確認してからもう一度お試しください",
+  "zh-CN": "请检查网络连接后重试",
+  "zh-TW": "請檢查網路連線後重試"
+ },
+ "인터페이스 언어:": {
+  "en": "Interface language:",
+  "es": "Idioma de la interfaz:",
+  "ja": "インターフェース言語:",
+  "zh-CN": "界面语言：",
+  "zh-TW": "介面語言："
+ },
+ "인터페이스 언어: %s": {
+  "en": "Interface language: %s",
+  "es": "Idioma de la interfaz: %s",
+  "ja": "インターフェース言語: %s",
+  "zh-CN": "界面语言：%s",
+  "zh-TW": "介面語言：%s"
+ },
+ "일본어": {
+  "en": "Japanese",
+  "es": "japonés",
+  "ja": "日本語",
+  "zh-CN": "日语",
+  "zh-TW": "日語"
+ },
+ "입력 소스: %s": {
+  "en": "Input source: %s",
+  "es": "Fuente de entrada: %s",
+  "ja": "入力ソース: %s",
+  "zh-CN": "输入源：%s",
+  "zh-TW": "輸入來源：%s"
+ },
+ "자동": {
+  "en": "Automatic",
+  "es": "Automático",
+  "ja": "自動",
+  "zh-CN": "自动",
+  "zh-TW": "自動"
+ },
+ "자동 (오디오 언어 자막, 없으면 STT)": {
+  "en": "Automatic (subtitles in the audio language, otherwise STT)",
+  "es": "Automático (subtítulos en el idioma del audio; si no hay, STT)",
+  "ja": "自動 (音声言語の字幕、なければSTT)",
+  "zh-CN": "自动（使用音频语言的字幕，没有则用 STT）",
+  "zh-TW": "自動（使用音訊語言的字幕，沒有則用 STT）"
+ },
+ "자동 — CUDA를 쓸 수 있으면 GPU, 아니면 CPU": {
+  "en": "Automatic — GPU if CUDA is available, otherwise CPU",
+  "es": "Automático — GPU si CUDA está disponible, si no CPU",
+  "ja": "自動 — CUDAが使えればGPU、使えなければCPU",
+  "zh-CN": "自动 — 可用 CUDA 时用 GPU，否则用 CPU",
+  "zh-TW": "自動 — 可用 CUDA 時用 GPU，否則用 CPU"
+ },
+ "자동 키 DB 다운로드의 인터넷 연결을 확인하세요. DB에 키가 없거나 지원되지 않는 AACS·BD+ 보호 방식이면 열 수 없습니다.": {
+  "en": "Check the internet connection for the automatic key database download. The disc cannot be opened if the database has no key or the AACS/BD+ protection is unsupported.",
+  "es": "Comprueba la conexión a internet para la descarga automática de la base de claves. No se puede abrir si la base no tiene la clave o si la protección AACS/BD+ no es compatible.",
+  "ja": "自動キーDBのダウンロードのためインターネット接続を確認してください。DBにキーがない場合や、サポートされていないAACS・BD+の保護方式の場合は開けません。",
+  "zh-CN": "请检查自动密钥数据库下载所需的网络连接。如果数据库中没有密钥，或 AACS·BD+ 保护方式不受支持，则无法打开。",
+  "zh-TW": "請檢查自動金鑰資料庫下載所需的網路連線。如果資料庫中沒有金鑰，或 AACS·BD+ 保護方式不受支援，則無法開啟。"
+ },
+ "자동 키 DB를 준비하지 못했습니다": {
+  "en": "The automatic key database could not be prepared",
+  "es": "No se pudo preparar la base de claves automática",
+  "ja": "自動キーDBを準備できませんでした",
+  "zh-CN": "无法准备自动密钥数据库",
+  "zh-TW": "無法準備自動金鑰資料庫"
+ },
+ "자막": {
+  "en": "Subtitles",
+  "es": "Subtítulos",
+  "ja": "字幕",
+  "zh-CN": "字幕",
+  "zh-TW": "字幕"
+ },
+ "자막 0.1초 늦추기 (+0.1)": {
+  "en": "Delay subtitles by 0.1 s (+0.1)",
+  "es": "Retrasar subtítulos 0,1 s (+0.1)",
+  "ja": "字幕を0.1秒遅らせる (+0.1)",
+  "zh-CN": "字幕延后 0.1 秒 (+0.1)",
+  "zh-TW": "字幕延後 0.1 秒 (+0.1)"
+ },
+ "자막 0.1초 앞당기기 (−0.1)": {
+  "en": "Advance subtitles by 0.1 s (−0.1)",
+  "es": "Adelantar subtítulos 0,1 s (−0.1)",
+  "ja": "字幕を0.1秒早める (−0.1)",
+  "zh-CN": "字幕提前 0.1 秒 (−0.1)",
+  "zh-TW": "字幕提前 0.1 秒 (−0.1)"
+ },
+ "자막 1초 늦추기 (+1.0)": {
+  "en": "Delay subtitles by 1 s (+1.0)",
+  "es": "Retrasar subtítulos 1 s (+1.0)",
+  "ja": "字幕を1秒遅らせる (+1.0)",
+  "zh-CN": "字幕延后 1 秒 (+1.0)",
+  "zh-TW": "字幕延後 1 秒 (+1.0)"
+ },
+ "자막 1초 앞당기기 (−1.0)": {
+  "en": "Advance subtitles by 1 s (−1.0)",
+  "es": "Adelantar subtítulos 1 s (−1.0)",
+  "ja": "字幕を1秒早める (−1.0)",
+  "zh-CN": "字幕提前 1 秒 (−1.0)",
+  "zh-TW": "字幕提前 1 秒 (−1.0)"
+ },
+ "자막 기반": {
+  "en": "Subtitle-based",
+  "es": "Basado en subtítulos",
+  "ja": "字幕ベース",
+  "zh-CN": "基于字幕",
+  "zh-TW": "基於字幕"
+ },
+ "자막 트랙": {
+  "en": "Subtitle track",
+  "es": "Pista de subtítulos",
+  "ja": "字幕トラック",
+  "zh-CN": "字幕轨道",
+  "zh-TW": "字幕軌道"
+ },
+ "자막 파일 (srt, ass, ssa, vtt, sub, zip)|*.srt;*.ass;*.ssa;*.vtt;*.sub;*.zip|모든 파일|*.*": {
+  "en": "Subtitle files (srt, ass, ssa, vtt, sub, zip)|*.srt;*.ass;*.ssa;*.vtt;*.sub;*.zip|All files|*.*",
+  "es": "Archivos de subtítulos (srt, ass, ssa, vtt, sub, zip)|*.srt;*.ass;*.ssa;*.vtt;*.sub;*.zip|Todos los archivos|*.*",
+  "ja": "字幕ファイル (srt, ass, ssa, vtt, sub, zip)|*.srt;*.ass;*.ssa;*.vtt;*.sub;*.zip|すべてのファイル|*.*",
+  "zh-CN": "字幕文件 (srt, ass, ssa, vtt, sub, zip)|*.srt;*.ass;*.ssa;*.vtt;*.sub;*.zip|所有文件|*.*",
+  "zh-TW": "字幕檔案 (srt, ass, ssa, vtt, sub, zip)|*.srt;*.ass;*.ssa;*.vtt;*.sub;*.zip|所有檔案|*.*"
+ },
+ "자막 파일 가져오기…": {
+  "en": "Import a subtitle file…",
+  "es": "Importar un archivo de subtítulos…",
+  "ja": "字幕ファイルを取り込む…",
+  "zh-CN": "导入字幕文件…",
+  "zh-TW": "匯入字幕檔案…"
+ },
+ "자막 파일 선택 (%d개):": {
+  "en": "Choose a subtitle file (%d):",
+  "es": "Elige un archivo de subtítulos (%d):",
+  "ja": "字幕ファイルを選択 (%d件):",
+  "zh-CN": "选择字幕文件（%d 个）：",
+  "zh-TW": "選擇字幕檔案（%d 個）："
+ },
+ "자막 파일 직접 고르기…": {
+  "en": "Pick a subtitle file yourself…",
+  "es": "Elegir un archivo de subtítulos…",
+  "ja": "字幕ファイルを直接選ぶ…",
+  "zh-CN": "手动选择字幕文件…",
+  "zh-TW": "手動選擇字幕檔案…"
+ },
+ "자막 파일을 추가했습니다: %s": {
+  "en": "Subtitle file added: %s",
+  "es": "Se añadió un archivo de subtítulos: %s",
+  "ja": "字幕ファイルを追加しました: %s",
+  "zh-CN": "已添加字幕文件：%s",
+  "zh-TW": "已新增字幕檔案：%s"
+ },
+ "자막 표시 방식:": {
+  "en": "Subtitle display mode:",
+  "es": "Modo de visualización de subtítulos:",
+  "ja": "字幕の表示方式:",
+  "zh-CN": "字幕显示方式：",
+  "zh-TW": "字幕顯示方式："
+ },
+ "자막 표시: %s": {
+  "en": "Subtitle display: %s",
+  "es": "Mostrar subtítulos: %s",
+  "ja": "字幕表示: %s",
+  "zh-CN": "字幕显示：%s",
+  "zh-TW": "字幕顯示：%s"
+ },
+ "자막: %s": {
+  "en": "Subtitles: %s",
+  "es": "Subtítulos: %s",
+  "ja": "字幕: %s",
+  "zh-CN": "字幕：%s",
+  "zh-TW": "字幕：%s"
+ },
+ "자막을 가져옵니다: %s\n영상 음성에 시간을 맞춘 뒤 한국어로 번역합니다": {
+  "en": "Importing subtitles: %s\nThey will be synced to the video's audio and then translated into Korean",
+  "es": "Importando subtítulos: %s\nSe sincronizarán con el audio del vídeo y luego se traducirán al coreano",
+  "ja": "字幕を取り込みます: %s\n動画の音声にタイミングを合わせてから韓国語に翻訳します",
+  "zh-CN": "正在导入字幕：%s\n将先与视频音频对齐时间，再翻译成韩语",
+  "zh-TW": "正在匯入字幕：%s\n將先與影片音訊對齊時間，再翻譯成韓語"
+ },
+ "자막을 내려받는 폴더 (비우면 Windows 다운로드 폴더):": {
+  "en": "Folder to download subtitles to (leave empty for the Windows Downloads folder):",
+  "es": "Carpeta donde descargar los subtítulos (vacío para usar la carpeta Descargas de Windows):",
+  "ja": "字幕をダウンロードするフォルダー (空にするとWindowsのダウンロードフォルダー):",
+  "zh-CN": "下载字幕的文件夹（留空则使用 Windows 下载文件夹）：",
+  "zh-TW": "下載字幕的資料夾（留空則使用 Windows 下載資料夾）："
+ },
+ "자연스럽게 (기본)": {
+  "en": "Natural (default)",
+  "es": "Natural (predeterminado)",
+  "ja": "自然に (既定)",
+  "zh-CN": "自然（默认）",
+  "zh-TW": "自然（預設）"
+ },
+ "작업 중": {
+  "en": "Working",
+  "es": "Trabajando",
+  "ja": "処理中",
+  "zh-CN": "处理中",
+  "zh-TW": "處理中"
+ },
+ "작품: %s": {
+  "en": "Work: %s",
+  "es": "Obra: %s",
+  "ja": "作品: %s",
+  "zh-CN": "作品：%s",
+  "zh-TW": "作品：%s"
+ },
+ "재생 바 자동 숨김: %s": {
+  "en": "Playback bar auto-hide: %s",
+  "es": "Ocultar la barra de reproducción automáticamente: %s",
+  "ja": "再生バーの自動非表示: %s",
+  "zh-CN": "播放栏自动隐藏：%s",
+  "zh-TW": "播放列自動隱藏：%s"
+ },
+ "재생 실패: %s\nBlu-ray라면 디스크 상태와 자동 키 DB 다운로드 오류를 확인하세요.\n필요하면 Ctrl+N에서 디스크 진단 로그를 명시적으로 켤 수 있습니다.": {
+  "en": "Playback failed: %s\nIf this is a Blu-ray, check the disc and any automatic key database download errors.\nIf needed, you can turn on the disc diagnostic log explicitly in Ctrl+N.",
+  "es": "Error de reproducción: %s\nSi es un Blu-ray, revisa el estado del disco y los errores de descarga de la base de claves automática.\nSi hace falta, puedes activar explícitamente el registro de diagnóstico de disco en Ctrl+N.",
+  "ja": "再生に失敗しました: %s\nBlu-rayの場合は、ディスクの状態と自動キーDBのダウンロードエラーを確認してください。\n必要に応じてCtrl+Nでディスク診断ログを明示的にオンにできます。",
+  "zh-CN": "播放失败：%s\n如果是蓝光光盘，请检查光盘状态和自动密钥数据库的下载错误。\n如有需要，可在 Ctrl+N 中手动开启光盘诊断日志。",
+  "zh-TW": "播放失敗：%s\n如果是藍光光碟，請檢查光碟狀態和自動金鑰資料庫的下載錯誤。\n如有需要，可在 Ctrl+N 中手動開啟光碟診斷記錄。"
+ },
+ "재생 음성이 AI 입력 음성과 다릅니다:": {
+  "en": "The playing audio differs from the AI input audio:",
+  "es": "El audio en reproducción es distinto del audio de entrada de la IA:",
+  "ja": "再生中の音声がAI入力音声と異なります:",
+  "zh-CN": "当前播放的音轨与 AI 输入音轨不同：",
+  "zh-TW": "目前播放的音軌與 AI 輸入音軌不同："
+ },
+ "재생 중인 음성이 AI 입력 음성과 같습니다": {
+  "en": "The playing audio is the same as the AI input audio",
+  "es": "El audio en reproducción es el mismo que el audio de entrada de la IA",
+  "ja": "再生中の音声はAI入力音声と同じです",
+  "zh-CN": "当前播放的音轨与 AI 输入音轨相同",
+  "zh-TW": "目前播放的音軌與 AI 輸入音軌相同"
+ },
+ "재생할 수 없는 영상입니다 (삭제·비공개·지역 제한)": {
+  "en": "This video cannot be played (deleted, private or region-restricted)",
+  "es": "Este vídeo no se puede reproducir (eliminado, privado o con restricción regional)",
+  "ja": "再生できない動画です (削除・非公開・地域制限)",
+  "zh-CN": "此视频无法播放（已删除、私享或地区限制）",
+  "zh-TW": "此影片無法播放（已刪除、私人或地區限制）"
+ },
+ "재생할 수 있는 영상 형식을 찾지 못했습니다": {
+  "en": "No playable video format was found",
+  "es": "No se encontró ningún formato de vídeo reproducible",
+  "ja": "再生できる動画形式が見つかりませんでした",
+  "zh-CN": "未找到可播放的视频格式",
+  "zh-TW": "找不到可播放的影片格式"
+ },
+ "저장 위치를 알 수 없습니다": {
+  "en": "The storage location is unknown",
+  "es": "Se desconoce la ubicación de almacenamiento",
+  "ja": "保存場所がわかりません",
+  "zh-CN": "无法确定存储位置",
+  "zh-TW": "無法確定儲存位置"
+ },
+ "저장 자막 다시 조회": {
+  "en": "Look up saved subtitles again",
+  "es": "Buscar de nuevo los subtítulos guardados",
+  "ja": "保存字幕を再照会",
+  "zh-CN": "重新查询已保存字幕",
+  "zh-TW": "重新查詢已儲存字幕"
+ },
+ "저장 자막 자동 사용: %s": {
+  "en": "Use saved subtitles automatically: %s",
+  "es": "Usar automáticamente los subtítulos guardados: %s",
+  "ja": "保存字幕を自動で使用: %s",
+  "zh-CN": "自动使用已保存字幕：%s",
+  "zh-TW": "自動使用已儲存字幕：%s"
+ },
+ "저장 자막 작업을 시작하지 못했습니다 (nanum 갱신 필요)": {
+  "en": "Could not start the saved subtitle action (nanum update required)",
+  "es": "No se pudo iniciar la acción de subtítulos guardados (hay que actualizar nanum)",
+  "ja": "保存字幕の操作を開始できませんでした (nanumの更新が必要)",
+  "zh-CN": "无法启动已保存字幕的操作（需要更新 nanum）",
+  "zh-TW": "無法啟動已儲存字幕的操作（需要更新 nanum）"
+ },
+ "저장 자막: %s": {
+  "en": "Saved subtitles: %s",
+  "es": "Subtítulos guardados: %s",
+  "ja": "保存字幕: %s",
+  "zh-CN": "已保存字幕：%s",
+  "zh-TW": "已儲存字幕：%s"
+ },
+ "저장된 AI 자막 사용 중": {
+  "en": "Using saved AI subtitles",
+  "es": "Usando subtítulos IA guardados",
+  "ja": "保存されたAI字幕を使用中",
+  "zh-CN": "正在使用已保存的 AI 字幕",
+  "zh-TW": "正在使用已儲存的 AI 字幕"
+ },
+ "저장된 AI 자막 사용 중: %s": {
+  "en": "Using saved AI subtitles: %s",
+  "es": "Usando subtítulos IA guardados: %s",
+  "ja": "保存されたAI字幕を使用中: %s",
+  "zh-CN": "正在使用已保存的 AI 字幕：%s",
+  "zh-TW": "正在使用已儲存的 AI 字幕：%s"
+ },
+ "저장된 AI 자막 확인 중": {
+  "en": "Checking saved AI subtitles",
+  "es": "Comprobando subtítulos IA guardados",
+  "ja": "保存されたAI字幕を確認中",
+  "zh-CN": "正在检查已保存的 AI 字幕",
+  "zh-TW": "正在檢查已儲存的 AI 字幕"
+ },
+ "저장된 AI 자막이 있습니다 (%s):": {
+  "en": "Saved AI subtitles are available (%s):",
+  "es": "Hay subtítulos IA guardados (%s):",
+  "ja": "保存されたAI字幕があります (%s):",
+  "zh-CN": "有已保存的 AI 字幕（%s）：",
+  "zh-TW": "有已儲存的 AI 字幕（%s）："
+ },
+ "저장된 AI 자막이 있습니다:": {
+  "en": "Saved AI subtitles are available:",
+  "es": "Hay subtítulos IA guardados:",
+  "ja": "保存されたAI字幕があります:",
+  "zh-CN": "有已保存的 AI 字幕：",
+  "zh-TW": "有已儲存的 AI 字幕："
+ },
+ "저장된 번역 사용": {
+  "en": "Use saved translation",
+  "es": "Usar la traducción guardada",
+  "ja": "保存された翻訳を使用",
+  "zh-CN": "使用已保存的翻译",
+  "zh-TW": "使用已儲存的翻譯"
+ },
+ "저장된 번역 사용 + 이 선택 기억 (다음부터 묻지 않음)": {
+  "en": "Use saved translation and remember this choice (do not ask again)",
+  "es": "Usar la traducción guardada y recordar esta opción (no volver a preguntar)",
+  "ja": "保存された翻訳を使用 + この選択を記憶 (次回から確認しない)",
+  "zh-CN": "使用已保存的翻译并记住此选择（以后不再询问）",
+  "zh-TW": "使用已儲存的翻譯並記住此選擇（之後不再詢問）"
+ },
+ "저장된 원문으로 다시 번역": {
+  "en": "Re-translate from saved source text",
+  "es": "Volver a traducir desde el texto original guardado",
+  "ja": "保存された原文から再翻訳",
+  "zh-CN": "用已保存的原文重新翻译",
+  "zh-TW": "用已儲存的原文重新翻譯"
+ },
+ "저장된 원문으로 다시 번역합니다 (기존 자막은 완료될 때까지 유지)": {
+  "en": "Re-translating from the saved source text (the current subtitles stay until it finishes)",
+  "es": "Volviendo a traducir desde el texto original guardado (los subtítulos actuales se conservan hasta terminar)",
+  "ja": "保存された原文から翻訳し直します (既存の字幕は完了するまで維持されます)",
+  "zh-CN": "将用已保存的原文重新翻译（完成前保留现有字幕）",
+  "zh-TW": "將用已儲存的原文重新翻譯（完成前保留現有字幕）"
+ },
+ "저장된 자막은 사용하지 않았습니다 (Ctrl+N 에서 선택 가능)": {
+  "en": "Saved subtitles were not used (you can choose them in Ctrl+N)",
+  "es": "No se usaron los subtítulos guardados (se pueden elegir en Ctrl+N)",
+  "ja": "保存された字幕は使用しませんでした (Ctrl+N で選択できます)",
+  "zh-CN": "未使用已保存的字幕（可在 Ctrl+N 中选择）",
+  "zh-TW": "未使用已儲存的字幕（可在 Ctrl+N 中選擇）"
+ },
+ "저장된 자막을 불러옵니다": {
+  "en": "Loading saved subtitles",
+  "es": "Cargando subtítulos guardados",
+  "ja": "保存された字幕を読み込みます",
+  "zh-CN": "正在载入已保存的字幕",
+  "zh-TW": "正在載入已儲存的字幕"
+ },
+ "저장된 자막을 조회합니다": {
+  "en": "Looking up saved subtitles",
+  "es": "Buscando subtítulos guardados",
+  "ja": "保存された字幕を照会します",
+  "zh-CN": "正在查询已保存的字幕",
+  "zh-TW": "正在查詢已儲存的字幕"
+ },
+ "저장본 사용 중": {
+  "en": "Using saved copy",
+  "es": "Usando la copia guardada",
+  "ja": "保存分を使用中",
+  "zh-CN": "正在使用已保存内容",
+  "zh-TW": "正在使用已儲存內容"
+ },
+ "저장본 없음": {
+  "en": "None saved",
+  "es": "Nada guardado",
+  "ja": "保存なし",
+  "zh-CN": "无已保存内容",
+  "zh-TW": "無已儲存內容"
+ },
+ "저장본 있음": {
+  "en": "Saved copy available",
+  "es": "Copia guardada disponible",
+  "ja": "保存あり",
+  "zh-CN": "有已保存内容",
+  "zh-TW": "有已儲存內容"
+ },
+ "전체 번역": {
+  "en": "Full translation",
+  "es": "Traducción completa",
+  "ja": "全体翻訳",
+  "zh-CN": "全片翻译",
+  "zh-TW": "全片翻譯"
+ },
+ "전체 번역 모델(oh-my-pi): %s": {
+  "en": "Full translation model (oh-my-pi): %s",
+  "es": "Modelo de traducción completa (oh-my-pi): %s",
+  "ja": "全体翻訳モデル (oh-my-pi): %s",
+  "zh-CN": "全片翻译模型（oh-my-pi）：%s",
+  "zh-TW": "全片翻譯模型（oh-my-pi）：%s"
+ },
+ "전체 번역 모드: %s": {
+  "en": "Full translation mode: %s",
+  "es": "Modo de traducción completa: %s",
+  "ja": "全体翻訳モード: %s",
+  "zh-CN": "全片翻译模式：%s",
+  "zh-TW": "全片翻譯模式：%s"
+ },
+ "전체 번역 엔진: %s": {
+  "en": "Full translation engine: %s",
+  "es": "Motor de traducción completa: %s",
+  "ja": "全体翻訳エンジン: %s",
+  "zh-CN": "全片翻译引擎：%s",
+  "zh-TW": "全片翻譯引擎：%s"
+ },
+ "전체 번역 오류": {
+  "en": "Full translation error",
+  "es": "Error en la traducción completa",
+  "ja": "全体翻訳エラー",
+  "zh-CN": "全片翻译出错",
+  "zh-TW": "全片翻譯出錯"
+ },
+ "전체 번역: 번역 중 %d%%": {
+  "en": "Full translation: translating %d%%",
+  "es": "Traducción completa: traduciendo %d%%",
+  "ja": "全体翻訳: 翻訳中 %d%%",
+  "zh-CN": "全片翻译：正在翻译 %d%%",
+  "zh-TW": "全片翻譯：正在翻譯 %d%%"
+ },
+ "전체 번역: 완료": {
+  "en": "Full translation: done",
+  "es": "Traducción completa: terminada",
+  "ja": "全体翻訳: 完了",
+  "zh-CN": "全片翻译：已完成",
+  "zh-TW": "全片翻譯：已完成"
+ },
+ "전체 번역: 원문 수집 중 %d%%": {
+  "en": "Full translation: collecting source text %d%%",
+  "es": "Traducción completa: recopilando texto original %d%%",
+  "ja": "全体翻訳: 原文を収集中 %d%%",
+  "zh-CN": "全片翻译：正在收集原文 %d%%",
+  "zh-TW": "全片翻譯：正在收集原文 %d%%"
+ },
+ "전체 번역: 이 엔진 버전은 지원하지 않습니다": {
+  "en": "Full translation: this engine version does not support it",
+  "es": "Traducción completa: esta versión del motor no la admite",
+  "ja": "全体翻訳: このエンジンのバージョンは対応していません",
+  "zh-CN": "全片翻译：此引擎版本不支持",
+  "zh-TW": "全片翻譯：此引擎版本不支援"
+ },
+ "정렬 신뢰도 %d%%": {
+  "en": "Alignment confidence %d%%",
+  "es": "Confianza de alineación %d%%",
+  "ja": "整列の信頼度 %d%%",
+  "zh-CN": "对齐置信度 %d%%",
+  "zh-TW": "對齊信賴度 %d%%"
+ },
+ "정보: NanumPlayer %s · 엔진 %s": {
+  "en": "About: NanumPlayer %s · engine %s",
+  "es": "Acerca de: NanumPlayer %s · motor %s",
+  "ja": "情報: NanumPlayer %s · エンジン %s",
+  "zh-CN": "关于：NanumPlayer %s · 引擎 %s",
+  "zh-TW": "關於：NanumPlayer %s · 引擎 %s"
+ },
+ "제목이 올바르지 않습니다": {
+  "en": "The title is invalid",
+  "es": "El título no es válido",
+  "ja": "タイトルが正しくありません",
+  "zh-CN": "标题不正确",
+  "zh-TW": "標題不正確"
+ },
+ "존댓말": {
+  "en": "Polite",
+  "es": "Formal",
+  "ja": "丁寧語",
+  "zh-CN": "敬语",
+  "zh-TW": "敬語"
+ },
+ "종료 및 로그아웃 (YouTube·웹페이지)": {
+  "en": "End and sign out (YouTube · web pages)",
+  "es": "Cerrar y salir de la sesión (YouTube · páginas web)",
+  "ja": "終了してログアウト (YouTube・ウェブページ)",
+  "zh-CN": "结束并退出登录（YouTube·网页）",
+  "zh-TW": "結束並登出（YouTube·網頁）"
+ },
+ "중국어": {
+  "en": "Chinese",
+  "es": "chino",
+  "ja": "中国語",
+  "zh-CN": "中文",
+  "zh-TW": "中文"
+ },
+ "지시문이 비어 있어 말투를 바꾸지 않았습니다": {
+  "en": "The instruction was empty, so the style was not changed",
+  "es": "La instrucción estaba vacía, así que no se cambió el estilo",
+  "ja": "指示文が空のため口調を変更しませんでした",
+  "zh-CN": "指令为空，未更改语气",
+  "zh-TW": "指令為空，未變更語氣"
+ },
+ "지원 안 됨": {
+  "en": "Not supported",
+  "es": "No compatible",
+  "ja": "非対応",
+  "zh-CN": "不支持",
+  "zh-TW": "不支援"
+ },
+ "직접 가져온 자막 파일입니다": {
+  "en": "A subtitle file you imported yourself",
+  "es": "Un archivo de subtítulos que importaste tú mismo",
+  "ja": "自分で取り込んだ字幕ファイルです",
+  "zh-CN": "您自行导入的字幕文件",
+  "zh-TW": "您自行匯入的字幕檔案"
+ },
+ "직접 입력": {
+  "en": "Custom",
+  "es": "Personalizado",
+  "ja": "直接入力",
+  "zh-CN": "自定义",
+  "zh-TW": "自訂"
+ },
+ "직접 입력 — %s": {
+  "en": "Custom — %s",
+  "es": "Personalizado — %s",
+  "ja": "直接入力 — %s",
+  "zh-CN": "自定义 — %s",
+  "zh-TW": "自訂 — %s"
+ },
+ "진단 로그 켬: 디스크 읽기/탐색을 시간 기록과 함께 저장합니다 (최대 8MiB, 최근 8개 보관, 영상 데이터·키는 기록 안 함)\n%s": {
+  "en": "Diagnostic log on: disc reads/seeks are saved with timestamps (up to 8 MiB, the latest 8 are kept, video data and keys are not recorded)\n%s",
+  "es": "Registro de diagnóstico activado: se guardan las lecturas/búsquedas del disco con marcas de tiempo (máx. 8 MiB, se conservan los 8 más recientes, no se registran datos de vídeo ni claves)\n%s",
+  "ja": "診断ログをオン: ディスクの読み取り/シークを時刻とともに保存します (最大8MiB、最新8件を保管、動画データとキーは記録しません)\n%s",
+  "zh-CN": "诊断日志已开启：会连同时间记录保存光盘读取/定位（最大 8 MiB，保留最近 8 个，不记录视频数据和密钥）\n%s",
+  "zh-TW": "診斷記錄已開啟：會連同時間記錄儲存光碟讀取/定位（最大 8 MiB，保留最近 8 個，不記錄影片資料和金鑰）\n%s"
+ },
+ "진단 로그(디스크 읽기 상세): %s": {
+  "en": "Diagnostic log (detailed disc reads): %s",
+  "es": "Registro de diagnóstico (detalle de lectura de disco): %s",
+  "ja": "診断ログ (ディスク読み取りの詳細): %s",
+  "zh-CN": "诊断日志（光盘读取详情）：%s",
+  "zh-TW": "診斷記錄（光碟讀取詳情）：%s"
+ },
+ "진단 로그를 껐습니다. 기본 재생 로그는 저장하지 않습니다": {
+  "en": "Diagnostic log turned off. The normal playback log is not saved",
+  "es": "Registro de diagnóstico desactivado. El registro de reproducción normal no se guarda",
+  "ja": "診断ログをオフにしました。通常の再生ログは保存しません",
+  "zh-CN": "已关闭诊断日志。不会保存常规播放日志",
+  "zh-TW": "已關閉診斷記錄。不會儲存一般播放記錄"
+ },
+ "진행 중": {
+  "en": "In progress",
+  "es": "En curso",
+  "ja": "進行中",
+  "zh-CN": "进行中",
+  "zh-TW": "進行中"
+ },
+ "진행 중인 내려받기가 없습니다": {
+  "en": "No download in progress",
+  "es": "No hay ninguna descarga en curso",
+  "ja": "進行中のダウンロードはありません",
+  "zh-CN": "没有正在进行的下载",
+  "zh-TW": "沒有正在進行的下載"
+ },
+ "진행 중인 작업 없음": {
+  "en": "No task in progress",
+  "es": "Ninguna tarea en curso",
+  "ja": "進行中の処理なし",
+  "zh-CN": "没有正在进行的任务",
+  "zh-TW": "沒有正在進行的工作"
+ },
+ "진행 중인 작업 중단": {
+  "en": "Stop the task in progress",
+  "es": "Detener la tarea en curso",
+  "ja": "進行中の処理を中止",
+  "zh-CN": "中止正在进行的任务",
+  "zh-TW": "中止正在進行的工作"
+ },
+ "짧게 (1.2초)": {
+  "en": "Short (1.2 s)",
+  "es": "Corto (1,2 s)",
+  "ja": "短い (1.2秒)",
+  "zh-CN": "短（1.2 秒）",
+  "zh-TW": "短（1.2 秒）"
+ },
+ "최신 %s": {
+  "en": "Latest %s",
+  "es": "Última %s",
+  "ja": "最新 %s",
+  "zh-CN": "最新 %s",
+  "zh-TW": "最新 %s"
+ },
+ "최신 버전 확인 중…": {
+  "en": "Checking for the latest version…",
+  "es": "Comprobando la última versión…",
+  "ja": "最新バージョンを確認中…",
+  "zh-CN": "正在检查最新版本…",
+  "zh-TW": "正在檢查最新版本…"
+ },
+ "최신 버전을 확인합니다": {
+  "en": "Checking for the latest version",
+  "es": "Comprobando la última versión",
+  "ja": "最新バージョンを確認します",
+  "zh-CN": "正在检查最新版本",
+  "zh-TW": "正在檢查最新版本"
+ },
+ "최신 버전입니다": {
+  "en": "Up to date",
+  "es": "Está actualizado",
+  "ja": "最新バージョンです",
+  "zh-CN": "已是最新版本",
+  "zh-TW": "已是最新版本"
+ },
+ "최신 버전입니다 — '업데이트 확인'으로 새 버전이 있는지 먼저 확인하세요": {
+  "en": "You already have the latest version — use 'Check for updates' to see whether a new one exists",
+  "es": "Ya tienes la última versión — usa «Buscar actualizaciones» para ver si hay una nueva",
+  "ja": "最新バージョンです — まず「更新の確認」で新しいバージョンがあるか確認してください",
+  "zh-CN": "已是最新版本 — 请先用“检查更新”确认是否有新版本",
+  "zh-TW": "已是最新版本 — 請先用「檢查更新」確認是否有新版本"
+ },
+ "추가할 항목 (원문 => 번역):": {
+  "en": "Entry to add (original => translation):",
+  "es": "Entrada que añadir (original => traducción):",
+  "ja": "追加する項目 (原文 => 訳語):",
+  "zh-CN": "要添加的条目（原文 => 译文）：",
+  "zh-TW": "要新增的項目（原文 => 譯文）："
+ },
+ "취소": {
+  "en": "Cancel",
+  "es": "Cancelar",
+  "ja": "キャンセル",
+  "zh-CN": "取消",
+  "zh-TW": "取消"
+ },
+ "취소됨": {
+  "en": "Cancelled",
+  "es": "Cancelado",
+  "ja": "キャンセルしました",
+  "zh-CN": "已取消",
+  "zh-TW": "已取消"
+ },
+ "켬": {
+  "en": "On",
+  "es": "Activado",
+  "ja": "オン",
+  "zh-CN": "开",
+  "zh-TW": "開"
+ },
+ "클라우드": {
+  "en": "Cloud",
+  "es": "Nube",
+  "ja": "クラウド",
+  "zh-CN": "云端",
+  "zh-TW": "雲端"
+ },
+ "키 DB 다운로드 또는 검증에 실패했습니다. 인터넷 연결을 확인한 뒤 다시 시도하세요. 기존 DB는 유지됩니다.": {
+  "en": "Downloading or verifying the key database failed. Check your internet connection and try again. The existing database is kept.",
+  "es": "Falló la descarga o verificación de la base de claves. Comprueba tu conexión a internet y vuelve a intentarlo. Se conserva la base existente.",
+  "ja": "キーDBのダウンロードまたは検証に失敗しました。インターネット接続を確認してからもう一度お試しください。既存のDBは維持されます。",
+  "zh-CN": "密钥数据库下载或校验失败。请检查网络连接后重试。现有数据库会保留。",
+  "zh-TW": "金鑰資料庫下載或驗證失敗。請檢查網路連線後重試。現有資料庫會保留。"
+ },
+ "파일": {
+  "en": "File",
+  "es": "Archivo",
+  "ja": "ファイル",
+  "zh-CN": "文件",
+  "zh-TW": "檔案"
+ },
+ "파일을 검증하고 필요하면 다시 내려받기": {
+  "en": "Verify the files and download again if needed",
+  "es": "Verificar los archivos y volver a descargar si hace falta",
+  "ja": "ファイルを検証し、必要なら再ダウンロード",
+  "zh-CN": "校验文件，必要时重新下载",
+  "zh-TW": "驗證檔案，必要時重新下載"
+ },
+ "포르투갈어": {
+  "en": "Portuguese",
+  "es": "portugués",
+  "ja": "ポルトガル語",
+  "zh-CN": "葡萄牙语",
+  "zh-TW": "葡萄牙語"
+ },
+ "폴더를 찾을 수 없습니다: %s": {
+  "en": "Folder not found: %s",
+  "es": "No se encontró la carpeta: %s",
+  "ja": "フォルダーが見つかりません: %s",
+  "zh-CN": "找不到文件夹：%s",
+  "zh-TW": "找不到資料夾：%s"
+ },
+ "프랑스어": {
+  "en": "French",
+  "es": "francés",
+  "ja": "フランス語",
+  "zh-CN": "法语",
+  "zh-TW": "法語"
+ },
+ "프리롤 최대 대기": {
+  "en": "Maximum pre-roll wait",
+  "es": "Espera máxima de pre-carga",
+  "ja": "プリロールの最大待機",
+  "zh-CN": "预缓冲最长等待",
+  "zh-TW": "預緩衝最長等待"
+ },
+ "프리롤 최대 대기: %d초": {
+  "en": "Maximum pre-roll wait: %d s",
+  "es": "Espera máxima de pre-carga: %d s",
+  "ja": "プリロールの最大待機: %d秒",
+  "zh-CN": "预缓冲最长等待：%d 秒",
+  "zh-TW": "預緩衝最長等待：%d 秒"
+ },
+ "필요 %d개 · %s": {
+  "en": "%d needed · %s",
+  "es": "%d necesarios · %s",
+  "ja": "%d個が必要 · %s",
+  "zh-CN": "需要 %d 个 · %s",
+  "zh-TW": "需要 %d 個 · %s"
+ },
+ "필요 구성 요소 · %s": {
+  "en": "Components needed · %s",
+  "es": "Componentes necesarios · %s",
+  "ja": "コンポーネントが必要 · %s",
+  "zh-CN": "需要组件 · %s",
+  "zh-TW": "需要元件 · %s"
+ },
+ "필요 없음 · CUDA Toolkit %s 사용": {
+  "en": "Not needed · using CUDA Toolkit %s",
+  "es": "No hace falta · usando CUDA Toolkit %s",
+  "ja": "不要 · CUDA Toolkit %sを使用",
+  "zh-CN": "无需 · 使用 CUDA Toolkit %s",
+  "zh-TW": "無需 · 使用 CUDA Toolkit %s"
+ },
+ "한국어": {
+  "en": "Korean",
+  "es": "coreano",
+  "ja": "韓国語",
+  "zh-CN": "韩语",
+  "zh-TW": "韓語"
+ },
+ "한국어 부분을 자동으로 찾지 못한 관련 항목은 직접 수정하세요: %s": {
+  "en": "Edit the related entries whose Korean part could not be found automatically: %s",
+  "es": "Edita a mano las entradas relacionadas cuya parte en coreano no se pudo encontrar automáticamente: %s",
+  "ja": "韓国語の部分を自動で見つけられなかった関連項目は手動で修正してください: %s",
+  "zh-CN": "未能自动找到韩语部分的相关条目，请手动修改：%s",
+  "zh-TW": "未能自動找到韓語部分的相關項目，請手動修改：%s"
+ },
+ "항목 추가": {
+  "en": "Add entry",
+  "es": "Añadir entrada",
+  "ja": "項目を追加",
+  "zh-CN": "添加条目",
+  "zh-TW": "新增項目"
+ },
+ "현재 가속 모드는 'CPU만'입니다 — Ctrl+N → AI 구성 요소에서 바꿀 수 있습니다": {
+  "en": "The current acceleration mode is 'CPU only' — you can change it in Ctrl+N → AI components",
+  "es": "El modo de aceleración actual es «Solo CPU» — puedes cambiarlo en Ctrl+N → Componentes de IA",
+  "ja": "現在の高速化モードは「CPUのみ」です — Ctrl+N → AIコンポーネントで変更できます",
+  "zh-CN": "当前加速模式为“仅 CPU” — 可在 Ctrl+N → AI 组件中更改",
+  "zh-TW": "目前加速模式為「僅 CPU」 — 可在 Ctrl+N → AI 元件中變更"
+ },
+ "현재 시간 보정: %s": {
+  "en": "Current timing correction: %s",
+  "es": "Corrección de tiempo actual: %s",
+  "ja": "現在のタイミング補正: %s",
+  "zh-CN": "当前时间校正：%s",
+  "zh-TW": "目前時間校正：%s"
+ },
+ "현재 음성 (%s) 으로 AI 자막 새로 생성": {
+  "en": "Generate new AI subtitles from the current audio (%s)",
+  "es": "Generar nuevos subtítulos IA con el audio actual (%s)",
+  "ja": "現在の音声 (%s) からAI字幕を新しく生成",
+  "zh-CN": "用当前音轨（%s）重新生成 AI 字幕",
+  "zh-TW": "用目前音軌（%s）重新產生 AI 字幕"
+ },
+ "현재 음성에 저장된 AI 자막을 찾지 못했습니다": {
+  "en": "No saved AI subtitles were found for the current audio",
+  "es": "No se encontraron subtítulos IA guardados para el audio actual",
+  "ja": "現在の音声に保存されたAI字幕が見つかりませんでした",
+  "zh-CN": "未找到当前音轨已保存的 AI 字幕",
+  "zh-TW": "找不到目前音軌已儲存的 AI 字幕"
+ },
+ "현재 음성에 저장된 AI 자막이 없어 새로 생성합니다": {
+  "en": "No saved AI subtitles for the current audio; generating new ones",
+  "es": "No hay subtítulos IA guardados para el audio actual; se generarán nuevos",
+  "ja": "現在の音声に保存されたAI字幕がないため新しく生成します",
+  "zh-CN": "当前音轨没有已保存的 AI 字幕，将重新生成",
+  "zh-TW": "目前音軌沒有已儲存的 AI 字幕，將重新產生"
+ },
+ "현재 음성의 저장된 AI 자막 사용 (조회)": {
+  "en": "Use saved AI subtitles for the current audio (look up)",
+  "es": "Usar los subtítulos IA guardados del audio actual (buscar)",
+  "ja": "現在の音声の保存済みAI字幕を使用 (照会)",
+  "zh-CN": "使用当前音轨已保存的 AI 字幕（查询）",
+  "zh-TW": "使用目前音軌已儲存的 AI 字幕（查詢）"
+ },
+ "확인 중": {
+  "en": "Checking",
+  "es": "Comprobando",
+  "ja": "確認中",
+  "zh-CN": "检查中",
+  "zh-TW": "檢查中"
+ },
+ "확인 중…": {
+  "en": "Checking…",
+  "es": "Comprobando…",
+  "ja": "確認中…",
+  "zh-CN": "检查中…",
+  "zh-TW": "檢查中…"
+ },
+ "영상 업스케일: %s": {
+  "en": "Video upscale: %s",
+  "es": "Ampliación de vídeo: %s",
+  "ja": "映像アップスケール: %s",
+  "zh-CN": "视频超分：%s",
+  "zh-TW": "影片升頻：%s"
+ },
+ "고품질 크기 조정": {
+  "en": "High-quality scaling",
+  "es": "Escalado de alta calidad",
+  "ja": "高品質スケーリング",
+  "zh-CN": "高质量缩放",
+  "zh-TW": "高品質縮放"
+ },
+ "NVIDIA RTX 업스케일": {
+  "en": "NVIDIA RTX upscaling",
+  "es": "Ampliación NVIDIA RTX",
+  "ja": "NVIDIA RTX アップスケール",
+  "zh-CN": "NVIDIA RTX 超分",
+  "zh-TW": "NVIDIA RTX 升頻"
+ },
+ "사용자 셰이더": {
+  "en": "User shaders",
+  "es": "Shaders del usuario",
+  "ja": "ユーザーシェーダー",
+  "zh-CN": "用户着色器",
+  "zh-TW": "使用者著色器"
+ },
+ "기본": {
+  "en": "Default",
+  "es": "Predeterminado",
+  "ja": "標準",
+  "zh-CN": "默认",
+  "zh-TW": "預設"
+ },
+ "대기 중 — 영상이 재생되면 적용합니다": {
+  "en": "Waiting — applied once a video is playing",
+  "es": "En espera — se aplica al reproducir un vídeo",
+  "ja": "待機中 — 映像の再生時に適用します",
+  "zh-CN": "等待中 — 播放视频后应用",
+  "zh-TW": "等待中 — 播放影片後套用"
+ },
+ "고품질 크기 조정 적용 중": {
+  "en": "High-quality scaling active",
+  "es": "Escalado de alta calidad activo",
+  "ja": "高品質スケーリングを適用中",
+  "zh-CN": "正在应用高质量缩放",
+  "zh-TW": "正在套用高品質縮放"
+ },
+ "RTX %sx 요청됨 — AI 처리 여부는 드라이버에서 확인": {
+  "en": "RTX %sx requested — check AI activity in the driver",
+  "es": "RTX %sx solicitado — comprueba la IA en el controlador",
+  "ja": "RTX %sx を要求 — AI 動作はドライバーで確認",
+  "zh-CN": "已请求 RTX %sx — 请在驱动中确认 AI 状态",
+  "zh-TW": "已要求 RTX %sx — 請在驅動程式中確認 AI 狀態"
+ },
+ "사용자 셰이더 %d개 적용 중": {
+  "en": "%d user shader(s) active",
+  "es": "%d shader(s) del usuario activo(s)",
+  "ja": "ユーザーシェーダー %d 個を適用中",
+  "zh-CN": "正在应用 %d 个用户着色器",
+  "zh-TW": "正在套用 %d 個使用者著色器"
+ },
+ "필요 없음 — 영상이 이미 화면 크기 이상입니다": {
+  "en": "Not needed — the video is already at or above screen size",
+  "es": "No necesario — el vídeo ya es igual o mayor que la pantalla",
+  "ja": "不要 — 映像はすでに画面サイズ以上です",
+  "zh-CN": "无需 — 视频已不小于屏幕尺寸",
+  "zh-TW": "不需要 — 影片已不小於螢幕尺寸"
+ },
+ "업스케일 도우미(scripts/nanum-upscale.lua)를 불러오지 못했습니다": {
+  "en": "Could not load the upscale helper (scripts/nanum-upscale.lua)",
+  "es": "No se pudo cargar el asistente de ampliación (scripts/nanum-upscale.lua)",
+  "ja": "アップスケール補助 (scripts/nanum-upscale.lua) を読み込めませんでした",
+  "zh-CN": "无法加载超分辅助脚本 (scripts/nanum-upscale.lua)",
+  "zh-TW": "無法載入升頻輔助腳本 (scripts/nanum-upscale.lua)"
+ },
+ "영상 업스케일 설정 실패: %s": {
+  "en": "Video upscale setting failed: %s",
+  "es": "Error en el ajuste de ampliación de vídeo: %s",
+  "ja": "映像アップスケール設定に失敗しました: %s",
+  "zh-CN": "视频超分设置失败：%s",
+  "zh-TW": "影片升頻設定失敗：%s"
+ },
+ "상태: %s": {
+  "en": "Status: %s",
+  "es": "Estado: %s",
+  "ja": "状態: %s",
+  "zh-CN": "状态：%s",
+  "zh-TW": "狀態：%s"
+ },
+ "방식: %s": {
+  "en": "Mode: %s",
+  "es": "Modo: %s",
+  "ja": "方式: %s",
+  "zh-CN": "方式：%s",
+  "zh-TW": "方式：%s"
+ },
+ "RTX 배율: %s": {
+  "en": "RTX scale: %s",
+  "es": "Escala RTX: %s",
+  "ja": "RTX 倍率: %s",
+  "zh-CN": "RTX 倍率：%s",
+  "zh-TW": "RTX 倍率：%s"
+ },
+ "사용자 셰이더 목록 관리: %d개": {
+  "en": "Manage user shader list: %d",
+  "es": "Gestionar lista de shaders: %d",
+  "ja": "ユーザーシェーダー一覧を管理: %d 個",
+  "zh-CN": "管理用户着色器列表：%d 个",
+  "zh-TW": "管理使用者著色器清單：%d 個"
+ },
+ "RTX: 지원 NVIDIA GPU · D3D11 · 드라이버에서 VSR 켜기": {
+  "en": "RTX: supported NVIDIA GPU · D3D11 · enable VSR in the driver",
+  "es": "RTX: GPU NVIDIA compatible · D3D11 · activar VSR en el controlador",
+  "ja": "RTX: 対応 NVIDIA GPU · D3D11 · ドライバーで VSR を有効化",
+  "zh-CN": "RTX：支持的 NVIDIA GPU · D3D11 · 在驱动中启用 VSR",
+  "zh-TW": "RTX：支援的 NVIDIA GPU · D3D11 · 在驅動程式中啟用 VSR"
+ },
+ "← 설정으로 돌아가기": {
+  "en": "← Back to settings",
+  "es": "← Volver a ajustes",
+  "ja": "← 設定に戻る",
+  "zh-CN": "← 返回设置",
+  "zh-TW": "← 返回設定"
+ },
+ "영상 업스케일:": {
+  "en": "Video upscale:",
+  "es": "Ampliación de vídeo:",
+  "ja": "映像アップスケール:",
+  "zh-CN": "视频超分：",
+  "zh-TW": "影片升頻："
+ },
+ "업스케일 방식:": {
+  "en": "Upscale mode:",
+  "es": "Modo de ampliación:",
+  "ja": "アップスケール方式:",
+  "zh-CN": "超分方式：",
+  "zh-TW": "升頻方式："
+ },
+ "고품질 크기 조정 (GPU 렌더러)": {
+  "en": "High-quality scaling (GPU renderer)",
+  "es": "Escalado de alta calidad (renderizador GPU)",
+  "ja": "高品質スケーリング (GPU レンダラー)",
+  "zh-CN": "高质量缩放（GPU 渲染器）",
+  "zh-TW": "高品質縮放（GPU 渲染器）"
+ },
+ "NVIDIA RTX 업스케일 (NVIDIA GPU·드라이버 RTX VSR 필요)": {
+  "en": "NVIDIA RTX upscaling (needs NVIDIA GPU and driver RTX VSR)",
+  "es": "Ampliación NVIDIA RTX (requiere GPU NVIDIA y RTX VSR en el controlador)",
+  "ja": "NVIDIA RTX アップスケール (NVIDIA GPU とドライバーの RTX VSR が必要)",
+  "zh-CN": "NVIDIA RTX 超分（需要 NVIDIA GPU 及驱动 RTX VSR）",
+  "zh-TW": "NVIDIA RTX 升頻（需要 NVIDIA GPU 與驅動程式 RTX VSR）"
+ },
+ "사용자 셰이더 (직접 고른 GLSL 파일)": {
+  "en": "User shaders (GLSL files you choose)",
+  "es": "Shaders del usuario (archivos GLSL que elijas)",
+  "ja": "ユーザーシェーダー (自分で選んだ GLSL ファイル)",
+  "zh-CN": "用户着色器（自选 GLSL 文件）",
+  "zh-TW": "使用者著色器（自選 GLSL 檔案）"
+ },
+ "RTX 배율:": {
+  "en": "RTX scale:",
+  "es": "Escala RTX:",
+  "ja": "RTX 倍率:",
+  "zh-CN": "RTX 倍率：",
+  "zh-TW": "RTX 倍率："
+ },
+ "추가할 셰이더 파일 선택": {
+  "en": "Choose a shader file to add",
+  "es": "Elige un archivo de shader para añadir",
+  "ja": "追加するシェーダーファイルを選択",
+  "zh-CN": "选择要添加的着色器文件",
+  "zh-TW": "選擇要加入的著色器檔案"
+ },
+ "셰이더 파일 (glsl, hook, frag)|*.glsl;*.hook;*.frag|모든 파일|*.*": {
+  "en": "Shader files (glsl, hook, frag)|*.glsl;*.hook;*.frag|All files|*.*",
+  "es": "Archivos de shader (glsl, hook, frag)|*.glsl;*.hook;*.frag|Todos los archivos|*.*",
+  "ja": "シェーダーファイル (glsl, hook, frag)|*.glsl;*.hook;*.frag|すべてのファイル|*.*",
+  "zh-CN": "着色器文件 (glsl, hook, frag)|*.glsl;*.hook;*.frag|所有文件|*.*",
+  "zh-TW": "著色器檔案 (glsl, hook, frag)|*.glsl;*.hook;*.frag|所有檔案|*.*"
+ },
+ "이미 목록에 있는 셰이더입니다: %s": {
+  "en": "Already in the list: %s",
+  "es": "Ya está en la lista: %s",
+  "ja": "すでに一覧にあります: %s",
+  "zh-CN": "已在列表中：%s",
+  "zh-TW": "已在清單中：%s"
+ },
+ "+ 셰이더 파일 추가… (고른 순서대로 적용)": {
+  "en": "+ Add shader file… (applied in the order added)",
+  "es": "+ Añadir archivo de shader… (se aplican en el orden añadido)",
+  "ja": "+ シェーダーファイルを追加… (追加した順に適用)",
+  "zh-CN": "+ 添加着色器文件…（按添加顺序应用）",
+  "zh-TW": "+ 加入著色器檔案…（依加入順序套用）"
+ },
+ "목록 모두 비우기": {
+  "en": "Clear the whole list",
+  "es": "Vaciar toda la lista",
+  "ja": "一覧をすべて消去",
+  "zh-CN": "清空整个列表",
+  "zh-TW": "清空整個清單"
+ },
+ "← 업스케일 설정으로 돌아가기": {
+  "en": "← Back to upscale settings",
+  "es": "← Volver a la ampliación",
+  "ja": "← アップスケール設定に戻る",
+  "zh-CN": "← 返回超分设置",
+  "zh-TW": "← 返回升頻設定"
+ },
+ "사용자 셰이더 (위에서부터 순서대로 적용):": {
+  "en": "User shaders (applied from the top down):",
+  "es": "Shaders del usuario (se aplican de arriba abajo):",
+  "ja": "ユーザーシェーダー (上から順に適用):",
+  "zh-CN": "用户着色器（从上到下依次应用）：",
+  "zh-TW": "使用者著色器（由上而下依序套用）："
+ },
+ "위로 이동": {
+  "en": "Move up",
+  "es": "Subir",
+  "ja": "上へ移動",
+  "zh-CN": "上移",
+  "zh-TW": "上移"
+ },
+ "아래로 이동": {
+  "en": "Move down",
+  "es": "Bajar",
+  "ja": "下へ移動",
+  "zh-CN": "下移",
+  "zh-TW": "下移"
+ },
+ "목록에서 제거": {
+  "en": "Remove from list",
+  "es": "Quitar de la lista",
+  "ja": "一覧から削除",
+  "zh-CN": "从列表中移除",
+  "zh-TW": "從清單中移除"
+ },
+ "← 뒤로": {
+  "en": "← Back",
+  "es": "← Atrás",
+  "ja": "← 戻る",
+  "zh-CN": "← 返回",
+  "zh-TW": "← 返回"
+ }
+}

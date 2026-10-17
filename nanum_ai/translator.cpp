@@ -1,4 +1,5 @@
 #include "translator.h"
+#include "fulltranslate.h"
 
 #include <windows.h>
 #include <winhttp.h>
@@ -267,7 +268,7 @@ Translator::Result Translator::request_lines(const std::vector<std::string> &src
         if (j.is_discarded() || !j.contains("response") || !j["response"].is_string())
             return Result::Transport;
         std::vector<std::string> lines;
-        const std::string answer = j["response"].get<std::string>();
+        const std::string answer = nanum::detail::strip_think(j["response"].get<std::string>());
         bool usable = parse_lines(answer, lines) && lines.size() == src.size() &&
                       std::none_of(lines.begin(), lines.end(), [](const std::string &l) { return l.empty(); });
         if (!usable) {

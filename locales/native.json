@@ -1,0 +1,2474 @@
+{
+ "%s (%s %s 자막 기반)": {
+  "en": "%s (based on %s %s subtitles)",
+  "ja": "%s（%s %s字幕ベース）",
+  "zh-CN": "%s（基于%s %s字幕）",
+  "zh-TW": "%s（依據%s %s字幕）",
+  "es": "%s (basado en subtítulos de %s en %s)"
+ },
+ "%s (%s 디스크 자막 기반)": {
+  "en": "%s (based on %s disc subtitles)",
+  "ja": "%s（%sディスク字幕ベース）",
+  "zh-CN": "%s（基于%s光盘字幕）",
+  "zh-TW": "%s（依據%s光碟字幕）",
+  "es": "%s (basado en subtítulos del disco en %s)"
+ },
+ "%s (%s 음성 기반)": {
+  "en": "%s (based on %s audio)",
+  "ja": "%s（%s音声ベース）",
+  "zh-CN": "%s（基于%s音频）",
+  "zh-TW": "%s（依據%s音訊）",
+  "es": "%s (basado en audio en %s)"
+ },
+ "%s (%s 자막 기반)": {
+  "en": "%s (based on %s subtitles)",
+  "ja": "%s（%s字幕ベース）",
+  "zh-CN": "%s（基于%s字幕）",
+  "zh-TW": "%s（依據%s字幕）",
+  "es": "%s (basado en subtítulos en %s)"
+ },
+ "%s (error %lu)": {
+  "ko": "%s (오류 %lu)",
+  "en": "%s (error %lu)",
+  "ja": "%s(エラー %lu)",
+  "zh-CN": "%s(错误 %lu)",
+  "zh-TW": "%s(錯誤 %lu)",
+  "es": "%s (error %lu)"
+ },
+ "%s OCR 언어 팩이 없습니다 (Windows 설정 > 시간 및 언어 > 언어 및 지역에서 추가)": {
+  "en": "No %s OCR language pack is installed (add it in Windows Settings > Time & language > Language & region)",
+  "ja": "%s のOCR言語パックがありません（Windowsの設定 > 時刻と言語 > 言語と地域 で追加してください）",
+  "zh-CN": "未安装%s OCR 语言包（请在 Windows 设置 > 时间和语言 > 语言和区域 中添加）",
+  "zh-TW": "未安裝%s OCR 語言套件（請在 Windows 設定 > 時間與語言 > 語言與地區 中新增）",
+  "es": "No hay un paquete de idioma OCR de %s (agrégalo en Configuración de Windows > Hora e idioma > Idioma y región)"
+ },
+ "%s OCR 팩 없음: %s 인식기로 읽는 중": {
+  "en": "No %s OCR pack: reading with the %s recognizer",
+  "ja": "%s のOCRパックがありません: %s の認識エンジンで読み取り中",
+  "zh-CN": "没有%s OCR 包：正在使用%s识别器读取",
+  "zh-TW": "沒有%s OCR 套件：正在使用%s辨識器讀取",
+  "es": "No hay paquete OCR de %s: leyendo con el reconocedor de %s"
+ },
+ "%s cannot be read": {
+  "en": "%s cannot be read",
+  "ja": "%s を読み取れません",
+  "zh-CN": "无法读取 %s",
+  "zh-TW": "無法讀取 %s",
+  "es": "no se puede leer %s",
+  "ko": "%s을(를) 읽을 수 없습니다"
+ },
+ "%s does not contain a Blu-ray or DVD-Video disc.": {
+  "ko": "%s에 Blu-ray 또는 DVD-Video 디스크가 없습니다.",
+  "en": "%s does not contain a Blu-ray or DVD-Video disc.",
+  "ja": "%sにBlu-rayまたはDVD-Videoディスクがありません。",
+  "zh-CN": "%s 中没有 Blu-ray 或 DVD-Video 光盘。",
+  "zh-TW": "%s 中沒有 Blu-ray 或 DVD-Video 光碟。",
+  "es": "%s no contiene un disco Blu-ray ni DVD-Video."
+ },
+ "%s does not exist.": {
+  "ko": "%s이(가) 존재하지 않습니다.",
+  "en": "%s does not exist.",
+  "ja": "%sは存在しません。",
+  "zh-CN": "%s 不存在。",
+  "zh-TW": "%s 不存在。",
+  "es": "%s no existe."
+ },
+ "%s does not match the pinned model (wrong size or SHA-256). It is not modified; replace or delete it to use the downloaded model.": {
+  "ko": "%s이(가) 고정된 모델과 일치하지 않습니다 (크기 또는 SHA-256 불일치). 이 파일은 수정되지 않았으니, 다운로드한 모델을 사용하려면 교체하거나 삭제하세요.",
+  "en": "%s does not match the pinned model (wrong size or SHA-256). It is not modified; replace or delete it to use the downloaded model.",
+  "ja": "%s は固定されたモデルと一致しません(サイズまたは SHA-256 が異なります)。変更はしていません。ダウンロードしたモデルを使うには、置き換えるか削除してください。",
+  "zh-CN": "%s 与固定的模型不匹配(大小或 SHA-256 不对)。该文件未被修改;若要使用下载的模型,请替换或删除它。",
+  "zh-TW": "%s 與固定的模型不符(大小或 SHA-256 不正確)。該檔案未被修改;若要使用下載的模型,請取代或刪除它。",
+  "es": "%s no coincide con el modelo fijado (tamaño o SHA-256 incorrectos). No se ha modificado; reemplácelo o elimínelo para usar el modelo descargado."
+ },
+ "%s from %s failed the size/CRC check; nothing was installed.": {
+  "ko": "%s(%s 내)의 크기/CRC 검사에 실패하여 아무것도 설치되지 않았습니다.",
+  "en": "%s from %s failed the size/CRC check; nothing was installed.",
+  "ja": "%s(%s 内)がサイズ/CRC チェックに失敗したため、何もインストールされていません。",
+  "zh-CN": "%s(来自 %s)未通过大小/CRC 校验,未安装任何内容。",
+  "zh-TW": "%s(來自 %s)未通過大小/CRC 檢查,未安裝任何內容。",
+  "es": "%s de %s no superó la comprobación de tamaño/CRC; no se instaló nada."
+ },
+ "%s has no BDMV or VIDEO_TS folder.": {
+  "ko": "%s에 BDMV 또는 VIDEO_TS 폴더가 없습니다.",
+  "en": "%s has no BDMV or VIDEO_TS folder.",
+  "ja": "%sにBDMVまたはVIDEO_TSフォルダがありません。",
+  "zh-CN": "%s 中没有 BDMV 或 VIDEO_TS 文件夹。",
+  "zh-TW": "%s 中沒有 BDMV 或 VIDEO_TS 資料夾。",
+  "es": "%s no tiene una carpeta BDMV ni VIDEO_TS."
+ },
+ "%s has no readable version information": {
+  "en": "%s has no readable version information",
+  "ja": "%s に読み取り可能なバージョン情報がありません",
+  "zh-CN": "%s 没有可读取的版本信息",
+  "zh-TW": "%s 沒有可讀取的版本資訊",
+  "es": "%s no tiene información de versión legible",
+  "ko": "%s에서 읽을 수 있는 버전 정보가 없습니다"
+ },
+ "%s has no usable %s.": {
+  "ko": "%s에 사용할 수 있는 %s이(가) 없습니다.",
+  "en": "%s has no usable %s.",
+  "ja": "%s に使用可能な %s がありません。",
+  "zh-CN": "%s 中没有可用的 %s。",
+  "zh-TW": "%s 中沒有可用的 %s。",
+  "es": "%s no contiene un %s utilizable."
+ },
+ "%s is corrupt (unexpected end of %s).": {
+  "ko": "%s이(가) 손상되었습니다 (%s이(가) 예기치 않게 끝남).",
+  "en": "%s is corrupt (unexpected end of %s).",
+  "ja": "%s が破損しています(%s が予期せず終了しました)。",
+  "zh-CN": "%s 已损坏(%s 意外结束)。",
+  "zh-TW": "%s 已損毀(%s 意外結束)。",
+  "es": "%s está dañado (final inesperado de %s)."
+ },
+ "%s is corrupt (zlib error %d in %s).": {
+  "ko": "%s이(가) 손상되었습니다 (zlib 오류 %d, 위치: %s).",
+  "en": "%s is corrupt (zlib error %d in %s).",
+  "ja": "%s が破損しています(zlib エラー %d、%s 内)。",
+  "zh-CN": "%s 已损坏(zlib 错误 %d,位于 %s)。",
+  "zh-TW": "%s 已損毀(zlib 錯誤 %d,位於 %s)。",
+  "es": "%s está dañado (error de zlib %d en %s)."
+ },
+ "%s is in use but no longer exists.": {
+  "ko": "%s이(가) 사용 중이지만 더 이상 존재하지 않습니다.",
+  "en": "%s is in use but no longer exists.",
+  "ja": "%s は使用中ですが、すでに存在しません。",
+  "zh-CN": "%s 正在使用,但已不存在。",
+  "zh-TW": "%s 正在使用,但已不存在。",
+  "es": "%s está en uso, pero ya no existe."
+ },
+ "%s is missing from %s (incomplete CUDA Toolkit)": {
+  "en": "%s is missing from %s (incomplete CUDA Toolkit)",
+  "ja": "%s が %s にありません(CUDA Toolkit が不完全です)",
+  "zh-CN": "%s 不在 %s 中（CUDA Toolkit 不完整）",
+  "zh-TW": "%s 不在 %s 中（CUDA Toolkit 不完整）",
+  "es": "falta %s en %s (CUDA Toolkit incompleto)",
+  "ko": "%s이(가) %s에 없습니다(CUDA Toolkit이 불완전함)"
+ },
+ "%s is not a 64-bit (x64) DLL": {
+  "en": "%s is not a 64-bit (x64) DLL",
+  "ja": "%s は64ビット(x64)DLLではありません",
+  "zh-CN": "%s 不是 64 位（x64）DLL",
+  "zh-TW": "%s 不是 64 位元（x64）DLL",
+  "es": "%s no es una DLL de 64 bits (x64)",
+  "ko": "%s은(는) 64비트(x64) DLL이 아닙니다"
+ },
+ "%s is not a Blu-ray disc.": {
+  "ko": "%s은(는) Blu-ray 디스크가 아닙니다.",
+  "en": "%s is not a Blu-ray disc.",
+  "ja": "%sはBlu-rayディスクではありません。",
+  "zh-CN": "%s 不是 Blu-ray 光盘。",
+  "zh-TW": "%s 不是 Blu-ray 光碟。",
+  "es": "%s no es un disco Blu-ray."
+ },
+ "%s is not a DVD-Video disc.": {
+  "ko": "%s은(는) DVD-Video 디스크가 아닙니다.",
+  "en": "%s is not a DVD-Video disc.",
+  "ja": "%sはDVD-Videoディスクではありません。",
+  "zh-CN": "%s 不是 DVD-Video 光盘。",
+  "zh-TW": "%s 不是 DVD-Video 光碟。",
+  "es": "%s no es un disco DVD-Video."
+ },
+ "%s is not a Windows DLL": {
+  "en": "%s is not a Windows DLL",
+  "ja": "%s は Windows DLL ではありません",
+  "zh-CN": "%s 不是 Windows DLL",
+  "zh-TW": "%s 不是 Windows DLL",
+  "es": "%s no es una DLL de Windows",
+  "ko": "%s은(는) Windows DLL이 아닙니다"
+ },
+ "%s is not a drive.": {
+  "ko": "%s은(는) 드라이브가 아닙니다.",
+  "en": "%s is not a drive.",
+  "ja": "%sはドライブではありません。",
+  "zh-CN": "%s 不是驱动器。",
+  "zh-TW": "%s 不是光碟機。",
+  "es": "%s no es una unidad."
+ },
+ "%s is not a folder.": {
+  "ko": "%s은(는) 폴더가 아닙니다.",
+  "en": "%s is not a folder.",
+  "ja": "%sはフォルダではありません。",
+  "zh-CN": "%s 不是文件夹。",
+  "zh-TW": "%s 不是資料夾。",
+  "es": "%s no es una carpeta."
+ },
+ "%s is not a zip file.": {
+  "ko": "%s은(는) zip 파일이 아닙니다.",
+  "en": "%s is not a zip file.",
+  "ja": "%s は zip ファイルではありません。",
+  "zh-CN": "%s 不是 zip 文件。",
+  "zh-TW": "%s 不是 zip 檔案。",
+  "es": "%s no es un archivo zip."
+ },
+ "%s is truncated.": {
+  "ko": "%s이(가) 잘렸습니다.",
+  "en": "%s is truncated.",
+  "ja": "%s が途中で切れています。",
+  "zh-CN": "%s 已被截断。",
+  "zh-TW": "%s 已被截斷。",
+  "es": "%s está truncado."
+ },
+ "%s source, not translated | %s | %s": {
+  "ko": "%s 원문, 번역 안 됨 | %s | %s",
+  "en": "%s source, not translated | %s | %s",
+  "ja": "%s のソース（未翻訳） | %s | %s",
+  "zh-CN": "%s 原文，未翻译 | %s | %s",
+  "zh-TW": "%s 原文，未翻譯 | %s | %s",
+  "es": "Original en %s, sin traducir | %s | %s"
+ },
+ "%s | %s untranslated": {
+  "ko": "%s | 번역 안 됨 %s개",
+  "en": "%s | %s untranslated",
+  "ja": "%s | 未翻訳 %s件",
+  "zh-CN": "%s | 未翻译 %s 条",
+  "zh-TW": "%s | 未翻譯 %s 則",
+  "es": "%s | %s sin traducir"
+ },
+ "%s, results are not saved": {
+  "ko": "%s, 결과가 저장되지 않습니다",
+  "en": "%s, results are not saved",
+  "ja": "%s。結果は保存されません",
+  "zh-CN": "%s，结果不会被保存",
+  "zh-TW": "%s，結果不會被儲存",
+  "es": "%s; los resultados no se guardan"
+ },
+ "%s: %s is larger than announced.": {
+  "ko": "%s: %s이(가) 예고된 크기보다 큽니다.",
+  "en": "%s: %s is larger than announced.",
+  "ja": "%s: %s が通知されたサイズより大きくなっています。",
+  "zh-CN": "%s:%s 比声明的大小更大。",
+  "zh-TW": "%s:%s 比宣告的大小更大。",
+  "es": "%s: %s es mayor de lo anunciado."
+ },
+ "%s: this is not a subtitle file the player can read": {
+  "ko": "%s: 플레이어가 읽을 수 있는 자막 파일이 아닙니다",
+  "en": "%s: this is not a subtitle file the player can read",
+  "ja": "%s: プレーヤーで読み取れる字幕ファイルではありません",
+  "zh-CN": "%s：这不是播放器可以读取的字幕文件",
+  "zh-TW": "%s：這不是播放器可以讀取的字幕檔案",
+  "es": "%s: no es un archivo de subtítulos que el reproductor pueda leer"
+ },
+ "'%s' does not export the nanum_ai API (ABI %s)": {
+  "ko": "'%s'에서 nanum_ai API를 제공하지 않습니다 (ABI %s)",
+  "en": "'%s' does not export the nanum_ai API (ABI %s)",
+  "ja": "'%s' は nanum_ai API を公開していません（ABI %s）",
+  "zh-CN": "“%s”未导出 nanum_ai API（ABI %s）",
+  "zh-TW": "「%s」未匯出 nanum_ai API（ABI %s）",
+  "es": "'%s' no exporta la API nanum_ai (ABI %s)"
+ },
+ "'%s' is not a title id or \"all\".": {
+  "ko": "'%s'은(는) 타이틀 ID도 \"all\"도 아닙니다.",
+  "en": "'%s' is not a title id or \"all\".",
+  "ja": "'%s' はタイトルIDでも \"all\" でもありません。",
+  "zh-CN": "“%s”不是标题 ID，也不是“all”。",
+  "zh-TW": "「%s」不是標題 ID，也不是「all」。",
+  "es": "'%s' no es un id de título ni \"all\"."
+ },
+ "(이름 없음)": {
+  "en": "(no name)",
+  "ja": "（名前なし）",
+  "zh-CN": "（无名称）",
+  "zh-TW": "（無名稱）",
+  "es": "(sin nombre)"
+ },
+ "--%s is set to %s, which does not exist. Fix or remove that option (downloads never overwrite custom model paths).": {
+  "ko": "--%s이(가) 존재하지 않는 %s(으)로 설정되어 있습니다. 해당 옵션을 수정하거나 제거하세요 (다운로드는 사용자 지정 모델 경로를 덮어쓰지 않습니다).",
+  "en": "--%s is set to %s, which does not exist. Fix or remove that option (downloads never overwrite custom model paths).",
+  "ja": "--%s が存在しない %s に設定されています。このオプションを修正するか削除してください(ダウンロードでカスタムモデルのパスが上書きされることはありません)。",
+  "zh-CN": "--%s 被设置为不存在的 %s。请修正或移除该选项(下载不会覆盖自定义模型路径)。",
+  "zh-TW": "--%s 被設定為不存在的 %s。請修正或移除該選項(下載不會覆寫自訂模型路徑)。",
+  "es": "--%s está establecido en %s, que no existe. Corrija o elimine esa opción (las descargas nunca sobrescriben las rutas de modelos personalizadas)."
+ },
+ "A %s stream (id 0x%x) appeared after the title was opened; a lossless copy cannot include it.": {
+  "ko": "타이틀을 연 뒤 %s 스트림(ID 0x%x)이 나타났습니다. 무손실 복사에는 포함할 수 없습니다.",
+  "en": "A %s stream (id 0x%x) appeared after the title was opened; a lossless copy cannot include it.",
+  "ja": "タイトルを開いた後に%sストリーム (ID 0x%x) が現れました。ロスレスコピーには含められません。",
+  "zh-CN": "打开标题后出现了 %s 流(ID 0x%x)，无损复制无法包含它。",
+  "zh-TW": "開啟標題後出現了 %s 串流(ID 0x%x)，無損複製無法包含它。",
+  "es": "Apareció una secuencia de %s (id 0x%x) después de abrir el título; una copia sin pérdidas no puede incluirla."
+ },
+ "A packet of stream %d (%s) has no timestamp; it cannot be stored without losing it.": {
+  "ko": "스트림 %d(%s)의 패킷에 타임스탬프가 없어 손실 없이 저장할 수 없습니다.",
+  "en": "A packet of stream %d (%s) has no timestamp; it cannot be stored without losing it.",
+  "ja": "ストリーム %d (%s) のパケットにタイムスタンプがないため、失うことなく保存できません。",
+  "zh-CN": "流 %d(%s)的数据包没有时间戳，无法在不丢失的情况下保存。",
+  "zh-TW": "串流 %d(%s)的封包沒有時間戳記，無法在不遺失的情況下儲存。",
+  "es": "Un paquete de la secuencia %d (%s) no tiene marca de tiempo; no se puede guardar sin perderlo."
+ },
+ "AI subtitles are generated from saved results or are off": {
+  "ko": "AI 자막이 저장된 결과로 생성되거나 꺼져 있습니다",
+  "en": "AI subtitles are generated from saved results or are off",
+  "ja": "AI字幕は保存済みの結果から生成されるか、オフになっています",
+  "zh-CN": "AI 字幕由已保存的结果生成，或已关闭",
+  "zh-TW": "AI 字幕由已儲存的結果產生，或已關閉",
+  "es": "los subtítulos con IA se generan a partir de resultados guardados o están desactivados"
+ },
+ "Another disc operation is still running.": {
+  "ko": "다른 디스크 작업이 아직 실행 중입니다.",
+  "en": "Another disc operation is still running.",
+  "ja": "別のディスク操作がまだ実行中です。",
+  "zh-CN": "另一个光盘操作仍在运行。",
+  "zh-TW": "另一個光碟操作仍在執行中。",
+  "es": "Todavía se está ejecutando otra operación de disco."
+ },
+ "BDMV 폴더가 있는 드라이브가 여러 개 있습니다.": {
+  "en": "More than one drive contains a BDMV folder.",
+  "ja": "BDMVフォルダーがあるドライブが複数あります。",
+  "zh-CN": "有多个驱动器包含 BDMV 文件夹。",
+  "zh-TW": "有多個磁碟機包含 BDMV 資料夾。",
+  "es": "Hay varias unidades que contienen una carpeta BDMV."
+ },
+ "Blu-ray 드라이브 또는 폴더 선택": {
+  "en": "Select a Blu-ray drive or folder",
+  "ja": "Blu-rayドライブまたはフォルダーを選択",
+  "zh-CN": "选择蓝光驱动器或文件夹",
+  "zh-TW": "選取藍光光碟機或資料夾",
+  "es": "Seleccionar una unidad o carpeta Blu-ray"
+ },
+ "Blu-ray 디스크 (BDMV)": {
+  "en": "Blu-ray disc (BDMV)",
+  "ja": "Blu-rayディスク (BDMV)",
+  "zh-CN": "蓝光光盘 (BDMV)",
+  "zh-TW": "藍光光碟 (BDMV)",
+  "es": "Disco Blu-ray (BDMV)"
+ },
+ "CUDA acceleration cannot be installed: %s.": {
+  "en": "CUDA acceleration cannot be installed: %s.",
+  "ja": "CUDAアクセラレーションをインストールできません: %s。",
+  "zh-CN": "无法安装 CUDA 加速：%s。",
+  "zh-TW": "無法安裝 CUDA 加速：%s。",
+  "es": "No se puede instalar la aceleración CUDA: %s.",
+  "ko": "CUDA 가속을 설치할 수 없습니다: %s."
+ },
+ "CUDA acceleration is installed but cannot be used: %s": {
+  "en": "CUDA acceleration is installed but cannot be used: %s",
+  "ja": "CUDAアクセラレーションはインストールされていますが、使用できません: %s",
+  "zh-CN": "CUDA 加速已安装，但无法使用：%s",
+  "zh-TW": "CUDA 加速已安裝，但無法使用：%s",
+  "es": "La aceleración CUDA está instalada pero no se puede usar: %s",
+  "ko": "CUDA 가속이 설치되어 있지만 사용할 수 없습니다: %s"
+ },
+ "CUDA acceleration is not installed: %s missing (%lld MiB to download; %s).": {
+  "en": "CUDA acceleration is not installed: %s missing (%lld MiB to download; %s).",
+  "ja": "CUDAアクセラレーションがインストールされていません: %s がありません(ダウンロード %lld MiB、%s)。",
+  "zh-CN": "未安装 CUDA 加速：缺少 %s（需下载 %lld MiB；%s）。",
+  "zh-TW": "未安裝 CUDA 加速：缺少 %s（需下載 %lld MiB；%s）。",
+  "es": "La aceleración CUDA no está instalada: falta %s (%lld MiB por descargar; %s).",
+  "ko": "CUDA 가속이 설치되어 있지 않습니다: %s 누락(다운로드 %lld MiB, %s)."
+ },
+ "CUDA acceleration is required (acceleration mode \"cuda\") but unavailable, so no AI subtitles will be produced. %s %s": {
+  "en": "CUDA acceleration is required (acceleration mode \"cuda\") but unavailable, so no AI subtitles will be produced. %s %s",
+  "ja": "CUDAアクセラレーションが必要ですが(アクセラレーションモード \"cuda\")利用できないため、AI字幕は生成されません。%s %s",
+  "zh-CN": "需要 CUDA 加速（加速模式为“cuda”）但当前不可用，因此不会生成 AI字幕。%s %s",
+  "zh-TW": "需要 CUDA 加速（加速模式為「cuda」）但目前無法使用，因此不會產生 AI字幕。%s %s",
+  "es": "Se requiere aceleración CUDA (modo de aceleración \"cuda\"), pero no está disponible, por lo que no se generarán subtítulos con IA. %s %s",
+  "ko": "CUDA 가속이 필요하지만(가속 모드 \"cuda\") 사용할 수 없어 AI 자막이 생성되지 않습니다. %s %s"
+ },
+ "CUDA acceleration is required (mode \"cuda\"): %s": {
+  "en": "CUDA acceleration is required (mode \"cuda\"): %s",
+  "ja": "CUDAアクセラレーションが必要です(モード \"cuda\"): %s",
+  "zh-CN": "需要 CUDA 加速（模式“cuda”）：%s",
+  "zh-TW": "需要 CUDA 加速（模式「cuda」）：%s",
+  "es": "Se requiere aceleración CUDA (modo \"cuda\"): %s",
+  "ko": "CUDA 가속이 필요합니다(모드 \"cuda\"): %s"
+ },
+ "CUDA acceleration is required but the engine set by --nanum-ai-dll (%s) cannot provide it: %s": {
+  "en": "CUDA acceleration is required but the engine set by --nanum-ai-dll (%s) cannot provide it: %s",
+  "ja": "CUDAアクセラレーションが必要ですが、--nanum-ai-dll で指定されたエンジン(%s)では利用できません: %s",
+  "zh-CN": "需要 CUDA 加速，但通过 --nanum-ai-dll 指定的引擎（%s）无法提供：%s",
+  "zh-TW": "需要 CUDA 加速，但透過 --nanum-ai-dll 指定的引擎（%s）無法提供：%s",
+  "es": "Se requiere aceleración CUDA, pero el motor indicado con --nanum-ai-dll (%s) no puede proporcionarla: %s",
+  "ko": "CUDA 가속이 필요하지만 --nanum-ai-dll로 지정한 엔진(%s)이 이를 제공할 수 없습니다: %s"
+ },
+ "CUDA acceleration is unavailable: %s. Reinstall NanumPlayer to restore it.": {
+  "en": "CUDA acceleration is unavailable: %s. Reinstall NanumPlayer to restore it.",
+  "ja": "CUDAアクセラレーションを利用できません: %s。復元するには NanumPlayer を再インストールしてください。",
+  "zh-CN": "CUDA 加速不可用：%s。请重新安装 NanumPlayer 以恢复。",
+  "zh-TW": "CUDA 加速無法使用：%s。請重新安裝 NanumPlayer 以還原。",
+  "es": "La aceleración CUDA no está disponible: %s. Reinstale NanumPlayer para restaurarla.",
+  "ko": "CUDA 가속을 사용할 수 없습니다: %s. 복원하려면 NanumPlayer를 다시 설치하세요."
+ },
+ "CUDA is not used by the engine set by --nanum-ai-dll: %s": {
+  "en": "CUDA is not used by the engine set by --nanum-ai-dll: %s",
+  "ja": "--nanum-ai-dll で指定されたエンジンでは CUDA は使用されません: %s",
+  "zh-CN": "通过 --nanum-ai-dll 指定的引擎未使用 CUDA：%s",
+  "zh-TW": "透過 --nanum-ai-dll 指定的引擎未使用 CUDA：%s",
+  "es": "El motor indicado con --nanum-ai-dll no usa CUDA: %s",
+  "ko": "--nanum-ai-dll로 지정한 엔진에서는 CUDA를 사용하지 않습니다: %s"
+ },
+ "CUDA 가속: CUDA %d Toolkit을 설치하거나 cuBLAS(약 %lld MiB)를 받으세요": {
+  "en": "CUDA acceleration: install the CUDA %d Toolkit or download cuBLAS (about %lld MiB)",
+  "ja": "CUDAアクセラレーション: CUDA %d Toolkit をインストールするか、cuBLAS(約 %lld MiB)をダウンロードしてください",
+  "zh-CN": "CUDA 加速：请安装 CUDA %d Toolkit，或下载 cuBLAS（约 %lld MiB）",
+  "zh-TW": "CUDA 加速：請安裝 CUDA %d Toolkit，或下載 cuBLAS（約 %lld MiB）",
+  "es": "Aceleración CUDA: instale el CUDA %d Toolkit o descargue cuBLAS (unos %lld MiB)"
+ },
+ "CUDA 엔진 손상 또는 버전 불일치: NanumPlayer를 다시 설치하거나 업데이트하세요": {
+  "en": "CUDA engine is damaged or the version does not match: reinstall or update NanumPlayer",
+  "ja": "CUDAエンジンが破損しているか、バージョンが一致しません: NanumPlayer を再インストールするか更新してください",
+  "zh-CN": "CUDA 引擎已损坏或版本不匹配：请重新安装或更新 NanumPlayer",
+  "zh-TW": "CUDA 引擎已損毀或版本不符：請重新安裝或更新 NanumPlayer",
+  "es": "El motor CUDA está dañado o su versión no coincide: reinstale o actualice NanumPlayer"
+ },
+ "CUDA 엔진(%s)이 없습니다: NanumPlayer를 다시 설치하거나 업데이트하세요": {
+  "en": "The CUDA engine (%s) is missing: reinstall or update NanumPlayer",
+  "ja": "CUDAエンジン(%s)がありません: NanumPlayer を再インストールするか更新してください",
+  "zh-CN": "缺少 CUDA 引擎（%s）：请重新安装或更新 NanumPlayer",
+  "zh-TW": "缺少 CUDA 引擎（%s）：請重新安裝或更新 NanumPlayer",
+  "es": "Falta el motor CUDA (%s): reinstale o actualice NanumPlayer"
+ },
+ "Cancelled.": {
+  "ko": "취소되었습니다.",
+  "en": "Cancelled.",
+  "ja": "キャンセルしました。",
+  "zh-CN": "已取消。",
+  "zh-TW": "已取消。",
+  "es": "Cancelado."
+ },
+ "Cannot create %s: %s": {
+  "ko": "%s을(를) 만들 수 없습니다: %s",
+  "en": "Cannot create %s: %s",
+  "ja": "%s を作成できません: %s",
+  "zh-CN": "无法创建 %s:%s",
+  "zh-TW": "無法建立 %s:%s",
+  "es": "No se puede crear %s: %s"
+ },
+ "Cannot create a temporary file in %s.": {
+  "ko": "%s에 임시 파일을 만들 수 없습니다.",
+  "en": "Cannot create a temporary file in %s.",
+  "ja": "%sに一時ファイルを作成できません。",
+  "zh-CN": "无法在 %s 中创建临时文件。",
+  "zh-TW": "無法在 %s 中建立暫存檔。",
+  "es": "No se puede crear un archivo temporal en %s."
+ },
+ "Cannot create the folder %s (error %lu).": {
+  "ko": "폴더 %s을(를) 만들 수 없습니다(오류 %lu).",
+  "en": "Cannot create the folder %s (error %lu).",
+  "ja": "フォルダ %s を作成できません(エラー %lu)。",
+  "zh-CN": "无法创建文件夹 %s(错误 %lu)。",
+  "zh-TW": "無法建立資料夾 %s(錯誤 %lu)。",
+  "es": "No se puede crear la carpeta %s (error %lu)."
+ },
+ "Cannot create the folder %s: %s": {
+  "ko": "폴더 %s을(를) 만들 수 없습니다: %s",
+  "en": "Cannot create the folder %s: %s",
+  "ja": "フォルダー %s を作成できません: %s",
+  "zh-CN": "无法创建文件夹 %s:%s",
+  "zh-TW": "無法建立資料夾 %s:%s",
+  "es": "No se puede crear la carpeta %s: %s"
+ },
+ "Cannot install %s: %s": {
+  "ko": "%s을(를) 설치할 수 없습니다: %s",
+  "en": "Cannot install %s: %s",
+  "ja": "%s をインストールできません: %s",
+  "zh-CN": "无法安装 %s:%s",
+  "zh-TW": "無法安裝 %s:%s",
+  "es": "No se puede instalar %s: %s"
+ },
+ "Cannot install %s: %s %s": {
+  "ko": "%s을(를) 설치할 수 없습니다: %s %s",
+  "en": "Cannot install %s: %s %s",
+  "ja": "%s をインストールできません: %s %s",
+  "zh-CN": "无法安装 %s:%s %s",
+  "zh-TW": "無法安裝 %s:%s %s",
+  "es": "No se puede instalar %s: %s %s"
+ },
+ "Cannot move %s into place.": {
+  "ko": "%s을(를) 제자리로 이동할 수 없습니다.",
+  "en": "Cannot move %s into place.",
+  "ja": "%s を所定の場所に移動できません。",
+  "zh-CN": "无法将 %s 移动到位。",
+  "zh-TW": "無法將 %s 移動到位。",
+  "es": "No se puede mover %s a su lugar."
+ },
+ "Cannot move %s to %s (error %lu).": {
+  "ko": "%s을(를) %s(으)로 이동할 수 없습니다(오류 %lu).",
+  "en": "Cannot move %s to %s (error %lu).",
+  "ja": "%s を %s に移動できません(エラー %lu)。",
+  "zh-CN": "无法将 %s 移动到 %s(错误 %lu)。",
+  "zh-TW": "無法將 %s 移動到 %s(錯誤 %lu)。",
+  "es": "No se puede mover %s a %s (error %lu)."
+ },
+ "Cannot read %s.": {
+  "ko": "%s을(를) 읽을 수 없습니다.",
+  "en": "Cannot read %s.",
+  "ja": "%s を読み取れません。",
+  "zh-CN": "无法读取 %s。",
+  "zh-TW": "無法讀取 %s。",
+  "es": "No se puede leer %s."
+ },
+ "Cannot read %s: %s": {
+  "ko": "%s을(를) 읽을 수 없습니다: %s",
+  "en": "Cannot read %s: %s",
+  "ja": "%s を読み取れません: %s",
+  "zh-CN": "无法读取 %s:%s",
+  "zh-TW": "無法讀取 %s:%s",
+  "es": "No se puede leer %s: %s"
+ },
+ "Cannot start the YouTube component thread.": {
+  "ko": "YouTube 구성 요소 스레드를 시작할 수 없습니다.",
+  "en": "Cannot start the YouTube component thread.",
+  "ja": "YouTube コンポーネントのスレッドを開始できません。",
+  "zh-CN": "无法启动 YouTube 组件线程。",
+  "zh-TW": "無法啟動 YouTube 元件執行緒。",
+  "es": "No se puede iniciar el hilo de componentes de YouTube."
+ },
+ "Cannot start the accelerator thread.": {
+  "en": "Cannot start the accelerator thread.",
+  "ja": "アクセラレーターのスレッドを開始できません。",
+  "zh-CN": "无法启动加速器线程。",
+  "zh-TW": "無法啟動加速器執行緒。",
+  "es": "No se puede iniciar el hilo del acelerador.",
+  "ko": "가속기 스레드를 시작할 수 없습니다."
+ },
+ "Cannot start the model download thread.": {
+  "ko": "모델 다운로드 스레드를 시작할 수 없습니다.",
+  "en": "Cannot start the model download thread.",
+  "ja": "モデルのダウンロード用スレッドを開始できません。",
+  "zh-CN": "无法启动模型下载线程。",
+  "zh-TW": "無法啟動模型下載執行緒。",
+  "es": "No se puede iniciar el hilo de descarga de modelos."
+ },
+ "Cannot write %s: %s": {
+  "ko": "%s을(를) 쓸 수 없습니다: %s",
+  "en": "Cannot write %s: %s",
+  "ja": "%s に書き込めません: %s",
+  "zh-CN": "无法写入 %s:%s",
+  "zh-TW": "無法寫入 %s:%s",
+  "es": "No se puede escribir %s: %s"
+ },
+ "Checking the CUDA installation...": {
+  "en": "Checking the CUDA installation...",
+  "ja": "CUDA のインストールを確認しています...",
+  "zh-CN": "正在检查 CUDA 安装...",
+  "zh-TW": "正在檢查 CUDA 安裝...",
+  "es": "Comprobando la instalación de CUDA...",
+  "ko": "CUDA 설치 확인 중..."
+ },
+ "Checking the bundled CUDA engine %s...": {
+  "en": "Checking the bundled CUDA engine %s...",
+  "ja": "同梱の CUDA エンジン %s を確認しています...",
+  "zh-CN": "正在检查内置的 CUDA 引擎 %s...",
+  "zh-TW": "正在檢查內建的 CUDA 引擎 %s...",
+  "es": "Comprobando el motor CUDA incluido %s...",
+  "ko": "내장 CUDA 엔진 %s 확인 중..."
+ },
+ "Closing the output file failed: %s": {
+  "ko": "출력 파일을 닫지 못했습니다: %s",
+  "en": "Closing the output file failed: %s",
+  "ja": "出力ファイルを閉じられませんでした: %s",
+  "zh-CN": "关闭输出文件失败: %s",
+  "zh-TW": "關閉輸出檔案失敗: %s",
+  "es": "Error al cerrar el archivo de salida: %s"
+ },
+ "DVD title %d could not be read (sector %u of title set %d).": {
+  "ko": "DVD 타이틀 %d을(를) 읽을 수 없습니다(섹터 %u, 타이틀 세트 %d).",
+  "en": "DVD title %d could not be read (sector %u of title set %d).",
+  "ja": "DVDタイトル%dを読み取れませんでした(セクタ %u、タイトルセット %d)。",
+  "zh-CN": "无法读取 DVD 标题 %d(扇区 %u，标题集 %d)。",
+  "zh-TW": "無法讀取 DVD 標題 %d(磁區 %u，標題集 %d)。",
+  "es": "No se pudo leer el título DVD %d (sector %u del conjunto de títulos %d)."
+ },
+ "Deno (JavaScript 실행기)": {
+  "en": "Deno (JavaScript runtime)",
+  "ja": "Deno(JavaScript 実行環境)",
+  "zh-CN": "Deno(JavaScript 运行时)",
+  "zh-TW": "Deno(JavaScript 執行環境)",
+  "es": "Deno (entorno de ejecución de JavaScript)"
+ },
+ "Finishing the Matroska file failed: %s": {
+  "ko": "Matroska 파일을 마무리하지 못했습니다: %s",
+  "en": "Finishing the Matroska file failed: %s",
+  "ja": "Matroskaファイルの完了処理に失敗しました: %s",
+  "zh-CN": "完成 Matroska 文件失败: %s",
+  "zh-TW": "完成 Matroska 檔案失敗: %s",
+  "es": "Error al finalizar el archivo Matroska: %s"
+ },
+ "Install it in the AI settings, or set the acceleration mode to Auto or CPU.": {
+  "en": "Install it in the AI settings, or set the acceleration mode to Auto or CPU.",
+  "ja": "AI設定でインストールするか、アクセラレーションモードを自動またはCPUに設定してください。",
+  "zh-CN": "请在 AI 设置中安装，或将加速模式设为“自动”或“CPU”。",
+  "zh-TW": "請在 AI 設定中安裝，或將加速模式設為「自動」或「CPU」。",
+  "es": "Instálela en los ajustes de IA o cambie el modo de aceleración a Automático o CPU.",
+  "ko": "AI 설정에서 설치하거나 가속 모드를 자동 또는 CPU로 설정하세요."
+ },
+ "Matroska header could not be written: %s": {
+  "ko": "Matroska 헤더를 쓰지 못했습니다: %s",
+  "en": "Matroska header could not be written: %s",
+  "ja": "Matroskaヘッダーを書き込めませんでした: %s",
+  "zh-CN": "无法写入 Matroska 头部: %s",
+  "zh-TW": "無法寫入 Matroska 標頭: %s",
+  "es": "No se pudo escribir el encabezado de Matroska: %s"
+ },
+ "Network error while %s (%s): %s.": {
+  "ko": "%s 중 네트워크 오류가 발생했습니다 (%s): %s.",
+  "en": "Network error while %s (%s): %s.",
+  "ja": "%s中にネットワークエラーが発生しました(%s): %s。",
+  "zh-CN": "%s时发生网络错误(%s):%s。",
+  "zh-TW": "%s時發生網路錯誤(%s):%s。",
+  "es": "Error de red al %s (%s): %s."
+ },
+ "Network error while %s (%s): %s. %s": {
+  "ko": "%s 중 네트워크 오류가 발생했습니다 (%s): %s. %s",
+  "en": "Network error while %s (%s): %s. %s",
+  "ja": "%s中にネットワークエラーが発生しました(%s): %s。%s",
+  "zh-CN": "%s时发生网络错误(%s):%s。%s",
+  "zh-TW": "%s時發生網路錯誤(%s):%s。%s",
+  "es": "Error de red al %s (%s): %s. %s"
+ },
+ "No data could be read from the title (the disc may be unreadable).": {
+  "ko": "타이틀에서 데이터를 읽을 수 없습니다(디스크를 읽을 수 없는 상태일 수 있습니다).",
+  "en": "No data could be read from the title (the disc may be unreadable).",
+  "ja": "タイトルからデータを読み取れませんでした(ディスクが読み取れない可能性があります)。",
+  "zh-CN": "无法从标题中读取任何数据(光盘可能无法读取)。",
+  "zh-TW": "無法從標題中讀取任何資料(光碟可能無法讀取)。",
+  "es": "No se pudieron leer datos del título (puede que el disco sea ilegible)."
+ },
+ "No disc device was given.": {
+  "ko": "디스크 장치가 지정되지 않았습니다.",
+  "en": "No disc device was given.",
+  "ja": "ディスクデバイスが指定されていません。",
+  "zh-CN": "未指定光盘设备。",
+  "zh-TW": "未指定光碟裝置。",
+  "es": "No se indicó ningún dispositivo de disco."
+ },
+ "No free file name for %s in %s.": {
+  "ko": "%s에 사용할 수 있는 파일 이름이 %s에 없습니다.",
+  "en": "No free file name for %s in %s.",
+  "ja": "%s の空きファイル名が %s にありません。",
+  "zh-CN": "%s 在 %s 中没有可用的文件名。",
+  "zh-TW": "%s 在 %s 中沒有可用的檔名。",
+  "es": "No hay un nombre de archivo libre para %s en %s."
+ },
+ "Not enough free disk space for %s in %s: %lld MiB needed, %llu MiB available.": {
+  "ko": "%s을(를) 위한 여유 디스크 공간이 %s에 부족합니다: %lld MiB 필요, %llu MiB 사용 가능.",
+  "en": "Not enough free disk space for %s in %s: %lld MiB needed, %llu MiB available.",
+  "ja": "%s 用の空きディスク容量が %s に足りません: %lld MiB 必要、%llu MiB 使用可能。",
+  "zh-CN": "%s 在 %s 中的可用磁盘空间不足:需要 %lld MiB,可用 %llu MiB。",
+  "zh-TW": "%s 在 %s 中的可用磁碟空間不足:需要 %lld MiB,可用 %llu MiB。",
+  "es": "No hay suficiente espacio libre en disco para %s en %s: se necesitan %lld MiB y hay %llu MiB disponibles."
+ },
+ "Not enough free space in %s: about %llu MB needed, %llu MB available.": {
+  "ko": "%s의 여유 공간이 부족합니다. 약 %llu MB가 필요하지만 %llu MB만 사용할 수 있습니다.",
+  "en": "Not enough free space in %s: about %llu MB needed, %llu MB available.",
+  "ja": "%sの空き容量が不足しています。約%llu MB必要ですが、使用可能なのは%llu MBです。",
+  "zh-CN": "%s 的可用空间不足: 约需 %llu MB，可用 %llu MB。",
+  "zh-TW": "%s 的可用空間不足: 約需 %llu MB，可用 %llu MB。",
+  "es": "No hay suficiente espacio libre en %s: se necesitan unos %llu MB y hay %llu MB disponibles."
+ },
+ "Out of memory.": {
+  "en": "Out of memory.",
+  "ja": "メモリが不足しています。",
+  "zh-CN": "内存不足。",
+  "zh-TW": "記憶體不足。",
+  "es": "Memoria insuficiente.",
+  "ko": "메모리가 부족합니다."
+ },
+ "SHA-256 computation failed (Windows CNG)": {
+  "ko": "SHA-256 계산에 실패했습니다 (Windows CNG)",
+  "en": "SHA-256 computation failed (Windows CNG)",
+  "ja": "SHA-256 の計算に失敗しました(Windows CNG)",
+  "zh-CN": "SHA-256 计算失败(Windows CNG)",
+  "zh-TW": "SHA-256 計算失敗(Windows CNG)",
+  "es": "Falló el cálculo de SHA-256 (Windows CNG)"
+ },
+ "SHA-256 is not available (Windows CNG failed)": {
+  "ko": "SHA-256을 사용할 수 없습니다 (Windows CNG 실패)",
+  "en": "SHA-256 is not available (Windows CNG failed)",
+  "ja": "SHA-256 を利用できません(Windows CNG が失敗しました)",
+  "zh-CN": "SHA-256 不可用(Windows CNG 失败)",
+  "zh-TW": "SHA-256 無法使用(Windows CNG 失敗)",
+  "es": "SHA-256 no está disponible (falló Windows CNG)"
+ },
+ "SHA-256 mismatch for %s from %s: expected %s, got %s. The file was discarded and nothing was installed.": {
+  "ko": "%s(출처 %s)의 SHA-256이 일치하지 않습니다: 예상 %s, 실제 %s. 파일을 폐기했으며 아무것도 설치되지 않았습니다.",
+  "en": "SHA-256 mismatch for %s from %s: expected %s, got %s. The file was discarded and nothing was installed.",
+  "ja": "%s(取得元 %s)の SHA-256 が一致しません: 期待値 %s、実際の値 %s。ファイルは破棄され、何もインストールされていません。",
+  "zh-CN": "%s(来自 %s)的 SHA-256 不匹配:预期 %s,实际 %s。文件已丢弃,未安装任何内容。",
+  "zh-TW": "%s(來自 %s)的 SHA-256 不符:預期 %s,實際 %s。檔案已捨棄,未安裝任何內容。",
+  "es": "El SHA-256 de %s (desde %s) no coincide: se esperaba %s, se obtuvo %s. El archivo se descartó y no se instaló nada."
+ },
+ "Set the acceleration mode to Auto or CPU to use the CPU engine.": {
+  "en": "Set the acceleration mode to Auto or CPU to use the CPU engine.",
+  "ja": "CPUエンジンを使用するには、アクセラレーションモードを自動またはCPUに設定してください。",
+  "zh-CN": "要使用 CPU 引擎，请将加速模式设为“自动”或“CPU”。",
+  "zh-TW": "若要使用 CPU 引擎，請將加速模式設為「自動」或「CPU」。",
+  "es": "Para usar el motor de CPU, cambie el modo de aceleración a Automático o CPU.",
+  "ko": "CPU 엔진을 사용하려면 가속 모드를 자동 또는 CPU로 설정하세요."
+ },
+ "Silero VAD (음성 감지)": {
+  "en": "Silero VAD (voice detection)",
+  "ja": "Silero VAD(音声検出)",
+  "zh-CN": "Silero VAD(语音检测)",
+  "zh-TW": "Silero VAD(語音偵測)",
+  "es": "Silero VAD (detección de voz)"
+ },
+ "Stream %d (id 0x%x) has an unsupported type.": {
+  "ko": "스트림 %d(ID 0x%x)의 형식은 지원되지 않습니다.",
+  "en": "Stream %d (id 0x%x) has an unsupported type.",
+  "ja": "ストリーム %d (ID 0x%x) は未対応の種類です。",
+  "zh-CN": "流 %d(ID 0x%x)的类型不受支持。",
+  "zh-TW": "串流 %d(ID 0x%x)的類型不受支援。",
+  "es": "La secuencia %d (id 0x%x) es de un tipo no admitido."
+ },
+ "The %s release %s has no %s with a checksum (%s).": {
+  "ko": "%s 릴리스 %s에 %s 파일과 그 체크섬이 없습니다 (%s).",
+  "en": "The %s release %s has no %s with a checksum (%s).",
+  "ja": "%s のリリース %s に %s とそのチェックサムがありません(%s)。",
+  "zh-CN": "%s 发布版本 %s 中没有 %s 及其校验和(%s)。",
+  "zh-TW": "%s 發行版本 %s 中沒有 %s 及其檢查碼(%s)。",
+  "es": "La versión %s %s no tiene %s con una suma de comprobación (%s)."
+ },
+ "The %s stream %d (id 0x%x, codec '%s') cannot be copied without re-encoding.": {
+  "ko": "%s 스트림 %d(ID 0x%x, 코덱 '%s')은(는) 재인코딩 없이 복사할 수 없습니다.",
+  "en": "The %s stream %d (id 0x%x, codec '%s') cannot be copied without re-encoding.",
+  "ja": "%sストリーム %d (ID 0x%x、コーデック '%s') は再エンコードなしではコピーできません。",
+  "zh-CN": "%s 流 %d(ID 0x%x，编解码器“%s”)无法在不重新编码的情况下复制。",
+  "zh-TW": "%s 串流 %d(ID 0x%x，編解碼器「%s」)無法在不重新編碼的情況下複製。",
+  "es": "La secuencia de %s %d (id 0x%x, códec '%s') no se puede copiar sin recodificar."
+ },
+ "The %s video stream has no codec configuration; it cannot be stored in Matroska.": {
+  "ko": "%s 비디오 스트림에 코덱 구성 정보가 없어 Matroska에 저장할 수 없습니다.",
+  "en": "The %s video stream has no codec configuration; it cannot be stored in Matroska.",
+  "ja": "%sビデオストリームにコーデック設定がないため、Matroskaに保存できません。",
+  "zh-CN": "%s 视频流没有编解码器配置，无法存入 Matroska。",
+  "zh-TW": "%s 視訊串流沒有編解碼器設定，無法存入 Matroska。",
+  "es": "La secuencia de vídeo %s no tiene configuración de códec; no se puede guardar en Matroska."
+ },
+ "The Blu-ray could not be opened (see the log for details).": {
+  "ko": "Blu-ray를 열 수 없습니다(자세한 내용은 로그를 확인하세요).",
+  "en": "The Blu-ray could not be opened (see the log for details).",
+  "ja": "Blu-rayを開けませんでした(詳細はログを確認してください)。",
+  "zh-CN": "无法打开 Blu-ray(详情请查看日志)。",
+  "zh-TW": "無法開啟 Blu-ray(詳細資訊請查看記錄檔)。",
+  "es": "No se pudo abrir el Blu-ray (consulta el registro para más detalles)."
+ },
+ "The CPU AI engine %s is missing. Reinstall NanumPlayer.": {
+  "en": "The CPU AI engine %s is missing. Reinstall NanumPlayer.",
+  "ja": "CPU AIエンジン %s がありません。NanumPlayer を再インストールしてください。",
+  "zh-CN": "缺少 CPU AI 引擎 %s。请重新安装 NanumPlayer。",
+  "zh-TW": "缺少 CPU AI 引擎 %s。請重新安裝 NanumPlayer。",
+  "es": "Falta el motor de IA para CPU %s. Reinstale NanumPlayer.",
+  "ko": "CPU AI 엔진 %s이(가) 없습니다. NanumPlayer를 다시 설치하세요."
+ },
+ "The CPU AI engine %s is missing: %s. Reinstall NanumPlayer.": {
+  "en": "The CPU AI engine %s is missing: %s. Reinstall NanumPlayer.",
+  "ja": "CPU AIエンジン %s がありません: %s。NanumPlayer を再インストールしてください。",
+  "zh-CN": "缺少 CPU AI 引擎 %s：%s。请重新安装 NanumPlayer。",
+  "zh-TW": "缺少 CPU AI 引擎 %s：%s。請重新安裝 NanumPlayer。",
+  "es": "Falta el motor de IA para CPU %s: %s. Reinstale NanumPlayer.",
+  "ko": "CPU AI 엔진 %s이(가) 없습니다: %s. NanumPlayer를 다시 설치하세요."
+ },
+ "The CUDA component folder cannot be determined (%%LOCALAPPDATA%% is unavailable).": {
+  "en": "The CUDA component folder cannot be determined (%%LOCALAPPDATA%% is unavailable).",
+  "ja": "CUDAコンポーネントのフォルダーを特定できません(%%LOCALAPPDATA%% を利用できません)。",
+  "zh-CN": "无法确定 CUDA 组件文件夹（%%LOCALAPPDATA%% 不可用）。",
+  "zh-TW": "無法判斷 CUDA 元件資料夾（%%LOCALAPPDATA%% 無法使用）。",
+  "es": "No se puede determinar la carpeta de componentes CUDA (%%LOCALAPPDATA%% no está disponible).",
+  "ko": "CUDA 구성 요소 폴더를 확인할 수 없습니다(%%LOCALAPPDATA%%을(를) 사용할 수 없음)."
+ },
+ "The DVD could not be opened (see the log for details).": {
+  "ko": "DVD를 열 수 없습니다(자세한 내용은 로그를 확인하세요).",
+  "en": "The DVD could not be opened (see the log for details).",
+  "ja": "DVDを開けませんでした(詳細はログを確認してください)。",
+  "zh-CN": "无法打开 DVD(详情请查看日志)。",
+  "zh-TW": "無法開啟 DVD(詳細資訊請查看記錄檔)。",
+  "es": "No se pudo abrir el DVD (consulta el registro para más detalles)."
+ },
+ "The DVD disc id could not be read.": {
+  "ko": "DVD 디스크 ID를 읽을 수 없습니다.",
+  "en": "The DVD disc id could not be read.",
+  "ja": "DVDディスクのIDを読み取れませんでした。",
+  "zh-CN": "无法读取 DVD 光盘 ID。",
+  "zh-TW": "無法讀取 DVD 光碟 ID。",
+  "es": "No se pudo leer el ID del disco DVD."
+ },
+ "The English speech model is not installed": {
+  "ko": "영어 음성 인식 모델이 설치되어 있지 않습니다",
+  "en": "The English speech model is not installed",
+  "ja": "英語の音声認識モデルがインストールされていません",
+  "zh-CN": "未安装英语语音识别模型",
+  "zh-TW": "尚未安裝英文語音辨識模型",
+  "es": "El modelo de reconocimiento de voz en inglés no está instalado"
+ },
+ "The Matroska muxer is not available.": {
+  "ko": "Matroska 먹서를 사용할 수 없습니다.",
+  "en": "The Matroska muxer is not available.",
+  "ja": "Matroskaマルチプレクサを利用できません。",
+  "zh-CN": "Matroska 封装器不可用。",
+  "zh-TW": "Matroska 封裝器無法使用。",
+  "es": "El multiplexor de Matroska no está disponible."
+ },
+ "The TLS certificate of the server was rejected; the download was refused.": {
+  "ko": "서버의 TLS 인증서가 거부되어 다운로드가 거절되었습니다.",
+  "en": "The TLS certificate of the server was rejected; the download was refused.",
+  "ja": "サーバーの TLS 証明書が拒否されたため、ダウンロードを中止しました。",
+  "zh-CN": "服务器的 TLS 证书被拒绝,已拒绝下载。",
+  "zh-TW": "伺服器的 TLS 憑證遭拒絕,已拒絕下載。",
+  "es": "Se rechazó el certificado TLS del servidor; se denegó la descarga."
+ },
+ "The URL of %s is not a valid HTTPS URL": {
+  "ko": "%s의 URL이 올바른 HTTPS URL이 아닙니다",
+  "en": "The URL of %s is not a valid HTTPS URL",
+  "ja": "%s の URL が有効な HTTPS URL ではありません",
+  "zh-CN": "%s 的 URL 不是有效的 HTTPS URL",
+  "zh-TW": "%s 的 URL 不是有效的 HTTPS URL",
+  "es": "La URL de %s no es una URL HTTPS válida"
+ },
+ "The YouTube component folder cannot be determined (%%LOCALAPPDATA%% is unavailable).": {
+  "ko": "YouTube 구성 요소 폴더를 확인할 수 없습니다 (%%LOCALAPPDATA%%을(를) 사용할 수 없음).",
+  "en": "The YouTube component folder cannot be determined (%%LOCALAPPDATA%% is unavailable).",
+  "ja": "YouTube コンポーネントのフォルダーを特定できません(%%LOCALAPPDATA%% を利用できません)。",
+  "zh-CN": "无法确定 YouTube 组件文件夹(%%LOCALAPPDATA%% 不可用)。",
+  "zh-TW": "無法確定 YouTube 元件資料夾(%%LOCALAPPDATA%% 無法使用)。",
+  "es": "No se puede determinar la carpeta de componentes de YouTube (%%LOCALAPPDATA%% no está disponible)."
+ },
+ "The YouTube component manager is not initialized.": {
+  "ko": "YouTube 구성 요소 관리자가 초기화되지 않았습니다.",
+  "en": "The YouTube component manager is not initialized.",
+  "ja": "YouTube コンポーネントマネージャーが初期化されていません。",
+  "zh-CN": "YouTube 组件管理器尚未初始化。",
+  "zh-TW": "YouTube 元件管理員尚未初始化。",
+  "es": "El administrador de componentes de YouTube no está inicializado."
+ },
+ "The accelerator manager is not initialized.": {
+  "en": "The accelerator manager is not initialized.",
+  "ja": "アクセラレーターマネージャーが初期化されていません。",
+  "zh-CN": "加速器管理器尚未初始化。",
+  "zh-TW": "加速器管理員尚未初始化。",
+  "es": "El administrador del acelerador no está inicializado.",
+  "ko": "가속기 관리자가 초기화되지 않았습니다."
+ },
+ "The answer of %s for %s is larger than %lld bytes.": {
+  "ko": "%s의 응답(%s)이 %lld바이트보다 큽니다.",
+  "en": "The answer of %s for %s is larger than %lld bytes.",
+  "ja": "%s の応答(%s)が %lld バイトを超えています。",
+  "zh-CN": "%s 对 %s 的响应超过 %lld 字节。",
+  "zh-TW": "%s 對 %s 的回應超過 %lld 位元組。",
+  "es": "La respuesta de %s para %s supera los %lld bytes."
+ },
+ "The bundled CUDA engine %s is damaged or does not belong to this NanumPlayer version (%s). Reinstall or update NanumPlayer.": {
+  "en": "The bundled CUDA engine %s is damaged or does not belong to this NanumPlayer version (%s). Reinstall or update NanumPlayer.",
+  "ja": "同梱の CUDA エンジン %s が破損しているか、この NanumPlayer のバージョンのものではありません(%s)。NanumPlayer を再インストールするか更新してください。",
+  "zh-CN": "内置的 CUDA 引擎 %s 已损坏，或不属于此版本的 NanumPlayer（%s）。请重新安装或更新 NanumPlayer。",
+  "zh-TW": "內建的 CUDA 引擎 %s 已損毀，或不屬於此版本的 NanumPlayer（%s）。請重新安裝或更新 NanumPlayer。",
+  "es": "El motor CUDA incluido %s está dañado o no pertenece a esta versión de NanumPlayer (%s). Reinstale o actualice NanumPlayer.",
+  "ko": "내장 CUDA 엔진 %s이(가) 손상되었거나 이 NanumPlayer 버전의 파일이 아닙니다(%s). NanumPlayer를 다시 설치하거나 업데이트하세요."
+ },
+ "The bundled CUDA engine %s is missing (%s). Reinstall or update NanumPlayer.": {
+  "en": "The bundled CUDA engine %s is missing (%s). Reinstall or update NanumPlayer.",
+  "ja": "同梱の CUDA エンジン %s がありません(%s)。NanumPlayer を再インストールするか更新してください。",
+  "zh-CN": "缺少内置的 CUDA 引擎 %s（%s）。请重新安装或更新 NanumPlayer。",
+  "zh-TW": "缺少內建的 CUDA 引擎 %s（%s）。請重新安裝或更新 NanumPlayer。",
+  "es": "Falta el motor CUDA incluido %s (%s). Reinstale o actualice NanumPlayer.",
+  "ko": "내장 CUDA 엔진 %s이(가) 없습니다(%s). NanumPlayer를 다시 설치하거나 업데이트하세요."
+ },
+ "The checksum file %s of the %s release %s has no SHA-256 for %s.": {
+  "ko": "체크섬 파일 %s에는 %s 릴리스 %s의 %s에 대한 SHA-256이 없습니다.",
+  "en": "The checksum file %s of the %s release %s has no SHA-256 for %s.",
+  "ja": "チェックサムファイル %s に、%s リリース %s の %s に対する SHA-256 がありません。",
+  "zh-CN": "校验和文件 %s 中没有 %s 发布版本 %s 的 %s 对应的 SHA-256。",
+  "zh-TW": "檢查碼檔案 %s 中沒有 %s 發行版本 %s 的 %s 對應的 SHA-256。",
+  "es": "El archivo de sumas de comprobación %s de la versión %s %s no contiene el SHA-256 de %s."
+ },
+ "The destination path is invalid: %s": {
+  "ko": "대상 경로가 올바르지 않습니다: %s",
+  "en": "The destination path is invalid: %s",
+  "ja": "保存先のパスが無効です: %s",
+  "zh-CN": "目标路径无效: %s",
+  "zh-TW": "目的地路徑無效: %s",
+  "es": "La ruta de destino no es válida: %s"
+ },
+ "The disc delivered data of stream %d, which is not part of the output; refusing a lossy copy.": {
+  "ko": "디스크가 출력에 포함되지 않은 스트림 %d의 데이터를 전달했습니다. 손실 복사는 거부합니다.",
+  "en": "The disc delivered data of stream %d, which is not part of the output; refusing a lossy copy.",
+  "ja": "ディスクから出力に含まれていないストリーム%dのデータが届きました。損失のあるコピーは拒否します。",
+  "zh-CN": "光盘提供了不属于输出的流 %d 的数据；拒绝进行有损复制。",
+  "zh-TW": "光碟提供了不屬於輸出的串流 %d 的資料；拒絕進行有損複製。",
+  "es": "El disco entregó datos de la secuencia %d, que no forma parte de la salida; se rechaza una copia con pérdidas."
+ },
+ "The disc has no title %lld (use the ids of nanum-disc-list).": {
+  "ko": "디스크에 타이틀 %lld이(가) 없습니다(nanum-disc-list의 ID를 사용하세요).",
+  "en": "The disc has no title %lld (use the ids of nanum-disc-list).",
+  "ja": "ディスクにタイトル%lldはありません(nanum-disc-listのIDを使用してください)。",
+  "zh-CN": "光盘中没有标题 %lld(请使用 nanum-disc-list 提供的 ID)。",
+  "zh-TW": "光碟中沒有標題 %lld(請使用 nanum-disc-list 提供的 ID)。",
+  "es": "El disco no tiene el título %lld (usa los ids de nanum-disc-list)."
+ },
+ "The disc has no title of at least %d seconds.": {
+  "ko": "디스크에 %d초 이상인 타이틀이 없습니다.",
+  "en": "The disc has no title of at least %d seconds.",
+  "ja": "ディスクに%d秒以上のタイトルがありません。",
+  "zh-CN": "光盘中没有时长至少 %d 秒的标题。",
+  "zh-TW": "光碟中沒有長度至少 %d 秒的標題。",
+  "es": "El disco no tiene ningún título de al menos %d segundos."
+ },
+ "The disc in %s is not the one that was listed (expected %s, found %s).": {
+  "ko": "%s의 디스크가 나열되었던 디스크가 아닙니다(예상: %s, 확인: %s).",
+  "en": "The disc in %s is not the one that was listed (expected %s, found %s).",
+  "ja": "%sのディスクは一覧表示したものではありません(期待: %s、検出: %s)。",
+  "zh-CN": "%s 中的光盘不是之前列出的那张(应为 %s，实际为 %s)。",
+  "zh-TW": "%s 中的光碟不是先前列出的那張(應為 %s，實際為 %s)。",
+  "es": "El disco de %s no es el que se había listado (esperado %s, encontrado %s)."
+ },
+ "The disc in %s was changed (or removed) during the copy.": {
+  "ko": "복사하는 동안 %s의 디스크가 교체되었거나 제거되었습니다.",
+  "en": "The disc in %s was changed (or removed) during the copy.",
+  "ja": "コピー中に%sのディスクが交換(または取り出し)されました。",
+  "zh-CN": "复制期间 %s 中的光盘被更换(或取出)。",
+  "zh-TW": "複製期間 %s 中的光碟被更換(或取出)。",
+  "es": "El disco de %s se cambió (o se extrajo) durante la copia."
+ },
+ "The disc's %s protection is not handled; it cannot be copied.": {
+  "ko": "디스크의 %s 보호는 지원되지 않아 복사할 수 없습니다.",
+  "en": "The disc's %s protection is not handled; it cannot be copied.",
+  "ja": "このディスクの%s保護には対応していないため、コピーできません。",
+  "zh-CN": "不支持该光盘的 %s 保护，无法复制。",
+  "zh-TW": "不支援該光碟的 %s 保護，無法複製。",
+  "es": "La protección %s del disco no es compatible; no se puede copiar."
+ },
+ "The download from %s ended after %lld of %lld bytes (connection closed early).": {
+  "ko": "%s에서의 다운로드가 %lld/%lld바이트에서 끝났습니다 (연결이 일찍 닫힘).",
+  "en": "The download from %s ended after %lld of %lld bytes (connection closed early).",
+  "ja": "%s からのダウンロードが %lld / %lld バイトで終了しました(接続が途中で閉じられました)。",
+  "zh-CN": "来自 %s 的下载在 %lld / %lld 字节处结束(连接提前关闭)。",
+  "zh-TW": "來自 %s 的下載在 %lld / %lld 位元組處結束(連線提前關閉)。",
+  "es": "La descarga desde %s terminó tras %lld de %lld bytes (conexión cerrada antes de tiempo)."
+ },
+ "The download of %s ended after %lld of %lld bytes (connection closed early).": {
+  "ko": "%s 다운로드가 %lld/%lld바이트에서 끝났습니다 (연결이 일찍 닫힘).",
+  "en": "The download of %s ended after %lld of %lld bytes (connection closed early).",
+  "ja": "%s のダウンロードが %lld / %lld バイトで終了しました(接続が途中で閉じられました)。",
+  "zh-CN": "%s 的下载在 %lld / %lld 字节处结束(连接提前关闭)。",
+  "zh-TW": "%s 的下載在 %lld / %lld 位元組處結束(連線提前關閉)。",
+  "es": "La descarga de %s terminó tras %lld de %lld bytes (conexión cerrada antes de tiempo)."
+ },
+ "The downloaded data could not be processed.": {
+  "ko": "다운로드한 데이터를 처리할 수 없습니다.",
+  "en": "The downloaded data could not be processed.",
+  "ja": "ダウンロードしたデータを処理できませんでした。",
+  "zh-CN": "无法处理下载的数据。",
+  "zh-TW": "無法處理下載的資料。",
+  "es": "No se pudieron procesar los datos descargados."
+ },
+ "The end of DVD title %d could not be located (the disc navigation was not in that title after opening it); a lossless copy needs it.": {
+  "ko": "DVD 타이틀 %d의 끝을 찾을 수 없습니다(연 뒤 디스크 탐색이 해당 타이틀에 있지 않았습니다). 무손실 복사에는 이것이 필요합니다.",
+  "en": "The end of DVD title %d could not be located (the disc navigation was not in that title after opening it); a lossless copy needs it.",
+  "ja": "DVDタイトル%dの終端を特定できませんでした(開いた後、ディスクのナビゲーションがそのタイトルにありませんでした)。ロスレスコピーには必要です。",
+  "zh-CN": "无法定位 DVD 标题 %d 的结尾(打开后光盘导航不在该标题中)；无损复制需要它。",
+  "zh-TW": "無法定位 DVD 標題 %d 的結尾(開啟後光碟導覽不在該標題中)；無損複製需要它。",
+  "es": "No se pudo localizar el final del título DVD %d (tras abrirlo, la navegación del disco no estaba en ese título); una copia sin pérdidas lo necesita."
+ },
+ "The engine set by --nanum-ai-dll (%s) does not implement the current CPU/CUDA backend contract. Rebuild it for this NanumPlayer version.": {
+  "en": "The engine set by --nanum-ai-dll (%s) does not implement the current CPU/CUDA backend contract. Rebuild it for this NanumPlayer version.",
+  "ja": "--nanum-ai-dll で指定されたエンジン(%s)は、現在の CPU/CUDA バックエンド規約を実装していません。この NanumPlayer のバージョン用に再ビルドしてください。",
+  "zh-CN": "通过 --nanum-ai-dll 指定的引擎（%s）未实现当前的 CPU/CUDA 后端约定。请针对此版本的 NanumPlayer 重新构建。",
+  "zh-TW": "透過 --nanum-ai-dll 指定的引擎（%s）未實作目前的 CPU/CUDA 後端規範。請針對此版本的 NanumPlayer 重新建置。",
+  "es": "El motor indicado con --nanum-ai-dll (%s) no implementa el contrato de backend CPU/CUDA actual. Recompílelo para esta versión de NanumPlayer.",
+  "ko": "--nanum-ai-dll로 지정한 엔진(%s)이 현재의 CPU/CUDA 백엔드 규약을 구현하지 않습니다. 이 NanumPlayer 버전에 맞게 다시 빌드하세요."
+ },
+ "The engine set by --nanum-ai-dll does not exist: %s": {
+  "en": "The engine set by --nanum-ai-dll does not exist: %s",
+  "ja": "--nanum-ai-dll で指定されたエンジンが存在しません: %s",
+  "zh-CN": "通过 --nanum-ai-dll 指定的引擎不存在：%s",
+  "zh-TW": "透過 --nanum-ai-dll 指定的引擎不存在：%s",
+  "es": "El motor indicado con --nanum-ai-dll no existe: %s",
+  "ko": "--nanum-ai-dll로 지정한 엔진이 없습니다: %s"
+ },
+ "The file may be in use by a playing file; close it and retry.": {
+  "ko": "재생 중인 파일이 이 파일을 사용 중일 수 있습니다. 닫고 다시 시도하세요.",
+  "en": "The file may be in use by a playing file; close it and retry.",
+  "ja": "再生中のファイルがこのファイルを使用している可能性があります。閉じてからやり直してください。",
+  "zh-CN": "该文件可能正被正在播放的文件占用,请关闭后重试。",
+  "zh-TW": "該檔案可能正被播放中的檔案佔用,請關閉後重試。",
+  "es": "Es posible que un archivo en reproducción esté usando este archivo; ciérrelo y vuelva a intentarlo."
+ },
+ "The latest %s release has an unexpected format.": {
+  "ko": "최신 %s 릴리스의 형식이 예상과 다릅니다.",
+  "en": "The latest %s release has an unexpected format.",
+  "ja": "最新の %s リリースの形式が想定と異なります。",
+  "zh-CN": "最新的 %s 发布版本格式出乎意料。",
+  "zh-TW": "最新的 %s 發行版本格式不符預期。",
+  "es": "La última versión de %s tiene un formato inesperado."
+ },
+ "The model catalog is unavailable.": {
+  "ko": "모델 카탈로그를 사용할 수 없습니다.",
+  "en": "The model catalog is unavailable.",
+  "ja": "モデルカタログを利用できません。",
+  "zh-CN": "模型目录不可用。",
+  "zh-TW": "模型目錄無法使用。",
+  "es": "El catálogo de modelos no está disponible."
+ },
+ "The model manager is not initialized.": {
+  "ko": "모델 관리자가 초기화되지 않았습니다.",
+  "en": "The model manager is not initialized.",
+  "ja": "モデルマネージャーが初期化されていません。",
+  "zh-CN": "模型管理器尚未初始化。",
+  "zh-TW": "模型管理員尚未初始化。",
+  "es": "El administrador de modelos no está inicializado."
+ },
+ "The multilingual speech model is not installed": {
+  "ko": "다국어 음성 인식 모델이 설치되어 있지 않습니다",
+  "en": "The multilingual speech model is not installed",
+  "ja": "多言語の音声認識モデルがインストールされていません",
+  "zh-CN": "未安装多语言语音识别模型",
+  "zh-TW": "尚未安裝多語言語音辨識模型",
+  "es": "El modelo de reconocimiento de voz multilingüe no está instalado"
+ },
+ "The output file is empty or unreadable: %s": {
+  "ko": "출력 파일이 비어 있거나 읽을 수 없습니다: %s",
+  "en": "The output file is empty or unreadable: %s",
+  "ja": "出力ファイルが空か、読み取れません: %s",
+  "zh-CN": "输出文件为空或无法读取: %s",
+  "zh-TW": "輸出檔案為空或無法讀取: %s",
+  "es": "El archivo de salida está vacío o no se puede leer: %s"
+ },
+ "The release information of %s is not valid JSON.": {
+  "ko": "%s의 릴리스 정보가 올바른 JSON이 아닙니다.",
+  "en": "The release information of %s is not valid JSON.",
+  "ja": "%s のリリース情報が有効な JSON ではありません。",
+  "zh-CN": "%s 的发布信息不是有效的 JSON。",
+  "zh-TW": "%s 的發行資訊不是有效的 JSON。",
+  "es": "La información de versión de %s no es un JSON válido."
+ },
+ "The server %s announced %llu bytes for %s, expected %lld bytes.": {
+  "ko": "서버 %s이(가) %llu바이트라고 알렸지만 %s의 예상 크기는 %lld바이트입니다.",
+  "en": "The server %s announced %llu bytes for %s, expected %lld bytes.",
+  "ja": "サーバー %s は %llu バイトと通知しましたが、%s の想定サイズは %lld バイトです。",
+  "zh-CN": "服务器 %s 声明大小为 %llu 字节,但 %s 的预期大小为 %lld 字节。",
+  "zh-TW": "伺服器 %s 宣告大小為 %llu 位元組,但 %s 的預期大小為 %lld 位元組。",
+  "es": "El servidor %s anunció %llu bytes para %s, pero se esperaban %lld bytes."
+ },
+ "The server %s announced %llu bytes, more than the allowed %lld bytes.": {
+  "ko": "서버 %s이(가) %llu바이트를 알렸으며, 이는 허용 한도 %lld바이트를 초과합니다.",
+  "en": "The server %s announced %llu bytes, more than the allowed %lld bytes.",
+  "ja": "サーバー %s が %llu バイトと通知しました。許容上限の %lld バイトを超えています。",
+  "zh-CN": "服务器 %s 声明大小为 %llu 字节,超过了允许的 %lld 字节。",
+  "zh-TW": "伺服器 %s 宣告大小為 %llu 位元組,超過了允許的 %lld 位元組。",
+  "es": "El servidor %s anunció %llu bytes, más de los %lld bytes permitidos."
+ },
+ "The server %s answered HTTP %lu instead of 200 for %s.": {
+  "ko": "서버 %s이(가) HTTP %lu(으)로 응답했습니다 (200이어야 함, 대상: %s).",
+  "en": "The server %s answered HTTP %lu instead of 200 for %s.",
+  "ja": "サーバー %s が HTTP %lu を返しました(200 が必要、対象: %s)。",
+  "zh-CN": "服务器 %s 返回了 HTTP %lu(应为 200),对象:%s。",
+  "zh-TW": "伺服器 %s 回應了 HTTP %lu(應為 200),對象:%s。",
+  "es": "El servidor %s respondió HTTP %lu en lugar de 200 para %s."
+ },
+ "The server %s sent more than the allowed %lld bytes.": {
+  "ko": "서버 %s이(가) 허용 한도 %lld바이트보다 많은 데이터를 보냈습니다.",
+  "en": "The server %s sent more than the allowed %lld bytes.",
+  "ja": "サーバー %s が許容上限の %lld バイトを超えるデータを送信しました。",
+  "zh-CN": "服务器 %s 发送的数据超过了允许的 %lld 字节。",
+  "zh-TW": "伺服器 %s 傳送的資料超過了允許的 %lld 位元組。",
+  "es": "El servidor %s envió más de los %lld bytes permitidos."
+ },
+ "The server %s sent more than the expected %lld bytes for %s.": {
+  "ko": "서버 %s이(가) 예상한 %lld바이트보다 많은 데이터를 %s에 대해 보냈습니다.",
+  "en": "The server %s sent more than the expected %lld bytes for %s.",
+  "ja": "サーバー %s が想定の %lld バイトを超えるデータを送信しました(対象: %s)。",
+  "zh-CN": "服务器 %s 发送的数据超过了预期的 %lld 字节(对象:%s)。",
+  "zh-TW": "伺服器 %s 傳送的資料超過了預期的 %lld 位元組(對象:%s)。",
+  "es": "El servidor %s envió más de los %lld bytes esperados para %s."
+ },
+ "The server did not answer in time.": {
+  "ko": "서버가 제때 응답하지 않았습니다.",
+  "en": "The server did not answer in time.",
+  "ja": "サーバーが時間内に応答しませんでした。",
+  "zh-CN": "服务器未在规定时间内响应。",
+  "zh-TW": "伺服器未在時限內回應。",
+  "es": "El servidor no respondió a tiempo."
+ },
+ "The speech models are not installed (missing: %s and %s). Download them in the AI settings.": {
+  "ko": "음성 모델이 설치되어 있지 않습니다 (없는 항목: %s 및 %s). AI 설정에서 다운로드하세요.",
+  "en": "The speech models are not installed (missing: %s and %s). Download them in the AI settings.",
+  "ja": "音声モデルがインストールされていません（不足: %sと%s）。AI設定からダウンロードしてください。",
+  "zh-CN": "未安装语音模型（缺少：%s和%s）。请在 AI 设置中下载。",
+  "zh-TW": "尚未安裝語音模型（缺少：%s和%s）。請在 AI 設定中下載。",
+  "es": "Los modelos de voz no están instalados (faltan: %s y %s). Descárgalos en los ajustes de IA."
+ },
+ "The speech models are not installed (missing: %s). Download them in the AI settings.": {
+  "ko": "음성 모델이 설치되어 있지 않습니다 (없는 항목: %s). AI 설정에서 다운로드하세요.",
+  "en": "The speech models are not installed (missing: %s). Download them in the AI settings.",
+  "ja": "音声モデルがインストールされていません（不足: %s）。AI設定からダウンロードしてください。",
+  "zh-CN": "未安装语音模型（缺少：%s）。请在 AI 设置中下载。",
+  "zh-TW": "尚未安裝語音模型（缺少：%s）。請在 AI 設定中下載。",
+  "es": "Los modelos de voz no están instalados (falta: %s). Descárgalo en los ajustes de IA."
+ },
+ "The title could not be opened for reading (%s); see the log for the cause.": {
+  "ko": "타이틀을 읽기용으로 열 수 없습니다(%s). 원인은 로그를 확인하세요.",
+  "en": "The title could not be opened for reading (%s); see the log for the cause.",
+  "ja": "タイトルを読み込み用に開けませんでした(%s)。原因はログを確認してください。",
+  "zh-CN": "无法打开标题进行读取(%s)；原因请查看日志。",
+  "zh-TW": "無法開啟標題進行讀取(%s)；原因請查看記錄檔。",
+  "es": "No se pudo abrir el título para lectura (%s); consulta el registro para ver la causa."
+ },
+ "The title delivered no audio or video stream. If the disc is protected, it could not be decrypted.": {
+  "ko": "타이틀에서 오디오 또는 비디오 스트림이 전달되지 않았습니다. 디스크가 보호되어 있다면 복호화할 수 없었던 것입니다.",
+  "en": "The title delivered no audio or video stream. If the disc is protected, it could not be decrypted.",
+  "ja": "タイトルから音声または映像ストリームが得られませんでした。ディスクが保護されている場合、復号できなかった可能性があります。",
+  "zh-CN": "该标题未提供任何音频或视频流。如果光盘受保护，则可能无法解密。",
+  "zh-TW": "該標題未提供任何音訊或視訊串流。如果光碟受保護，則可能無法解密。",
+  "es": "El título no entregó ninguna secuencia de audio ni de vídeo. Si el disco está protegido, no se pudo descifrar."
+ },
+ "The title did not end after %.0f s although the disc announces %.0f s; the disc navigation does not leave it.": {
+  "ko": "타이틀이 %.0f초가 지나도 끝나지 않았습니다(디스크 표시: %.0f초). 디스크 탐색이 해당 타이틀을 벗어나지 않습니다.",
+  "en": "The title did not end after %.0f s although the disc announces %.0f s; the disc navigation does not leave it.",
+  "ja": "ディスクは%.0f秒と示していますが、タイトルは%.0f秒を過ぎても終わりませんでした。ディスクのナビゲーションがそこから抜けません。",
+  "zh-CN": "标题在 %.0f 秒后仍未结束，而光盘标称为 %.0f 秒；光盘导航不会离开该标题。",
+  "zh-TW": "標題在 %.0f 秒後仍未結束，而光碟標稱為 %.0f 秒；光碟導覽不會離開該標題。",
+  "es": "El título no terminó tras %.0f s aunque el disco indica %.0f s; la navegación del disco no sale de él."
+ },
+ "The title ended after %.0f s of %.0f s; the disc could not be read completely.": {
+  "ko": "타이틀이 %.0f초(전체 %.0f초)에서 끝났습니다. 디스크를 끝까지 읽을 수 없었습니다.",
+  "en": "The title ended after %.0f s of %.0f s; the disc could not be read completely.",
+  "ja": "タイトルは%.0f秒/%.0f秒で終了しました。ディスクを最後まで読み取れませんでした。",
+  "zh-CN": "标题在 %.0f 秒(共 %.0f 秒)处结束；无法完整读取光盘。",
+  "zh-TW": "標題在 %.0f 秒(共 %.0f 秒)處結束；無法完整讀取光碟。",
+  "es": "El título terminó a los %.0f s de %.0f s; no se pudo leer el disco por completo."
+ },
+ "The user model folder cannot be determined (%%LOCALAPPDATA%% is unavailable).": {
+  "ko": "사용자 모델 폴더를 확인할 수 없습니다 (%%LOCALAPPDATA%%을(를) 사용할 수 없음).",
+  "en": "The user model folder cannot be determined (%%LOCALAPPDATA%% is unavailable).",
+  "ja": "ユーザーのモデルフォルダーを特定できません(%%LOCALAPPDATA%% を利用できません)。",
+  "zh-CN": "无法确定用户模型文件夹(%%LOCALAPPDATA%% 不可用)。",
+  "zh-TW": "無法確定使用者模型資料夾(%%LOCALAPPDATA%% 無法使用)。",
+  "es": "No se puede determinar la carpeta de modelos del usuario (%%LOCALAPPDATA%% no está disponible)."
+ },
+ "The voice detection model is not installed": {
+  "ko": "음성 감지 모델이 설치되어 있지 않습니다",
+  "en": "The voice detection model is not installed",
+  "ja": "音声検出モデルがインストールされていません",
+  "zh-CN": "未安装语音检测模型",
+  "zh-TW": "尚未安裝語音偵測模型",
+  "es": "El modelo de detección de voz no está instalado"
+ },
+ "The zip directory of %s is unsupported.": {
+  "ko": "%s의 zip 디렉터리는 지원되지 않습니다.",
+  "en": "The zip directory of %s is unsupported.",
+  "ja": "%s の zip ディレクトリはサポートされていません。",
+  "zh-CN": "不支持 %s 的 zip 目录。",
+  "zh-TW": "不支援 %s 的 zip 目錄。",
+  "es": "El directorio zip de %s no es compatible."
+ },
+ "There is no readable disc in %s.": {
+  "ko": "%s에 읽을 수 있는 디스크가 없습니다.",
+  "en": "There is no readable disc in %s.",
+  "ja": "%sに読み取れるディスクがありません。",
+  "zh-CN": "%s 中没有可读取的光盘。",
+  "zh-TW": "%s 中沒有可讀取的光碟。",
+  "es": "No hay ningún disco legible en %s."
+ },
+ "This Blu-ray is AACS protected and could not be decrypted with the built-in AACS support (the disc is not supported or its key could not be obtained). See the log for details.": {
+  "ko": "이 Blu-ray는 AACS로 보호되어 있으며 내장 AACS 지원으로 복호화할 수 없습니다(지원되지 않는 디스크이거나 키를 얻지 못했습니다). 자세한 내용은 로그를 확인하세요.",
+  "en": "This Blu-ray is AACS protected and could not be decrypted with the built-in AACS support (the disc is not supported or its key could not be obtained). See the log for details.",
+  "ja": "このBlu-rayはAACSで保護されており、内蔵のAACSサポートでは復号できませんでした(未対応のディスクか、キーを取得できませんでした)。詳細はログを確認してください。",
+  "zh-CN": "此 Blu-ray 受 AACS 保护，无法使用内置的 AACS 支持进行解密(该光盘不受支持，或无法获取其密钥)。详情请查看日志。",
+  "zh-TW": "此 Blu-ray 受 AACS 保護，無法使用內建的 AACS 支援進行解密(該光碟不受支援，或無法取得其金鑰)。詳細資訊請查看記錄檔。",
+  "es": "Este Blu-ray está protegido con AACS y no se pudo descifrar con la compatibilidad AACS integrada (el disco no es compatible o no se pudo obtener su clave). Consulta el registro para más detalles."
+ },
+ "This DVD is CSS protected and could not be decrypted (libdvdcss is unavailable or failed).": {
+  "ko": "이 DVD는 CSS로 보호되어 있어 복호화할 수 없습니다(libdvdcss를 사용할 수 없거나 실패했습니다).",
+  "en": "This DVD is CSS protected and could not be decrypted (libdvdcss is unavailable or failed).",
+  "ja": "このDVDはCSSで保護されており、復号できませんでした(libdvdcssが利用できないか、失敗しました)。",
+  "zh-CN": "此 DVD 受 CSS 保护，无法解密(libdvdcss 不可用或失败)。",
+  "zh-TW": "此 DVD 受 CSS 保護，無法解密(libdvdcss 無法使用或失敗)。",
+  "es": "Este DVD está protegido con CSS y no se pudo descifrar (libdvdcss no está disponible o falló)."
+ },
+ "This build has no Blu-ray support.": {
+  "ko": "이 빌드는 Blu-ray를 지원하지 않습니다.",
+  "en": "This build has no Blu-ray support.",
+  "ja": "このビルドはBlu-rayに対応していません。",
+  "zh-CN": "此版本不支持 Blu-ray。",
+  "zh-TW": "此版本不支援 Blu-ray。",
+  "es": "Esta compilación no admite Blu-ray."
+ },
+ "This build has no DVD support (libdvdnav/libdvdread not enabled).": {
+  "ko": "이 빌드는 DVD를 지원하지 않습니다(libdvdnav/libdvdread가 활성화되지 않음).",
+  "en": "This build has no DVD support (libdvdnav/libdvdread not enabled).",
+  "ja": "このビルドはDVDに対応していません(libdvdnav/libdvdreadが有効ではありません)。",
+  "zh-CN": "此版本不支持 DVD(未启用 libdvdnav/libdvdread)。",
+  "zh-TW": "此版本不支援 DVD(未啟用 libdvdnav/libdvdread)。",
+  "es": "Esta compilación no admite DVD (libdvdnav/libdvdread no están habilitadas)."
+ },
+ "Title %d": {
+  "ko": "타이틀 %d",
+  "en": "Title %d",
+  "ja": "タイトル %d",
+  "zh-CN": "标题 %d",
+  "zh-TW": "標題 %d",
+  "es": "Título %d"
+ },
+ "Unknown model download target.": {
+  "ko": "알 수 없는 모델 다운로드 대상입니다.",
+  "en": "Unknown model download target.",
+  "ja": "不明なモデルのダウンロード対象です。",
+  "zh-CN": "未知的模型下载目标。",
+  "zh-TW": "未知的模型下載目標。",
+  "es": "Destino de descarga de modelo desconocido."
+ },
+ "Whisper CUDA 엔진": {
+  "en": "Whisper CUDA engine",
+  "ja": "Whisper CUDAエンジン",
+  "zh-CN": "Whisper CUDA 引擎",
+  "zh-TW": "Whisper CUDA 引擎",
+  "es": "Motor Whisper CUDA"
+ },
+ "Whisper large-v3-turbo (다국어 고정밀)": {
+  "en": "Whisper large-v3-turbo (multilingual, high accuracy)",
+  "ja": "Whisper large-v3-turbo(多言語・高精度)",
+  "zh-CN": "Whisper large-v3-turbo(多语言・高精度)",
+  "zh-TW": "Whisper large-v3-turbo(多語言・高精確度)",
+  "es": "Whisper large-v3-turbo (multilingüe, alta precisión)"
+ },
+ "Whisper small (다국어)": {
+  "en": "Whisper small (multilingual)",
+  "ja": "Whisper small(多言語)",
+  "zh-CN": "Whisper small(多语言)",
+  "zh-TW": "Whisper small(多語言)",
+  "es": "Whisper small (multilingüe)"
+ },
+ "Whisper small.en (영어)": {
+  "en": "Whisper small.en (English)",
+  "ja": "Whisper small.en(英語)",
+  "zh-CN": "Whisper small.en(英语)",
+  "zh-TW": "Whisper small.en(英語)",
+  "es": "Whisper small.en (inglés)"
+ },
+ "Whisper speech model": {
+  "ko": "Whisper 음성 인식 모델",
+  "en": "Whisper speech model",
+  "ja": "Whisper音声認識モデル",
+  "zh-CN": "Whisper 语音识别模型",
+  "zh-TW": "Whisper 語音辨識模型",
+  "es": "modelo de reconocimiento de voz Whisper"
+ },
+ "Writing the output file failed: %s": {
+  "ko": "출력 파일을 쓰지 못했습니다: %s",
+  "en": "Writing the output file failed: %s",
+  "ja": "出力ファイルの書き込みに失敗しました: %s",
+  "zh-CN": "写入输出文件失败: %s",
+  "zh-TW": "寫入輸出檔案失敗: %s",
+  "es": "Error al escribir el archivo de salida: %s"
+ },
+ "an unidentifiable disc": {
+  "ko": "식별할 수 없는 디스크",
+  "en": "an unidentifiable disc",
+  "ja": "識別できないディスク",
+  "zh-CN": "无法识别的光盘",
+  "zh-TW": "無法識別的光碟",
+  "es": "un disco no identificable"
+ },
+ "cannot create the temporary folder": {
+  "ko": "임시 폴더를 만들 수 없습니다",
+  "en": "cannot create the temporary folder",
+  "ja": "一時フォルダーを作成できません",
+  "zh-CN": "无法创建临时文件夹",
+  "zh-TW": "無法建立暫存資料夾",
+  "es": "no se puede crear la carpeta temporal"
+ },
+ "cannot decode the audio": {
+  "ko": "오디오를 디코딩할 수 없습니다",
+  "en": "cannot decode the audio",
+  "ja": "オーディオをデコードできません",
+  "zh-CN": "无法解码音频",
+  "zh-TW": "無法解碼音訊",
+  "es": "no se puede decodificar el audio"
+ },
+ "cannot decode the subtitle file": {
+  "ko": "자막 파일을 디코딩할 수 없습니다",
+  "en": "cannot decode the subtitle file",
+  "ja": "字幕ファイルをデコードできません",
+  "zh-CN": "无法解码字幕文件",
+  "zh-TW": "無法解碼字幕檔案",
+  "es": "no se puede decodificar el archivo de subtítulos"
+ },
+ "cannot load %s (%s): %s": {
+  "en": "cannot load %s (%s): %s",
+  "ja": "%s を読み込めません(%s): %s",
+  "zh-CN": "无法加载 %s（%s）：%s",
+  "zh-TW": "無法載入 %s（%s）：%s",
+  "es": "no se puede cargar %s (%s): %s",
+  "ko": "%s을(를) 불러올 수 없습니다(%s): %s"
+ },
+ "cannot load %s (%s): %s A DLL it depends on was not found (for the CUDA engine: the NVIDIA display driver or the Visual C++ runtime).": {
+  "en": "cannot load %s (%s): %s A DLL it depends on was not found (for the CUDA engine: the NVIDIA display driver or the Visual C++ runtime).",
+  "ja": "%s を読み込めません(%s): %s 依存する DLL が見つかりませんでした(CUDA エンジンの場合: NVIDIA ディスプレイドライバーまたは Visual C++ ランタイム)。",
+  "zh-CN": "无法加载 %s（%s）：%s 找不到它所依赖的 DLL（对于 CUDA 引擎：NVIDIA 显示驱动程序或 Visual C++ 运行库）。",
+  "zh-TW": "無法載入 %s（%s）：%s 找不到它所相依的 DLL（對於 CUDA 引擎：NVIDIA 顯示驅動程式或 Visual C++ 執行階段）。",
+  "es": "no se puede cargar %s (%s): %s No se encontró una DLL de la que depende (para el motor CUDA: el controlador de pantalla NVIDIA o el runtime de Visual C++).",
+  "ko": "%s을(를) 불러올 수 없습니다(%s): %s 이 항목이 의존하는 DLL을 찾을 수 없습니다(CUDA 엔진의 경우: NVIDIA 디스플레이 드라이버 또는 Visual C++ 런타임)."
+ },
+ "cannot load the saved transcript: %s": {
+  "ko": "저장된 원문 기록을 불러올 수 없습니다: %s",
+  "en": "cannot load the saved transcript: %s",
+  "ja": "保存された文字起こしを読み込めません: %s",
+  "zh-CN": "无法加载已保存的转录文本：%s",
+  "zh-TW": "無法載入已儲存的逐字稿：%s",
+  "es": "no se puede cargar la transcripción guardada: %s"
+ },
+ "cannot load the saved translation: %s": {
+  "ko": "저장된 번역을 불러올 수 없습니다: %s",
+  "en": "cannot load the saved translation: %s",
+  "ja": "保存された翻訳を読み込めません: %s",
+  "zh-CN": "无法加载已保存的翻译：%s",
+  "zh-TW": "無法載入已儲存的翻譯：%s",
+  "es": "no se puede cargar la traducción guardada: %s"
+ },
+ "cannot move the translation file into place": {
+  "ko": "번역 파일을 제자리로 옮길 수 없습니다",
+  "en": "cannot move the translation file into place",
+  "ja": "翻訳ファイルを所定の場所に移動できません",
+  "zh-CN": "无法将翻译文件移动到位",
+  "zh-TW": "無法將翻譯檔案移到位",
+  "es": "no se puede mover el archivo de traducción a su ubicación"
+ },
+ "cannot open the audio decoder of the AI input": {
+  "ko": "AI 입력의 오디오 디코더를 열 수 없습니다",
+  "en": "cannot open the audio decoder of the AI input",
+  "ja": "AI入力のオーディオデコーダーを開けません",
+  "zh-CN": "无法打开 AI 输入的音频解码器",
+  "zh-TW": "無法開啟 AI 輸入的音訊解碼器",
+  "es": "no se puede abrir el decodificador de audio de la entrada de IA"
+ },
+ "cannot open the image subtitle decoder": {
+  "ko": "이미지 자막 디코더를 열 수 없습니다",
+  "en": "cannot open the image subtitle decoder",
+  "ja": "画像字幕のデコーダーを開けません",
+  "zh-CN": "无法打开图像字幕解码器",
+  "zh-TW": "無法開啟影像字幕解碼器",
+  "es": "no se puede abrir el decodificador de subtítulos de imagen"
+ },
+ "cannot open the library '%s': %s": {
+  "ko": "라이브러리 '%s'을(를) 열 수 없습니다: %s",
+  "en": "cannot open the library '%s': %s",
+  "ja": "ライブラリ '%s' を開けません: %s",
+  "zh-CN": "无法打开库“%s”: %s",
+  "zh-TW": "無法開啟庫「%s」: %s",
+  "es": "no se puede abrir la biblioteca '%s': %s"
+ },
+ "cannot open the media file": {
+  "ko": "미디어 파일을 열 수 없습니다",
+  "en": "cannot open the media file",
+  "ja": "メディアファイルを開けません",
+  "zh-CN": "无法打开媒体文件",
+  "zh-TW": "無法開啟媒體檔案",
+  "es": "no se puede abrir el archivo multimedia"
+ },
+ "cannot open the source": {
+  "ko": "원본을 열 수 없습니다",
+  "en": "cannot open the source",
+  "ja": "ソースを開けません",
+  "zh-CN": "无法打开源",
+  "zh-TW": "無法開啟來源",
+  "es": "no se puede abrir el origen"
+ },
+ "cannot open the subtitle file": {
+  "ko": "자막 파일을 열 수 없습니다",
+  "en": "cannot open the subtitle file",
+  "ja": "字幕ファイルを開けません",
+  "zh-CN": "无法打开字幕文件",
+  "zh-TW": "無法開啟字幕檔案",
+  "es": "no se puede abrir el archivo de subtítulos"
+ },
+ "cannot read the media file": {
+  "ko": "미디어 파일을 읽을 수 없습니다",
+  "en": "cannot read the media file",
+  "ja": "メディアファイルを読み取れません",
+  "zh-CN": "无法读取媒体文件",
+  "zh-TW": "無法讀取媒體檔案",
+  "es": "no se puede leer el archivo multimedia"
+ },
+ "cannot read the subtitle file": {
+  "ko": "자막 파일을 읽을 수 없습니다",
+  "en": "cannot read the subtitle file",
+  "ja": "字幕ファイルを読み取れません",
+  "zh-CN": "无法读取字幕文件",
+  "zh-TW": "無法讀取字幕檔案",
+  "es": "no se puede leer el archivo de subtítulos"
+ },
+ "cannot save the translation: %s": {
+  "ko": "번역을 저장할 수 없습니다: %s",
+  "en": "cannot save the translation: %s",
+  "ja": "翻訳を保存できません: %s",
+  "zh-CN": "无法保存翻译：%s",
+  "zh-TW": "無法儲存翻譯：%s",
+  "es": "no se puede guardar la traducción: %s"
+ },
+ "cannot start the AI engine (%s): %s": {
+  "ko": "AI 엔진을 시작할 수 없습니다 (%s): %s",
+  "en": "cannot start the AI engine (%s): %s",
+  "ja": "AIエンジンを起動できません（%s）: %s",
+  "zh-CN": "无法启动 AI 引擎（%s）：%s",
+  "zh-TW": "無法啟動 AI 引擎（%s）：%s",
+  "es": "no se puede iniciar el motor de IA (%s): %s"
+ },
+ "cannot start the audio thread": {
+  "ko": "오디오 스레드를 시작할 수 없습니다",
+  "en": "cannot start the audio thread",
+  "ja": "オーディオスレッドを開始できません",
+  "zh-CN": "无法启动音频线程",
+  "zh-TW": "無法啟動音訊執行緒",
+  "es": "no se puede iniciar el hilo de audio"
+ },
+ "cannot start the glossary thread": {
+  "ko": "용어집 스레드를 시작할 수 없습니다",
+  "en": "cannot start the glossary thread",
+  "ja": "用語集スレッドを開始できません",
+  "zh-CN": "无法启动术语表线程",
+  "zh-TW": "無法啟動術語表執行緒",
+  "es": "no se puede iniciar el hilo del glosario"
+ },
+ "cannot start the import thread": {
+  "ko": "가져오기 스레드를 시작할 수 없습니다",
+  "en": "cannot start the import thread",
+  "ja": "インポートスレッドを開始できません",
+  "zh-CN": "无法启动导入线程",
+  "zh-TW": "無法啟動匯入執行緒",
+  "es": "no se puede iniciar el hilo de importación"
+ },
+ "cannot start the scan engine: %s": {
+  "ko": "스캔 엔진을 시작할 수 없습니다: %s",
+  "en": "cannot start the scan engine: %s",
+  "ja": "スキャンエンジンを起動できません: %s",
+  "zh-CN": "无法启动扫描引擎：%s",
+  "zh-TW": "無法啟動掃描引擎：%s",
+  "es": "no se puede iniciar el motor de análisis: %s"
+ },
+ "cannot start the scan thread": {
+  "ko": "스캔 스레드를 시작할 수 없습니다",
+  "en": "cannot start the scan thread",
+  "ja": "スキャンスレッドを開始できません",
+  "zh-CN": "无法启动扫描线程",
+  "zh-TW": "無法啟動掃描執行緒",
+  "es": "no se puede iniciar el hilo de análisis"
+ },
+ "cannot start the translation": {
+  "ko": "번역을 시작할 수 없습니다",
+  "en": "cannot start the translation",
+  "ja": "翻訳を開始できません",
+  "zh-CN": "无法开始翻译",
+  "zh-TW": "無法開始翻譯",
+  "es": "no se puede iniciar la traducción"
+ },
+ "cannot start the translation engine: %s": {
+  "ko": "번역 엔진을 시작할 수 없습니다: %s",
+  "en": "cannot start the translation engine: %s",
+  "ja": "翻訳エンジンを起動できません: %s",
+  "zh-CN": "无法启动翻译引擎：%s",
+  "zh-TW": "無法啟動翻譯引擎：%s",
+  "es": "no se puede iniciar el motor de traducción: %s"
+ },
+ "cannot write the temporary subtitle file": {
+  "ko": "임시 자막 파일을 쓸 수 없습니다",
+  "en": "cannot write the temporary subtitle file",
+  "ja": "一時字幕ファイルを書き込めません",
+  "zh-CN": "无法写入临时字幕文件",
+  "zh-TW": "無法寫入暫存字幕檔案",
+  "es": "no se puede escribir el archivo temporal de subtítulos"
+ },
+ "cannot write the translation file": {
+  "ko": "번역 파일을 쓸 수 없습니다",
+  "en": "cannot write the translation file",
+  "ja": "翻訳ファイルを書き込めません",
+  "zh-CN": "无法写入翻译文件",
+  "zh-TW": "無法寫入翻譯檔案",
+  "es": "no se puede escribir el archivo de traducción"
+ },
+ "catalog entry '%s' is invalid": {
+  "ko": "카탈로그 항목 '%s'이(가) 올바르지 않습니다",
+  "en": "catalog entry '%s' is invalid",
+  "ja": "カタログ項目「%s」が無効です",
+  "zh-CN": "目录条目“%s”无效",
+  "zh-TW": "目錄項目「%s」無效",
+  "es": "la entrada del catálogo '%s' no es válida"
+ },
+ "component '%s' must be the file %s, not %s": {
+  "en": "component '%s' must be the file %s, not %s",
+  "ja": "コンポーネント '%s' のファイルは %s である必要があり、%s ではありません",
+  "zh-CN": "组件“%s”必须是文件 %s，而不是 %s",
+  "zh-TW": "元件「%s」必須是檔案 %s，而不是 %s",
+  "es": "el componente '%s' debe ser el archivo %s, no %s",
+  "ko": "컴포넌트 '%s'의 파일은 %s이어야 하며 %s이(가) 아닙니다"
+ },
+ "connecting": {
+  "ko": "연결",
+  "en": "connecting",
+  "ja": "接続",
+  "zh-CN": "连接",
+  "zh-TW": "連線",
+  "es": "conectar"
+ },
+ "cue insert": {
+  "ko": "자막 줄 추가",
+  "en": "cue insert",
+  "ja": "キューの追加",
+  "zh-CN": "添加字幕条目",
+  "zh-TW": "新增字幕項目",
+  "es": "inserción de línea"
+ },
+ "device, title and destination are required.": {
+  "ko": "장치, 타이틀, 대상 경로가 모두 필요합니다.",
+  "en": "device, title and destination are required.",
+  "ja": "デバイス、タイトル、保存先がすべて必要です。",
+  "zh-CN": "必须提供设备、标题和目标路径。",
+  "zh-TW": "必須提供裝置、標題和目的地路徑。",
+  "es": "Se requieren el dispositivo, el título y el destino."
+ },
+ "downloading": {
+  "ko": "다운로드",
+  "en": "downloading",
+  "ja": "ダウンロード",
+  "zh-CN": "下载",
+  "zh-TW": "下載",
+  "es": "descargar"
+ },
+ "it is a CPU engine": {
+  "en": "it is a CPU engine",
+  "ja": "CPUエンジンです",
+  "zh-CN": "它是 CPU 引擎",
+  "zh-TW": "它是 CPU 引擎",
+  "es": "es un motor para CPU",
+  "ko": "CPU 엔진입니다"
+ },
+ "job insert": {
+  "ko": "작업 추가",
+  "en": "job insert",
+  "ja": "ジョブの追加",
+  "zh-CN": "添加任务",
+  "zh-TW": "新增工作",
+  "es": "inserción de tarea"
+ },
+ "job update": {
+  "ko": "작업 갱신",
+  "en": "job update",
+  "ja": "ジョブの更新",
+  "zh-CN": "更新任务",
+  "zh-TW": "更新工作",
+  "es": "actualización de tarea"
+ },
+ "live cue insert": {
+  "ko": "실시간 줄 추가",
+  "en": "live cue insert",
+  "ja": "ライブキューの追加",
+  "zh-CN": "添加实时条目",
+  "zh-TW": "新增即時項目",
+  "es": "inserción de línea en vivo"
+ },
+ "live delete": {
+  "ko": "실시간 데이터 삭제",
+  "en": "live delete",
+  "ja": "ライブデータの削除",
+  "zh-CN": "删除实时数据",
+  "zh-TW": "刪除即時資料",
+  "es": "eliminación de datos en vivo"
+ },
+ "live range insert": {
+  "ko": "실시간 구간 추가",
+  "en": "live range insert",
+  "ja": "ライブ範囲の追加",
+  "zh-CN": "添加实时区间",
+  "zh-TW": "新增即時區間",
+  "es": "inserción de rango en vivo"
+ },
+ "load cues": {
+  "ko": "자막 줄 불러오기",
+  "en": "load cues",
+  "ja": "キューの読み込み",
+  "zh-CN": "加载字幕条目",
+  "zh-TW": "載入字幕項目",
+  "es": "carga de líneas"
+ },
+ "load live cues": {
+  "ko": "실시간 줄 불러오기",
+  "en": "load live cues",
+  "ja": "ライブキューの読み込み",
+  "zh-CN": "加载实时条目",
+  "zh-TW": "載入即時項目",
+  "es": "carga de líneas en vivo"
+ },
+ "load live ranges": {
+  "ko": "실시간 구간 불러오기",
+  "en": "load live ranges",
+  "ja": "ライブ範囲の読み込み",
+  "zh-CN": "加载实时区间",
+  "zh-TW": "載入即時區間",
+  "es": "carga de rangos en vivo"
+ },
+ "lookup": {
+  "ko": "조회",
+  "en": "lookup",
+  "ja": "検索",
+  "zh-CN": "查找",
+  "zh-TW": "查找",
+  "es": "consulta"
+ },
+ "media insert": {
+  "ko": "미디어 추가",
+  "en": "media insert",
+  "ja": "メディアの追加",
+  "zh-CN": "添加媒体",
+  "zh-TW": "新增媒體",
+  "es": "inserción de medio"
+ },
+ "media update": {
+  "ko": "미디어 갱신",
+  "en": "media update",
+  "ja": "メディアの更新",
+  "zh-CN": "更新媒体",
+  "zh-TW": "更新媒體",
+  "es": "actualización de medio"
+ },
+ "model catalog %s has an unsupported format (schema 1 expected)": {
+  "ko": "모델 카탈로그 %s의 형식이 지원되지 않습니다 (스키마 1 필요)",
+  "en": "model catalog %s has an unsupported format (schema 1 expected)",
+  "ja": "モデルカタログ %s の形式はサポートされていません(スキーマ 1 が必要です)",
+  "zh-CN": "模型目录 %s 的格式不受支持(应为 schema 1)",
+  "zh-TW": "模型目錄 %s 的格式不受支援(應為 schema 1)",
+  "es": "el catálogo de modelos %s tiene un formato no compatible (se esperaba el esquema 1)"
+ },
+ "model catalog %s is not valid JSON": {
+  "ko": "모델 카탈로그 %s이(가) 올바른 JSON이 아닙니다",
+  "en": "model catalog %s is not valid JSON",
+  "ja": "モデルカタログ %s は有効な JSON ではありません",
+  "zh-CN": "模型目录 %s 不是有效的 JSON",
+  "zh-TW": "模型目錄 %s 不是有效的 JSON",
+  "es": "el catálogo de modelos %s no es un JSON válido"
+ },
+ "model catalog entry '%s' is invalid": {
+  "ko": "모델 카탈로그 항목 '%s'이(가) 올바르지 않습니다",
+  "en": "model catalog entry '%s' is invalid",
+  "ja": "モデルカタログ項目「%s」が無効です",
+  "zh-CN": "模型目录条目“%s”无效",
+  "zh-TW": "模型目錄項目「%s」無效",
+  "es": "la entrada '%s' del catálogo de modelos no es válida"
+ },
+ "model catalog has no entry for '%s'": {
+  "ko": "모델 카탈로그에 '%s' 항목이 없습니다",
+  "en": "model catalog has no entry for '%s'",
+  "ja": "モデルカタログに「%s」の項目がありません",
+  "zh-CN": "模型目录中没有“%s”的条目",
+  "zh-TW": "模型目錄中沒有「%s」的項目",
+  "es": "el catálogo de modelos no tiene ninguna entrada para '%s'"
+ },
+ "model catalog models\\catalog.json not found or unreadable": {
+  "ko": "모델 카탈로그 models\\catalog.json을 찾을 수 없거나 읽을 수 없습니다",
+  "en": "model catalog models\\catalog.json not found or unreadable",
+  "ja": "モデルカタログ models\\catalog.json が見つからないか、読み取れません",
+  "zh-CN": "找不到模型目录 models\\catalog.json 或无法读取",
+  "zh-TW": "找不到模型目錄 models\\catalog.json 或無法讀取",
+  "es": "el catálogo de modelos models\\catalog.json no se encuentra o no se puede leer"
+ },
+ "model catalog models\\catalog.json not found or unreadable: %s": {
+  "ko": "모델 카탈로그 models\\catalog.json을 찾을 수 없거나 읽을 수 없습니다: %s",
+  "en": "model catalog models\\catalog.json not found or unreadable: %s",
+  "ja": "モデルカタログ models\\catalog.json が見つからないか、読み取れません: %s",
+  "zh-CN": "找不到模型目录 models\\catalog.json 或无法读取:%s",
+  "zh-TW": "找不到模型目錄 models\\catalog.json 或無法讀取:%s",
+  "es": "el catálogo de modelos models\\catalog.json no se encuentra o no se puede leer: %s"
+ },
+ "nanum-stt-model needs nanum-vad-model": {
+  "ko": "nanum-stt-model을 사용하려면 nanum-vad-model이 필요합니다",
+  "en": "nanum-stt-model needs nanum-vad-model",
+  "ja": "nanum-stt-model には nanum-vad-model が必要です",
+  "zh-CN": "nanum-stt-model 需要同时设置 nanum-vad-model",
+  "zh-TW": "nanum-stt-model 需要同時設定 nanum-vad-model",
+  "es": "nanum-stt-model requiere nanum-vad-model"
+ },
+ "no compatible CUDA Toolkit was found": {
+  "en": "no compatible CUDA Toolkit was found",
+  "ja": "互換性のある CUDA Toolkit が見つかりませんでした",
+  "zh-CN": "未找到兼容的 CUDA Toolkit",
+  "zh-TW": "找不到相容的 CUDA Toolkit",
+  "es": "no se encontró ningún CUDA Toolkit compatible",
+  "ko": "호환되는 CUDA Toolkit을 찾을 수 없습니다"
+ },
+ "no compatible NVIDIA GPU (compute capability 8.6 or newer) and driver were found": {
+  "en": "no compatible NVIDIA GPU (compute capability 8.6 or newer) and driver were found",
+  "ja": "互換性のある NVIDIA GPU(コンピューティング能力 8.6 以上)とドライバーが見つかりませんでした",
+  "zh-CN": "未找到兼容的 NVIDIA GPU（计算能力 8.6 或更高）及其驱动程序",
+  "zh-TW": "找不到相容的 NVIDIA GPU（運算能力 8.6 或更高）及其驅動程式",
+  "es": "no se encontró ninguna GPU NVIDIA compatible (capacidad de cómputo 8.6 o superior) ni su controlador",
+  "ko": "호환되는 NVIDIA GPU(컴퓨트 capability 8.6 이상)와 드라이버를 찾을 수 없습니다"
+ },
+ "no image subtitle track": {
+  "ko": "이미지 자막 트랙이 없습니다",
+  "en": "no image subtitle track",
+  "ja": "画像字幕トラックがありません",
+  "zh-CN": "没有图像字幕轨道",
+  "zh-TW": "沒有影像字幕軌",
+  "es": "no hay pista de subtítulos de imagen"
+ },
+ "no library file given": {
+  "ko": "라이브러리 파일이 지정되지 않았습니다",
+  "en": "no library file given",
+  "ja": "ライブラリファイルが指定されていません",
+  "zh-CN": "未指定库文件",
+  "zh-TW": "未指定庫檔案",
+  "es": "no se indicó ningún archivo de biblioteca"
+ },
+ "no speech model is configured (nanum-stt-model)": {
+  "ko": "음성 인식 모델이 설정되지 않았습니다 (nanum-stt-model)",
+  "en": "no speech model is configured (nanum-stt-model)",
+  "ja": "音声認識モデルが設定されていません（nanum-stt-model）",
+  "zh-CN": "未配置语音识别模型（nanum-stt-model）",
+  "zh-TW": "尚未設定語音辨識模型（nanum-stt-model）",
+  "es": "no hay ningún modelo de reconocimiento de voz configurado (nanum-stt-model)"
+ },
+ "no speech was recognised": {
+  "ko": "인식된 음성이 없습니다",
+  "en": "no speech was recognised",
+  "ja": "認識された音声がありません",
+  "zh-CN": "未识别到语音",
+  "zh-TW": "未辨識到語音",
+  "es": "no se reconoció ninguna voz"
+ },
+ "prepare": {
+  "ko": "쿼리 준비",
+  "en": "prepare",
+  "ja": "クエリの準備",
+  "zh-CN": "准备查询",
+  "zh-TW": "準備查詢",
+  "es": "preparación"
+ },
+ "preparing the request": {
+  "ko": "요청 준비",
+  "en": "preparing the request",
+  "ja": "リクエストの準備",
+  "zh-CN": "准备请求",
+  "zh-TW": "準備要求",
+  "es": "preparar la solicitud"
+ },
+ "property read": {
+  "ko": "속성 읽기",
+  "en": "property read",
+  "ja": "プロパティの読み取り",
+  "zh-CN": "读取属性",
+  "zh-TW": "讀取屬性",
+  "es": "lectura de propiedad"
+ },
+ "property write": {
+  "ko": "속성 쓰기",
+  "en": "property write",
+  "ja": "プロパティの書き込み",
+  "zh-CN": "写入属性",
+  "zh-TW": "寫入屬性",
+  "es": "escritura de propiedad"
+ },
+ "prune": {
+  "ko": "이전 리비전 삭제",
+  "en": "prune",
+  "ja": "古いリビジョンの削除",
+  "zh-CN": "清除旧修订版",
+  "zh-TW": "清除舊修訂版",
+  "es": "depuración"
+ },
+ "reading the response": {
+  "ko": "응답 읽기",
+  "en": "reading the response",
+  "ja": "応答の読み取り",
+  "zh-CN": "读取响应",
+  "zh-TW": "讀取回應",
+  "es": "leer la respuesta"
+ },
+ "requesting the data": {
+  "ko": "데이터 요청",
+  "en": "requesting the data",
+  "ja": "データのリクエスト",
+  "zh-CN": "请求数据",
+  "zh-TW": "要求資料",
+  "es": "solicitar los datos"
+ },
+ "requesting the file": {
+  "ko": "파일 요청",
+  "en": "requesting the file",
+  "ja": "ファイルのリクエスト",
+  "zh-CN": "请求文件",
+  "zh-TW": "要求檔案",
+  "es": "solicitar el archivo"
+ },
+ "requesting the release information": {
+  "ko": "릴리스 정보 요청",
+  "en": "requesting the release information",
+  "ja": "リリース情報のリクエスト",
+  "zh-CN": "请求发布信息",
+  "zh-TW": "要求發行資訊",
+  "es": "solicitar la información de la versión"
+ },
+ "results are not saved: %s": {
+  "ko": "결과가 저장되지 않습니다: %s",
+  "en": "results are not saved: %s",
+  "ja": "結果は保存されません: %s",
+  "zh-CN": "结果不会被保存：%s",
+  "zh-TW": "結果不會被儲存：%s",
+  "es": "los resultados no se guardan: %s"
+ },
+ "revision insert": {
+  "ko": "리비전 추가",
+  "en": "revision insert",
+  "ja": "リビジョンの追加",
+  "zh-CN": "添加修订版",
+  "zh-TW": "新增修訂版",
+  "es": "inserción de revisión"
+ },
+ "source insert": {
+  "ko": "원본 추가",
+  "en": "source insert",
+  "ja": "原文の追加",
+  "zh-CN": "添加原文",
+  "zh-TW": "新增原文",
+  "es": "inserción de original"
+ },
+ "source select": {
+  "ko": "원본 선택",
+  "en": "source select",
+  "ja": "原文の選択",
+  "zh-CN": "选择原文",
+  "zh-TW": "選取原文",
+  "es": "selección de original"
+ },
+ "source update": {
+  "ko": "원본 갱신",
+  "en": "source update",
+  "ja": "原文の更新",
+  "zh-CN": "更新原文",
+  "zh-TW": "更新原文",
+  "es": "actualización de original"
+ },
+ "starting the HTTP session": {
+  "ko": "HTTP 세션 시작",
+  "en": "starting the HTTP session",
+  "ja": "HTTP セッションの開始",
+  "zh-CN": "启动 HTTP 会话",
+  "zh-TW": "啟動 HTTP 工作階段",
+  "es": "iniciar la sesión HTTP"
+ },
+ "the AI engine is not available": {
+  "ko": "AI 엔진을 사용할 수 없습니다",
+  "en": "the AI engine is not available",
+  "ja": "AIエンジンを利用できません",
+  "zh-CN": "AI 引擎不可用",
+  "zh-TW": "AI 引擎無法使用",
+  "es": "el motor de IA no está disponible"
+ },
+ "the AI engine is only available on Windows": {
+  "ko": "AI 엔진은 Windows에서만 사용할 수 있습니다",
+  "en": "the AI engine is only available on Windows",
+  "ja": "AIエンジンはWindowsでのみ利用できます",
+  "zh-CN": "AI 引擎仅在 Windows 上可用",
+  "zh-TW": "AI 引擎僅能在 Windows 上使用",
+  "es": "el motor de IA solo está disponible en Windows"
+ },
+ "the AI input track could not be identified, results are not saved": {
+  "ko": "AI 입력 트랙을 식별할 수 없어 결과가 저장되지 않습니다",
+  "en": "the AI input track could not be identified, results are not saved",
+  "ja": "AI入力トラックを識別できないため、結果は保存されません",
+  "zh-CN": "无法识别 AI 输入轨道，结果不会被保存",
+  "zh-TW": "無法辨識 AI 輸入軌，結果不會被儲存",
+  "es": "no se pudo identificar la pista de entrada de IA; los resultados no se guardan"
+ },
+ "the CPU AI engine": {
+  "en": "the CPU AI engine",
+  "ja": "CPU AIエンジン",
+  "zh-CN": "CPU AI 引擎",
+  "zh-TW": "CPU AI 引擎",
+  "es": "el motor de IA para CPU",
+  "ko": "CPU AI 엔진"
+ },
+ "the CPU AI engine %s was not found at %s. Reinstall NanumPlayer.": {
+  "en": "the CPU AI engine %s was not found at %s. Reinstall NanumPlayer.",
+  "ja": "CPU AIエンジン %s が %s に見つかりません。NanumPlayer を再インストールしてください。",
+  "zh-CN": "找不到 CPU AI 引擎 %s（位置：%s）。请重新安装 NanumPlayer。",
+  "zh-TW": "找不到 CPU AI 引擎 %s（位置：%s）。請重新安裝 NanumPlayer。",
+  "es": "No se encontró el motor de IA para CPU %s en %s. Reinstale NanumPlayer.",
+  "ko": "CPU AI 엔진 %s을(를) %s에서 찾을 수 없습니다. NanumPlayer를 다시 설치하세요."
+ },
+ "the CPU AI engine %s was not found. Reinstall NanumPlayer.": {
+  "en": "the CPU AI engine %s was not found. Reinstall NanumPlayer.",
+  "ja": "CPU AIエンジン %s が見つかりません。NanumPlayer を再インストールしてください。",
+  "zh-CN": "找不到 CPU AI 引擎 %s。请重新安装 NanumPlayer。",
+  "zh-TW": "找不到 CPU AI 引擎 %s。請重新安裝 NanumPlayer。",
+  "es": "No se encontró el motor de IA para CPU %s. Reinstale NanumPlayer.",
+  "ko": "CPU AI 엔진 %s을(를) 찾을 수 없습니다. NanumPlayer를 다시 설치하세요."
+ },
+ "the CUDA Toolkit at %s has no %s (CUDA %d is required)": {
+  "en": "the CUDA Toolkit at %s has no %s (CUDA %d is required)",
+  "ja": "%s の CUDA Toolkit に %s がありません(CUDA %d が必要です)",
+  "zh-CN": "%s 处的 CUDA Toolkit 中没有 %s（需要 CUDA %d）",
+  "zh-TW": "%s 處的 CUDA Toolkit 中沒有 %s（需要 CUDA %d）",
+  "es": "el CUDA Toolkit de %s no contiene %s (se requiere CUDA %d)",
+  "ko": "%s의 CUDA Toolkit에 %s이(가) 없습니다(CUDA %d 필요)"
+ },
+ "the CUDA Toolkit at %s was rejected: %s": {
+  "en": "the CUDA Toolkit at %s was rejected: %s",
+  "ja": "%s の CUDA Toolkit は使用できません: %s",
+  "zh-CN": "%s 处的 CUDA Toolkit 被拒绝：%s",
+  "zh-TW": "%s 處的 CUDA Toolkit 被拒絕：%s",
+  "es": "se rechazó el CUDA Toolkit de %s: %s",
+  "ko": "%s의 CUDA Toolkit이 거부되었습니다: %s"
+ },
+ "the CUDA engine": {
+  "en": "the CUDA engine",
+  "ja": "CUDAエンジン",
+  "zh-CN": "CUDA 引擎",
+  "zh-TW": "CUDA 引擎",
+  "es": "el motor CUDA",
+  "ko": "CUDA 엔진"
+ },
+ "the CUDA engine cannot use the GPU: %s": {
+  "en": "the CUDA engine cannot use the GPU: %s",
+  "ja": "CUDAエンジンはGPUを使用できません: %s",
+  "zh-CN": "CUDA 引擎无法使用 GPU：%s",
+  "zh-TW": "CUDA 引擎無法使用 GPU：%s",
+  "es": "el motor CUDA no puede usar la GPU: %s",
+  "ko": "CUDA 엔진이 GPU를 사용할 수 없습니다: %s"
+ },
+ "the CUDA engine could not be loaded": {
+  "en": "the CUDA engine could not be loaded",
+  "ja": "CUDAエンジンを読み込めませんでした",
+  "zh-CN": "无法加载 CUDA 引擎",
+  "zh-TW": "無法載入 CUDA 引擎",
+  "es": "no se pudo cargar el motor CUDA",
+  "ko": "CUDA 엔진을 불러올 수 없습니다"
+ },
+ "the GPU cannot be used": {
+  "en": "the GPU cannot be used",
+  "ja": "GPUを使用できません",
+  "zh-CN": "无法使用 GPU",
+  "zh-TW": "無法使用 GPU",
+  "es": "no se puede usar la GPU",
+  "ko": "GPU를 사용할 수 없습니다"
+ },
+ "the OCR does not work: %s": {
+  "ko": "OCR이 작동하지 않습니다: %s",
+  "en": "the OCR does not work: %s",
+  "ja": "OCRが動作していません: %s",
+  "zh-CN": "OCR 无法工作：%s",
+  "zh-TW": "OCR 無法運作：%s",
+  "es": "el OCR no funciona: %s"
+ },
+ "the OCR is not available": {
+  "ko": "OCR을 사용할 수 없습니다",
+  "en": "the OCR is not available",
+  "ja": "OCRを利用できません",
+  "zh-CN": "OCR 不可用",
+  "zh-TW": "OCR 無法使用",
+  "es": "el OCR no está disponible"
+ },
+ "the component catalog %s does not describe CUDA %s components": {
+  "en": "the component catalog %s does not describe CUDA %s components",
+  "ja": "コンポーネントカタログ %s には CUDA %s のコンポーネントが記載されていません",
+  "zh-CN": "组件目录 %s 未描述 CUDA %s 组件",
+  "zh-TW": "元件目錄 %s 未描述 CUDA %s 元件",
+  "es": "el catálogo de componentes %s no describe componentes de CUDA %s",
+  "ko": "컴포넌트 카탈로그 %s에 CUDA %s 컴포넌트에 대한 설명이 없습니다"
+ },
+ "the component catalog %s has an unsupported format (schema 1 expected)": {
+  "en": "the component catalog %s has an unsupported format (schema 1 expected)",
+  "ja": "コンポーネントカタログ %s の形式はサポートされていません(スキーマ1が必要です)",
+  "zh-CN": "组件目录 %s 的格式不受支持（需要 schema 1）",
+  "zh-TW": "元件目錄 %s 的格式不受支援（需要 schema 1）",
+  "es": "el catálogo de componentes %s tiene un formato no compatible (se esperaba el esquema 1)",
+  "ko": "컴포넌트 카탈로그 %s의 형식이 지원되지 않습니다(스키마 1 필요)"
+ },
+ "the component catalog %s is not valid JSON": {
+  "en": "the component catalog %s is not valid JSON",
+  "ja": "コンポーネントカタログ %s は有効なJSONではありません",
+  "zh-CN": "组件目录 %s 不是有效的 JSON",
+  "zh-TW": "元件目錄 %s 不是有效的 JSON",
+  "es": "el catálogo de componentes %s no es un JSON válido",
+  "ko": "컴포넌트 카탈로그 %s이(가) 올바른 JSON이 아닙니다"
+ },
+ "the component catalog components\\catalog.json is missing or unreadable": {
+  "en": "the component catalog components\\catalog.json is missing or unreadable",
+  "ja": "コンポーネントカタログ components\\catalog.json が見つからないか、読み取れません",
+  "zh-CN": "组件目录 components\\catalog.json 不存在或无法读取",
+  "zh-TW": "元件目錄 components\\catalog.json 不存在或無法讀取",
+  "es": "el catálogo de componentes components\\catalog.json falta o no se puede leer",
+  "ko": "컴포넌트 카탈로그 components\\catalog.json 파일이 없거나 읽을 수 없습니다"
+ },
+ "the component catalog components\\catalog.json is missing or unreadable: %s": {
+  "en": "the component catalog components\\catalog.json is missing or unreadable: %s",
+  "ja": "コンポーネントカタログ components\\catalog.json が見つからないか、読み取れません: %s",
+  "zh-CN": "组件目录 components\\catalog.json 不存在或无法读取：%s",
+  "zh-TW": "元件目錄 components\\catalog.json 不存在或無法讀取：%s",
+  "es": "el catálogo de componentes components\\catalog.json falta o no se puede leer: %s",
+  "ko": "컴포넌트 카탈로그 components\\catalog.json 파일이 없거나 읽을 수 없습니다: %s"
+ },
+ "the component catalog has no entry for '%s'": {
+  "en": "the component catalog has no entry for '%s'",
+  "ja": "コンポーネントカタログに '%s' のエントリがありません",
+  "zh-CN": "组件目录中没有“%s”的条目",
+  "zh-TW": "元件目錄中沒有「%s」的項目",
+  "es": "el catálogo de componentes no tiene ninguna entrada para '%s'",
+  "ko": "컴포넌트 카탈로그에 '%s' 항목이 없습니다"
+ },
+ "the cuBLAS libraries in %s are from different releases (%s and %s)": {
+  "en": "the cuBLAS libraries in %s are from different releases (%s and %s)",
+  "ja": "%s 内の cuBLAS ライブラリは異なるリリースのものです(%s と %s)",
+  "zh-CN": "%s 中的 cuBLAS 库来自不同的版本（%s 和 %s）",
+  "zh-TW": "%s 中的 cuBLAS 程式庫來自不同的版本（%s 和 %s）",
+  "es": "las bibliotecas cuBLAS de %s son de versiones distintas (%s y %s)",
+  "ko": "%s의 cuBLAS 라이브러리가 서로 다른 릴리스입니다(%s 및 %s)"
+ },
+ "the disc could not be identified, results are not saved": {
+  "ko": "디스크를 식별할 수 없어 결과가 저장되지 않습니다",
+  "en": "the disc could not be identified, results are not saved",
+  "ja": "ディスクを識別できないため、結果は保存されません",
+  "zh-CN": "无法识别光盘，结果不会被保存",
+  "zh-TW": "無法辨識光碟，結果不會被儲存",
+  "es": "no se pudo identificar el disco; los resultados no se guardan"
+ },
+ "the engine does not export nanum_ai_backend / nanum_ai_gpu_available (it is not a NanumPlayer engine)": {
+  "en": "the engine does not export nanum_ai_backend / nanum_ai_gpu_available (it is not a NanumPlayer engine)",
+  "ja": "エンジンが nanum_ai_backend / nanum_ai_gpu_available をエクスポートしていません(NanumPlayer のエンジンではありません)",
+  "zh-CN": "该引擎未导出 nanum_ai_backend / nanum_ai_gpu_available（它不是 NanumPlayer 引擎）",
+  "zh-TW": "該引擎未匯出 nanum_ai_backend / nanum_ai_gpu_available（它不是 NanumPlayer 引擎）",
+  "es": "el motor no exporta nanum_ai_backend / nanum_ai_gpu_available (no es un motor de NanumPlayer)",
+  "ko": "엔진이 nanum_ai_backend / nanum_ai_gpu_available을 내보내지 않습니다(NanumPlayer 엔진이 아닙니다)"
+ },
+ "the engine reports the backend '%s', expected '%s'": {
+  "en": "the engine reports the backend '%s', expected '%s'",
+  "ja": "エンジンはバックエンド '%s' を報告しましたが、'%s' が必要です",
+  "zh-CN": "该引擎报告的后端为“%s”，应为“%s”",
+  "zh-TW": "該引擎回報的後端為「%s」，應為「%s」",
+  "es": "el motor informa del backend '%s', pero se esperaba '%s'",
+  "ko": "엔진이 백엔드 '%s'을(를) 보고했습니다('%s' 필요)"
+ },
+ "the engine set by --nanum-ai-dll": {
+  "en": "the engine set by --nanum-ai-dll",
+  "ja": "--nanum-ai-dll で指定されたエンジン",
+  "zh-CN": "通过 --nanum-ai-dll 指定的引擎",
+  "zh-TW": "透過 --nanum-ai-dll 指定的引擎",
+  "es": "el motor indicado con --nanum-ai-dll",
+  "ko": "--nanum-ai-dll로 지정한 엔진"
+ },
+ "the image subtitle has no language": {
+  "ko": "이미지 자막에 언어 정보가 없습니다",
+  "en": "the image subtitle has no language",
+  "ja": "画像字幕に言語情報がありません",
+  "zh-CN": "图像字幕没有语言信息",
+  "zh-TW": "影像字幕沒有語言資訊",
+  "es": "el subtítulo de imagen no tiene idioma"
+ },
+ "the library '%s' was written by a newer version": {
+  "ko": "라이브러리 '%s'은(는) 더 최신 버전에서 작성되었습니다",
+  "en": "the library '%s' was written by a newer version",
+  "ja": "ライブラリ '%s' はより新しいバージョンで作成されました",
+  "zh-CN": "库“%s”由更新的版本创建",
+  "zh-TW": "庫「%s」由較新的版本建立",
+  "es": "la biblioteca '%s' fue creada por una versión más reciente"
+ },
+ "the media has no audio track": {
+  "ko": "미디어에 오디오 트랙이 없습니다",
+  "en": "the media has no audio track",
+  "ja": "メディアにオーディオトラックがありません",
+  "zh-CN": "媒体没有音轨",
+  "zh-TW": "媒體沒有音軌",
+  "es": "el medio no tiene pista de audio"
+ },
+ "the media has no url": {
+  "ko": "미디어에 URL이 없습니다",
+  "en": "the media has no url",
+  "ja": "メディアにURLがありません",
+  "zh-CN": "媒体没有 URL",
+  "zh-TW": "媒體沒有 URL",
+  "es": "el medio no tiene URL"
+ },
+ "the media has only one audio language": {
+  "ko": "미디어에 오디오 언어가 하나뿐입니다",
+  "en": "the media has only one audio language",
+  "ja": "メディアの音声言語が1つだけです",
+  "zh-CN": "媒体只有一种音频语言",
+  "zh-TW": "媒體只有一種音訊語言",
+  "es": "el medio solo tiene un idioma de audio"
+ },
+ "the original language is the language of the playback audio": {
+  "ko": "작품의 원어가 재생 중인 오디오의 언어와 같습니다",
+  "en": "the original language is the language of the playback audio",
+  "ja": "原語が再生中のオーディオの言語と同じです",
+  "zh-CN": "原语言与当前播放音频的语言相同",
+  "zh-TW": "原語言與目前播放音訊的語言相同",
+  "es": "el idioma original es el del audio en reproducción"
+ },
+ "the original language of the work is not known": {
+  "ko": "작품의 원어를 알 수 없습니다",
+  "en": "the original language of the work is not known",
+  "ja": "作品の原語が不明です",
+  "zh-CN": "不知道作品的原语言",
+  "zh-TW": "不知道作品的原語言",
+  "es": "se desconoce el idioma original de la obra"
+ },
+ "the pinned audio track was not found": {
+  "ko": "고정한 오디오 트랙을 찾을 수 없습니다",
+  "en": "the pinned audio track was not found",
+  "ja": "固定したオーディオトラックが見つかりません",
+  "zh-CN": "找不到已固定的音轨",
+  "zh-TW": "找不到已固定的音軌",
+  "es": "no se encontró la pista de audio fijada"
+ },
+ "the playback input is analysed first": {
+  "ko": "재생 입력을 먼저 분석합니다",
+  "en": "the playback input is analysed first",
+  "ja": "再生中の入力を先に解析します",
+  "zh-CN": "先分析播放输入",
+  "zh-TW": "先分析播放輸入",
+  "es": "primero se analiza la entrada de reproducción"
+ },
+ "the saved transcript could not be restored (%s of %s lines)": {
+  "ko": "저장된 원문 기록을 복원할 수 없습니다 (%s/%s줄)",
+  "en": "the saved transcript could not be restored (%s of %s lines)",
+  "ja": "保存された文字起こしを復元できませんでした（%s/%s行）",
+  "zh-CN": "无法还原已保存的转录文本（%s/%s 行）",
+  "zh-TW": "無法還原已儲存的逐字稿（%s/%s 行）",
+  "es": "no se pudo restaurar la transcripción guardada (%s de %s líneas)"
+ },
+ "the saved transcript is empty": {
+  "ko": "저장된 스크립트가 비어 있습니다",
+  "en": "the saved transcript is empty",
+  "ja": "保存された文字起こしが空です",
+  "zh-CN": "已保存的转录内容为空",
+  "zh-TW": "已儲存的轉錄內容為空",
+  "es": "la transcripción guardada está vacía"
+ },
+ "the subtitle file does not exist": {
+  "ko": "자막 파일이 없습니다",
+  "en": "the subtitle file does not exist",
+  "ja": "字幕ファイルが存在しません",
+  "zh-CN": "字幕文件不存在",
+  "zh-TW": "字幕檔案不存在",
+  "es": "el archivo de subtítulos no existe"
+ },
+ "the subtitle file has no text": {
+  "ko": "자막 파일에 텍스트가 없습니다",
+  "en": "the subtitle file has no text",
+  "ja": "字幕ファイルにテキストがありません",
+  "zh-CN": "字幕文件中没有文本",
+  "zh-TW": "字幕檔案中沒有文字",
+  "es": "el archivo de subtítulos no tiene texto"
+ },
+ "the subtitle file has nothing to translate": {
+  "ko": "자막 파일에 번역할 내용이 없습니다",
+  "en": "the subtitle file has nothing to translate",
+  "ja": "字幕ファイルに翻訳する内容がありません",
+  "zh-CN": "字幕文件中没有可翻译的内容",
+  "zh-TW": "字幕檔案中沒有可翻譯的內容",
+  "es": "el archivo de subtítulos no tiene nada que traducir"
+ },
+ "the subtitle file is empty or too large": {
+  "ko": "자막 파일이 비어 있거나 너무 큽니다",
+  "en": "the subtitle file is empty or too large",
+  "ja": "字幕ファイルが空か、大きすぎます",
+  "zh-CN": "字幕文件为空或过大",
+  "zh-TW": "字幕檔案是空的或太大",
+  "es": "el archivo de subtítulos está vacío o es demasiado grande"
+ },
+ "the subtitle track has no text": {
+  "ko": "자막 트랙에 텍스트가 없습니다",
+  "en": "the subtitle track has no text",
+  "ja": "字幕トラックにテキストがありません",
+  "zh-CN": "字幕轨道中没有文本",
+  "zh-TW": "字幕軌中沒有文字",
+  "es": "la pista de subtítulos no tiene texto"
+ },
+ "the text subtitle track was not found": {
+  "ko": "텍스트 자막 트랙을 찾을 수 없습니다",
+  "en": "the text subtitle track was not found",
+  "ja": "テキスト字幕トラックが見つかりません",
+  "zh-CN": "找不到文本字幕轨道",
+  "zh-TW": "找不到文字字幕軌",
+  "es": "no se encontró la pista de subtítulos de texto"
+ },
+ "the translation does not match the transcript": {
+  "ko": "번역 결과가 원문 기록과 일치하지 않습니다",
+  "en": "the translation does not match the transcript",
+  "ja": "翻訳が文字起こしと一致しません",
+  "zh-CN": "翻译结果与转录文本不一致",
+  "zh-TW": "翻譯結果與逐字稿不一致",
+  "es": "la traducción no coincide con la transcripción"
+ },
+ "the translation model did not answer": {
+  "ko": "번역 모델이 응답하지 않았습니다",
+  "en": "the translation model did not answer",
+  "ja": "翻訳モデルが応答しませんでした",
+  "zh-CN": "翻译模型没有响应",
+  "zh-TW": "翻譯模型沒有回應",
+  "es": "el modelo de traducción no respondió"
+ },
+ "translation cue insert": {
+  "ko": "번역 줄 추가",
+  "en": "translation cue insert",
+  "ja": "翻訳キューの追加",
+  "zh-CN": "添加译文条目",
+  "zh-TW": "新增譯文項目",
+  "es": "inserción de línea traducida"
+ },
+ "translation insert": {
+  "ko": "번역 추가",
+  "en": "translation insert",
+  "ja": "翻訳の追加",
+  "zh-CN": "添加译文",
+  "zh-TW": "新增譯文",
+  "es": "inserción de traducción"
+ },
+ "translation trim": {
+  "ko": "번역 정리",
+  "en": "translation trim",
+  "ja": "翻訳の整理",
+  "zh-CN": "清理译文",
+  "zh-TW": "清理譯文",
+  "es": "limpieza de traducciones"
+ },
+ "unknown error": {
+  "ko": "알 수 없는 오류",
+  "en": "unknown error",
+  "ja": "不明なエラー",
+  "zh-CN": "未知错误",
+  "zh-TW": "未知錯誤",
+  "es": "error desconocido"
+ },
+ "voice detection model": {
+  "ko": "음성 감지 모델",
+  "en": "voice detection model",
+  "ja": "音声検出モデル",
+  "zh-CN": "语音检测模型",
+  "zh-TW": "語音偵測模型",
+  "es": "modelo de detección de voz"
+ },
+ "waiting for the AI profile": {
+  "ko": "AI 프로필을 기다리는 중",
+  "en": "waiting for the AI profile",
+  "ja": "AIプロファイルを待っています",
+  "zh-CN": "正在等待 AI 作品资料",
+  "zh-TW": "正在等待 AI 作品資料",
+  "es": "esperando el perfil de IA"
+ },
+ "waiting for the language of the AI input": {
+  "ko": "AI 입력의 언어를 기다리는 중",
+  "en": "waiting for the language of the AI input",
+  "ja": "AI入力の言語を待っています",
+  "zh-CN": "正在等待 AI 输入的语言",
+  "zh-TW": "正在等待 AI 輸入的語言",
+  "es": "esperando el idioma de la entrada de IA"
+ },
+ "waiting for the media to be identified": {
+  "ko": "미디어 식별을 기다리는 중",
+  "en": "waiting for the media to be identified",
+  "ja": "メディアの識別を待っています",
+  "zh-CN": "正在等待识别媒体",
+  "zh-TW": "正在等待辨識媒體",
+  "es": "esperando a que se identifique el medio"
+ },
+ "zlib failed to start.": {
+  "ko": "zlib을 시작하지 못했습니다.",
+  "en": "zlib failed to start.",
+  "ja": "zlib を開始できませんでした。",
+  "zh-CN": "zlib 启动失败。",
+  "zh-TW": "zlib 啟動失敗。",
+  "es": "No se pudo iniciar zlib."
+ },
+ "다른 폴더 선택…\nBDMV 폴더가 있는 위치를 직접 선택합니다": {
+  "en": "Choose another folder…\nSelect the location that contains the BDMV folder yourself",
+  "ja": "別のフォルダーを選択…\nBDMVフォルダーがある場所を手動で選択します",
+  "zh-CN": "选择其他文件夹…\n手动选择包含 BDMV 文件夹的位置",
+  "zh-TW": "選取其他資料夾…\n手動選取包含 BDMV 資料夾的位置",
+  "es": "Elegir otra carpeta…\nSelecciona tú mismo la ubicación que contiene la carpeta BDMV"
+ },
+ "독일어": {
+  "en": "German",
+  "ja": "ドイツ語",
+  "zh-CN": "德语",
+  "zh-TW": "德文",
+  "es": "alemán"
+ },
+ "동영상 · 오디오 파일": {
+  "en": "Video and audio files",
+  "ja": "動画・音声ファイル",
+  "zh-CN": "视频和音频文件",
+  "zh-TW": "影片和音訊檔案",
+  "es": "Archivos de vídeo y audio"
+ },
+ "러시아어": {
+  "en": "Russian",
+  "ja": "ロシア語",
+  "zh-CN": "俄语",
+  "zh-TW": "俄文",
+  "es": "ruso"
+ },
+ "모든 파일": {
+  "en": "All files",
+  "ja": "すべてのファイル",
+  "zh-CN": "所有文件",
+  "zh-TW": "所有檔案",
+  "es": "Todos los archivos"
+ },
+ "선택한 위치에서 Blu-ray(BDMV) 폴더를 찾을 수 없습니다.\n디스크가 들어 있는 드라이브나 BDMV 폴더가 있는 폴더를 선택하세요.": {
+  "en": "No Blu-ray (BDMV) folder was found in the selected location.\nSelect the drive that holds the disc, or a folder that contains a BDMV folder.",
+  "ja": "選択した場所にBlu-ray (BDMV) フォルダーが見つかりません。\nディスクが入っているドライブ、またはBDMVフォルダーがあるフォルダーを選択してください。",
+  "zh-CN": "在所选位置找不到蓝光 (BDMV) 文件夹。\n请选择放有光盘的驱动器，或包含 BDMV 文件夹的文件夹。",
+  "zh-TW": "在所選位置找不到藍光 (BDMV) 資料夾。\n請選取放有光碟的光碟機，或包含 BDMV 資料夾的資料夾。",
+  "es": "No se encontró ninguna carpeta Blu-ray (BDMV) en la ubicación seleccionada.\nSelecciona la unidad que contiene el disco o una carpeta que contenga una carpeta BDMV."
+ },
+ "설정 폴더를 찾을 수 없습니다": {
+  "en": "The settings folder could not be found",
+  "ja": "設定フォルダーが見つかりません",
+  "zh-CN": "找不到设置文件夹",
+  "zh-TW": "找不到設定資料夾",
+  "es": "No se encontró la carpeta de ajustes"
+ },
+ "스페인어": {
+  "en": "Spanish",
+  "ja": "スペイン語",
+  "zh-CN": "西班牙语",
+  "zh-TW": "西班牙文",
+  "es": "español"
+ },
+ "알 수 없는 표시 언어입니다: %s": {
+  "en": "Unknown interface language: %s",
+  "ja": "不明な表示言語です: %s",
+  "zh-CN": "未知的界面语言：%s",
+  "zh-TW": "未知的介面語言：%s",
+  "es": "Idioma de la interfaz desconocido: %s"
+ },
+ "열기": {
+  "en": "Open",
+  "ja": "開く",
+  "zh-CN": "打开",
+  "zh-TW": "開啟",
+  "es": "Abrir"
+ },
+ "영어": {
+  "en": "English",
+  "ja": "英語",
+  "zh-CN": "英语",
+  "zh-TW": "英文",
+  "es": "inglés"
+ },
+ "음성 인식 자막과 시간 맞추는 중": {
+  "en": "Aligning the timing with the speech recognition subtitles",
+  "ja": "音声認識字幕に合わせて時間を調整中",
+  "zh-CN": "正在与语音识别字幕对齐时间",
+  "zh-TW": "正在與語音辨識字幕對齊時間",
+  "es": "Alineando los tiempos con los subtítulos de reconocimiento de voz"
+ },
+ "음성 인식 자막이 부족해 정렬하지 못했습니다: 시간 이동 0초 유지": {
+  "en": "Not enough speech recognition subtitles to align: time shift kept at 0 s",
+  "ja": "音声認識字幕が足りず位置合わせできませんでした: 時間シフトは0秒のままです",
+  "zh-CN": "语音识别字幕不足，无法对齐：时间偏移保持为 0 秒",
+  "zh-TW": "語音辨識字幕不足，無法對齊：時間位移維持為 0 秒",
+  "es": "No hay suficientes subtítulos de reconocimiento de voz para alinear: se mantiene el desfase de 0 s"
+ },
+ "이탈리아어": {
+  "en": "Italian",
+  "ja": "イタリア語",
+  "zh-CN": "意大利语",
+  "zh-TW": "義大利文",
+  "es": "italiano"
+ },
+ "일본어": {
+  "en": "Japanese",
+  "ja": "日本語",
+  "zh-CN": "日语",
+  "zh-TW": "日文",
+  "es": "japonés"
+ },
+ "자막을 읽는 중": {
+  "en": "Reading the subtitles",
+  "ja": "字幕を読み込み中",
+  "zh-CN": "正在读取字幕",
+  "zh-TW": "正在讀取字幕",
+  "es": "Leyendo los subtítulos"
+ },
+ "재생": {
+  "en": "Play",
+  "ja": "再生",
+  "zh-CN": "播放",
+  "zh-TW": "播放",
+  "es": "Reproducir"
+ },
+ "재생 목록": {
+  "en": "Playlists",
+  "ja": "プレイリスト",
+  "zh-CN": "播放列表",
+  "zh-TW": "播放清單",
+  "es": "Listas de reproducción"
+ },
+ "재생할 Blu-ray를 선택하세요": {
+  "en": "Choose the Blu-ray to play",
+  "ja": "再生するBlu-rayを選択してください",
+  "zh-CN": "请选择要播放的蓝光光盘",
+  "zh-TW": "請選取要播放的藍光光碟",
+  "es": "Elige el Blu-ray que quieres reproducir"
+ },
+ "정렬 신뢰도가 낮습니다": {
+  "en": "Alignment confidence is low",
+  "ja": "位置合わせの信頼度が低いです",
+  "zh-CN": "对齐置信度较低",
+  "zh-TW": "對齊信賴度偏低",
+  "es": "La confianza de la alineación es baja"
+ },
+ "정렬 신뢰도가 낮습니다 (%s%%)": {
+  "en": "Alignment confidence is low (%s%%)",
+  "ja": "位置合わせの信頼度が低いです（%s%%）",
+  "zh-CN": "对齐置信度较低（%s%%）",
+  "zh-TW": "對齊信賴度偏低（%s%%）",
+  "es": "La confianza de la alineación es baja (%s%%)"
+ },
+ "정렬 신뢰도가 낮아 시간 이동 0초를 유지합니다": {
+  "en": "Alignment confidence is low, so the time shift stays at 0 s",
+  "ja": "位置合わせの信頼度が低いため、時間シフトは0秒のままです",
+  "zh-CN": "对齐置信度较低，时间偏移保持为 0 秒",
+  "zh-TW": "對齊信賴度偏低，時間位移維持為 0 秒",
+  "es": "La confianza de la alineación es baja, así que se mantiene el desfase de 0 s"
+ },
+ "중국어": {
+  "en": "Chinese",
+  "ja": "中国語",
+  "zh-CN": "中文",
+  "zh-TW": "中文",
+  "es": "chino"
+ },
+ "파일": {
+  "en": "file",
+  "ja": "ファイル",
+  "zh-CN": "文件",
+  "zh-TW": "檔案",
+  "es": "archivo"
+ },
+ "파일 열기": {
+  "en": "Open files",
+  "ja": "ファイルを開く",
+  "zh-CN": "打开文件",
+  "zh-TW": "開啟檔案",
+  "es": "Abrir archivos"
+ },
+ "포르투갈어": {
+  "en": "Portuguese",
+  "ja": "ポルトガル語",
+  "zh-CN": "葡萄牙语",
+  "zh-TW": "葡萄牙文",
+  "es": "portugués"
+ },
+ "표시 언어를 저장하지 못했습니다: %s": {
+  "en": "Could not save the interface language: %s",
+  "ja": "表示言語を保存できませんでした: %s",
+  "zh-CN": "无法保存界面语言：%s",
+  "zh-TW": "無法儲存介面語言：%s",
+  "es": "No se pudo guardar el idioma de la interfaz: %s"
+ },
+ "프랑스어": {
+  "en": "French",
+  "ja": "フランス語",
+  "zh-CN": "法语",
+  "zh-TW": "法文",
+  "es": "francés"
+ },
+ "한국어": {
+  "en": "Korean",
+  "ja": "韓国語",
+  "zh-CN": "韩语",
+  "zh-TW": "韓文",
+  "es": "coreano"
+ }
+}

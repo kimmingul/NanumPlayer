@@ -1,8 +1,9 @@
 -- NanumPlayer Fluent chrome: start screen, playback toolbar, toasts.
 --
 -- Draws a Windows 11 style dark UI on one ASS overlay (no mpv OSC):
---   * idle: heading, "파일 열기" / "Blu-ray 열기" cards, "YouTube" / "AI 자막 설정" pills,
---   * playback: auto-hiding header (title + AI status) and rounded bottom panel
+--   * idle: heading, "파일 열기" / "Blu-ray 열기" cards, "YouTube" / "웹페이지에서 재생하기" / "AI 자막 설정" pills,
+--     app version and language switch in the corners,
+--   * playback: auto-hiding header (title, app version, AI status) and rounded bottom panel
 --     (timeline with drag + preview, play, +-10 s, volume, open file / disc,
 --     audio / subtitle track lists, AI settings, fullscreen),
 --   * toasts that replace the stock OSD text.
@@ -17,7 +18,9 @@
 --   click <element id>       activate a toolbar/start screen element (test driver)
 --   dump-layout              log element rectangles (window pixels)
 -- The element rectangles (window pixels, same space as mouse-pos) are also
--- published in the user-data/fluent/layout property.
+-- published in the user-data/fluent/layout property, with the UI language and the app version rectangle.
+-- All built-in labels come from locales/fluent.json through scripts/nanum-i18n.lua; the start screen shows the app
+-- version (top left) and a language switch (top right, element "lang": script-binding nanum-language, Ctrl+Alt+L).
 
 local mp = require 'mp'
 
@@ -46,6 +49,7 @@ if not F then
     return
 end
 local C = F.C
+local tr = F.tr
 local I = F.icons
 local clamp, in_rect, fit, text_w = F.clamp, F.in_rect, F.fit, F.text_w
 local floor, ceil, min, max = math.floor, math.ceil, math.min, math.max
@@ -130,25 +134,29 @@ local CODEC = {
     webvtt = "WebVTT", dvd_subtitle = "VobSub", mov_text = "MOV", text = "TXT",
 }
 
+-- Display name of a language code in the UI language, plus its Korean source name (the key / AI track naming).
 local function lang_name(l)
     if type(l) ~= "string" or l == "" then return nil end
     local k = l:lower():match("^([^%-_]+)") or l:lower()
-    return LANG_KO[k] or l:upper()
+    local src = LANG_KO[k]
+    if src then return tr(src), src end
+    return l:upper()
 end
 
 local function channel_name(n)
-    if n == 1 then return "모노" elseif n == 2 then return "스테레오" elseif n == 6 then return "5.1"
-    elseif n == 8 then return "7.1" elseif n then return n .. "채널" end
+    if n == 1 then return tr("모노") elseif n == 2 then return tr("스테레오") elseif n == 6 then return "5.1"
+    elseif n == 8 then return "7.1" elseif n then return tr("%d채널", n) end
     return nil
 end
 
 local function track_label(t)
     -- the AI tracks are titled "한국어 (영어 음성 기반)": no second "한국어" in front of that
-    local lang = lang_name(t.lang)
+    local lang, lang_src = lang_name(t.lang)
     local title = (t.title and t.title ~= "") and t.title or nil
     local parts = {}
-    if not (lang and title and title:sub(1, #lang) == lang) then
-        parts[1] = lang or (t.external and "외부" or "알 수 없음")
+    local function titled(name) return name and title and title:sub(1, #name) == name end
+    if not (lang and title and (titled(lang) or titled(lang_src))) then
+        parts[1] = lang or (t.external and tr("외부") or tr("알 수 없음"))
     end
     if title then parts[#parts + 1] = title end
     local codec = t.codec and (CODEC[t.codec:lower()] or t.codec:upper()) or nil
@@ -159,8 +167,8 @@ local function track_label(t)
     elseif codec then
         parts[#parts + 1] = codec
     end
-    if t.forced then parts[#parts + 1] = "강제" end
-    if t.external and lang_name(t.lang) then parts[#parts + 1] = "외부" end
+    if t.forced then parts[#parts + 1] = tr("강제") end
+    if t.external and lang_name(t.lang) then parts[#parts + 1] = tr("외부") end
     return table.concat(parts, " · ")
 end
 
@@ -209,13 +217,14 @@ end
 local function run(...)
     local ok, err = mp.commandv(...)
     if not ok then
-        add_toast("실행하지 못했습니다: " .. tostring((...)) .. (err and (" (" .. tostring(err) .. ")") or ""), 5, "error")
+        add_toast(tr("실행하지 못했습니다: %s", tostring((...))) .. (err and (" (" .. tostring(err) .. ")") or ""), 5, "error")
     end
     return ok
 end
 
 local function open_file() run("nanum-open-file") end
 local function open_youtube() run("script-binding", "nanum-youtube") end
+local function open_web() run("script-binding", "nanum-web") end
 local function open_disc() run("nanum-open-disc") end
 local function open_ai() run("script-binding", "nanum-settings") end
 
@@ -233,7 +242,7 @@ local function track_menu(kind, anchor)
         if type(src) == "number" and src >= 0 and (state == "off" or state == "unavailable") then hidden[src] = true end
     end
     if kind == "sub" then
-        items[1], values[1] = "자막 끄기", "no"
+        items[1], values[1] = tr("자막 끄기"), "no"
     end
     for _, t in ipairs(tracks) do
         if t.type == kind and not (kind == "sub" and not t.external and not t.selected and hidden[t["src-id"]]) then
@@ -243,23 +252,23 @@ local function track_menu(kind, anchor)
         end
     end
     if kind == "audio" and #values == 0 then
-        add_toast("재생할 음성 트랙이 없습니다", 3, "warn")
+        add_toast(tr("재생할 음성 트랙이 없습니다"), 3, "warn")
         return
     end
     if kind == "sub" then
         if #values == 1 then
-            add_toast("이 영상에는 자막 트랙이 없습니다 (AI 자막은 준비되면 표시됩니다)", 4, "warn")
+            add_toast(tr("이 영상에는 자막 트랙이 없습니다 (AI 자막은 준비되면 표시됩니다)"), 4, "warn")
             return
         end
         items[1] = (any_sel and "  " or "● ") .. items[1]
         if not any_sel then def = 1 end
         -- how the AI subtitles are shown (translation / translation + source / source)
         local mode = mp.get_property("options/nanum-display")
-        items[#items + 1] = "  자막 표시 방식: " .. (DISPLAY_NAME[mode] or "번역만") .. " …"
+        items[#items + 1] = "  " .. tr("자막 표시 방식: %s", tr(DISPLAY_NAME[mode] or "번역만")) .. " …"
         values[#values + 1] = "display"
     end
     F.select({
-        prompt = kind == "audio" and "음성 트랙" or "자막 트랙",
+        prompt = kind == "audio" and tr("음성 트랙") or tr("자막 트랙"),
         items = items,
         default_item = def,
         anchor = anchor,
@@ -316,8 +325,12 @@ local function activate(id)
         if tg and tg.action then run("script-binding", tg.action) end
     elseif id == "card_yt" then
         open_youtube()
+    elseif id == "card_web" then
+        open_web()
     elseif id == "ai" or id == "chip" or id == "card_ai" then
         open_ai()
+    elseif id == "lang" then
+        run("script-binding", "nanum-language")
     elseif id == "fs" then
         mp.commandv("cycle", "fullscreen")
     end
@@ -377,58 +390,99 @@ local function layout_play(m)
         L.ntags = #ws
     end
 
-    local show_slider, show_open, show_labels = pw >= 760, pw >= 620, pw >= 500
     local cy2 = py + 80
+    local labels = { ai = "AI", sub = tr("자막"), audio = tr("음성") }
+    local pill_ids = { "ai", "sub", "audio" }
+    -- Everything below shares one row: take the richest variant that fits (volume slider, open buttons,
+    -- pill labels, 10 s buttons), so longer English / Spanish labels never overlap.
+    local function row_width(v)
+        local left = 22 + 46 + (v.skip and (8 + 38 + 38) or 0) + 10 + 38 + (v.slider and 96 or 0)
+        local right = 22 + 38 + 14 + 3 * 6 + (v.open and (8 + 38 + 6 + 38) or 0)
+        for _, id in ipairs(pill_ids) do right = right + pill_w(labels[id], v.labels) end
+        return left + right + 12
+    end
+    local variants = {
+        { slider = true, open = true, labels = true, skip = true },
+        { open = true, labels = true, skip = true },
+        { labels = true, skip = true },
+        { skip = true },
+        {},
+    }
+    local v = variants[#variants]
+    for _, cand in ipairs(variants) do
+        if row_width(cand) <= pw then v = cand break end
+    end
+    local show_labels = v.labels == true
     local x = px + 22
-    add_el(L, "play", x, cy2 - 23, 46, 46, "재생 / 일시정지 (Space)")
-    x = x + 46 + 8
-    add_el(L, "back", x, cy2 - 19, 38, 38, "10초 뒤로")
+    add_el(L, "play", x, cy2 - 23, 46, 46, tr("재생 / 일시정지") .. " (Space)")
+    if v.skip then
+        x = x + 46 + 8
+        add_el(L, "back", x, cy2 - 19, 38, 38, tr("10초 뒤로"))
+        x = x + 38
+        add_el(L, "fwd", x, cy2 - 19, 38, 38, tr("10초 앞으로"))
+        x = x + 38 + 10
+    else
+        x = x + 46 + 10
+    end
+    add_el(L, "mute", x, cy2 - 19, 38, 38, tr("음소거") .. " (M)")
     x = x + 38
-    add_el(L, "fwd", x, cy2 - 19, 38, 38, "10초 앞으로")
-    x = x + 38 + 10
-    add_el(L, "mute", x, cy2 - 19, 38, 38, "음소거 (M)")
-    x = x + 38
-    if show_slider then
+    if v.slider then
         L.vol = { x0 = x + 6, x1 = x + 6 + 84, cy = cy2 }
-        add_el(L, "vol", x, cy2 - 14, 96, 28, "볼륨", { kind = "slider" })
+        add_el(L, "vol", x, cy2 - 14, 96, 28, tr("볼륨"), { kind = "slider" })
     end
 
     local rx = px + pw - 22
     rx = rx - 38
-    add_el(L, "fs", rx, cy2 - 19, 38, 38, "전체 화면 (F)")
+    add_el(L, "fs", rx, cy2 - 19, 38, 38, tr("전체 화면") .. " (F)")
     rx = rx - 14
-    local function pill(id, label, tip)
-        local w = pill_w(label, show_labels)
+    local function pill(id, tip)
+        local w = pill_w(labels[id], show_labels)
         rx = rx - w
-        add_el(L, id, rx, cy2 - 19, w, 38, tip, { label = label, pill = true })
+        add_el(L, id, rx, cy2 - 19, w, 38, tip, { label = labels[id], pill = true })
         rx = rx - 6
     end
-    pill("ai", "AI", "AI 자막 설정 (Ctrl+N)")
-    pill("sub", "자막", "자막 트랙" .. (S.cur_sub and (" · " .. S.cur_sub) or " · 꺼짐"))
-    pill("audio", "음성", "음성 트랙" .. (S.cur_audio and (" · " .. S.cur_audio) or ""))
-    if show_open then
+    pill("ai", tr("AI 자막 설정") .. " (Ctrl+N)")
+    pill("sub", tr("자막 트랙") .. " · " .. (S.cur_sub or tr("꺼짐")))
+    pill("audio", tr("음성 트랙") .. (S.cur_audio and (" · " .. S.cur_audio) or ""))
+    if v.open then
         rx = rx - 8
         rx = rx - 38
-        add_el(L, "disc", rx, cy2 - 19, 38, 38, "Blu-ray 열기 (Ctrl+D)")
+        add_el(L, "disc", rx, cy2 - 19, 38, 38, tr("Blu-ray 열기") .. " (Ctrl+D)")
         rx = rx - 6 - 38
-        add_el(L, "open", rx, cy2 - 19, 38, 38, "파일 열기 (Ctrl+O)")
+        add_el(L, "open", rx, cy2 - 19, 38, 38, tr("파일 열기") .. " (Ctrl+O)")
     end
 
-    -- status chip in the header
-    if S.status then
-        local cw = clamp(text_w(S.status.text, 12.5) + 56, 80, pw * 0.5)
-        add_el(L, "chip", L.header.x + L.header.w - 12 - cw, L.header.y + 8, cw, 30,
-            S.status.action == "models" and "AI 구성 요소 관리 열기" or "AI 자막 설정 열기", { kind = "chip" })
+    -- header, right to left: app version, then the AI status chip (the title keeps what is left)
+    local hd = L.header
+    local vt, vw
+    if S.app_version ~= "" then
+        vt = (pw >= 560 and "NanumPlayer " or "v") .. S.app_version
+        vw = ceil(text_w(vt, 12.5))
     end
+    local right = hd.x + hd.w - 16
+    if vt then
+        L.ver = { text = vt, x = right - vw, y = hd.y, w = vw, h = hd.h }
+        right = L.ver.x - 14
+    end
+    if S.status then
+        local cw = clamp(text_w(S.status.text, 12.5) + 56, 80, pw * (vt and 0.4 or 0.5))
+        add_el(L, "chip", right - cw + (vt and 0 or 4), hd.y + 8, cw, 30,
+            S.status.action == "models" and tr("AI 구성 요소 관리 열기") or tr("AI 자막 설정 열기"), { kind = "chip" })
+        right = right - cw - 12
+    end
+    L.title_right = right
     return L
 end
+
+-- Language names in their own language: readable whatever the UI language is.
+local LANG_NATIVE = { ko = "한국어", en = "English", ja = "日本語", ["zh-CN"] = "简体中文", ["zh-TW"] = "繁體中文", es = "Español" }
 
 local function layout_idle(m)
     local W, H = m.W, m.H
     local L = { els = {}, byid = {}, W = W, H = H, kind = "idle" }
     local f = clamp(min(W / 760, H / 560), 0.6, 1.0)
     L.f = f
-    local total = (84 + 20 + 44 + 8 + 24 + 40 + 124 + 22 + 44) * f
+    local total = (84 + 20 + 44 + 8 + 24 + 40 + 124 + 22 + 44 + 14 + 44) * f
     local y0 = max(16, floor((H - total) / 2 - 10))
     L.logo = { cx = W / 2, cy = y0 + 42 * f, s = 84 * f }
     L.title_y = y0 + (84 + 20 + 22) * f
@@ -438,11 +492,23 @@ local function layout_idle(m)
     local cy = y0 + (84 + 20 + 44 + 8 + 24 + 40) * f
     add_el(L, "card_file", cx0, cy, cw, ch, nil, { kind = "card" })
     add_el(L, "card_disc", cx0 + cw + gap, cy, cw, ch, nil, { kind = "card" })
-    local aw, agap = 250 * f, 20 * f
+    local aw, agap = 310 * f, 20 * f
     local ax = floor((W - (2 * aw + agap)) / 2)
-    add_el(L, "card_yt", ax, cy + ch + 22 * f, aw, 44 * f, nil, { kind = "card" })
-    add_el(L, "card_ai", ax + aw + agap, cy + ch + 22 * f, aw, 44 * f, nil, { kind = "card" })
-    L.ver_y = cy + ch + 22 * f + 44 * f + 22 * f
+    local ay = cy + ch + 22 * f
+    add_el(L, "card_yt", ax, ay, aw, 44 * f, nil, { kind = "card" })
+    add_el(L, "card_web", ax + aw + agap, ay, aw, 44 * f, nil, { kind = "card" })
+    add_el(L, "card_ai", floor((W - aw) / 2), ay + 58 * f, aw, 44 * f, nil, { kind = "card" })
+    -- Fixed-size corner controls (never scaled down with f, so they stay readable in small windows):
+    -- the app version at the top left, the language switch at the top right.
+    if S.app_version ~= "" then
+        local vt = "NanumPlayer " .. S.app_version
+        L.ver = { text = vt, x = 12, y = 12, w = ceil(text_w(vt, 13)) + 24, h = 28 }
+    end
+    local code = F.i18n.language()
+    local name = LANG_NATIVE[code] or code
+    local lw = ceil(text_w(name, 13)) + 14 + 18 + 8 + 14
+    if L.ver and 12 + L.ver.w + 12 + lw + 12 > W then lw, name = 38, nil end
+    add_el(L, "lang", W - 12 - lw, 12, lw, 28, nil, { kind = "chip", label = name, code = code })
     return L
 end
 
@@ -470,9 +536,11 @@ local function draw_idle(A, L)
     glow(A, W, H)
     I.logo(A, L.logo.cx, L.logo.cy, L.logo.s)
     A:text(W / 2, L.title_y, "Nanum Player", { size = 34 * f, bold = true, color = C.text, an = 5 })
-    A:text(W / 2, L.sub_y, "AI 한국어 자막과 함께 즐기는 미디어 플레이어",
-        { size = 15 * f, color = C.text2, an = 5 })
+    local tagline_size = max(12, 15 * f)
+    A:text(W / 2, L.sub_y, fit(tr("AI 한국어 자막과 함께 즐기는 미디어 플레이어"), tagline_size, W - 32),
+        { size = tagline_size, color = C.text2, an = 5 })
 
+    -- text sizes have floors so small windows stay readable; long labels are fitted, shortcut hints give way first
     local function card(el, icon, title, desc, key)
         local hot, down = S.hover == el.id, S.pressed == el.id
         A:shadow(el.x, el.y, el.w, el.h, 14 * f, 0.45)
@@ -484,15 +552,17 @@ local function draw_idle(A, L)
         local icx, icy = el.x + 24 * f + ic / 2, el.y + 16 * f + ic / 2
         A:circle(icx, icy, ic / 2, { fill = C.accent, fa = hot and 0.28 or 0.16 })
         icon(A, icx, icy, 26 * f, C.accent, 1)
-        A:text(el.x + 24 * f, el.y + el.h - 44 * f, title, { size = 18 * f, bold = true, color = C.text })
-        A:text(el.x + 24 * f, el.y + el.h - 20 * f, fit(desc, 13 * f, el.w - 48 * f),
-            { size = 13 * f, color = C.text2 })
-        local kw = text_w(key, 11.5 * f) + 18 * f
-        A:rrect(el.x + el.w - 16 * f - kw, el.y + 16 * f, kw, 22 * f, 6 * f, { fill = C.white, fa = 0.08 })
-        A:text(el.x + el.w - 16 * f - kw / 2, el.y + 27 * f, key, { size = 11.5 * f, color = C.text3, an = 5 })
+        local ts, ds, ks = max(14, 18 * f), max(11, 13 * f), max(10, 11.5 * f)
+        local tx = el.x + 20 * f
+        A:text(tx, el.y + el.h - 44 * f, fit(title, ts, el.w - 40 * f), { size = ts, bold = true, color = C.text })
+        A:text(tx, el.y + el.h - 20 * f, fit(desc, ds, el.w - 40 * f), { size = ds, color = C.text2 })
+        local kw = text_w(key, ks) + 18 * f
+        A:rrect(el.x + el.w - 16 * f - kw, el.y + 16 * f, kw, max(20, 22 * f), 6 * f, { fill = C.white, fa = 0.08 })
+        A:text(el.x + el.w - 16 * f - kw / 2, el.y + 16 * f + max(20, 22 * f) / 2, key,
+            { size = ks, color = C.text3, an = 5 })
     end
-    card(L.byid.card_file, I.folder, "파일 열기", "동영상·음악 파일을 선택해 재생합니다", "Ctrl+O")
-    card(L.byid.card_disc, I.disc, "Blu-ray 열기", "디스크 드라이브의 영화를 바로 재생합니다", "Ctrl+D")
+    card(L.byid.card_file, I.folder, tr("파일 열기"), tr("동영상·음악 파일 재생"), "Ctrl+O")
+    card(L.byid.card_disc, I.disc, tr("Blu-ray 열기"), tr("디스크의 영화 바로 재생"), "Ctrl+D")
 
     local function pill(el, icon, label, key)
         local hot, down = S.hover == el.id, S.pressed == el.id
@@ -501,19 +571,47 @@ local function draw_idle(A, L)
             stroke = hot and C.accent or C.white, sa = hot and 0.9 or 0.1, sw = 1.2,
         })
         icon(A, el.x + 30 * f, el.y + el.h / 2, 22 * f, C.accent, 1)
-        A:text(el.x + 54 * f, el.y + el.h / 2, label, { size = 14.5 * f, color = C.text })
-        A:text(el.x + el.w - 22 * f, el.y + el.h / 2, key, { size = 12 * f, color = C.text3, an = 6 })
+        local ls, ks = max(12.5, 14.5 * f), max(10.5, 12 * f)
+        local lx = el.x + 54 * f
+        local right = el.x + el.w - 16 * f
+        local lw, kw = text_w(label, ls), text_w(key, ks)
+        if lx + lw + 12 + kw <= right then
+            A:text(right, el.y + el.h / 2, key, { size = ks, color = C.text3, an = 6 })
+            A:text(lx, el.y + el.h / 2, label, { size = ls, color = C.text })
+        else
+            A:text(lx, el.y + el.h / 2, fit(label, ls, right - lx), { size = ls, color = C.text })
+        end
     end
     pill(L.byid.card_yt, I.youtube, "YouTube", "Ctrl+Y")
-    pill(L.byid.card_ai, I.sparkle, "AI 자막 설정", "Ctrl+N")
-    if S.app_version ~= "" and L.ver_y + 10 < H - 52 * f - 12 * f then
-        A:text(W / 2, L.ver_y, "NanumPlayer " .. S.app_version, { size = 12 * f, color = C.text3, an = 5, a = 0.9 })
+    pill(L.byid.card_web, I.globe, tr("웹페이지에서 재생하기"), "Ctrl+Shift+Y")
+    pill(L.byid.card_ai, I.sparkle, tr("AI 자막 설정"), "Ctrl+N")
+
+    -- corner controls: app version (top left) and language switch (top right), fixed size
+    local ver = L.ver
+    if ver then
+        A:rrect(ver.x, ver.y, ver.w, ver.h, ver.h / 2, { fill = C.white, fa = 0.07, stroke = C.white, sa = 0.1, sw = 1 })
+        A:text(ver.x + ver.w / 2, ver.y + ver.h / 2, ver.text, { size = 13, color = C.text2, an = 5 })
+    end
+    local lang = L.byid.lang
+    local lhot, ldown = S.hover == "lang", S.pressed == "lang"
+    A:rrect(lang.x, lang.y, lang.w, lang.h, lang.h / 2, {
+        fill = ldown and C.bg or (lhot and C.card2 or C.card), fa = 0.92,
+        stroke = lhot and C.accent or C.white, sa = lhot and 0.9 or 0.12, sw = 1.2,
+    })
+    if lang.label then
+        I.globe(A, lang.x + 23, lang.y + lang.h / 2, 17, C.accent, 1)
+        A:text(lang.x + 40, lang.y + lang.h / 2, lang.label,
+            { size = 13, color = C.text, font_cjk = F.cjk_font(lang.code) })
+    else
+        I.globe(A, lang.x + lang.w / 2, lang.y + lang.h / 2, 17, C.accent, 1)
     end
 
-    A:text(W / 2, H - 52 * f, "파일이나 Blu-ray 폴더를 이 창으로 끌어다 놓아도 재생됩니다",
-        { size = 13 * f, color = C.text3, an = 5 })
-    A:text(W / 2, H - 28 * f, "Space 재생·일시정지   F 전체 화면   Ctrl+N AI 자막 설정",
-        { size = 12 * f, color = C.text3, an = 5, a = 0.8 })
+    if L.byid.card_ai.y + L.byid.card_ai.h < H - 72 then
+        A:text(W / 2, H - 50, fit(tr("파일이나 Blu-ray 폴더를 이 창으로 끌어다 놓아도 재생됩니다"), 13, W - 32),
+            { size = 13, color = C.text3, an = 5 })
+        A:text(W / 2, H - 28, fit(tr("Space 재생·일시정지   F 전체 화면   Ctrl+N AI 자막 설정   Ctrl+Alt+L 언어"), 12, W - 32),
+            { size = 12, color = C.text3, an = 5, a = 0.8 })
+    end
 end
 
 local function title_text()
@@ -522,7 +620,7 @@ local function title_text()
     local lp = p:lower()
     if lp:find("^bd://") or lp:find("bdmv") or lp:find("^bluray://") then
         if mt and mt ~= "" and not mt:find("^%a+://") then return mt end
-        return "Blu-ray 디스크"
+        return tr("Blu-ray 디스크")
     end
     if mt and mt ~= "" and not mt:find("^%a+://") then return mt end
     local base = p:match("([^/\\]+)[/\\]*$")
@@ -597,7 +695,7 @@ local function draw_play(A, L, m)
         glow(A, W, H)
         I.logo(A, W / 2, H / 2 - 40, 84)
         A:text(W / 2, H / 2 + 36, fit(title_text(), 22, W - 80), { size = 22, bold = true, color = C.text, an = 5 })
-        A:text(W / 2, H / 2 + 66, "오디오 재생 중", { size = 14, color = C.text2, an = 5 })
+        A:text(W / 2, H / 2 + 66, fit(tr("오디오 재생 중"), 14, W - 80), { size = 14, color = C.text2, an = 5 })
     end
 
     if not S.loaded then
@@ -607,18 +705,19 @@ local function draw_play(A, L, m)
         A:shadow(x, y, w, h, 14, 0.5)
         A:rrect(x, y, w, h, 14, { fill = C.card, fa = 0.97, stroke = C.white, sa = 0.12, sw = 1 })
         local dots = floor(now() * 3) % 4
-        A:text(x + 28, y + 36, "불러오는 중" .. string.rep(".", dots), { size = 19, bold = true, color = C.text })
+        A:text(x + 28, y + 36, tr("불러오는 중") .. string.rep(".", dots), { size = 19, bold = true, color = C.text })
         A:text(x + 28, y + 68, fit(title_text(), 13, w - 56), { size = 13, color = C.text2 })
         local p = (mp.get_property("path") or ""):lower()
         if p:find("bd://") or p:find("bdmv") then
-            A:text(x + 28, y + 90, "Blu-ray는 디스크 인증 때문에 시간이 걸릴 수 있습니다", { size = 11.5, color = C.text3 })
+            A:text(x + 28, y + 90, fit(tr("Blu-ray는 디스크 인증 때문에 시간이 걸릴 수 있습니다"), 11.5, w - 56), { size = 11.5, color = C.text3 })
         end
     elseif mp.get_property_bool("paused-for-cache") or mp.get_property_bool("seeking") then
-        local w, h = 150, 40
+        local label = tr("버퍼링 중")
+        local w, h = ceil(text_w(label .. "...", 13.5)) + 48, 40
         local x, y = floor((W - w) / 2), floor(H * 0.2)
         A:rrect(x, y, w, h, 20, { fill = C.card, fa = 0.92, stroke = C.white, sa = 0.12, sw = 1 })
         local dots = floor(now() * 3) % 4
-        A:text(x + 24, y + h / 2, "버퍼링 중" .. string.rep(".", dots), { size = 13.5, color = C.text })
+        A:text(x + 24, y + h / 2, label .. string.rep(".", dots), { size = 13.5, color = C.text })
     end
 
     local g = S.vis
@@ -628,9 +727,13 @@ local function draw_play(A, L, m)
         TA:shadow(hd.x, hd.y, hd.w, hd.h, 12, 0.35)
         TA:rrect(hd.x, hd.y, hd.w, hd.h, 12, { fill = C.card, fa = 0.88, stroke = C.white, sa = 0.1, sw = 1 })
         local chip = L.byid.chip
-        local tw = hd.w - 36 - (chip and chip.w + 16 or 0)
+        local title_x = hd.x + 30
         TA:rrect(hd.x + 16, hd.y + hd.h / 2 - 8, 3, 16, 1.5, { fill = C.accent, fa = 1 })
-        TA:text(hd.x + 30, hd.y + hd.h / 2, fit(title_text(), 15, tw - 14), { size = 15, bold = true, color = C.text })
+        TA:text(title_x, hd.y + hd.h / 2, fit(title_text(), 15, max(40, L.title_right - title_x)),
+            { size = 15, bold = true, color = C.text })
+        if L.ver then
+            TA:text(L.ver.x + L.ver.w, hd.y + hd.h / 2, L.ver.text, { size = 12.5, color = C.text2, an = 6 })
+        end
         if chip then draw_status_chip(TA, chip) end
 
         -- panel
@@ -689,10 +792,10 @@ local function draw_play(A, L, m)
                 TA:rrect(sk.x0 + a * len, cy + th / 2 + 2, (b - a) * len, 2, 1, { fill = C.ok, fa = 0.9 })
             end
         end
-        local tr = seek_hot and 8 or 6
-        TA:circle(px, cy, tr + 2, { fill = C.black, fa = 0.25, blur = 2 })
-        TA:circle(px, cy, tr, { fill = C.white, fa = 1 })
-        TA:circle(px, cy, tr * 0.5, { fill = C.accent, fa = 1 })
+        local knob = seek_hot and 8 or 6
+        TA:circle(px, cy, knob + 2, { fill = C.black, fa = 0.25, blur = 2 })
+        TA:circle(px, cy, knob, { fill = C.white, fa = 1 })
+        TA:circle(px, cy, knob * 0.5, { fill = C.accent, fa = 1 })
 
         -- hover / drag preview
         if S.mouse and dur and dur > 0 and (hot == "seek" or dragging) then
@@ -703,7 +806,7 @@ local function draw_play(A, L, m)
             if chs and #chs > 1 then
                 local idx
                 for i, c in ipairs(chs) do if c.time <= t + 0.01 then idx = i end end
-                if idx then label = label .. "  ·  챕터 " .. idx end
+                if idx then label = label .. "  ·  " .. tr("챕터 %d", idx) end
             end
             local bw = text_w(label, 12.5) + 22
             local bx = clamp(sk.x0 + f2 * len - bw / 2, pnl.x + 8, pnl.x + pnl.w - bw - 8)
@@ -787,7 +890,7 @@ end
 -- Mouse sections (clicks + blocking window drag over interactive regions)
 ----------------------------------------------------------------------------
 
-local SECTIONS = { "nfui_a", "nfui_b", "nfui_c" }
+local SECTIONS = { "nfui_a", "nfui_b", "nfui_c", "nfui_d", "nfui_e", "nfui_f" }
 local sec_rect = {}
 
 local function hit_element(mx, my)
@@ -902,7 +1005,7 @@ local function update_sections(L)
     if S.modal then
         rects = {}
     elseif L.kind == "idle" then
-        rects = { L.byid.card_file, L.byid.card_disc, L.byid.card_yt, L.byid.card_ai }
+        rects = { L.byid.card_file, L.byid.card_disc, L.byid.card_yt, L.byid.card_web, L.byid.card_ai, L.byid.lang }
     elseif S.vis > 0.3 or S.want then
         -- the panel slides in: accept clicks at its final position as soon as controls are wanted
         local slide = floor((1 - S.vis) * 14)
@@ -955,7 +1058,8 @@ end
 
 local function publish_layout(L, m)
     local key = L.kind .. m.pw .. "x" .. m.ph .. (S.vis >= 0.99 and "v" or "h") .. (S.status and "s" or "")
-    for _, el in ipairs(L.els) do key = key .. el.id .. floor(el.x) .. "," .. floor(el.y) end
+    for _, el in ipairs(L.els) do key = key .. el.id .. floor(el.x) .. "," .. floor(el.y) .. "," .. floor(el.w) end
+    if L.ver then key = key .. "|" .. L.ver.text .. floor(L.ver.x) end
     if key == S.layout_key then return end
     S.layout_key = key
     local els = {}
@@ -966,9 +1070,16 @@ local function publish_layout(L, m)
             cx = floor((el.x + el.w / 2) * m.kx), cy = floor((el.y + el.h / 2) * m.ky),
         }
     end
+    local version
+    if L.ver then
+        version = {
+            text = L.ver.text, x = floor(L.ver.x * m.kx), y = floor(L.ver.y * m.ky),
+            w = ceil(L.ver.w * m.kx), h = ceil(L.ver.h * m.ky),
+        }
+    end
     pcall(mp.set_property_native, "user-data/fluent/layout", {
         kind = L.kind, scale = m.k, window_w = m.pw, window_h = m.ph,
-        controls_visible = S.vis >= 0.99, elements = els,
+        controls_visible = S.vis >= 0.99, elements = els, language = F.i18n.language(), version = version,
     })
 end
 
@@ -1106,16 +1217,16 @@ mp.observe_property("volume", "number", function(_, v)
         S.first_vol = false
         return
     end
-    if v and not S.idle and S.drag ~= "vol" then add_toast(string.format("볼륨 %d%%", floor(v + 0.5)), 1.2, "info", "volume") end
+    if v and not S.idle and S.drag ~= "vol" then add_toast(tr("볼륨 %d%%", floor(v + 0.5)), 1.2, "info", "volume") end
     dirty()
 end)
 mp.observe_property("mute", "bool", function(_, v)
     if S.idle then return end
-    if v ~= nil and now() > S.quiet_until then add_toast(v and "음소거" or "음소거 해제", 1.2, "info", "volume") end
+    if v ~= nil and now() > S.quiet_until then add_toast(v and tr("음소거됨") or tr("음소거 해제"), 1.2, "info", "volume") end
 end)
 mp.observe_property("speed", "number", function(_, v)
     if v and not S.idle and now() > S.quiet_until and math.abs(v - 1) > 1e-6 then
-        add_toast(string.format("재생 속도 %.2fx", v), 1.4, "info", "speed")
+        add_toast(tr("재생 속도 %.2fx", v), 1.4, "info", "speed")
     end
 end)
 local function track_toast(kind)
@@ -1123,7 +1234,7 @@ local function track_toast(kind)
         if S.idle or not S.loaded or now() < S.quiet_until then return end
         mp.add_timeout(0.05, function()
             local label = kind == "audio" and S.cur_audio or S.cur_sub
-            add_toast((kind == "audio" and "음성: " or "자막: ") .. (label or "꺼짐"), 2, "info", kind)
+            add_toast(tr(kind == "audio" and "음성: %s" or "자막: %s", label or tr("꺼짐")), 2, "info", kind)
         end)
     end
 end
@@ -1153,7 +1264,7 @@ mp.register_event("end-file", function(ev)
         local detail = ev.file_error
         mp.add_timeout(0.4, function()
             if mp.get_property_native("user-data/nanum/error-handled") ~= true then
-                add_toast("재생하지 못했습니다" .. (detail and (": " .. detail) or ""), 8, "error")
+                add_toast(tr("재생하지 못했습니다") .. (detail and (": " .. detail) or ""), 8, "error")
             end
         end)
     end
@@ -1274,6 +1385,14 @@ mp.add_key_binding("ctrl+o", "fluent-open-file", open_file)
 mp.add_key_binding("ctrl+d", "fluent-open-disc", open_disc)
 mp.add_key_binding("ctrl+a", "fluent-audio-menu", function() if not S.idle then track_menu("audio") end end)
 mp.add_key_binding("ctrl+t", "fluent-sub-menu", function() if not S.idle then track_menu("sub") end end)
+
+-- The chrome's own labels follow the UI language (track names, tooltips, hints); caller text is shown as given.
+F.i18n.on_change(function()
+    refresh_tracks()
+    S.layout_key = nil
+    S.last_data = nil
+    dirty()
+end)
 
 -- Stock OSD (volume bar, seek bar, property text) is replaced by the toasts
 -- and the toolbar above; script messages (show-text) still appear.

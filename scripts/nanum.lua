@@ -1,7 +1,7 @@
 -- NanumPlayer control script.
 --
---  * Pre-roll: pauses at start (and after seeks) until the AI engine has
---    recognised and translated enough audio ahead of the playback position.
+--  * Pre-roll: pauses at start until the AI engine has
+--    recognised and translated enough audio ahead of the playback position. Seeks never pause.
 --  * Re-syncs after an audio track change: mpv refreshes the new track at the
 --    demuxer's read-ahead position, which leaves a long gap, so seek to the
 --    current position.
@@ -16,7 +16,6 @@
 --
 -- Load with --script=scripts/nanum.lua. Options (--script-opts=nanum-preroll=20):
 --   preroll       seconds of subtitles to have ready before playback starts (0: off)
---   seek_preroll  same, after a seek or track change (0: off)
 --   timeout       longest pre-roll wait in seconds
 --   auto_select   select the AI subtitle track made from the playback audio when it appears (yes/no)
 --   input_mode    auto | stt
@@ -38,7 +37,7 @@ local mp = require 'mp'
 local options = require 'mp.options'
 
 -- Fluent UI supplies the select/get popup API.
-local function load_fluent()
+local function load_helper(file, kind)
     local dirs = {}
     local info = debug and debug.getinfo and debug.getinfo(1, "S")
     local src = info and info.source or ""
@@ -51,15 +50,16 @@ local function load_fluent()
     local ok, ed = pcall(mp.command_native, { "expand-path", "~~exe_dir/scripts" })
     if ok and ed then dirs[#dirs + 1] = ed end
     for _, d in ipairs(dirs) do
-        local f = loadfile(d .. "/fluent-input.lua")
+        local f = loadfile(d .. "/" .. file)
         if f then
             local okf, mod = pcall(f)
-            if okf and type(mod) == "table" then return mod end
-            mp.msg.error("fluent-input.lua: " .. tostring(mod))
+            if okf and type(mod) == (kind or "table") then return mod end
+            mp.msg.error(file .. ": " .. tostring(mod))
         end
     end
     return nil
 end
+local function load_fluent() return load_helper("fluent-input.lua", "table") end
 local fluent = assert(load_fluent(), "scripts/fluent-input.lua is required")
 local input = fluent
 
@@ -89,7 +89,6 @@ local publish_status                -- defined with the status chip logic
 
 local opts = {
     preroll = 30,
-    seek_preroll = 8,
     timeout = 90,
     auto_select = true,
     input_mode = "auto",
@@ -104,7 +103,6 @@ local opts = {
     model_prompt = true,
     accel_prompt = true,
     cuda_license = false,
-    cuda_update_prompted = "",      -- app version for which the "CUDA engine update" prompt was shown
     acceleration = "auto",
     translate_style = "natural",
     translate_style_text = "",
@@ -203,10 +201,11 @@ local LANG_KO = {
     es = "스페인어", it = "이탈리아어", ru = "러시아어", pt = "포르투갈어",
 }
 
--- Korean language name of an ISO code (nil if unknown/empty).
-local function lang_ko(l)
+-- Interface-language name of an ISO code (nil if unknown/empty; the code itself if it has no name).
+local function lang_name(l)
     l = norm_lang(l)
-    return l and (LANG_KO[l] or l) or nil
+    if not l then return nil end
+    return LANG_KO[l] and input.core_tr(LANG_KO[l]) or l
 end
 
 -- mpv leaves external subtitles without a language unless the file name says
@@ -284,7 +283,7 @@ local function track_label(t)
     local parts = { tl and tl ~= "" and tl or "?" }
     if t.title and t.title ~= "" then parts[#parts + 1] = t.title end
     parts[#parts + 1] = "(" .. tostring(t.codec) .. ")"
-    if t.external then parts[#parts + 1] = "[외부]" end
+    if t.external then parts[#parts + 1] = input.core_tr("[외부]") end
     return table.concat(parts, " ")
 end
 
@@ -295,7 +294,6 @@ end
 local waiting = nil         -- active pre-roll: {timer=, deadline=}
 local we_paused = false     -- we paused playback for the pre-roll
 local resuming = false      -- ignore the pause change caused by our own resume
-local file_started = false  -- first playback-restart of the file seen
 local selected_once = false
 local last_aid = nil
 local file_loaded = false
@@ -304,7 +302,6 @@ local sel_mode = opts.input_mode    -- "auto" | "stt" | "track" (session only)
 local sel_track_id = nil
 local hint_until = nil
 local hint_shown = false
-local HINT = "Ctrl+N: AI 자막 설정"
 
 local last_full_state = nil
 local last_full_osd = 0
@@ -428,7 +425,7 @@ local function abs_pos()
 end
 
 local function hint_text()
-    if hint_until and mp.get_time() < hint_until then return HINT end
+    if hint_until and mp.get_time() < hint_until then return input.core_tr("Ctrl+N: AI 자막 설정") end
     return nil
 end
 
@@ -509,7 +506,7 @@ local function wait_for_ai(lead)
                 publish_status()
             else
                 local have = ready and math.max(0, ready - now) or 0
-                local msg = string.format("AI 자막 준비 중... %.0f / %d초", have, lead)
+                local msg = input.core_tr("AI 자막 준비 중... %.0f / %d초", have, lead)
                 local h = hint_text()
                 if h then msg = msg .. "\n" .. h end
                 mp.osd_message(msg, 1)
@@ -665,12 +662,12 @@ local function full_status_text(st)
     local s = st and st["nanum-full-state"]
     if not s or s == "off" then return nil end
     local pct = math.floor((st["nanum-full-progress"] or 0) * 100 + 0.5)
-    if s == "scanning" then return string.format("전체 번역: 원문 수집 중 %d%%", pct) end
-    if s == "translating" then return string.format("전체 번역: 번역 중 %d%%", pct) end
-    if s == "done" then return "전체 번역: 완료" end
+    if s == "scanning" then return input.core_tr("전체 번역: 원문 수집 중 %d%%", pct) end
+    if s == "translating" then return input.core_tr("전체 번역: 번역 중 %d%%", pct) end
+    if s == "done" then return input.core_tr("전체 번역: 완료") end
     if s == "error" then
         local e = st["nanum-full-error"]
-        return "전체 번역 오류" .. ((e and e ~= "") and (": " .. e) or "")
+        return input.core_tr("전체 번역 오류") .. ((e and e ~= "") and (": " .. e) or "")
     end
     return nil
 end
@@ -683,7 +680,11 @@ local function lib_key()
     return lib.sid ~= "" and lib.sid or "-"
 end
 
-local function lib_supported()
+local function lib_supported(saved)
+    if saved then
+        local privacy = mp.get_property_native("user-data/nanum/privacy")
+        if (type(privacy) == "table" and privacy.library == false) or lib.state == "disabled" then return false end
+    end
     return lib_option_ok or lib.state ~= nil
 end
 
@@ -754,7 +755,7 @@ end
 local function library_action(action, o)
     o = o or {}
     if not lib_supported() then
-        notify("이 엔진 버전은 저장 자막 라이브러리를 지원하지 않습니다 (nanum 갱신 필요)", 4, "error")
+        notify(input.core_tr("이 엔진 버전은 저장 자막 라이브러리를 지원하지 않습니다 (nanum 갱신 필요)"), 4, "error")
         return false
     end
     ai_disabled = (action == "disable")
@@ -770,11 +771,11 @@ local function library_action(action, o)
         regenerate = "음성 인식부터 새로 생성합니다 (기존 자막은 완료될 때까지 유지)",
         disable = "이 파일에서는 AI 자막을 사용하지 않습니다",
     }
-    notify(messages[action] or action, 3)
+    notify(messages[action] and input.core_tr(messages[action]) or action, 3)
     local function finish()
         lib_action_timer = nil
         if action ~= "ask" and not set_opt_soft("nanum-library-action", action) then
-            notify("저장 자막 작업을 시작하지 못했습니다 (nanum 갱신 필요)", 4, "error")
+            notify(input.core_tr("저장 자막 작업을 시작하지 못했습니다 (nanum 갱신 필요)"), 4, "error")
             return
         end
         if action == "disable" then
@@ -814,7 +815,7 @@ local LIB_STATE_TEXT = {
 
 local function lib_status_text()
     if not lib.state then return nil end
-    local s = "저장 자막: " .. (LIB_STATE_TEXT[lib.state] or lib.state)
+    local s = input.core_tr("저장 자막: %s", LIB_STATE_TEXT[lib.state] and input.core_tr(LIB_STATE_TEXT[lib.state]) or lib.state)
     if lib.summary ~= "" then s = s .. " — " .. lib.summary end
     if lib.state == "error" and lib.error ~= "" then s = s .. " (" .. lib.error .. ")" end
     return s
@@ -829,20 +830,21 @@ local function build_library_prompt()
         actions[#actions + 1] = fn
     end
     if lib.has_translation then
-        add("저장된 번역 사용", function() library_action("use") end)
-        add("저장된 번역 사용 + 이 선택 기억 (다음부터 묻지 않음)", function()
+        add(input.core_tr("저장된 번역 사용"), function() library_action("use") end)
+        add(input.core_tr("저장된 번역 사용 + 이 선택 기억 (다음부터 묻지 않음)"), function()
             set_auto_use(true)
             library_action("use")
         end)
     end
     if lib.has_source then
-        add("저장된 원문으로 다시 번역", function() library_action("retranslate", { keep_full = true }) end)
+        add(input.core_tr("저장된 원문으로 다시 번역"), function() library_action("retranslate", { keep_full = true }) end)
     end
-    add("음성 인식부터 새로 생성", function() library_action("regenerate", { keep_full = true }) end)
-    add("이 파일은 AI 자막 사용 안 함", function() library_action("disable") end)
+    add(input.core_tr("음성 인식부터 새로 생성"), function() library_action("regenerate", { keep_full = true }) end)
+    add(input.core_tr("이 파일은 AI 자막 사용 안 함"), function() library_action("disable") end)
     local chosen = false
     return {
-        prompt = "저장된 AI 자막이 있습니다" .. (lib.summary ~= "" and (" (" .. lib.summary .. ")") or "") .. ":",
+        prompt = lib.summary ~= "" and input.core_tr("저장된 AI 자막이 있습니다 (%s):", lib.summary)
+            or input.core_tr("저장된 AI 자막이 있습니다:"),
         items = items,
         default_item = 1,
         submit = function(i)
@@ -857,7 +859,7 @@ local function build_library_prompt()
             end
             deferred = nil              -- cancelled: no action
             if file_loaded then
-                notify("저장된 자막은 사용하지 않았습니다 (Ctrl+N 에서 선택 가능)", 4)
+                notify(input.core_tr("저장된 자막은 사용하지 않았습니다 (Ctrl+N 에서 선택 가능)"), 4)
             end
         end,
     }
@@ -904,13 +906,14 @@ local function build_audio_prompt()
     if not (cur and audio_src(cur) and pinned_aud) or audio_src(cur) == pinned_aud.src then return nil end
     local old = audio_by_src(tracks, pinned_aud.src) or { ["src-id"] = pinned_aud.src, lang = pinned_aud.lang }
     local chosen = false
+    local items = {
+        input.core_tr("유지 — AI 자막은 기존 입력 유지 (%s)", audio_label(old)),
+        input.core_tr("현재 음성 (%s) 으로 AI 자막 새로 생성", audio_label(cur)),
+    }
+    if lib_supported(true) then items[#items + 1] = input.core_tr("현재 음성의 저장된 AI 자막 사용 (조회)") end
     return {
-        prompt = "재생 음성이 AI 입력 음성과 다릅니다:",
-        items = {
-            "유지 — AI 자막은 기존 입력 유지 (" .. audio_label(old) .. ")",
-            "현재 음성 (" .. audio_label(cur) .. ") 으로 AI 자막 새로 생성",
-            "현재 음성의 저장된 AI 자막 사용 (조회)",
-        },
+        prompt = input.core_tr("재생 음성이 AI 입력 음성과 다릅니다:"),
+        items = items,
         default_item = 1,
         submit = function(i)
             chosen = true
@@ -978,23 +981,27 @@ local function on_library(st)
                 pump_prompts()
             end
         end
+    elseif ls == "disabled" then
+        pending_saved = nil
     elseif ls == "none" then
         local p = pending_saved
         if p and (lib.sid ~= p.old_sid or p.saw_loading) then
             pending_saved = nil
-            notify("현재 음성에 저장된 AI 자막이 없어 새로 생성합니다", 4, "warn")
+            notify(input.core_tr("현재 음성에 저장된 AI 자막이 없어 새로 생성합니다"), 4, "warn")
         end
     elseif ls == "using" then
         if prev ~= "using" then
-            notify("저장된 AI 자막 사용 중" .. (lib.summary ~= "" and (": " .. lib.summary) or ""), 3, "ok")
+            notify(lib.summary ~= "" and input.core_tr("저장된 AI 자막 사용 중: %s", lib.summary)
+                or input.core_tr("저장된 AI 자막 사용 중"), 3, "ok")
         end
     elseif ls == "error" then
         pending_saved = nil
         if lib_error_shown ~= lib.error then
             lib_error_shown = lib.error
-            local hint = lib.has_source and "\nCtrl+N → 저장된 원문으로 다시 번역"
-                or "\nCtrl+N → 저장 자막 다시 조회 / 새로 생성"
-            notify("AI 자막 라이브러리 오류" .. (lib.error ~= "" and (": " .. lib.error) or "") .. hint, 7, "error")
+            local hint = lib.has_source and input.core_tr("Ctrl+N → 저장된 원문으로 다시 번역")
+                or input.core_tr("Ctrl+N → 저장 자막 다시 조회 / 새로 생성")
+            notify((lib.error ~= "" and input.core_tr("AI 자막 라이브러리 오류: %s", lib.error)
+                or input.core_tr("AI 자막 라이브러리 오류")) .. "\n" .. hint, 7, "error")
         end
     end
 end
@@ -1018,7 +1025,7 @@ local MODEL_SHORT = { english = "영어", multilingual = "다국어", multilingu
 AIM.OPTIONAL = { multilingual_large = true }
 
 function AIM.name(id)
-    return MODEL_SHORT[id] or tostring(id or "")
+    return input.core_tr(MODEL_SHORT[id] or tostring(id or ""))
 end
 
 function AIM.fmt_size(n)
@@ -1089,7 +1096,7 @@ function AIM.needed(tracks)
     else
         lang = ai_audio_language(tracks)
     end
-    return { "vad", (lang == nil or lang == "en") and "english" or "multilingual" }
+    return { "vad", lang == "en" and "english" or "multilingual" }
 end
 
 -- nil: AI can run. "disabled": engine off. "models", ids: speech models missing.
@@ -1131,12 +1138,12 @@ function AIM.note_blocked(reason, info)
     if AIM.notified then return end
     AIM.notified = true
     if AIM.active() then
-        notify("AI 모델을 내려받는 중입니다 · 재생은 그대로 진행되며 완료 후 다음에 여는 파일부터 AI 자막이 켜집니다", 6, "busy")
+        notify(input.core_tr("AI 모델을 내려받는 중입니다 · 재생은 그대로 진행되며 완료 후 다음에 여는 파일부터 AI 자막이 켜집니다"), 6, "busy")
         return
     end
     local names = {}
     for _, id in ipairs(info or {}) do names[#names + 1] = AIM.name(id) end
-    notify("AI 모델 없음 (" .. table.concat(names, " · ") .. ") — 음성 자막 없이 재생합니다\nCtrl+N → AI 구성 요소에서 모델을 내려받을 수 있습니다", 8, "warn")
+    notify(input.core_tr("AI 모델 없음 (%s) — 음성 자막 없이 재생합니다\nCtrl+N → AI 구성 요소에서 모델을 내려받을 수 있습니다", table.concat(names, " · ")), 8, "warn")
     if opts.model_prompt and not AIM.prompted and #AIM.list() > 0 then
         AIM.prompted = true
         queue_prompt("models", AIM.build_prompt)
@@ -1155,17 +1162,18 @@ function AIM.download(which)
     if t - AIM.last_cmd < 0.7 then return false end        -- double click
     AIM.last_cmd = t
     if AIM.active() or AIM.acc_active() then
-        notify("이미 내려받는 중입니다 — 끝나거나 취소한 뒤 다시 선택하세요", 4, "warn")
+        notify(input.core_tr("이미 내려받는 중입니다 — 끝나거나 취소한 뒤 다시 선택하세요"), 4, "warn")
         return false
     end
     if not mp.commandv("nanum-download-models", which) then
-        notify(AIM.data and "내려받기를 시작하지 못했습니다 (다른 작업이 진행 중일 수 있습니다)"
-            or "이 엔진 버전은 모델 내려받기를 지원하지 않습니다 (nanum 갱신 필요)", 5, "error")
+        notify(AIM.data and input.core_tr("내려받기를 시작하지 못했습니다 (다른 작업이 진행 중일 수 있습니다)")
+            or input.core_tr("이 엔진 버전은 모델 내려받기를 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error")
         return false
     end
     AIM.toast_at = 0
-    notify(which == "all" and "AI 모델 내려받기를 시작합니다 (VAD · 영어 · 다국어)"
-        or (AIM.name(which) .. " 모델 내려받기를 시작합니다" .. (which ~= "vad" and " (VAD 포함)" or "")),
+    notify(which == "all" and input.core_tr("AI 모델 내려받기를 시작합니다 (VAD · 영어 · 다국어)")
+        or input.core_tr(which ~= "vad" and "%s 모델 내려받기를 시작합니다 (VAD 포함)" or "%s 모델 내려받기를 시작합니다",
+            AIM.name(which)),
         4, "busy", "model-dl")
     return true
 end
@@ -1173,12 +1181,12 @@ end
 function AIM.cancel()
     if AIM.active() then
         mp.commandv("nanum-cancel-model-download")
-        notify("내려받기를 취소하는 중...", 3, "busy", "model-dl")
+        notify(input.core_tr("내려받기를 취소하는 중..."), 3, "busy", "model-dl")
     elseif AIM.acc_active() then
         mp.commandv("nanum-cancel-accelerator-download")
-        notify("CUDA 구성 요소 내려받기를 취소하는 중...", 3, "busy", "accel-dl")
+        notify(input.core_tr("CUDA 구성 요소 내려받기를 취소하는 중..."), 3, "busy", "accel-dl")
     else
-        notify("진행 중인 내려받기가 없습니다", 3)
+        notify(input.core_tr("진행 중인 내려받기가 없습니다"), 3)
     end
 end
 
@@ -1186,47 +1194,46 @@ function AIM.progress_text()
     local d = AIM.data
     if not d then return nil end
     local name = AIM.name(d.current)
-    if d.status == "verifying" then return name .. " 무결성 검증 중" end
-    local s = name .. " 내려받는 중"
+    if d.status == "verifying" then return input.core_tr("%s 무결성 검증 중", name) end
     local pct = AIM.pct()
     if pct then
-        s = s .. string.format(" %d%% (%s / %s)", pct, AIM.fmt_size(d.received), AIM.fmt_size(d.total))
+        return input.core_tr("%s 내려받는 중 %d%% (%s / %s)", name, pct, AIM.fmt_size(d.received), AIM.fmt_size(d.total))
     end
-    return s
+    return input.core_tr("%s 내려받는 중", name)
 end
 
 function AIM.status_text()
     local d = AIM.data
     if not d then
-        return AIM.cmd_ok == false and "이 엔진 버전은 모델 관리를 지원하지 않습니다" or "확인 중…"
+        return AIM.cmd_ok == false and input.core_tr("이 엔진 버전은 모델 관리를 지원하지 않습니다") or input.core_tr("확인 중…")
     end
     local s = d.status
     if s == "downloading" or s == "verifying" then return AIM.progress_text() end
-    if s == "checking" then return "설치된 파일 확인 중…" end
-    if s == "done" then return "내려받기 완료 · 다음에 여는 파일부터 사용" end
-    if s == "cancelled" then return "취소됨" end
+    if s == "checking" then return input.core_tr("설치된 파일 확인 중…") end
+    if s == "done" then return input.core_tr("내려받기 완료 · 다음에 여는 파일부터 사용") end
+    if s == "cancelled" then return input.core_tr("취소됨") end
     if s == "error" then
         local e = tostring(d.error or "")
-        return "오류 — " .. (e ~= "" and e or "알 수 없는 오류")
+        return input.core_tr("오류 — %s", e ~= "" and e or input.core_tr("알 수 없는 오류"))
     end
-    if #AIM.list() > 0 and #AIM.missing() == 0 then return "모든 모델 설치됨" end
-    return "대기 중"
+    if #AIM.list() > 0 and #AIM.missing() == 0 then return input.core_tr("모든 모델 설치됨") end
+    return input.core_tr("대기 중")
 end
 
 -- Short form for the settings menu row.
 function AIM.summary()
     local d = AIM.data
-    if not d then return AIM.cmd_ok == false and "지원 안 됨" or "확인 중…" end
+    if not d then return AIM.cmd_ok == false and input.core_tr("지원 안 됨") or input.core_tr("확인 중…") end
     if AIM.active() then
         local pct = AIM.pct()
-        return AIM.name(d.current) .. (d.status == "verifying" and " 검증 중" or " 내려받는 중")
+        return input.core_tr(d.status == "verifying" and "%s 검증 중" or "%s 내려받는 중", AIM.name(d.current))
             .. (pct and (" " .. pct .. "%") or "")
     end
-    if #AIM.list() == 0 then return "목록 없음" end
+    if #AIM.list() == 0 then return input.core_tr("목록 없음") end
     local miss, bytes = AIM.missing(), 0
-    if #miss == 0 then return "모두 설치됨" end
+    if #miss == 0 then return input.core_tr("모두 설치됨") end
     for _, m in ipairs(miss) do bytes = bytes + (tonumber(m.size) or 0) end
-    return string.format("미설치 %d개 · %s", #miss, AIM.fmt_size(bytes))
+    return input.core_tr("미설치 %d개 · %s", #miss, AIM.fmt_size(bytes))
 end
 
 -- Progress toast that survives closing the menu: refreshed when the text
@@ -1234,9 +1241,9 @@ end
 function AIM.heartbeat()
     local text, id
     if AIM.active() then
-        text, id = "AI 모델 " .. AIM.progress_text(), "model-dl"
+        text, id = input.core_tr("AI 모델: %s", AIM.progress_text()), "model-dl"
     elseif AIM.acc_active() then
-        text, id = "CUDA 구성 요소 " .. AIM.acc_progress_text(), "accel-dl"
+        text, id = input.core_tr("CUDA 구성 요소: %s", AIM.acc_progress_text()), "accel-dl"
     else
         return
     end
@@ -1257,13 +1264,13 @@ function AIM.on_change(_, v)
     AIM.sig = sig
     if d and prev and changed then
         if d.status == "done" then
-            notify("AI 모델 내려받기 완료 · 다음에 여는 파일부터 AI 자막을 만듭니다", 6, "ok", "model-dl")
+            notify(input.core_tr("AI 모델 내려받기 완료 · 다음에 여는 파일부터 AI 자막을 만듭니다"), 6, "ok", "model-dl")
         elseif d.status == "error" then
             local e = tostring(d.error or "")
-            notify("AI 모델 내려받기 실패" .. (e ~= "" and (": " .. e) or "")
-                .. "\nCtrl+N → AI 구성 요소에서 다시 시도할 수 있습니다", 9, "error", "model-dl")
+            notify(input.core_tr("AI 모델 내려받기 실패") .. (e ~= "" and (": " .. e) or "")
+                .. "\n" .. input.core_tr("Ctrl+N → AI 구성 요소에서 다시 시도할 수 있습니다"), 9, "error", "model-dl")
         elseif d.status == "cancelled" then
-            notify("AI 모델 내려받기를 취소했습니다", 3, "info", "model-dl")
+            notify(input.core_tr("AI 모델 내려받기를 취소했습니다"), 3, "info", "model-dl")
         end
     end
     if d then AIM.heartbeat() end
@@ -1278,12 +1285,12 @@ function AIM.build_prompt()
     if #miss == 0 then return nil end
     for _, m in ipairs(miss) do bytes = bytes + (tonumber(m.size) or 0) end
     return {
-        prompt = "AI 모델 없음",
+        prompt = input.core_tr("AI 모델 없음"),
         items = {
-            "AI 구성 요소 관리 열기",
-            "미설치 모델 모두 내려받기 (" .. AIM.fmt_size(bytes) .. ")",
-            "나중에",
-            "다시 묻지 않음",
+            input.core_tr("AI 구성 요소 관리 열기"),
+            input.core_tr("미설치 모델 모두 내려받기 (%s)", AIM.fmt_size(bytes)),
+            input.core_tr("나중에"),
+            input.core_tr("다시 묻지 않음"),
         },
         default_item = 1,
         submit = function(i)
@@ -1300,7 +1307,7 @@ function AIM.build_prompt()
 end
 
 ----------------------------------------------------------------------------
--- AI engine: CPU (bundled) and CUDA (optional download)
+-- AI engines are bundled; only cuBLAS may need downloading.
 --
 -- The engine publishes user-data/nanum/accelerator (mode, backend,
 -- cpu_available, cuda_available, toolkit, toolkit_directory, directory, busy,
@@ -1322,7 +1329,7 @@ AIM.MODE_DESC = {
     cuda = "CUDA 필수 — 쓸 수 없으면 AI 자막을 만들지 않음",
 }
 AIM.COMP_NAME = { cuda_engine = "CUDA 엔진", cublas = "cuBLAS", cublas_lt = "cuBLASLt" }
-AIM.COMP_SOURCE = { user = "내려받은 파일", reused = "이전 버전에서 복사", toolkit = "CUDA Toolkit 사용", app = "앱 폴더" }
+AIM.COMP_SOURCE = { user = "내려받은 파일", reused = "이전 버전에서 복사", toolkit = "CUDA Toolkit 사용", app = "앱 폴더", bundled = "앱에 포함" }
 AIM.TOOLKIT_URL = "https://developer.nvidia.com/cuda-downloads"
 
 -- "v13.4" of the installed CUDA Toolkit, "" if unknown.
@@ -1333,8 +1340,7 @@ function AIM.toolkit_label()
     return v ~= "" and ("v" .. v) or ""
 end
 
--- Components the CUDA path still needs: the engine (optional download) and the cuBLAS runtimes (an installed
--- CUDA 13 Toolkit provides them without a download, else the cuBLAS download). -> engine bytes | nil, cuBLAS bytes | nil
+-- Missing bundled engine bytes and optional cuBLAS runtime bytes, separately.
 function AIM.missing_parts()
     local engine, runtimes
     for _, c in ipairs(AIM.acc_list()) do
@@ -1358,32 +1364,30 @@ end
 -- What to do for GPU acceleration, from what is missing.
 function AIM.toolkit_hint()
     local engine, runtimes = AIM.missing_parts()
-    if engine and runtimes then
-        return "CUDA 엔진(약 " .. AIM.fmt_size(engine) .. ")과 cuBLAS(약 " .. AIM.fmt_size(runtimes)
-            .. ")를 받으면 GPU를 사용합니다 (CUDA 13 Toolkit이 있으면 엔진만)"
-    elseif engine then
-        return "CUDA 엔진(약 " .. AIM.fmt_size(engine) .. ")을 받으면 GPU를 사용합니다"
+    if engine then
+        return input.core_tr("앱에 포함된 CUDA 엔진이 없거나 손상되었습니다 — NanumPlayer를 다시 설치하세요")
     end
-    return "CUDA 13 Toolkit을 설치하면 다운로드 없이 GPU를 사용합니다 (또는 cuBLAS 약 "
-        .. AIM.fmt_size(runtimes or AIM.acc_bytes()) .. " 받기)"
+    return input.core_tr("CUDA 13 Toolkit을 설치하면 다운로드 없이 GPU를 사용합니다 (또는 cuBLAS 약 %s 받기)",
+        AIM.fmt_size(runtimes or AIM.acc_bytes()))
 end
 
--- The player's own notice for "CPU only, GPU would work after a download / the Toolkit" (auto mode) or
--- "engine update needed", else nil.
+-- The player's own actionable CUDA notice while auto mode uses the CPU.
 function AIM.acc_notice()
     local a = AIM.acc
     local r = a and tostring(a.reason or "") or ""
     if a and a.cuda_available ~= true and a.busy ~= true and AIM.mode() == "auto" and not AIM.custom_dll()
-        and (r:find("^CUDA 가속:") or r:find("^CUDA 엔진 업데이트 필요")) then
+        and r:find("^CUDA") then
         return r
     end
     return nil
 end
 
--- A CUDA engine exists but is not this version's and no verified copy could be migrated.
-function AIM.cuda_update_needed()
+-- A bundled engine is repaired by reinstalling the app, never by downloading.
+function AIM.engine_reinstall_needed()
     local a = AIM.acc
-    return a ~= nil and a.update_required == true and AIM.mode() ~= "cpu" and not AIM.custom_dll()
+    local engine = AIM.missing_parts()
+    return a ~= nil and a.catalog ~= false and a.status ~= "checking" and engine ~= nil
+        and AIM.mode() ~= "cpu" and not AIM.custom_dll()
 end
 
 function AIM.mode()
@@ -1391,13 +1395,13 @@ function AIM.mode()
 end
 
 function AIM.mode_text()
-    local s = AIM.MODE_DESC[AIM.mode()] or AIM.mode()
-    if session_accel then s = s .. " [명령줄 지정]" end
+    local s = AIM.MODE_DESC[AIM.mode()] and input.core_tr(AIM.MODE_DESC[AIM.mode()]) or AIM.mode()
+    if session_accel then s = s .. " " .. input.core_tr("[명령줄 지정]") end
     return s
 end
 
 function AIM.acc_name(id)
-    return AIM.COMP_NAME[id] or tostring(id or "")
+    return input.core_tr(AIM.COMP_NAME[id] or tostring(id or ""))
 end
 
 function AIM.acc_list()
@@ -1429,7 +1433,7 @@ end
 function AIM.acc_missing()
     local r = {}
     for _, c in ipairs(AIM.acc_list()) do
-        if c.installed ~= true then r[#r + 1] = c end
+        if c.id ~= "cuda_engine" and c.installed ~= true then r[#r + 1] = c end
     end
     return r
 end
@@ -1464,8 +1468,7 @@ function AIM.has_driver()
     return AIM.driver
 end
 
--- Why CUDA is not usable: "nodriver" | "missing" (engine and / or cuBLAS not downloaded, no Toolkit) |
--- "nocatalog" | "incompatible" (installed but the GPU/driver is not suitable).
+-- Distinguish damaged bundled engines from missing downloadable cuBLAS.
 function AIM.cuda_cause()
     local a = AIM.acc
     if not AIM.has_driver() then return "nodriver" end
@@ -1473,6 +1476,7 @@ function AIM.cuda_cause()
     local needs = (listed and #AIM.acc_missing() > 0) or (not listed and (tonumber(a and a.download_size) or 0) > 0)
     -- the shipped component catalogue is unreadable: nothing can be downloaded
     if a and a.catalog == false and (needs or not listed) then return "nocatalog" end
+    if AIM.engine_reinstall_needed() then return "bundled" end
     if needs then return "missing" end
     return "incompatible"
 end
@@ -1511,28 +1515,30 @@ function AIM.accel_text(info)
     local a = AIM.acc
     if info.cause == "cpu" then
         local tail = (a and a.cuda_available == true)
-            and "Ctrl+N → AI 구성 요소에서 '자동' 모드로 바꾸면 CUDA로 만들 수 있습니다"
-            or "NanumPlayer를 다시 설치하세요 (nanum_ai_cpu.dll 확인)"
-        return "CPU AI 엔진을 사용할 수 없어 AI 자막 없이 재생합니다" .. rs .. "\n" .. tail
+            and input.core_tr("Ctrl+N → AI 구성 요소에서 '자동' 모드로 바꾸면 CUDA로 만들 수 있습니다")
+            or input.core_tr("NanumPlayer를 다시 설치하세요 (nanum_ai_cpu.dll 확인)")
+        return input.core_tr("CPU AI 엔진을 사용할 수 없어 AI 자막 없이 재생합니다") .. rs .. "\n" .. tail
     end
     if info.cause == "engine" then
-        return "AI 엔진을 사용할 수 없어 AI 자막 없이 재생합니다" .. rs
-            .. ((info.mode == "cuda" and info.cpu) and "\nCtrl+N → AI 구성 요소에서 CPU 모드로 바꿀 수 있습니다" or "")
+        return input.core_tr("AI 엔진을 사용할 수 없어 AI 자막 없이 재생합니다") .. rs
+            .. ((info.mode == "cuda" and info.cpu) and ("\n" .. input.core_tr("Ctrl+N → AI 구성 요소에서 CPU 모드로 바꿀 수 있습니다")) or "")
     end
-    local head = info.mode == "cuda" and "CUDA 필수 모드: " or "사용할 AI 엔진이 없습니다 (CPU 엔진 불가) · "
-    local alt = info.cpu and "\nCtrl+N → AI 구성 요소에서 CPU 모드로 바꿀 수 있습니다" or ""
+    local alt = info.cpu and ("\n" .. input.core_tr("Ctrl+N → AI 구성 요소에서 CPU 모드로 바꿀 수 있습니다")) or ""
+    local body
     if info.cause == "nodriver" then
-        return head .. "NVIDIA 드라이버를 찾을 수 없어 CUDA를 쓸 수 없습니다 — AI 자막 없이 재생합니다\nNVIDIA 드라이버를 설치하세요" .. alt
+        body = input.core_tr("NVIDIA 드라이버를 찾을 수 없어 CUDA를 쓸 수 없습니다 — AI 자막 없이 재생합니다\nNVIDIA 드라이버를 설치하세요")
     elseif info.cause == "nocatalog" then
-        return head .. "CUDA 구성 요소 목록(components\\catalog.json)을 읽을 수 없어 내려받을 수 없습니다"
-            .. ((info.catalog_error or "") ~= "" and (" (" .. info.catalog_error .. ")") or "")
-            .. " — AI 자막 없이 재생합니다\nNanumPlayer를 다시 설치하세요" .. alt
+        body = input.core_tr("CUDA 구성 요소 목록(components\\catalog.json)을 읽을 수 없어 내려받을 수 없습니다%s — AI 자막 없이 재생합니다\nNanumPlayer를 다시 설치하세요",
+            (info.catalog_error or "") ~= "" and (" (" .. info.catalog_error .. ")") or "")
+    elseif info.cause == "bundled" then
+        body = AIM.toolkit_hint()
     elseif info.cause == "missing" then
-        return head .. AIM.toolkit_hint() .. " — AI 자막 없이 재생합니다\nCtrl+N → AI 구성 요소에서 받을 수 있습니다"
-            .. (info.cpu and " (또는 CPU 모드로 바꾸세요)" or "")
+        body = input.core_tr(info.cpu and "%s — AI 자막 없이 재생합니다\nCtrl+N → AI 구성 요소에서 받을 수 있습니다 (또는 CPU 모드로 바꾸세요)"
+            or "%s — AI 자막 없이 재생합니다\nCtrl+N → AI 구성 요소에서 받을 수 있습니다", AIM.toolkit_hint())
+    else
+        body = input.core_tr("이 PC의 GPU/드라이버에서는 CUDA를 사용할 수 없습니다%s — AI 자막 없이 재생합니다\n구성 요소를 다시 받아도 해결되지 않습니다", rs)
     end
-    return head .. "이 PC의 GPU/드라이버에서는 CUDA를 사용할 수 없습니다" .. rs
-        .. " — AI 자막 없이 재생합니다\n구성 요소를 다시 받아도 해결되지 않습니다" .. alt
+    return input.core_tr(info.mode == "cuda" and "CUDA 필수 모드: %s" or "사용할 AI 엔진이 없습니다 (CPU 엔진 불가) · %s", body) .. alt
 end
 
 function AIM.note_accel_blocked(info)
@@ -1541,7 +1547,7 @@ function AIM.note_accel_blocked(info)
     if AIM.notified_accel then return end
     AIM.notified_accel = true
     if AIM.acc_active() then
-        notify("CUDA 구성 요소를 내려받는 중입니다 · 재생은 그대로 진행되며 완료 후 다음에 여는 파일부터 적용됩니다", 6, "busy")
+        notify(input.core_tr("CUDA 구성 요소를 내려받는 중입니다 · 재생은 그대로 진행되며 완료 후 다음에 여는 파일부터 적용됩니다"), 6, "busy")
         return
     end
     notify(AIM.accel_text(info), 9, "warn")
@@ -1569,12 +1575,12 @@ function AIM.note_fallback()
     if cause == "missing" then
         if not opts.accel_prompt then return end
         AIM.fallback_noted = true
-        notify("GPU 가속 없이 CPU로 AI 자막을 만듭니다\n" .. AIM.toolkit_hint(), 8, "info")
+        notify(input.core_tr("GPU 가속 없이 CPU로 AI 자막을 만듭니다\n%s", AIM.toolkit_hint()), 8, "info")
     else
         AIM.fallback_noted = true
         local r = tostring(a.reason or "")
-        notify("이 PC에서는 CUDA를 사용할 수 없어 CPU로 AI 자막을 만듭니다" .. (r ~= "" and (": " .. r) or "")
-            .. "\n구성 요소를 다시 받아도 해결되지 않습니다", 8, "warn")
+        notify(input.core_tr("이 PC에서는 CUDA를 사용할 수 없어 CPU로 AI 자막을 만듭니다%s\n구성 요소를 다시 받아도 해결되지 않습니다",
+            r ~= "" and (": " .. r) or ""), 8, "warn")
     end
 end
 
@@ -1584,10 +1590,10 @@ function AIM.set_mode(mode)
     save_settings()
     if set_opt_soft("nanum-acceleration", mode) then
         AIM.accel_opt_ok = true
-        notify("AI 가속 모드: " .. AIM.MODE_LABEL[mode] .. " · 다음에 여는 파일부터 적용", 4, "ok")
+        notify(input.core_tr("AI 가속 모드: %s · 다음에 여는 파일부터 적용", input.core_tr(AIM.MODE_LABEL[mode])), 4, "ok")
     else
         AIM.accel_opt_ok = false
-        notify("이 엔진 버전은 가속 모드 선택을 지원하지 않습니다 (nanum 갱신 필요)", 5, "error")
+        notify(input.core_tr("이 엔진 버전은 가속 모드 선택을 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error")
     end
     mp.commandv("nanum-accelerator-refresh")
     publish_status()
@@ -1595,6 +1601,10 @@ function AIM.set_mode(mode)
 end
 
 function AIM.acc_download()
+    if AIM.engine_reinstall_needed() then
+        notify(AIM.toolkit_hint(), 7, "error", "accel-dl")
+        return false
+    end
     if AIM.cublas_missing() and not AIM.license_accepted() then      -- the NVIDIA CUDA license comes before the cuBLAS download
         mp.add_timeout(0.1, AIM.open_license_dialog)
         return false
@@ -1603,20 +1613,20 @@ function AIM.acc_download()
     if t - AIM.last_cmd < 0.7 then return false end        -- double click
     AIM.last_cmd = t
     if AIM.any_active() then
-        notify("이미 내려받는 중입니다 — 끝나거나 취소한 뒤 다시 선택하세요", 4, "warn")
+        notify(input.core_tr("이미 내려받는 중입니다 — 끝나거나 취소한 뒤 다시 선택하세요"), 4, "warn")
         return false
     end
     if AIM.acc and AIM.acc.catalog == false and AIM.cuda_cause() == "nocatalog" then
-        notify("CUDA 구성 요소 목록을 읽을 수 없어 내려받을 수 없습니다 — NanumPlayer를 다시 설치하세요", 6, "warn")
+        notify(input.core_tr("CUDA 구성 요소 목록을 읽을 수 없어 내려받을 수 없습니다 — NanumPlayer를 다시 설치하세요"), 6, "warn")
         return false
     end
     if not mp.commandv("nanum-download-accelerator") then
-        notify(AIM.acc and "내려받기를 시작하지 못했습니다 (다른 작업이 진행 중일 수 있습니다)"
-            or "이 엔진 버전은 CUDA 가속 내려받기를 지원하지 않습니다 (nanum 갱신 필요)", 5, "error")
+        notify(AIM.acc and input.core_tr("내려받기를 시작하지 못했습니다 (다른 작업이 진행 중일 수 있습니다)")
+            or input.core_tr("이 엔진 버전은 CUDA 가속 내려받기를 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error")
         return false
     end
     AIM.toast_at = 0
-    notify("CUDA 가속 구성 요소 " .. (AIM.cuda_update_needed() and "업데이트를" or "내려받기를") .. " 시작합니다 (" .. AIM.fmt_size(AIM.acc_bytes()) .. ")", 4, "busy", "accel-dl")
+    notify(input.core_tr("cuBLAS 내려받기를 시작합니다 (%s)", AIM.fmt_size(AIM.acc_bytes())), 4, "busy", "accel-dl")
     return true
 end
 
@@ -1624,71 +1634,50 @@ function AIM.acc_progress_text()
     local a = AIM.acc
     if not a then return nil end
     local name = AIM.acc_name(a.current)
-    if a.status == "verifying" then return name .. " 무결성 검증 중" end
-    local s = name .. " 내려받는 중"
+    if a.status == "verifying" then return input.core_tr("%s 무결성 검증 중", name) end
     local pct = AIM.acc_pct()
     if pct then
-        s = s .. string.format(" %d%% (%s / %s)", pct, AIM.fmt_size(a.received), AIM.fmt_size(a.total))
+        return input.core_tr("%s 내려받는 중 %d%% (%s / %s)", name, pct, AIM.fmt_size(a.received), AIM.fmt_size(a.total))
     end
-    return s
+    return input.core_tr("%s 내려받는 중", name)
 end
 
 function AIM.acc_status_text()
     local a = AIM.acc
     if not a then
-        return AIM.acc_cmd_ok == false and "이 엔진 버전은 CUDA 가속 관리를 지원하지 않습니다" or "확인 중…"
+        return AIM.acc_cmd_ok == false and input.core_tr("이 엔진 버전은 CUDA 가속 관리를 지원하지 않습니다") or input.core_tr("확인 중…")
     end
     local s = a.status
     if s == "downloading" or s == "verifying" then return AIM.acc_progress_text() end
-    if s == "checking" then return "구성 요소 확인 중…" end
-    if s == "cancelled" then return "취소됨" end
+    if s == "checking" then return input.core_tr("구성 요소 확인 중…") end
+    if s == "cancelled" then return input.core_tr("취소됨") end
     if s == "error" then
         local e = tostring(a.error or "")
-        return "오류 — " .. (e ~= "" and e or "알 수 없는 오류")
+        return input.core_tr("오류 — %s", e ~= "" and e or input.core_tr("알 수 없는 오류"))
     end
     if s == "done" then
-        if a.cuda_available == true then return "내려받기 완료 · 다음에 여는 파일부터 GPU 사용" end
-        return "내려받기 완료 · 그러나 이 PC에서는 CUDA를 쓸 수 없음"
+        if a.cuda_available == true then return input.core_tr("내려받기 완료 · 다음에 여는 파일부터 GPU 사용") end
+        return input.core_tr("내려받기 완료 · 그러나 이 PC에서는 CUDA를 쓸 수 없음")
     end
-    if AIM.cuda_update_needed() then return (AIM.acc_notice() or "CUDA 엔진 업데이트 필요") .. " — 눌러서 내려받기" end
+    if AIM.engine_reinstall_needed() then return input.core_tr("CUDA 엔진 복구 필요 — NanumPlayer를 다시 설치하세요") end
     local eff = AIM.effective(AIM.mode())
-    if eff == "cuda" then return "다음 파일: CUDA(GPU)로 AI 자막" end
-    if eff == "cpu" then return "다음 파일: CPU로 AI 자막" .. (AIM.acc_notice() and (" · " .. AIM.acc_notice()) or "") end
-    return "다음 파일: AI 자막 사용 불가 (선택한 엔진 없음)"
+    if eff == "cuda" then return input.core_tr("다음 파일: CUDA(GPU)로 AI 자막") end
+    if eff == "cpu" then
+        local notice = AIM.acc_notice()
+        return notice and input.core_tr("다음 파일: CPU로 AI 자막 · %s", notice) or input.core_tr("다음 파일: CPU로 AI 자막")
+    end
+    return input.core_tr("다음 파일: AI 자막 사용 불가 (선택한 엔진 없음)")
 end
 
 function AIM.components_summary()
     local models = AIM.summary()
     if AIM.acc_active() then
         local pct = AIM.acc_pct()
-        return "CUDA " .. AIM.acc_name(AIM.acc.current) .. (pct and (" " .. pct .. "%") or " 내려받는 중")
+        return input.core_tr("CUDA %s 내려받는 중", AIM.acc_name(AIM.acc.current)) .. (pct and (" " .. pct .. "%") or "")
     end
-    return "가속 " .. (AIM.MODE_LABEL[AIM.mode()] or AIM.mode()) .. " · " .. models
+    return input.core_tr("가속 %s · %s", AIM.MODE_LABEL[AIM.mode()] and input.core_tr(AIM.MODE_LABEL[AIM.mode()]) or AIM.mode(), models)
 end
 
--- Once per app version: offer the engine for this version.
-function AIM.build_cuda_update_prompt()
-    if not AIM.cuda_update_needed() or AIM.acc.busy == true or AIM.any_active() then return nil end
-    return {
-        prompt = "새 버전용 CUDA 엔진을 받아야 GPU 가속을 계속 사용합니다 (약 " .. AIM.fmt_size(AIM.acc_bytes()) .. ")",
-        items = { "받기", "나중에" },
-        default_item = 1,
-        submit = function(i)
-            if i == 1 then AIM.acc_download() end
-        end,
-    }
-end
-
-function AIM.maybe_prompt_cuda_update()
-    local a = AIM.acc
-    if not (AIM.cuda_update_needed() and a.busy ~= true) then return end
-    local version = tostring(a.version or "")
-    if version == "" or opts.cuda_update_prompted == version then return end
-    opts.cuda_update_prompted = version
-    save_settings()
-    queue_prompt("cudaupdate", AIM.build_cuda_update_prompt)
-    mp.add_timeout(1.5, pump_prompts)
-end
 
 function AIM.on_acc_change(_, v)
     local prev = AIM.acc
@@ -1702,16 +1691,15 @@ function AIM.on_acc_change(_, v)
             mp.add_timeout(0.6, AIM.acc_done_notice)
         elseif d.status == "error" then
             local e = tostring(d.error or "")
-            notify("CUDA 구성 요소 내려받기 실패" .. (e ~= "" and (": " .. e) or "")
-                .. "\nCtrl+N → AI 구성 요소에서 다시 시도할 수 있습니다 (받은 파일은 유지됩니다)", 9, "error", "accel-dl")
+            notify(input.core_tr("CUDA 구성 요소 내려받기 실패") .. (e ~= "" and (": " .. e) or "")
+                .. "\n" .. input.core_tr("Ctrl+N → AI 구성 요소에서 다시 시도할 수 있습니다 (받은 파일은 유지됩니다)"), 9, "error", "accel-dl")
         elseif d.status == "cancelled" then
-            notify("CUDA 구성 요소 내려받기를 취소했습니다 (받은 파일은 유지됩니다)", 3, "info", "accel-dl")
+            notify(input.core_tr("CUDA 구성 요소 내려받기를 취소했습니다 (받은 파일은 유지됩니다)"), 3, "info", "accel-dl")
         end
     end
     if d then
         AIM.heartbeat()
         AIM.note_fallback()
-        AIM.maybe_prompt_cuda_update()
     end
     AIM.schedule_menu_update()
     publish_status()
@@ -1723,16 +1711,16 @@ function AIM.acc_done_notice()
     if not a then return end
     local mode = AIM.mode()
     if a.cuda_available == true then
-        local s = "CUDA 가속 구성 요소 설치 완료 · 다음에 여는 파일부터 적용됩니다"
-        if mode == "cpu" then s = s .. "\n현재 가속 모드는 'CPU만'입니다 — Ctrl+N → AI 구성 요소에서 바꿀 수 있습니다" end
+        local s = input.core_tr("CUDA 가속 구성 요소 설치 완료 · 다음에 여는 파일부터 적용됩니다")
+        if mode == "cpu" then s = s .. "\n" .. input.core_tr("현재 가속 모드는 'CPU만'입니다 — Ctrl+N → AI 구성 요소에서 바꿀 수 있습니다") end
         notify(s, 7, "ok", "accel-dl")
     else
         local r = tostring(a.reason or "")
-        local s = "CUDA 구성 요소를 설치했지만 이 PC에서는 CUDA를 사용할 수 없습니다" .. (r ~= "" and (": " .. r) or "")
+        local s = input.core_tr("CUDA 구성 요소를 설치했지만 이 PC에서는 CUDA를 사용할 수 없습니다") .. (r ~= "" and (": " .. r) or "")
         if mode == "cuda" then
-            s = s .. "\nCUDA 필수 모드에서는 AI 자막이 꺼집니다 — Ctrl+N → AI 구성 요소에서 CPU 모드로 바꾸세요"
+            s = s .. "\n" .. input.core_tr("CUDA 필수 모드에서는 AI 자막이 꺼집니다 — Ctrl+N → AI 구성 요소에서 CPU 모드로 바꾸세요")
         else
-            s = s .. "\nCPU로 계속 사용합니다"
+            s = s .. "\n" .. input.core_tr("CPU로 계속 사용합니다")
         end
         notify(s, 10, "warn", "accel-dl")
     end
@@ -1748,22 +1736,22 @@ function AIM.build_accel_prompt()
         actions[#actions + 1] = fn
     end
     if info.cause == "missing" and info.mode ~= "cpu" then
-        add("CUDA 가속 구성 요소 내려받기 (" .. AIM.fmt_size(info.size) .. ")", function() AIM.acc_download() end)
+        add(input.core_tr("CUDA 가속 구성 요소 내려받기 (%s)", AIM.fmt_size(info.size)), function() AIM.acc_download() end)
         if AIM.cublas_missing() then
-            add("CUDA 13 Toolkit 받는 곳 열기 (설치하면 cuBLAS 다운로드 불필요)", function() SUBS.open_url(AIM.TOOLKIT_URL) end)
+            add(input.core_tr("CUDA 13 Toolkit 받는 곳 열기 (설치하면 cuBLAS 다운로드 불필요)"), function() SUBS.open_url(AIM.TOOLKIT_URL) end)
         end
     end
     if info.mode == "cuda" and info.cpu then
-        add("CPU 모드로 전환 (다음 파일부터)", function() AIM.set_mode("cpu") end)
+        add(input.core_tr("CPU 모드로 전환 (다음 파일부터)"), function() AIM.set_mode("cpu") end)
     end
-    add("AI 구성 요소 관리 열기", function() mp.add_timeout(0.1, AIM.open_menu) end)
-    add("나중에", function() end)
-    add("다시 묻지 않음", function()
+    add(input.core_tr("AI 구성 요소 관리 열기"), function() mp.add_timeout(0.1, AIM.open_menu) end)
+    add(input.core_tr("나중에"), function() end)
+    add(input.core_tr("다시 묻지 않음"), function()
         opts.accel_prompt = false
         save_settings()
     end)
     return {
-        prompt = info.mode == "cuda" and "CUDA를 사용할 수 없음" or "GPU 가속 구성 요소가 필요합니다",
+        prompt = input.core_tr(info.mode == "cuda" and "CUDA를 사용할 수 없음" or "GPU 가속 구성 요소가 필요합니다"),
         items = items,
         default_item = 1,
         submit = function(i)
@@ -1834,29 +1822,29 @@ local function input_state_text(st, key, label, running_only)
     if s == "running" then
         local r = st["nanum-" .. key .. "-ready-until"]
         local ahead = r and (r - abs_pos())
-        if ahead and ahead > 1 then return string.format("%s 준비 중 · %.0f초 앞", label, ahead) end
-        return label .. " 분석 중"
+        if ahead and ahead > 1 then return input.core_tr("%s 준비 중 · %.0f초 앞", label, ahead) end
+        return input.core_tr("%s 분석 중", label)
     end
     if running_only then return nil end
-    if s == "waiting" then return label .. " 대기 중 (기본 자막이 앞서가면 시작)" end
-    if s == "done" then return label .. " 준비 완료" end
+    if s == "waiting" then return input.core_tr("%s 대기 중 (기본 자막이 앞서가면 시작)", label) end
+    if s == "done" then return input.core_tr("%s 준비 완료", label) end
     if s == "unavailable" then
         local why = tostring(st["nanum-" .. key .. "-reason"] or "")
-        return label .. " 사용 불가" .. (why ~= "" and (" (" .. why .. ")") or "")
+        return why ~= "" and input.core_tr("%s 사용 불가 (%s)", label, why) or input.core_tr("%s 사용 불가", label)
     end
     return nil
 end
 
 -- Secondary (original-language audio) input.
 local function secondary_text(st, running_only)
-    local name = lang_ko(st and st["nanum-secondary-language"])
-    return input_state_text(st, "secondary", name and (name .. " 기반") or "원어 기반", running_only)
+    local name = lang_name(st and st["nanum-secondary-language"])
+    return input_state_text(st, "secondary", name and input.core_tr("%s 기반", name) or input.core_tr("원어 기반"), running_only)
 end
 
 -- Disc image subtitles read by OCR.
 function SUBS.pgs_text(st, running_only)
-    local name = lang_ko(st and st["nanum-pgs-language"])
-    local text = input_state_text(st, "pgs", name and (name .. " 디스크 자막 기반") or "디스크 자막 기반", running_only)
+    local name = lang_name(st and st["nanum-pgs-language"])
+    local text = input_state_text(st, "pgs", name and input.core_tr("%s 디스크 자막 기반", name) or input.core_tr("디스크 자막 기반"), running_only)
     -- the player says e.g. which OCR language pack stands in for a missing one
     local why = tostring(st and st["nanum-pgs-reason"] or "")
     if text and not running_only and why ~= "" and st["nanum-pgs-state"] ~= "unavailable" then text = text .. " · " .. why end
@@ -1868,12 +1856,12 @@ function SUBS.import_text(st)
     local s = st and st["nanum-import-state"]
     if not s or s == "off" then return nil end
     local pct = math.floor((tonumber(st["nanum-import-progress"]) or 0) * 100 + 0.5)
-    if s == "aligning" then return string.format("가져온 자막 시간 맞추는 중 %d%%", pct) end
-    if s == "translating" then return string.format("가져온 자막 번역 중 %d%%", pct) end
-    if s == "done" then return "가져온 자막 준비 완료" .. SUBS.alignment_text(st) end
+    if s == "aligning" then return input.core_tr("가져온 자막 시간 맞추는 중 %d%%", pct) end
+    if s == "translating" then return input.core_tr("가져온 자막 번역 중 %d%%", pct) end
+    if s == "done" then return input.core_tr("가져온 자막 준비 완료") .. SUBS.alignment_text(st) end
     if s == "error" then
         local e = tostring(st["nanum-import-error"] or "")
-        return "가져온 자막 오류" .. (e ~= "" and (": " .. e) or "")
+        return input.core_tr("가져온 자막 오류") .. (e ~= "" and (": " .. e) or "")
     end
     return nil
 end
@@ -1882,9 +1870,9 @@ end
 function SUBS.alignment_text(st)
     local parts = {}
     local off, scale, conf = tonumber(st["nanum-import-offset"]), tonumber(st["nanum-import-scale"]), tonumber(st["nanum-import-confidence"])
-    if off then parts[#parts + 1] = string.format("시간 %+.1f초", off) end
-    if scale and math.abs(scale - 1) > 0.0005 then parts[#parts + 1] = string.format("속도 보정 ×%.4f", scale) end
-    if conf then parts[#parts + 1] = string.format("정렬 신뢰도 %d%%", math.floor(conf * 100 + 0.5)) end
+    if off then parts[#parts + 1] = input.core_tr("시간 %+.1f초", off) end
+    if scale and math.abs(scale - 1) > 0.0005 then parts[#parts + 1] = input.core_tr("속도 보정 ×%.4f", scale) end
+    if conf then parts[#parts + 1] = input.core_tr("정렬 신뢰도 %d%%", math.floor(conf * 100 + 0.5)) end
     return #parts > 0 and (" (" .. table.concat(parts, " · ") .. ")") or ""
 end
 
@@ -1900,10 +1888,10 @@ end
 -- Work and original language the AI identified from the title.
 local function original_text(st)
     local work = st and st["nanum-profile-work"]
-    local lang = lang_ko(st and st["nanum-original-language"])
+    local lang = lang_name(st and st["nanum-original-language"])
     local parts = {}
-    if type(work) == "string" and work ~= "" then parts[#parts + 1] = "작품: " .. work end
-    if lang then parts[#parts + 1] = "원어: " .. lang end
+    if type(work) == "string" and work ~= "" then parts[#parts + 1] = input.core_tr("작품: %s", work) end
+    if lang then parts[#parts + 1] = input.core_tr("원어: %s", lang) end
     return #parts > 0 and table.concat(parts, " · ") or nil
 end
 
@@ -1911,13 +1899,13 @@ end
 local function glossary_apply_text(st)
     local s = st and st["nanum-glossary-apply-state"]
     if s == "running" then
-        return string.format("용어집 반영 중 %d%%", math.floor((tonumber(st["nanum-glossary-apply-progress"]) or 0) * 100 + 0.5))
+        return input.core_tr("용어집 반영 중 %d%%", math.floor((tonumber(st["nanum-glossary-apply-progress"]) or 0) * 100 + 0.5))
     elseif s == "done" then
         local n = tonumber(st["nanum-glossary-apply-changed"]) or 0
-        return n > 0 and string.format("용어집 반영 완료 (자막 %d줄 다시 번역)", n) or "용어집 반영 완료 (바뀐 자막 없음)"
+        return n > 0 and input.core_tr("용어집 반영 완료 (자막 %d줄 다시 번역)", n) or input.core_tr("용어집 반영 완료 (바뀐 자막 없음)")
     elseif s == "error" then
         local e = tostring(st["nanum-glossary-apply-error"] or "")
-        return "용어집 반영 실패" .. (e ~= "" and (": " .. e) or "")
+        return input.core_tr("용어집 반영 실패") .. (e ~= "" and (": " .. e) or "")
     end
     return nil
 end
@@ -1930,15 +1918,15 @@ local function on_glossary_apply(st)
     gloss_apply_prev = s
     local now = mp.get_time()
     if s == "running" then
-        local text = glossary_apply_text(st):gsub(" 중 ", " 중… ")
+        local text = glossary_apply_text(st)
         if prev ~= "running" or (text ~= gloss_apply_text and now - gloss_apply_at >= 1) then
             gloss_apply_text, gloss_apply_at = text, now
             notify(text, 4, "busy", "glossary")
         end
     elseif s == "done" and prev == "running" then
         local n = tonumber(st["nanum-glossary-apply-changed"]) or 0
-        notify(n > 0 and string.format("용어집을 반영해 자막 %d줄을 다시 번역했습니다", n)
-            or "용어집을 반영했습니다 (바뀐 자막은 없습니다)", 5, "ok", "glossary")
+        notify(n > 0 and input.core_tr("용어집을 반영해 자막 %d줄을 다시 번역했습니다", n)
+            or input.core_tr("용어집을 반영했습니다 (바뀐 자막은 없습니다)"), 5, "ok", "glossary")
     elseif s == "error" and prev ~= "error" then
         notify(glossary_apply_text(st), 7, "error", "glossary")
     end
@@ -1954,10 +1942,20 @@ local function on_profile(st)
         if ps == "ready" then
             local n = st["nanum-glossary-count"]
             local work = tostring(st["nanum-profile-work"] or "")
-            notify("용어집을 AI로 다시 만들었습니다" .. (work ~= "" and (" · " .. work) or "")
-                .. (type(n) == "number" and string.format(" · %d개", n) or ""), 5, "ok", "glossary")
+            local count = type(n) == "number"
+            local msg
+            if work ~= "" and count then
+                msg = input.core_tr("용어집을 AI로 다시 만들었습니다 · %s · %d개", work, n)
+            elseif work ~= "" then
+                msg = input.core_tr("용어집을 AI로 다시 만들었습니다 · %s", work)
+            elseif count then
+                msg = input.core_tr("용어집을 AI로 다시 만들었습니다 · %d개", n)
+            else
+                msg = input.core_tr("용어집을 AI로 다시 만들었습니다")
+            end
+            notify(msg, 5, "ok", "glossary")
         else
-            notify("AI 용어집 생성에 실패했습니다 (번역 서버 확인) — 기존 용어집을 유지합니다", 6, "error", "glossary")
+            notify(input.core_tr("AI 용어집 생성에 실패했습니다 (번역 서버 확인) — 기존 용어집을 유지합니다"), 6, "error", "glossary")
         end
     end
 end
@@ -1968,61 +1966,61 @@ local last_status, last_status_at = nil, 0
 local function compute_status()
     if not (file_active and file_loaded) then return "", "info" end
     if mp.get_property_bool("paused-for-cache") and (mp.get_property("path") or ""):lower():find("^https?://") then
-        return "네트워크에서 미리 받는 중", "busy"
+        return input.core_tr("네트워크에서 미리 받는 중"), "busy"
     end
     if not AIM.engine_enabled() then return "", "info" end
-    if ai_disabled then return "AI 자막 꺼짐", "info" end
+    if ai_disabled then return input.core_tr("AI 자막 꺼짐"), "info" end
     local reason, info = AIM.block_reason()
     if reason == "models" then
         if AIM.active() then
             local pct = AIM.pct()
-            return "AI 모델 내려받는 중" .. (pct and (" " .. pct .. "%") or ""), "busy", "models"
+            return input.core_tr("AI 모델 내려받는 중") .. (pct and (" " .. pct .. "%") or ""), "busy", "models"
         end
-        if #AIM.missing() > 0 then return "AI 모델 없음 · 눌러서 설치", "warn", "models" end
-        return "AI 모델 설치됨 · 다음 파일부터 적용", "info", "models"
+        if #AIM.missing() > 0 then return input.core_tr("AI 모델 없음 · 눌러서 설치"), "warn", "models" end
+        return input.core_tr("AI 모델 설치됨 · 다음 파일부터 적용"), "info", "models"
     elseif reason == "accel" then
         if AIM.acc_active() then
             local pct = AIM.acc_pct()
-            return "CUDA 구성 요소 내려받는 중" .. (pct and (" " .. pct .. "%") or ""), "busy", "models"
+            return input.core_tr("CUDA 구성 요소 내려받는 중") .. (pct and (" " .. pct .. "%") or ""), "busy", "models"
         end
-        if info.mode ~= AIM.mode() then return "AI 가속 모드 변경됨 · 다음 파일부터 적용", "info", "models" end
+        if info.mode ~= AIM.mode() then return input.core_tr("AI 가속 모드 변경됨 · 다음 파일부터 적용"), "info", "models" end
         if info.cause ~= "engine" and AIM.effective(info.mode) ~= "unavailable" then
-            return "AI 엔진 사용 가능 · 다음 파일부터 적용", "info", "models"
+            return input.core_tr("AI 엔진 사용 가능 · 다음 파일부터 적용"), "info", "models"
         end
-        if info.cause == "missing" and info.mode ~= "cpu" then return "CUDA 필요 · AI 꺼짐 · 눌러서 설치", "warn", "models" end
-        return "AI 엔진 사용 불가 · 눌러서 확인", "warn", "models"
+        if info.cause == "missing" and info.mode ~= "cpu" then return input.core_tr("CUDA 필요 · AI 꺼짐 · 눌러서 설치"), "warn", "models" end
+        return input.core_tr("AI 엔진 사용 불가 · 눌러서 확인"), "warn", "models"
     end
     local st = cache_state()
     if waiting then
         local ready = ready_until()
         local have = ready and math.max(0, ready - abs_pos()) or 0
-        return string.format("AI 자막 준비 중 %.0f / %d초", have, waiting.lead or opts.preroll), "busy"
+        return input.core_tr("AI 자막 준비 중 %.0f / %d초", have, waiting.lead or opts.preroll), "busy"
     end
     local fs = st and st["nanum-full-state"]
     if fs == "error" then
         local e = st["nanum-full-error"]
-        return "AI 전체 번역 오류" .. ((e and e ~= "") and (": " .. e) or ""), "error"
+        return input.core_tr("AI 전체 번역 오류") .. ((e and e ~= "") and (": " .. e) or ""), "error"
     end
     if lib.state == "error" then
-        return "AI 자막 라이브러리 오류" .. (lib.error ~= "" and (": " .. lib.error) or ""), "error"
+        return input.core_tr("AI 자막 라이브러리 오류") .. (lib.error ~= "" and (": " .. lib.error) or ""), "error"
     end
     local pct = st and math.floor((st["nanum-full-progress"] or 0) * 100 + 0.5) or 0
-    if fs == "scanning" then return string.format("AI 원문 수집 중 %d%%", pct), "busy" end
-    if fs == "translating" then return string.format("AI 전체 번역 중 %d%%", pct), "busy" end
-    if lib.state == "loading" then return "저장된 AI 자막 확인 중", "busy" end
-    if fs == "done" then return "AI 전체 번역 완료", "ok" end
-    if lib.state == "using" then return "저장된 AI 자막 사용 중", "ok" end
+    if fs == "scanning" then return input.core_tr("AI 원문 수집 중 %d%%", pct), "busy" end
+    if fs == "translating" then return input.core_tr("AI 전체 번역 중 %d%%", pct), "busy" end
+    if lib.state == "loading" then return input.core_tr("저장된 AI 자막 확인 중"), "busy" end
+    if fs == "done" then return input.core_tr("AI 전체 번역 완료"), "ok" end
+    if lib.state == "using" then return input.core_tr("저장된 AI 자막 사용 중"), "ok" end
     if st and st["nanum-glossary-apply-state"] == "running" then return glossary_apply_text(st), "busy" end
     local its = st and st["nanum-import-state"]
     if its == "aligning" or its == "translating" then return SUBS.import_text(st), "busy" end
     local r = ready_until()
     if r then
         local ahead = r - abs_pos()
-        if ahead > 1 then return with_secondary(string.format("AI 자막 준비됨 · %.0f초 앞", ahead), st), "ok" end
-        return with_secondary("AI 자막 분석 중", st), "busy"
+        if ahead > 1 then return with_secondary(input.core_tr("AI 자막 준비됨 · %.0f초 앞", ahead), st), "ok" end
+        return with_secondary(input.core_tr("AI 자막 분석 중"), st), "busy"
     end
-    if st and st["nanum-input-active"] then return with_secondary("AI 자막 분석 중", st), "busy" end
-    return "AI 자막 엔진 대기 중", "info"
+    if st and st["nanum-input-active"] then return with_secondary(input.core_tr("AI 자막 분석 중"), st), "busy" end
+    return input.core_tr("AI 자막 엔진 대기 중"), "info"
 end
 
 function publish_status()
@@ -2055,7 +2053,7 @@ local function on_cache_state(_, st)
                 local first = applied_path == nil
                 apply_full(path, false)
                 if first or prev ~= "done" then
-                    notify("AI 전체 번역 자막을 적용했습니다", 3, "ok")
+                    notify(input.core_tr("AI 전체 번역 자막을 적용했습니다"), 3, "ok")
                 end
             elseif prev ~= "done" then
                 apply_full(path, keep_full)     -- same path: reload a rebuilt file, else just select it
@@ -2069,7 +2067,7 @@ local function on_cache_state(_, st)
         local e = st["nanum-full-error"] or ""
         if last_error_shown ~= e then
             last_error_shown = e
-            local hint = lib_supported() and "\nCtrl+N → 저장 자막 다시 조회 / 새로 생성" or ""
+            local hint = lib_supported() and ("\n" .. input.core_tr("Ctrl+N → 저장 자막 다시 조회 / 새로 생성")) or ""
             notify(full_status_text(st) .. hint, 6, "error")
         end
     elseif s == "scanning" or s == "translating" then
@@ -2093,7 +2091,6 @@ mp.observe_property("demuxer-cache-state", "native", on_cache_state)
 
 mp.register_event("start-file", function()
     stop_wait(false)
-    file_started = false
     selected_once = false
     file_loaded = false
     file_active = true
@@ -2139,11 +2136,9 @@ mp.register_event("end-file", function(event)
     if event.reason == "error" then
         if SUBS.yt.on_play_error() then return end
         if SUBS.disc.on_play_error() then return end
-        local detail = event.file_error or "알 수 없는 오류"
+        local detail = event.file_error or input.core_tr("알 수 없는 오류")
         mp.msg.error("재생 실패: " .. detail)
-        notify("재생 실패: " .. detail ..
-            "\nBlu-ray라면 디스크와 MakeMKV 상태를 확인하세요." ..
-            "\n상세 로그: %APPDATA%\\NanumPlayer\\last-playback.log", 12, "error")
+        notify(input.core_tr("재생 실패: %s\nBlu-ray라면 디스크 상태와 자동 키 DB 다운로드 오류를 확인하세요.\n필요하면 Ctrl+N에서 디스크 진단 로그를 명시적으로 켤 수 있습니다.", detail), 12, "error")
     end
 end)
 
@@ -2173,18 +2168,13 @@ mp.register_event("file-loaded", function()
     if not hint_shown then
         hint_shown = true
         hint_until = mp.get_time() + 5
-        notify(HINT, 4)
+        notify(input.core_tr("Ctrl+N: AI 자막 설정"), 4)
     end
     wait_for_ai(opts.preroll)
 end)
 
-mp.register_event("playback-restart", function()
-    if not file_started then
-        file_started = true     -- the restart that belongs to loading the file
-        return
-    end
-    wait_for_ai(opts.seek_preroll)
-end)
+-- A user seek must not revive a deferred initial subtitle wait.
+mp.register_event("seek", function() deferred = nil end)
 
 function sub_signature()
     refresh_ai_ids()
@@ -2204,14 +2194,13 @@ mp.add_periodic_timer(1, function()
     on_cache_state(nil, mp.get_property_native("demuxer-cache-state"))
     if pending_saved and mp.get_time() - pending_saved.since > 20 then
         pending_saved = nil
-        notify("현재 음성에 저장된 AI 자막을 찾지 못했습니다", 4, "warn")
+        notify(input.core_tr("현재 음성에 저장된 AI 자막을 찾지 못했습니다"), 4, "warn")
     end
     if deferred and not decision_outstanding() then
         local d = deferred
         deferred = nil
-        -- a long wait means playback is already well in: only a short pre-roll
-        local lead = (mp.get_time() - d.since > 5) and math.min(d.lead, opts.seek_preroll) or d.lead
-        wait_for_ai(lead)
+        -- a long wait means playback is already well in: no pause for the start pre-roll
+        if mp.get_time() - d.since <= 5 then wait_for_ai(d.lead) end
     end
     publish_status()
     pump_prompts()
@@ -2267,23 +2256,23 @@ mp.add_key_binding("ctrl+k", "nanum-status", function()
     local st = cache_state()
     local line
     if r then
-        line = string.format("AI 자막: %.0f초 앞까지 준비됨 (재생 %.0f초)", r - now, now)
+        line = input.core_tr("AI 자막: %.0f초 앞까지 준비됨 (재생 %.0f초)", r - now, now)
     else
-        line = "AI 자막: 분석 중이거나 사용 불가"
+        line = input.core_tr("AI 자막: 분석 중이거나 사용 불가")
     end
     local active = st and st["nanum-input-active"]
     if active then
-        line = line .. (active == "sub" and " [입력: 자막]" or " [입력: 음성 인식]")
+        line = line .. input.core_tr(active == "sub" and " [입력: 자막]" or " [입력: 음성 인식]")
     end
     local ai_backend = st and st["nanum-ai-backend"]
     if ai_backend == "cpu" or ai_backend == "cuda" then
-        line = line .. " [엔진: " .. (ai_backend == "cuda" and "CUDA" or "CPU") .. "]"
+        line = line .. input.core_tr(" [엔진: %s]", ai_backend == "cuda" and "CUDA" or "CPU")
     end
     local full = full_status_text(st)
     if full then
         line = line .. "\n" .. full
     elseif opts.full and st and st["nanum-full-state"] == nil then
-        line = line .. "\n전체 번역: 이 엔진 버전은 지원하지 않습니다"
+        line = line .. "\n" .. input.core_tr("전체 번역: 이 엔진 버전은 지원하지 않습니다")
     end
     local lsx = lib_status_text()
     if lsx then line = line .. "\n" .. lsx end
@@ -2342,11 +2331,11 @@ function save_settings()
                         playback_only = false })
     local f, err = io.open(path, "w")
     if not f then
-        notify("설정 저장 실패: " .. tostring(err), 4, "error")
+        notify(input.core_tr("설정 저장 실패: %s", tostring(err)), 4, "error")
         return
     end
-    f:write(string.format("preroll=%d\nseek_preroll=%d\ntimeout=%d\nauto_select=%s\n",
-        opts.preroll, opts.seek_preroll, opts.timeout, opts.auto_select and "yes" or "no"))
+    f:write(string.format("preroll=%d\ntimeout=%d\nauto_select=%s\n",
+        opts.preroll, opts.timeout, opts.auto_select and "yes" or "no"))
     f:write(string.format("input_mode=%s\nfull=%s\nfull_engine=%s\n",
         opts.input_mode, opts.full and "yes" or "no", opts.full_engine))
     f:write(string.format("display=%s\nlibrary_auto_use=%s\nmodel_prompt=%s\n", opts.display,
@@ -2358,7 +2347,6 @@ function save_settings()
     if opts.downloads_dir ~= "" then f:write("downloads_dir=" .. opts.downloads_dir .. "\n") end
     if opts.translate_style_text ~= "" then f:write("translate_style_text=" .. opts.translate_style_text .. "\n") end
     if opts.cuda_license then f:write("cuda_license=yes\n") end
-    if opts.cuda_update_prompted ~= "" then f:write("cuda_update_prompted=" .. opts.cuda_update_prompted .. "\n") end
     if opts.omp_model ~= "" then
         f:write("omp_model=" .. opts.omp_model .. "\n")
     end
@@ -2387,7 +2375,7 @@ local DISPLAYS = {
 
 local function display_label(key)
     for _, d in ipairs(DISPLAYS) do
-        if d.key == key then return d.label end
+        if d.key == key then return input.core_tr(d.label) end
     end
     return key
 end
@@ -2397,20 +2385,20 @@ local function set_display(key)
     opts.display = key
     save_settings()
     if set_opt_soft("nanum-display", key) then
-        notify("자막 표시: " .. display_label(key), 2, "ok")
+        notify(input.core_tr("자막 표시: %s", display_label(key)), 2, "ok")
     else
-        notify("이 엔진 버전은 자막 표시 방식 전환을 지원하지 않습니다 (nanum 갱신 필요)", 4, "error")
+        notify(input.core_tr("이 엔진 버전은 자막 표시 방식 전환을 지원하지 않습니다 (nanum 갱신 필요)"), 4, "error")
     end
 end
 
 local function open_display_menu(standalone)
     local items, default = {}, 1
     for i, d in ipairs(DISPLAYS) do
-        items[i] = (d.key == opts.display and "● " or "  ") .. d.label
+        items[i] = (d.key == opts.display and "● " or "  ") .. input.core_tr(d.label)
         if d.key == opts.display then default = i end
     end
     input.select({
-        prompt = "자막 표시 방식:",
+        prompt = input.core_tr("자막 표시 방식:"),
         items = items,
         default_item = default,
         submit = function(i)
@@ -2425,7 +2413,7 @@ local function full_settings_changed()
     save_settings()
     local changed = apply_full_options()
     if engine_old then
-        notify("이 엔진 버전은 전체 번역을 지원하지 않습니다 (nanum 갱신 필요)", 4, "error")
+        notify(input.core_tr("이 엔진 버전은 전체 번역을 지원하지 않습니다 (nanum 갱신 필요)"), 4, "error")
     elseif changed then
         resync()
         mp.add_timeout(1.0, function()
@@ -2436,7 +2424,7 @@ end
 
 local function ask_number(label, key)
     input.get({
-        prompt = label .. " (초):",
+        prompt = input.core_tr("%s (초):", label),
         default_text = tostring(opts[key]),
         submit = function(text)
             input.terminate()
@@ -2445,7 +2433,7 @@ local function ask_number(label, key)
                 opts[key] = math.floor(n)
                 save_settings()
             else
-                notify("숫자가 아닙니다: " .. text, 3, "warn")
+                notify(input.core_tr("숫자가 아닙니다: %s", text), 3, "warn")
             end
             reopen_menu()
         end,
@@ -2454,7 +2442,7 @@ end
 
 local function ask_text(e, standalone)
     input.get({
-        prompt = e.label .. ":",
+        prompt = input.core_tr("%s:", input.core_tr(e.label)),
         default_text = engine_vals[e.key] ~= "" and engine_vals[e.key]
             or mp.get_property("options/" .. e.opt) or "",
         submit = function(text)
@@ -2462,7 +2450,7 @@ local function ask_text(e, standalone)
             engine_vals[e.key] = text
             mp.set_property("options/" .. e.opt, text)
             save_settings()
-            notify(e.label .. ": 다음에 여는 파일부터 적용", 3, "ok")
+            notify(input.core_tr("%s: 다음에 여는 파일부터 적용", input.core_tr(e.label)), 3, "ok")
             if not standalone then reopen_menu() end
         end,
     })
@@ -2482,8 +2470,8 @@ end
 local function style_label()
     for _, s in ipairs(STYLES) do
         if s.key == opts.translate_style then
-            if s.key == "custom" then return "직접 입력 — " .. ellipsize(opts.translate_style_text, 24) end
-            return s.label
+            if s.key == "custom" then return input.core_tr("직접 입력 — %s", ellipsize(opts.translate_style_text, 24)) end
+            return input.core_tr(s.label)
         end
     end
     return opts.translate_style
@@ -2497,21 +2485,21 @@ local function set_style(key, text)
     local ok = set_opt_soft("nanum-translate-style-text", opts.translate_style_text)
     ok = set_opt_soft("nanum-translate-style", key) and ok
     if ok then
-        notify("번역 말투: " .. style_label() .. "\n지금부터 번역되는 자막에 바로 적용됩니다 (이미 만든 자막은 그대로)", 4, "ok")
+        notify(input.core_tr("번역 말투: %s\n지금부터 번역되는 자막에 바로 적용됩니다 (이미 만든 자막은 그대로)", style_label()), 4, "ok")
     else
-        notify("이 엔진 버전은 번역 말투 선택을 지원하지 않습니다 (nanum 갱신 필요)", 5, "error")
+        notify(input.core_tr("이 엔진 버전은 번역 말투 선택을 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error")
     end
 end
 
 local function ask_style_text()
     input.get({
-        prompt = "번역 말투 지시문 (예: 아이에게 말하듯 다정하게):",
+        prompt = input.core_tr("번역 말투 지시문 (예: 아이에게 말하듯 다정하게):"),
         default_text = opts.translate_style_text,
         submit = function(text)
             input.terminate()
             text = text:gsub("%s+", " "):match("^%s*(.-)%s*$")
             if text == "" then
-                notify("지시문이 비어 있어 말투를 바꾸지 않았습니다", 3, "warn")
+                notify(input.core_tr("지시문이 비어 있어 말투를 바꾸지 않았습니다"), 3, "warn")
             else
                 set_style("custom", text)
             end
@@ -2523,11 +2511,11 @@ end
 local function open_style_menu()
     local items, default = {}, 1
     for i, s in ipairs(STYLES) do
-        items[i] = (s.key == opts.translate_style and "● " or "  ") .. s.label
+        items[i] = (s.key == opts.translate_style and "● " or "  ") .. input.core_tr(s.label)
         if s.key == opts.translate_style then default = i end
     end
     input.select({
-        prompt = "번역 말투:",
+        prompt = input.core_tr("번역 말투:"),
         items = items,
         default_item = default,
         submit = function(i)
@@ -2546,10 +2534,10 @@ local function set_secondary(on)
     opts.secondary = on
     save_settings()
     if set_opt_soft("nanum-secondary", on and "yes" or "no") then
-        notify(on and "원어 음성으로도 자막을 만듭니다 (기본 자막이 충분히 앞선 뒤에 작업 · 자막 메뉴에서 선택)"
-            or "원어 음성 자막을 만들지 않습니다", 4, "ok")
+        notify(on and input.core_tr("원어 음성으로도 자막을 만듭니다 (기본 자막이 충분히 앞선 뒤에 작업 · 자막 메뉴에서 선택)")
+            or input.core_tr("원어 음성 자막을 만들지 않습니다"), 4, "ok")
     else
-        notify("이 엔진 버전은 원어 음성 자막을 지원하지 않습니다 (nanum 갱신 필요)", 5, "error")
+        notify(input.core_tr("이 엔진 버전은 원어 음성 자막을 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error")
     end
 end
 
@@ -2557,13 +2545,6 @@ end
 -- Glossary (characters / proper nouns of the film): edited as a text file
 ----------------------------------------------------------------------------
 
-local GLOSSARY_HEADER = table.concat({
-    "# NanumPlayer 용어집 — 이 영상의 인물·고유명사를 항상 같은 번역으로 옮기기 위한 표입니다.",
-    "# 한 줄에 하나씩 '원문 => 번역' 형식으로 적습니다. 예)  Hikari => 히카리",
-    "# 음성 인식이 잘못 받아적는 철자도 같은 번역으로 적어 두면 효과적입니다.",
-    "# '#'으로 시작하는 줄과 빈 줄은 무시됩니다.",
-    "# 저장하면 바로 적용되고, 메모장을 닫을 때 마지막으로 한 번 더 적용됩니다.",
-}, "\n") .. "\n\n"
 
 -- The lines the player should see: no BOM / CR, no comment or blank lines. -> text, count
 local function glossary_clean(text)
@@ -2761,14 +2742,14 @@ function cancel_glossary_edit()
 end
 
 local function glossary_unsupported()
-    notify("이 엔진 버전은 용어집을 지원하지 않습니다 (nanum 갱신 필요)", 5, "error")
+    notify(input.core_tr("이 엔진 버전은 용어집을 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error")
 end
 
 -- ~~/glossary (created on demand); nil with a message when that is impossible.
 local function glossary_dir()
     local dir = mp.command_native({ "expand-path", "~~/glossary" })
     if type(dir) ~= "string" or dir == "" or dir:sub(1, 2) == "~~" then
-        notify("용어집 폴더를 만들 수 없습니다 (설정 폴더를 찾을 수 없음)", 5, "error")
+        notify(input.core_tr("용어집 폴더를 만들 수 없습니다 (설정 폴더를 찾을 수 없음)"), 5, "error")
         return nil
     end
     dir = dir:gsub("/", "\\")
@@ -2789,7 +2770,7 @@ end
 local function glossary_state()
     local st = cache_state()
     if not (file_active and file_loaded) then
-        notify("영상을 재생한 뒤에 용어집을 사용할 수 있습니다", 4, "warn")
+        notify(input.core_tr("영상을 재생한 뒤에 용어집을 사용할 수 있습니다"), 4, "warn")
     elseif not st or st["nanum-glossary"] == nil then
         glossary_unsupported()
     else
@@ -2802,7 +2783,7 @@ end
 local function submit_glossary(clean, n, out)
     local w, err = io.open(out, "wb")
     if not w then
-        notify("용어집 적용 실패: " .. tostring(err), 5, "error")
+        notify(input.core_tr("용어집 적용 실패: %s", tostring(err)), 5, "error")
         return false
     end
     w:write(clean)
@@ -2811,7 +2792,7 @@ local function submit_glossary(clean, n, out)
         glossary_unsupported()
         return false
     end
-    notify(string.format("용어집을 전달했습니다 (%d개) · 바뀐 이름이 들어간 자막은 다시 번역됩니다", n), 4, "ok", "glossary")
+    notify(input.core_tr("용어집을 전달했습니다 (%d개) · 바뀐 이름이 들어간 자막은 다시 번역됩니다", n), 4, "ok", "glossary")
     return true
 end
 
@@ -2851,10 +2832,10 @@ local function edit_glossary()
     if not dir then return end
     local path, out = glossary_files(st, dir)
     local text = tostring(st["nanum-glossary"]):gsub("\r\n?", "\n")
-    local content = GLOSSARY_HEADER .. text .. (text ~= "" and text:sub(-1) ~= "\n" and "\n" or "")
+    local content = input.core_tr("# NanumPlayer 용어집 — 이 영상의 인물·고유명사를 항상 같은 번역으로 옮기기 위한 표입니다.\n# 한 줄에 하나씩 '원문 => 번역' 형식으로 적습니다. 예)  Hikari => 히카리\n# 음성 인식이 잘못 받아적는 철자도 같은 번역으로 적어 두면 효과적입니다.\n# '#'으로 시작하는 줄과 빈 줄은 무시됩니다.\n# 저장하면 바로 적용되고, 메모장을 닫을 때 마지막으로 한 번 더 적용됩니다.") .. "\n\n" .. text .. (text ~= "" and text:sub(-1) ~= "\n" and "\n" or "")
     local f, err = io.open(path, "wb")
     if not f then
-        notify("용어집 파일을 만들 수 없습니다: " .. tostring(err), 5, "error")
+        notify(input.core_tr("용어집 파일을 만들 수 없습니다: %s", tostring(err)), 5, "error")
         return
     end
     f:write(content)
@@ -2866,7 +2847,7 @@ local function edit_glossary()
         started = now, deadline = now + 1800 }
     gloss_edit = g
     g.timer = mp.add_periodic_timer(1, function() glossary_tick(false) end)
-    notify("용어집을 메모장으로 엽니다 — 저장하면 적용됩니다\n" .. path, 6, "info", "glossary")
+    notify(input.core_tr("용어집을 메모장으로 엽니다 — 저장하면 적용됩니다\n%s", path), 6, "info", "glossary")
     mp.command_native_async({ name = "subprocess", args = { "notepad.exe", path }, playback_only = false },
         function()
             if gloss_edit ~= g then return end          -- replaced or the file changed meanwhile
@@ -2877,12 +2858,12 @@ end
 
 local function regenerate_glossary()
     if not (file_active and file_loaded) then
-        notify("영상을 재생한 뒤에 사용할 수 있습니다", 4, "warn")
+        notify(input.core_tr("영상을 재생한 뒤에 사용할 수 있습니다"), 4, "warn")
         return
     end
     if glossary_request("regenerate") then
         gloss_wait, gloss_pending = "requested", nil
-        notify("AI가 작품 정보와 용어집을 다시 만드는 중입니다 (시간이 걸릴 수 있습니다)", 5, "busy", "glossary")
+        notify(input.core_tr("AI가 작품 정보와 용어집을 다시 만드는 중입니다 (시간이 걸릴 수 있습니다)"), 5, "busy", "glossary")
     else
         glossary_unsupported()
     end
@@ -2891,11 +2872,11 @@ end
 -- n: number of entries shown (default: what the player published)
 local function glossary_label(st, n)
     n = n or (st and st["nanum-glossary-count"])
-    if type(n) ~= "number" then return "용어집: 영상을 재생하면 사용할 수 있습니다" end
-    local s = string.format("용어집 (%d개)", n)
+    if type(n) ~= "number" then return input.core_tr("용어집: 영상을 재생하면 사용할 수 있습니다") end
+    local s = input.core_tr("용어집 (%d개)", n)
     local work = tostring(st["nanum-profile-work"] or "")
-    if st["nanum-profile-state"] == "running" then return s .. ": AI가 작품 정보 조회 중" end
-    return work ~= "" and (s .. ": " .. work) or s
+    if st["nanum-profile-state"] == "running" then return input.core_tr("%s: AI가 작품 정보 조회 중", s) end
+    return work ~= "" and input.core_tr("%s: %s", s, work) or s
 end
 
 local open_glossary_menu
@@ -2972,13 +2953,14 @@ local function ask_related_update(list, rel, back_src, apply)
         for _, r in ipairs(rel) do
             if not r.manual then autos = autos + 1 end
         end
-        local items = { string.format("예 — 같은 인물의 관련 항목 %d개도 함께 수정", autos), "아니오 — 이 항목만 수정" }
+        local items = { input.core_tr("예 — 같은 인물의 관련 항목 %d개도 함께 수정", autos), input.core_tr("아니오 — 이 항목만 수정") }
         for _, r in ipairs(rel) do
-            items[#items + 1] = "    " .. list[r.index].src .. ": " .. list[r.index].tgt
-                .. (r.manual and " — 한국어 부분을 찾지 못해 직접 수정 필요" or (" → " .. r.tgt))
+            items[#items + 1] = "    " .. (r.manual
+                and input.core_tr("%s: %s — 한국어 부분을 찾지 못해 직접 수정 필요", list[r.index].src, list[r.index].tgt)
+                or (list[r.index].src .. ": " .. list[r.index].tgt .. " → " .. r.tgt))
         end
         input.select({
-            prompt = "같은 인물의 다른 항목도 바꿀까요?",
+            prompt = input.core_tr("같은 인물의 다른 항목도 바꿀까요?"),
             items = items,
             submit = function(i)
                 if i <= 2 then
@@ -3004,9 +2986,9 @@ local function edit_glossary_target(src)
     local list, idx = find_entry(src)
     if not idx then return reopen_glossary() end
     local e = list[idx]
-    ask_glossary_text("'" .. e.src .. "'의 번역:", e.tgt, e.src, function(text)
+    ask_glossary_text(input.core_tr("'%s'의 번역:", e.src), e.tgt, e.src, function(text)
         if text == "" then
-            notify("번역이 비어 있어 바꾸지 않았습니다", 3, "warn")
+            notify(input.core_tr("번역이 비어 있어 바꾸지 않았습니다"), 3, "warn")
             return reopen_glossary(e.src)
         elseif text == e.tgt then
             return reopen_glossary(e.src)
@@ -3029,7 +3011,7 @@ local function edit_glossary_target(src)
         end
         if autos == 0 then
             if #manual > 0 then
-                notify("한국어 부분을 자동으로 찾지 못한 관련 항목은 직접 수정하세요: " .. table.concat(manual, ", "), 7, "warn", "glossary-edit")
+                notify(input.core_tr("한국어 부분을 자동으로 찾지 못한 관련 항목은 직접 수정하세요: %s", table.concat(manual, ", ")), 7, "warn", "glossary-edit")
             end
             return apply(false)
         end
@@ -3041,16 +3023,16 @@ local function edit_glossary_source(src)
     local list, idx = find_entry(src)
     if not idx then return reopen_glossary() end
     local e = list[idx]
-    ask_glossary_text("원문 수정 ('" .. e.tgt .. "'로 번역되는 원문):", e.src, e.src, function(text)
+    ask_glossary_text(input.core_tr("원문 수정 ('%s'로 번역되는 원문):", e.tgt), e.src, e.src, function(text)
         if text == "" or text:find("=>", 1, true) then
-            notify("원문이 비어 있거나 '=>'가 들어 있어 바꾸지 않았습니다", 4, "warn")
+            notify(input.core_tr("원문이 비어 있거나 '=>'가 들어 있어 바꾸지 않았습니다"), 4, "warn")
             return reopen_glossary(e.src)
         elseif text == e.src then
             return reopen_glossary(e.src)
         end
         for i, o in ipairs(list) do
             if i ~= idx and o.src:lower() == text:lower() then
-                notify("이미 있는 원문입니다: " .. o.src, 4, "warn")
+                notify(input.core_tr("이미 있는 원문입니다: %s", o.src), 4, "warn")
                 return reopen_glossary(e.src)
             end
         end
@@ -3066,16 +3048,16 @@ local function delete_glossary_entry(src)
     if idx then
         local n = copy_list(list)
         table.remove(n, idx)
-        if commit_glossary(n) then notify("용어집에서 삭제했습니다: " .. src, 3, "ok", "glossary-edit") end
+        if commit_glossary(n) then notify(input.core_tr("용어집에서 삭제했습니다: %s", src), 3, "ok", "glossary-edit") end
     end
     reopen_glossary()
 end
 
 local function add_glossary_entry()
-    ask_glossary_text("추가할 항목 (원문 => 번역):", "", nil, function(text)
+    ask_glossary_text(input.core_tr("추가할 항목 (원문 => 번역):"), "", nil, function(text)
         local src, tgt = glossary_entry_parse(text)
         if not src then
-            notify("'원문 => 번역' 형식으로 입력하세요 (양쪽 모두 필요)", 4, "warn")
+            notify(input.core_tr("'원문 => 번역' 형식으로 입력하세요 (양쪽 모두 필요)"), 4, "warn")
             return reopen_glossary()
         end
         local st = cache_state()
@@ -3086,7 +3068,7 @@ local function add_glossary_entry()
         end
         if at then
             n[at] = { src = n[at].src, tgt = tgt }
-            notify("이미 있는 원문이라 번역만 바꿨습니다: " .. n[at].src, 4, "info", "glossary-edit")
+            notify(input.core_tr("이미 있는 원문이라 번역만 바꿨습니다: %s", n[at].src), 4, "info", "glossary-edit")
         else
             n[#n + 1] = { src = src, tgt = tgt }
         end
@@ -3105,7 +3087,7 @@ local function open_entry_menu(src)
     end
     input.select({
         prompt = list[idx].src .. " => " .. list[idx].tgt,
-        items = { "번역 수정", "원문 수정", "삭제", "목록으로 돌아가기" },
+        items = { input.core_tr("번역 수정"), input.core_tr("원문 수정"), input.core_tr("삭제"), input.core_tr("목록으로 돌아가기") },
         submit = function(i)
             if i == 1 then go(function() edit_glossary_target(src) end)
             elseif i == 2 then go(function() edit_glossary_source(src) end)
@@ -3131,11 +3113,11 @@ local function glossary_menu_rows(st)
     end
     local nothing = function() end              -- information rows
     local ps = st["nanum-profile-state"]
-    local info = original_text(st) or "AI가 식별한 작품 정보 없음"
+    local info = original_text(st) or input.core_tr("AI가 식별한 작품 정보 없음")
     if ps == "running" then
-        info = "AI가 작품 정보를 조회하는 중…"
+        info = input.core_tr("AI가 작품 정보를 조회하는 중…")
     elseif ps == "error" then
-        info = "AI 작품 정보 조회 실패 — 다시 만들기로 재시도할 수 있습니다"
+        info = input.core_tr("AI 작품 정보 조회 실패 — 다시 만들기로 재시도할 수 있습니다")
     end
     add("label", glossary_label(st, #list), nothing)
     add("info", info, nothing)
@@ -3146,13 +3128,13 @@ local function glossary_menu_rows(st)
             progress.apply = math.max(0, math.min(1, tonumber(st["nanum-glossary-apply-progress"]) or 0))
         end
     end
-    add("add", "항목 추가", function() mp.add_timeout(0.1, add_glossary_entry) end)
-    add("notepad", "메모장에서 한꺼번에 편집", edit_glossary)
-    add("regen", "AI로 다시 만들기 (직접 편집한 내용은 대체됩니다)", function()
+    add("add", input.core_tr("항목 추가"), function() mp.add_timeout(0.1, add_glossary_entry) end)
+    add("notepad", input.core_tr("메모장에서 한꺼번에 편집"), edit_glossary)
+    add("regen", input.core_tr("AI로 다시 만들기 (직접 편집한 내용은 대체됩니다)"), function()
         local chosen = false
         input.select({
-            prompt = "용어집을 AI로 다시 만들까요?",
-            items = { "다시 만들기", "취소" },
+            prompt = input.core_tr("용어집을 AI로 다시 만들까요?"),
+            items = { input.core_tr("다시 만들기"), input.core_tr("취소") },
             default_item = 2,
             submit = function(i)
                 chosen = true
@@ -3164,7 +3146,7 @@ local function glossary_menu_rows(st)
             end,
         })
     end)
-    add("back", "설정 메뉴로 돌아가기", reopen_menu)
+    add("back", input.core_tr("설정 메뉴로 돌아가기"), reopen_menu)
     for _, e in ipairs(list) do
         add("e:" .. e.src, e.src .. " => " .. e.tgt, function()
             mp.add_timeout(0.1, function() open_entry_menu(e.src) end)
@@ -3205,7 +3187,7 @@ function open_glossary_menu(focus_src)
     GM.timer = mp.add_periodic_timer(1, glossary_menu_tick)
     input.select({
         id = "nanum-glossary",
-        prompt = "용어집:",
+        prompt = input.core_tr("용어집:"),
         keep_open = true,
         items = items,
         keys = keys,
@@ -3330,7 +3312,7 @@ function SUBS.cancel_watch(silent)
     if not w then return end
     w.timer:kill()
     SUBS.watch = nil
-    if not silent then notify("다운로드 감시를 중단했습니다", 3, "info", "subs") end
+    if not silent then notify(input.core_tr("다운로드 감시를 중단했습니다"), 3, "info", "subs") end
 end
 
 -- Files of the watched folder that can be a subtitle, with their time stamps.
@@ -3351,7 +3333,7 @@ function SUBS.watch_tick()
     if not w then return end
     if mp.get_time() > w.deadline then
         SUBS.cancel_watch(true)
-        notify("20분 동안 새 자막 파일이 내려받아지지 않아 다운로드 감시를 끝냈습니다", 6, "warn", "subs")
+        notify(input.core_tr("20분 동안 새 자막 파일이 내려받아지지 않아 다운로드 감시를 끝냈습니다"), 6, "warn", "subs")
         return
     end
     local c = w.cand
@@ -3381,7 +3363,7 @@ function SUBS.begin_watch(origin, lang)
     local dir = SUBS.downloads_dir()
     local info = require('mp.utils').file_info(dir)
     if not (info and info.is_dir) then
-        notify("다운로드 폴더를 찾을 수 없습니다: " .. dir .. "\nCtrl+N → 온라인 자막 찾기에서 폴더를 지정하세요", 7, "error", "subs")
+        notify(input.core_tr("다운로드 폴더를 찾을 수 없습니다: %s\nCtrl+N → 온라인 자막 찾기에서 폴더를 지정하세요", dir), 7, "error", "subs")
         return false
     end
     local known = {}
@@ -3393,12 +3375,12 @@ end
 
 function SUBS.start_search(site)
     if not (file_active and file_loaded) then
-        notify("영상을 재생한 뒤에 사용할 수 있습니다", 4, "warn")
+        notify(input.core_tr("영상을 재생한 뒤에 사용할 수 있습니다"), 4, "warn")
         return
     end
     local q = SUBS.query_text()
     if q == "" then
-        notify("검색어를 알 수 없습니다 — 메뉴의 '검색어'에서 직접 입력하세요", 5, "warn")
+        notify(input.core_tr("검색어를 알 수 없습니다 — 메뉴의 '검색어'에서 직접 입력하세요"), 5, "warn")
         return
     end
     -- English is told to the player (Latin scripts are ambiguous); Japanese / Korean it detects from the characters
@@ -3406,26 +3388,28 @@ function SUBS.start_search(site)
     SUBS.open_url(SUBS.search_url(site, q))
     if site.site == "Jimaku" then
         local copied = SUBS.copy_text(q)
-        notify(string.format("%s를 열었습니다 — %s\n(%s 폴더를 최대 20분 지켜봅니다 · 내려받으면 자동으로 가져옵니다)", site.label,
-            copied and ("검색창에 붙여넣으세요 (Ctrl+V): " .. q) or ("검색창에 '" .. q .. "'를 입력하세요"), SUBS.watch.dir), 10, "busy", "subs")
+        notify(copied and input.core_tr("%s를 열었습니다 — 검색창에 붙여넣으세요 (Ctrl+V): %s\n(%s 폴더를 최대 20분 지켜봅니다 · 내려받으면 자동으로 가져옵니다)",
+            input.core_tr(site.label), q, SUBS.watch.dir)
+            or input.core_tr("%s를 열었습니다 — 검색창에 '%s'를 입력하세요\n(%s 폴더를 최대 20분 지켜봅니다 · 내려받으면 자동으로 가져옵니다)",
+            input.core_tr(site.label), q, SUBS.watch.dir), 10, "busy", "subs")
         return
     end
-    notify(string.format("%s에서 '%s'를 찾는 중 — 브라우저에서 자막을 내려받으면 자동으로 가져옵니다\n(%s 폴더를 최대 20분 지켜봅니다)",
-        site.label, q, SUBS.watch.dir), 9, "busy", "subs")
+    notify(input.core_tr("%s에서 '%s'를 찾는 중 — 브라우저에서 자막을 내려받으면 자동으로 가져옵니다\n(%s 폴더를 최대 20분 지켜봅니다)",
+        input.core_tr(site.label), q, SUBS.watch.dir), 9, "busy", "subs")
 end
 
 -- Hands a subtitle file to the player.
 function SUBS.send(path, origin, lang)
     if not (file_active and file_loaded) then
-        notify("영상을 재생한 뒤에 사용할 수 있습니다", 4, "warn")
+        notify(input.core_tr("영상을 재생한 뒤에 사용할 수 있습니다"), 4, "warn")
         return
     end
     path = path:gsub("/", "\\")
     SUBS.import_prev = nil
     if SUBS.request("nanum-import-sub", path .. "|" .. (lang or "") .. "|" .. origin) then
-        notify("자막을 가져옵니다: " .. (path:match("([^\\]*)$") or path) .. "\n영상 음성에 시간을 맞춘 뒤 한국어로 번역합니다", 6, "busy", "subs")
+        notify(input.core_tr("자막을 가져옵니다: %s\n영상 음성에 시간을 맞춘 뒤 한국어로 번역합니다", path:match("([^\\]*)$") or path), 6, "busy", "subs")
     else
-        notify("이 엔진 버전은 자막 가져오기를 지원하지 않습니다 (nanum 갱신 필요)", 5, "error", "subs")
+        notify(input.core_tr("이 엔진 버전은 자막 가져오기를 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error", "subs")
     end
 end
 
@@ -3460,7 +3444,7 @@ function SUBS.choose(files, origin, lang)
     local items = {}
     for i, f in ipairs(files) do items[i] = string.format("%s  (%.0f KB)", f.name, f.size / 1024) end
     input.select({
-        prompt = string.format("자막 파일 선택 (%d개):", #files),
+        prompt = input.core_tr("자막 파일 선택 (%d개):", #files),
         items = items,
         submit = function(i) SUBS.send(files[i].path, origin, lang) end,
     })
@@ -3474,15 +3458,15 @@ function SUBS.handle(path, origin, lang)
     local dir = string.format("%s\\NanumPlayer-subs-%d", base, os.time())
     mp.command_native({ name = "subprocess", playback_only = false, args = { "cmd", "/c", "mkdir", dir } })
     SUBS.tmp = dir
-    notify("내려받은 압축 파일을 풀고 있습니다: " .. (path:match("([^\\/]*)$") or path), 5, "busy", "subs")
+    notify(input.core_tr("내려받은 압축 파일을 풀고 있습니다: %s", path:match("([^\\/]*)$") or path), 5, "busy", "subs")
     local root = os.getenv("SystemRoot") or "C:\\Windows"
     local tar = require('mp.utils').file_info(root .. "\\System32\\tar.exe") and (root .. "\\System32\\tar.exe") or "tar.exe"
     mp.command_native_async({ name = "subprocess", playback_only = false, capture_stderr = true,
         args = { tar, "-xf", path, "-C", dir } }, function(ok, res)
         local files = SUBS.find_subs(dir)
         if #files == 0 then
-            local why = (ok and res and res.status ~= 0) and "압축을 풀지 못했습니다" or "압축 파일에 자막 파일이 없습니다"
-            notify(why .. ": " .. (path:match("([^\\/]*)$") or path), 6, "error", "subs")
+            local why = (ok and res and res.status ~= 0) and "압축을 풀지 못했습니다: %s" or "압축 파일에 자막 파일이 없습니다: %s"
+            notify(input.core_tr(why, path:match("([^\\/]*)$") or path), 6, "error", "subs")
             return
         end
         SUBS.choose(files, origin, lang)
@@ -3492,7 +3476,7 @@ end
 -- Windows "Open" dialog (PowerShell) for a subtitle file or zip; the player's own pickers only load media.
 function SUBS.pick_file()
     if not (file_active and file_loaded) then
-        notify("영상을 재생한 뒤에 사용할 수 있습니다", 4, "warn")
+        notify(input.core_tr("영상을 재생한 뒤에 사용할 수 있습니다"), 4, "warn")
         return
     end
     if package.config:sub(1, 1) ~= "\\" then return end
@@ -3502,8 +3486,8 @@ function SUBS.pick_file()
         "[Console]::OutputEncoding=New-Object System.Text.UTF8Encoding($false);",
         "$o=New-Object System.Windows.Forms.Form;$o.TopMost=$true;",
         "$d=New-Object System.Windows.Forms.OpenFileDialog;",
-        "$d.Title='가져올 자막 파일 선택';",
-        "$d.Filter='자막 파일 (srt, ass, ssa, vtt, sub, zip)|*.srt;*.ass;*.ssa;*.vtt;*.sub;*.zip|모든 파일|*.*';",
+        "$d.Title='" .. input.core_tr("가져올 자막 파일 선택"):gsub("'", "''") .. "';",
+        "$d.Filter='" .. input.core_tr("자막 파일 (srt, ass, ssa, vtt, sub, zip)|*.srt;*.ass;*.ssa;*.vtt;*.sub;*.zip|모든 파일|*.*"):gsub("'", "''") .. "';",
         "$d.InitialDirectory='" .. dir .. "';",
         "if($d.ShowDialog($o) -eq 'OK'){$d.FileName}",
     })
@@ -3536,13 +3520,13 @@ function SUBS.open_ocr_install(lang)
     local args = SUBS.ocr_install_args(lang)
     if not args then return reopen_menu() end
     input.select({
-        prompt = "'" .. (lang_ko(lang) or lang) .. "' OCR 언어 팩을 설치할까요?",
-        items = { "설치 (Windows가 관리자 권한을 묻습니다)", "취소" },
+        prompt = input.core_tr("'%s' OCR 언어 팩을 설치할까요?", lang_name(lang) or lang),
+        items = { input.core_tr("설치 (Windows가 관리자 권한을 묻습니다)"), input.core_tr("취소") },
         default_item = 2,
         submit = function(i)
             if i == 1 then
                 SUBS.run_elevated(args)
-                notify("OCR 언어 팩 설치 창을 열었습니다 — 허용하면 설치가 진행되고, 다음에 여는 파일부터 적용됩니다", 8, "busy", "subs")
+                notify(input.core_tr("OCR 언어 팩 설치 창을 열었습니다 — 허용하면 설치가 진행되고, 다음에 여는 파일부터 적용됩니다"), 8, "busy", "subs")
             else
                 reopen_menu()
             end
@@ -3554,10 +3538,10 @@ function SUBS.set_pgs(on)
     opts.pgs = on
     save_settings()
     if set_opt_soft("nanum-pgs", on and "yes" or "no") then
-        notify(on and "디스크 자막(이미지)을 문자 인식으로 읽어 자막을 만듭니다 (기본 자막이 앞선 뒤에 작업 · 자막 메뉴에서 선택)"
-            or "디스크 자막 문자 인식을 끕니다", 4, "ok")
+        notify(on and input.core_tr("디스크 자막(이미지)을 문자 인식으로 읽어 자막을 만듭니다 (기본 자막이 앞선 뒤에 작업 · 자막 메뉴에서 선택)")
+            or input.core_tr("디스크 자막 문자 인식을 끕니다"), 4, "ok")
     else
-        notify("이 엔진 버전은 디스크 자막 문자 인식을 지원하지 않습니다 (nanum 갱신 필요)", 5, "error")
+        notify(input.core_tr("이 엔진 버전은 디스크 자막 문자 인식을 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error")
     end
 end
 
@@ -3575,11 +3559,11 @@ function SUBS.on_state(st)
             notify(text, 4, "busy", "subs")
         end
     elseif s == "done" and (prev == "aligning" or prev == "translating") then
-        local msg = "가져온 자막이 준비되었습니다 — 자막 메뉴에서 선택하세요" .. SUBS.alignment_text(st)
+        local msg = input.core_tr("가져온 자막이 준비되었습니다 — 자막 메뉴에서 선택하세요") .. SUBS.alignment_text(st)
         local low = st["nanum-import-low-confidence"] == true
         local note = tostring(st["nanum-import-note"] or "")
         if low then
-            msg = msg .. "\n시간 맞춤을 확신할 수 없어 보정하지 않았습니다 — Ctrl+N → 가져온 자막 → 시간 미세 조정"
+            msg = msg .. "\n" .. input.core_tr("시간 맞춤을 확신할 수 없어 보정하지 않았습니다 — Ctrl+N → 가져온 자막 → 시간 미세 조정")
         elseif note ~= "" then
             msg = msg .. "\n" .. note
         end
@@ -3608,8 +3592,8 @@ function SUBS.on_tracks(tracks)
             if t.title ~= FULL_TITLE and ext and SUBS.EXT[ext] and mp.get_time() - loaded_at > 2.5 then
                 queue_prompt("dropsub", function()
                     return {
-                        prompt = "자막 파일을 추가했습니다: " .. (path:match("([^\\/]*)$") or path),
-                        items = { "AI로 가져오기 (영상에 시간을 맞추고 한국어로 번역)", "그대로 외부 자막으로 사용" },
+                        prompt = input.core_tr("자막 파일을 추가했습니다: %s", path:match("([^\\/]*)$") or path),
+                        items = { input.core_tr("AI로 가져오기 (영상에 시간을 맞추고 한국어로 번역)"), input.core_tr("그대로 외부 자막으로 사용") },
                         default_item = 1,
                         submit = function(i)
                             if i == 1 then SUBS.send(path, "파일", "") end
@@ -3632,11 +3616,11 @@ function SUBS.open_search_menu()
     local function again() mp.add_timeout(0.1, SUBS.open_search_menu) end
     local q = SUBS.query_text()
     for _, site in ipairs(SUBS.SITES) do
-        add("브라우저에서 찾기: " .. site.label, function() SUBS.start_search(site) end)
+        add(input.core_tr("브라우저에서 찾기: %s", input.core_tr(site.label)), function() SUBS.start_search(site) end)
     end
-    add("검색어: " .. (q ~= "" and q or "(없음)") .. (SUBS.query and " [직접 입력]" or "") .. " — 바꾸기", function()
+    add(input.core_tr(SUBS.query and "검색어: %s [직접 입력] — 바꾸기" or "검색어: %s — 바꾸기", q ~= "" and q or input.core_tr("(없음)")), function()
         input.get({
-            prompt = "검색어 (비우면 작품/파일 이름 사용):",
+            prompt = input.core_tr("검색어 (비우면 작품/파일 이름 사용):"),
             default_text = q,
             submit = function(text)
                 input.terminate()
@@ -3647,16 +3631,16 @@ function SUBS.open_search_menu()
         })
     end)
     local dir = SUBS.downloads_dir()
-    add("다운로드 폴더: " .. dir .. (opts.downloads_dir ~= "" and " [직접 지정]" or " [자동]") .. " — 바꾸기", function()
+    add(input.core_tr(opts.downloads_dir ~= "" and "다운로드 폴더: %s [직접 지정] — 바꾸기" or "다운로드 폴더: %s [자동] — 바꾸기", dir), function()
         input.get({
-            prompt = "자막을 내려받는 폴더 (비우면 Windows 다운로드 폴더):",
+            prompt = input.core_tr("자막을 내려받는 폴더 (비우면 Windows 다운로드 폴더):"),
             default_text = dir,
             submit = function(text)
                 input.terminate()
                 text = text:match("^%s*(.-)%s*$")
                 local info = text ~= "" and require('mp.utils').file_info(text) or nil
                 if text ~= "" and not (info and info.is_dir) then
-                    notify("폴더를 찾을 수 없습니다: " .. text, 4, "warn")
+                    notify(input.core_tr("폴더를 찾을 수 없습니다: %s", text), 4, "warn")
                 else
                     opts.downloads_dir = text:gsub("[/\\]+$", "")
                     save_settings()
@@ -3666,16 +3650,16 @@ function SUBS.open_search_menu()
             end,
         })
     end)
-    add("자막 파일 직접 고르기…", function() SUBS.pick_file() end)
+    add(input.core_tr("자막 파일 직접 고르기…"), function() SUBS.pick_file() end)
     if SUBS.watch then
-        add("다운로드 기다리는 중 — 감시 중단", function()
+        add(input.core_tr("다운로드 기다리는 중 — 감시 중단"), function()
             SUBS.cancel_watch(false)
             again()
         end)
     end
-    add("설정 메뉴로 돌아가기", reopen_menu)
+    add(input.core_tr("설정 메뉴로 돌아가기"), reopen_menu)
     input.select({
-        prompt = "온라인 자막 찾기 (브라우저에서 직접 내려받습니다):",
+        prompt = input.core_tr("온라인 자막 찾기 (브라우저에서 직접 내려받습니다):"),
         items = items,
         submit = function(i) actions[i]() end,
     })
@@ -3692,20 +3676,20 @@ function SUBS.adjust_rows(st)
     local function nudge(delta)
         return function()
             if not SUBS.request("nanum-import-adjust", string.format("%.1f", delta), "0") then
-                notify("이 엔진 버전은 자막 시간 조정을 지원하지 않습니다 (nanum 갱신 필요)", 5, "error")
+                notify(input.core_tr("이 엔진 버전은 자막 시간 조정을 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error")
             end
             if SUBS.adj_timer then SUBS.adj_timer:kill() end
             SUBS.adj_timer = mp.add_timeout(0.6, function() SUBS.adj_timer = nil; SUBS.adjust_tick(true) end)
         end
     end
     local off, conf = tonumber(st["nanum-import-offset"]), tonumber(st["nanum-import-confidence"])
-    add("info", "현재 시간 보정: " .. (off and string.format("%+.1f초", off) or "알 수 없음")
-        .. (conf and string.format(" · 자동 정렬 신뢰도 %d%%", math.floor(conf * 100 + 0.5)) or ""), function() end)
-    add("p10", "자막 1초 늦추기 (+1.0)", nudge(1))
-    add("p01", "자막 0.1초 늦추기 (+0.1)", nudge(0.1))
-    add("m01", "자막 0.1초 앞당기기 (−0.1)", nudge(-0.1))
-    add("m10", "자막 1초 앞당기기 (−1.0)", nudge(-1))
-    add("back", "설정 메뉴로 돌아가기", reopen_menu)
+    add("info", input.core_tr("현재 시간 보정: %s", off and input.core_tr("%+.1f초", off) or input.core_tr("알 수 없음"))
+        .. (conf and input.core_tr(" · 자동 정렬 신뢰도 %d%%", math.floor(conf * 100 + 0.5)) or ""), function() end)
+    add("p10", input.core_tr("자막 1초 늦추기 (+1.0)"), nudge(1))
+    add("p01", input.core_tr("자막 0.1초 늦추기 (+0.1)"), nudge(0.1))
+    add("m01", input.core_tr("자막 0.1초 앞당기기 (−0.1)"), nudge(-0.1))
+    add("m10", input.core_tr("자막 1초 앞당기기 (−1.0)"), nudge(-1))
+    add("back", input.core_tr("설정 메뉴로 돌아가기"), reopen_menu)
     return items, actions, keys
 end
 
@@ -3724,14 +3708,14 @@ function SUBS.open_adjust_menu()
     local st = cache_state()
     refresh_ai_ids(st)
     if not (st and ai_ids.import and ai_track("import")) then
-        notify("가져온 자막이 없습니다 — Ctrl+N → 온라인 자막 찾기 / 자막 파일 가져오기", 5, "warn")
+        notify(input.core_tr("가져온 자막이 없습니다 — Ctrl+N → 온라인 자막 찾기 / 자막 파일 가져오기"), 5, "warn")
         return reopen_menu()
     end
     local items, actions, keys = SUBS.adjust_rows(st)
     SUBS.adj_actions, SUBS.adj_sig = actions, table.concat(items, "\n")
     input.select({
         id = "nanum-import-adjust",
-        prompt = "가져온 자막 시간 미세 조정:",
+        prompt = input.core_tr("가져온 자막 시간 미세 조정:"),
         keep_open = true,
         items = items,
         keys = keys,
@@ -3759,14 +3743,14 @@ local function input_label()
     local active = st and st["nanum-input-active"]
     local m
     if sel_mode == "stt" then
-        m = "음성 인식 (STT)"
+        m = input.core_tr("음성 인식 (STT)")
     elseif sel_mode == "track" then
-        m = "자막 트랙"
+        m = input.core_tr("자막 트랙")
     else
-        m = "자동"
+        m = input.core_tr("자동")
     end
     if active then
-        m = m .. " → " .. (active == "sub" and "자막" or "STT")
+        m = m .. " → " .. (active == "sub" and input.core_tr("자막") or "STT")
     end
     return m
 end
@@ -3781,27 +3765,27 @@ local function open_input_menu()
         reevaluate(false)
         reopen_menu()
     end
-    add((sel_mode == "auto" and "● " or "  ") .. "자동 (오디오 언어 자막, 없으면 STT)", function()
+    add((sel_mode == "auto" and "● " or "  ") .. input.core_tr("자동 (오디오 언어 자막, 없으면 STT)"), function()
         sel_mode = "auto"
         opts.input_mode = "auto"
         save_settings()
         chosen()
     end)
-    add((sel_mode == "stt" and "● " or "  ") .. "음성 인식 (STT)", function()
+    add((sel_mode == "stt" and "● " or "  ") .. input.core_tr("음성 인식 (STT)"), function()
         sel_mode = "stt"
         opts.input_mode = "stt"
         save_settings()
         chosen()
     end)
     for _, t in ipairs(usable_subs(mp.get_property_native("track-list"))) do
-        add((sel_mode == "track" and sel_track_id == t.id and "● " or "  ") .. "자막: " .. track_label(t), function()
+        add((sel_mode == "track" and sel_track_id == t.id and "● " or "  ") .. input.core_tr("자막: %s", track_label(t)), function()
             sel_mode = "track"
             sel_track_id = t.id
             chosen()
         end)
     end
     input.select({
-        prompt = "AI 자막 입력 소스:",
+        prompt = input.core_tr("AI 자막 입력 소스:"),
         items = items,
         submit = function(i) actions[i]() end,
     })
@@ -3829,7 +3813,7 @@ local fetching_omp = false
 local function open_omp_picker()
     if fetching_omp then return end
     fetching_omp = true
-    notify("불러오는 중...", 30, "busy", "omp-load")
+    notify(input.core_tr("불러오는 중..."), 30, "busy", "omp-load")
     local args = { "omp", "models", "--json" }
     if package.config:sub(1, 1) == "\\" then
         args = { "cmd", "/c", "omp", "models", "--json" }      -- finds omp.cmd shims too
@@ -3842,7 +3826,7 @@ local function open_omp_picker()
         notify_clear("omp-load")
         local list = (success and res and res.status == 0) and parse_omp_models(res.stdout) or {}
         if #list == 0 then
-            notify("omp 모델 목록을 가져오지 못했습니다 (omp 설치/로그인 확인)", 4, "error")
+            notify(input.core_tr("omp 모델 목록을 가져오지 못했습니다 (omp 설치/로그인 확인)"), 4, "error")
             reopen_menu()
             return
         end
@@ -3851,7 +3835,7 @@ local function open_omp_picker()
             items[i] = ((m.selector == opts.omp_model) and "● " or "  ") .. m.label
         end
         input.select({
-            prompt = "oh-my-pi 모델:",
+            prompt = input.core_tr("oh-my-pi 모델:"),
             items = items,
             submit = function(i)
                 opts.omp_model = list[i].selector
@@ -3878,8 +3862,8 @@ local function parse_ollama_models(text, current)
             seen[name] = true
             local cloud = (m.remote_host or "") ~= ""
             local params = type(m.details) == "table" and m.details.parameter_size or ""
-            local info = cloud and "클라우드"
-                or string.format("로컬 %.1f GB", (tonumber(m.size) or 0) / 1e9)
+            local info = cloud and input.core_tr("클라우드")
+                or input.core_tr("로컬 %.1f GB", (tonumber(m.size) or 0) / 1e9)
             if params ~= "" then info = info .. " · " .. params end
             local e = { name = name,
                         label = (name == current and "● " or "  ") .. name .. "   " .. info }
@@ -3898,12 +3882,12 @@ local function open_ollama_picker(e, standalone)
     if fetching_ollama then return end
     local endpoint = mp.get_property("options/nanum-translate-endpoint") or ""
     if endpoint == "" then
-        notify("번역 서버 주소가 비어 있어 모델 목록을 가져올 수 없습니다", 4, "warn")
+        notify(input.core_tr("번역 서버 주소가 비어 있어 모델 목록을 가져올 수 없습니다"), 4, "warn")
         ask_text(e, standalone)
         return
     end
     fetching_ollama = true
-    notify("Ollama 모델 목록을 불러오는 중...", 10, "busy", "ollama-load")
+    notify(input.core_tr("Ollama 모델 목록을 불러오는 중..."), 10, "busy", "ollama-load")
     mp.command_native_async({
         name = "subprocess", playback_only = false, capture_stdout = true, capture_stderr = true,
         args = { "curl.exe", "-s", "--max-time", "5", endpoint:gsub("/+$", "") .. "/api/tags" },
@@ -3913,7 +3897,7 @@ local function open_ollama_picker(e, standalone)
         local current = mp.get_property("options/" .. e.opt) or ""
         local list = (success and res and res.status == 0) and parse_ollama_models(res.stdout, current)
         if not list then
-            notify("Ollama에 연결하지 못했습니다 (" .. endpoint .. ") — 모델 이름을 직접 입력하세요", 5, "error")
+            notify(input.core_tr("Ollama에 연결하지 못했습니다 (%s) — 모델 이름을 직접 입력하세요", endpoint), 5, "error")
             ask_text(e, standalone)
             return
         end
@@ -3922,9 +3906,9 @@ local function open_ollama_picker(e, standalone)
             items[i] = m.label
             if m.name == current then default = i end
         end
-        items[#items + 1] = "  직접 입력..."
+        items[#items + 1] = input.core_tr("  직접 입력...")
         input.select({
-            prompt = "번역 모델 (Ollama에 설치된 모델):",
+            prompt = input.core_tr("번역 모델 (Ollama에 설치된 모델):"),
             items = items,
             default_item = default,
             submit = function(i)
@@ -3935,7 +3919,7 @@ local function open_ollama_picker(e, standalone)
                 engine_vals[e.key] = list[i].name
                 mp.set_property("options/" .. e.opt, list[i].name)
                 save_settings()
-                notify("번역 모델: " .. list[i].name .. " (다음에 여는 파일부터 적용)", 3, "ok")
+                notify(input.core_tr("번역 모델: %s (다음에 여는 파일부터 적용)", list[i].name), 3, "ok")
                 if not standalone then reopen_menu() end
             end,
         })
@@ -3957,7 +3941,7 @@ TAGS.BAR_HIDE = {
 
 function TAGS.bar_hide_label()
     for _, b in ipairs(TAGS.BAR_HIDE) do
-        if b.key == opts.bar_hide then return b.label end
+        if b.key == opts.bar_hide then return input.core_tr(b.label) end
     end
     return opts.bar_hide
 end
@@ -3976,7 +3960,7 @@ function TAGS.cycle_bar_hide()
     end
     save_settings()
     TAGS.publish_prefs()
-    notify("재생 바 자동 숨김: " .. TAGS.bar_hide_label(), 2, "ok")
+    notify(input.core_tr("재생 바 자동 숨김: %s", TAGS.bar_hide_label()), 2, "ok")
 end
 
 function TAGS.set_ai_tags(on)
@@ -4009,7 +3993,7 @@ end
 
 -- Where a local model runs, from Ollama's /api/ps: -> text, kind
 function TAGS.where(model, endpoint)
-    if TAGS.is_cloud(model, endpoint) then return "클라우드", "info" end
+    if TAGS.is_cloud(model, endpoint) then return input.core_tr("클라우드"), "info" end
     local entry
     for _, m in ipairs(TAGS.ps or {}) do
         if model_key(m.name or m.model) == model_key(model) then
@@ -4017,11 +4001,11 @@ function TAGS.where(model, endpoint)
             break
         end
     end
-    if not entry then return "로컬", "info" end            -- not loaded (yet)
+    if not entry then return input.core_tr("로컬"), "info" end            -- not loaded (yet)
     local size, vram = tonumber(entry.size) or 0, tonumber(entry.size_vram) or 0
-    if size > 0 and vram >= size * 0.95 then return "로컬 GPU", "ok" end
-    if vram > 0 then return "로컬 GPU 일부", "info" end
-    return "로컬 CPU", "warn"
+    if size > 0 and vram >= size * 0.95 then return input.core_tr("로컬 GPU"), "ok" end
+    if vram > 0 then return input.core_tr("로컬 GPU 일부"), "info" end
+    return input.core_tr("로컬 CPU"), "warn"
 end
 
 function TAGS.poll(endpoint)
@@ -4045,7 +4029,7 @@ local function stt_language(tracks)
 end
 
 function TAGS.stt_model(lang)
-    local english = lang == nil or lang == "en"
+    local english = lang == "en"
     local s = TAGS.model_short(get_opt(english and "nanum-stt-model" or "nanum-stt-model-multilingual"))
     if s ~= "" then return s end
     if english then return "small.en" end
@@ -4080,28 +4064,28 @@ function TAGS.compute()
     local backend = st["nanum-ai-backend"]
     if stt and (backend == "cuda" or backend == "cpu") then
         if backend == "cuda" then
-            add("음성 인식 · GPU", "ok", "음성 인식을 GPU(CUDA)로 처리하고 있습니다 — 눌러서 AI 구성 요소 관리", "nanum-models")
+            add(input.core_tr("음성 인식 · GPU"), "ok", input.core_tr("음성 인식을 GPU(CUDA)로 처리하고 있습니다 — 눌러서 AI 구성 요소 관리"), "nanum-models")
         elseif (AIM.file_mode or AIM.mode()) ~= "cpu" and AIM.has_driver() then
-            add("음성 인식 · CPU ⚠", "warn", "GPU를 쓸 수 있는 PC인데 CPU로 인식 중입니다 — 눌러서 원인 확인", "nanum-models")
+            add(input.core_tr("음성 인식 · CPU ⚠"), "warn", input.core_tr("GPU를 쓸 수 있는 PC인데 CPU로 인식 중입니다 — 눌러서 원인 확인"), "nanum-models")
         else
-            add("음성 인식 · CPU", "info", "음성 인식을 CPU로 처리하고 있습니다 — 눌러서 AI 구성 요소 관리", "nanum-models")
+            add(input.core_tr("음성 인식 · CPU"), "info", input.core_tr("음성 인식을 CPU로 처리하고 있습니다 — 눌러서 AI 구성 요소 관리"), "nanum-models")
         end
     end
 
     -- 2: what the AI subtitles are made from
     if role == "primary" and not stt then
-        add("자막 기반", "info", "영상의 자막 트랙을 번역한 자막입니다 — 눌러서 AI 구성 요소 관리", "nanum-models")
+        add(input.core_tr("자막 기반"), "info", input.core_tr("영상의 자막 트랙을 번역한 자막입니다 — 눌러서 AI 구성 요소 관리"), "nanum-models")
     elseif role == "primary" or role == "secondary" then
         local lang = role == "secondary" and norm_lang(st["nanum-secondary-language"]) or stt_language(tracks)
         local m = TAGS.stt_model(lang)
-        add(m, "info", "음성 인식 모델: " .. m .. " — 눌러서 AI 구성 요소 관리", "nanum-models")
+        add(m, "info", input.core_tr("음성 인식 모델: %s — 눌러서 AI 구성 요소 관리", m), "nanum-models")
     elseif role == "pgs" then
-        add("디스크 자막 OCR", "info", "디스크의 그림 자막을 문자 인식한 자막입니다", "nanum-models")
+        add(input.core_tr("디스크 자막 OCR"), "info", input.core_tr("디스크의 그림 자막을 문자 인식한 자막입니다"), "nanum-models")
     elseif role == "import" then
         local origin = tostring(st["nanum-import-origin"] or "")
-        add(origin ~= "" and origin or "가져온 자막", "info", "직접 가져온 자막 파일입니다", "nanum-models")
+        add(origin ~= "" and input.core_tr(origin) or input.core_tr("가져온 자막"), "info", input.core_tr("직접 가져온 자막 파일입니다"), "nanum-models")
     elseif role == "full" then
-        add("전체 번역", "info", "영상 전체를 미리 번역한 자막입니다", "nanum-models")
+        add(input.core_tr("전체 번역"), "info", input.core_tr("영상 전체를 미리 번역한 자막입니다"), "nanum-models")
     end
 
     -- 3: the translation model and where it runs
@@ -4110,15 +4094,15 @@ function TAGS.compute()
     if role == "import" and tostring(st["nanum-import-language"] or "") == "ko" then
         return tags                                  -- a Korean file needs no translation
     elseif endpoint == "" then
-        add("번역 끔", "info", "번역 서버 주소가 비어 있어 번역하지 않습니다", "nanum-ollama-models")
+        add(input.core_tr("번역 끔"), "info", input.core_tr("번역 서버 주소가 비어 있어 번역하지 않습니다"), "nanum-ollama-models")
     elseif role == "full" and opts.full_engine == "omp" then
         local m = opts.omp_model ~= "" and opts.omp_model or "omp"
-        add("번역 · " .. ellipsize(m, 30) .. " · 클라우드", "info", "전체 번역 모델(oh-my-pi): " .. m, "nanum-ollama-models")
+        add(input.core_tr("번역 · %s · %s", ellipsize(m, 30), input.core_tr("클라우드")), "info", input.core_tr("전체 번역 모델(oh-my-pi): %s", m), "nanum-ollama-models")
     else
         local model = get_opt("nanum-translate-model") or ""
         local where, kind = TAGS.where(model, endpoint)
         if not TAGS.is_cloud(model, endpoint) then TAGS.endpoint = endpoint end
-        add("번역 · " .. ellipsize(model, 30) .. " · " .. where, kind, "번역 모델: " .. model .. " — 눌러서 모델 바꾸기", "nanum-ollama-models")
+        add(input.core_tr("번역 · %s · %s", ellipsize(model, 30), where), kind, input.core_tr("번역 모델: %s — 눌러서 모델 바꾸기", model), "nanum-ollama-models")
     end
     return tags
 end
@@ -4153,6 +4137,339 @@ end)
 
 local SM = { actions = {}, keys = {} }      -- rows of the open settings menu (replaced by live updates)
 
+-- Interface language (the display language only: the AI source / target languages are separate options).
+-- The native player owns the saved choice: `nanum-ui-language <auto|code>` stores it and publishes
+-- user-data/nanum/ui-language (resolved code) and user-data/nanum/ui-language-mode (chosen value).
+SM.LANGUAGES = {
+    { code = "auto", label = "자동/Automatic" },
+    { code = "ko", label = "한국어" },
+    { code = "en", label = "English" },
+    { code = "ja", label = "日本語" },
+    { code = "zh-CN", label = "简体中文" },
+    { code = "zh-TW", label = "繁體中文" },
+    { code = "es", label = "Español" },
+}
+
+function SM.language_mode()
+    local mode = mp.get_property_native("user-data/nanum/ui-language-mode")
+    return (type(mode) == "string" and mode ~= "") and mode or "auto"
+end
+
+function SM.language_label(code)
+    for _, l in ipairs(SM.LANGUAGES) do
+        if l.code == code then return l.label end
+    end
+    return tostring(code)
+end
+
+-- "자동/Automatic (English)" while following Windows, else the language's own name.
+function SM.language_summary()
+    local mode = SM.language_mode()
+    if mode == "auto" then
+        return SM.language_label("auto") .. " (" .. SM.language_label(input.i18n.language()) .. ")"
+    end
+    return SM.language_label(mode)
+end
+
+-- from_menu: opened from the settings menu, which comes back in the new language.
+function SM.open_language_menu(from_menu)
+    local mode = SM.language_mode()
+    local items, default = {}, 1
+    for i, l in ipairs(SM.LANGUAGES) do
+        items[i] = (l.code == mode and "● " or "  ") .. l.label
+        if l.code == mode then default = i end
+    end
+    input.select({
+        prompt = input.core_tr("인터페이스 언어:"),
+        items = items,
+        default_item = default,
+        submit = function(i)
+            local code = SM.LANGUAGES[i].code
+            if code ~= mode and not mp.commandv("nanum-ui-language", code) then
+                -- the player applies the language for this session even when saving failed and says why
+                local why = mp.get_property_native("user-data/nanum/ui-language-error")
+                if type(why) == "string" and why ~= "" then
+                    notify(why, 6, "warn")
+                else
+                    notify(input.core_tr("이 엔진 버전은 인터페이스 언어 선택을 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error")
+                end
+            end
+            if from_menu then
+                menu_keep = true
+                menu_last_key = "language"
+                mp.add_timeout(0.3, open_menu)
+            end
+        end,
+    })
+end
+
+----------------------------------------------------------------------------
+-- Video upscale (scripts/nanum-upscale.lua controller). Only user-chosen shader files are used; none are bundled.
+----------------------------------------------------------------------------
+local UPS = { MODES = { "default", "quality", "rtx", "shader" }, SCALES = { "auto", "1.5", "2", "3" } }
+
+function UPS.state()
+    local st
+    if UPS.ctl then
+        local ok, r = pcall(UPS.ctl.get_state)
+        if ok and type(r) == "table" then st = r end
+    end
+    st = st or UPS.last or { mode = "default", scale = "auto", shaders = {}, status = "default", detail = "" }
+    st.shaders = type(st.shaders) == "table" and st.shaders or {}
+    return st
+end
+
+function UPS.mode_label(m)
+    if m == "quality" then return input.core_tr("고품질 크기 조정") end
+    if m == "rtx" then return input.core_tr("NVIDIA RTX 업스케일") end
+    if m == "shader" then return input.core_tr("사용자 셰이더") end
+    return input.core_tr("기본")
+end
+
+function UPS.scale_label(s)
+    if s == "auto" then return input.core_tr("자동") end
+    return tostring(s) .. "x"
+end
+
+function UPS.status_text(st)
+    local s, d = st.status, tostring(st.detail or "")
+    local t
+    if s == "waiting" then t = input.core_tr("대기 중 — 영상이 재생되면 적용합니다")
+    elseif s == "quality" then t = input.core_tr("고품질 크기 조정 적용 중")
+    elseif s == "rtx_requested" then
+        t = input.core_tr("RTX %sx 요청됨 — AI 처리 여부는 드라이버에서 확인", string.format("%g", st.factor or 1))
+    elseif s == "shader" then t = input.core_tr("사용자 셰이더 %d개 적용 중", #st.shaders)
+    elseif s == "not_needed" then t = input.core_tr("필요 없음 — 영상이 이미 화면 크기 이상입니다")
+    elseif s == "error" then t = input.core_tr("오류")
+    else t = input.core_tr("기본 — 추가 업스케일 없음") end
+    if d ~= "" then t = t .. " (" .. d .. ")" end
+    return t
+end
+
+function UPS.summary()
+    local st = UPS.state()
+    local t = UPS.mode_label(st.mode)
+    if st.mode == "rtx" then t = t .. " " .. UPS.scale_label(st.scale) end
+    if st.status == "error" then t = t .. " · " .. input.core_tr("오류") end
+    return t
+end
+
+-- Run a controller setter; failures go to notify with the raw detail.
+function UPS.call(name, arg)
+    if not UPS.ctl then
+        notify(input.core_tr("업스케일 도우미(scripts/nanum-upscale.lua)를 불러오지 못했습니다"), 6, "error")
+        return false
+    end
+    local ok, a, b = pcall(UPS.ctl[name], arg)
+    if ok and a == true then return true end
+    notify(input.core_tr("영상 업스케일 설정 실패: %s", tostring(ok and b or a)), 6, "error")
+    return false
+end
+
+function UPS.build()
+    local st = UPS.state()
+    local items, acts, keys = {}, {}, {}
+    local function add(key, text, fn)
+        items[#items + 1] = text
+        acts[#acts + 1] = fn
+        keys[#keys + 1] = key
+    end
+    local function again() mp.add_timeout(0.1, UPS.open) end
+    add("status", input.core_tr("상태: %s", UPS.status_text(st)), again)
+    add("mode", input.core_tr("방식: %s", UPS.mode_label(st.mode)), function() mp.add_timeout(0.1, UPS.open_mode) end)
+    if st.mode == "rtx" then
+        add("scale", input.core_tr("RTX 배율: %s", UPS.scale_label(st.scale)), function() mp.add_timeout(0.1, UPS.open_scale) end)
+    end
+    add("shaders", input.core_tr("사용자 셰이더 목록 관리: %d개", #st.shaders), function() mp.add_timeout(0.1, UPS.open_shaders) end)
+    add("note", input.core_tr("RTX: 지원 NVIDIA GPU · D3D11 · 드라이버에서 VSR 켜기"), again)
+    add("back", input.core_tr("← 설정으로 돌아가기"), function() reopen_menu() end)
+    return items, acts, keys
+end
+
+function UPS.refresh()
+    if UPS.settings_refresh_pending then return end
+    UPS.settings_refresh_pending = true
+    mp.add_timeout(0.05, function()
+        UPS.settings_refresh_pending = false
+        local id = fluent.open_id()
+        if id == "nanum-upscale" then
+            local items, acts, keys = UPS.build()
+            UPS.acts = acts
+            fluent.update_select("nanum-upscale", items, { keys = keys })
+        elseif id == "nanum-settings" and UPS.refresh_settings then
+            UPS.refresh_settings()
+        end
+    end)
+end
+
+function UPS.open()
+    local items, acts, keys = UPS.build()
+    UPS.acts = acts
+    input.select({
+        id = "nanum-upscale",
+        prompt = input.core_tr("영상 업스케일:"),
+        items = items,
+        keys = keys,
+        submit = function(i)
+            local fn = UPS.acts[i]
+            if fn then fn() end
+        end,
+    })
+end
+
+function UPS.open_mode()
+    local st = UPS.state()
+    local items, default = {}, 1
+    local desc = {
+        default = input.core_tr("기본 — 추가 업스케일 없음"),
+        quality = input.core_tr("고품질 크기 조정 (GPU 렌더러)"),
+        rtx = input.core_tr("NVIDIA RTX 업스케일 (NVIDIA GPU·드라이버 RTX VSR 필요)"),
+        shader = input.core_tr("사용자 셰이더 (직접 고른 GLSL 파일)"),
+    }
+    for i, m in ipairs(UPS.MODES) do
+        items[i] = (m == st.mode and "● " or "  ") .. desc[m]
+        if m == st.mode then default = i end
+    end
+    input.select({
+        prompt = input.core_tr("업스케일 방식:"),
+        items = items,
+        default_item = default,
+        submit = function(i)
+            UPS.call("set_mode", UPS.MODES[i])
+            mp.add_timeout(0.1, UPS.open)
+        end,
+    })
+end
+
+function UPS.open_scale()
+    local st = UPS.state()
+    local items, default = {}, 1
+    for i, s in ipairs(UPS.SCALES) do
+        items[i] = (s == st.scale and "● " or "  ") .. UPS.scale_label(s)
+        if s == st.scale then default = i end
+    end
+    input.select({
+        prompt = input.core_tr("RTX 배율:"),
+        items = items,
+        default_item = default,
+        submit = function(i)
+            UPS.call("set_scale", UPS.SCALES[i])
+            mp.add_timeout(0.1, UPS.open)
+        end,
+    })
+end
+
+function UPS.base(p) return tostring(p):match("([^/\\]+)$") or tostring(p) end
+
+function UPS.set_list(list, reopen_at)
+    UPS.call("set_shaders", list)
+    mp.add_timeout(0.1, function() UPS.open_shaders(reopen_at) end)
+end
+
+function UPS.copy_list()
+    local out = {}
+    for i, p in ipairs(UPS.state().shaders) do out[i] = p end
+    return out
+end
+
+-- Windows "Open" dialog (PowerShell) for one shader file; files are appended in the order they are picked.
+function UPS.pick_shader()
+    if package.config:sub(1, 1) ~= "\\" then return end
+    local script = table.concat({
+        "Add-Type -AssemblyName System.Windows.Forms;",
+        "[Console]::OutputEncoding=New-Object System.Text.UTF8Encoding($false);",
+        "$o=New-Object System.Windows.Forms.Form;$o.TopMost=$true;",
+        "$d=New-Object System.Windows.Forms.OpenFileDialog;",
+        "$d.Title='" .. input.core_tr("추가할 셰이더 파일 선택"):gsub("'", "''") .. "';",
+        "$d.Filter='" .. input.core_tr("셰이더 파일 (glsl, hook, frag)|*.glsl;*.hook;*.frag|모든 파일|*.*"):gsub("'", "''") .. "';",
+        "if($d.ShowDialog($o) -eq 'OK'){$d.FileName}",
+    })
+    mp.command_native_async({ name = "subprocess", playback_only = false, capture_stdout = true,
+        args = { "powershell.exe", "-NoProfile", "-NonInteractive", "-STA", "-Command", script } }, function(ok, res)
+        local p = ok and res and res.status == 0 and (res.stdout or ""):gsub("^\239\187\191", ""):match("^%s*(.-)%s*$") or ""
+        if p == "" then
+            mp.add_timeout(0.1, function() UPS.open_shaders() end)
+            return
+        end
+        local list = UPS.copy_list()
+        for _, q in ipairs(list) do
+            if q:lower() == p:lower() then
+                notify(input.core_tr("이미 목록에 있는 셰이더입니다: %s", UPS.base(p)), 4, "warn")
+                mp.add_timeout(0.1, function() UPS.open_shaders() end)
+                return
+            end
+        end
+        list[#list + 1] = p
+        UPS.set_list(list, #list)
+    end)
+end
+
+function UPS.open_shaders(at)
+    local list = UPS.state().shaders
+    local items = {}
+    for i, p in ipairs(list) do
+        items[#items + 1] = string.format("%d. %s", i, UPS.base(p))
+    end
+    local n = #items
+    items[#items + 1] = input.core_tr("+ 셰이더 파일 추가… (고른 순서대로 적용)")
+    items[#items + 1] = input.core_tr("목록 모두 비우기")
+    items[#items + 1] = input.core_tr("← 업스케일 설정으로 돌아가기")
+    input.select({
+        prompt = input.core_tr("사용자 셰이더 (위에서부터 순서대로 적용):"),
+        items = items,
+        default_item = at or (n + 1),
+        submit = function(i)
+            if i <= n then
+                mp.add_timeout(0.1, function() UPS.open_shader_item(i) end)
+            elseif i == n + 1 then
+                UPS.pick_shader()
+            elseif i == n + 2 then
+                if n > 0 then UPS.set_list({}) else UPS.open_shaders() end
+            else
+                mp.add_timeout(0.1, UPS.open)
+            end
+        end,
+    })
+end
+
+function UPS.open_shader_item(i)
+    local list = UPS.copy_list()
+    if not list[i] then return UPS.open_shaders() end
+    input.select({
+        prompt = UPS.base(list[i]),
+        items = { input.core_tr("위로 이동"), input.core_tr("아래로 이동"), input.core_tr("목록에서 제거"), input.core_tr("← 뒤로") },
+        submit = function(k)
+            if k == 1 and i > 1 then
+                list[i], list[i - 1] = list[i - 1], list[i]
+                UPS.set_list(list, i - 1)
+            elseif k == 2 and i < #list then
+                list[i], list[i + 1] = list[i + 1], list[i]
+                UPS.set_list(list, i + 1)
+            elseif k == 3 then
+                table.remove(list, i)
+                UPS.set_list(list, math.max(1, math.min(i, #list)))
+            else
+                mp.add_timeout(0.1, function() UPS.open_shaders(i) end)
+            end
+        end,
+    })
+end
+
+do
+    local factory = load_helper("nanum-upscale.lua", "function")
+    if factory then
+        local ok, ctl = pcall(factory, { changed = function(st)
+            if type(st) == "table" then UPS.last = st end
+            UPS.refresh()
+        end })
+        if ok and type(ctl) == "table" then
+            UPS.ctl = ctl
+        else
+            mp.msg.error("nanum-upscale.lua: " .. tostring(ctl))
+        end
+    end
+end
+
 local function build_settings()
     local items, actions, keys = {}, {}, {}
     local function add(key, text, fn)
@@ -4165,29 +4482,31 @@ local function build_settings()
     if status then
         add("full_status", status, function() reopen_menu() end)
     end
-    add("models", "AI 구성 요소 관리: " .. AIM.components_summary(), function() mp.add_timeout(0.1, AIM.open_menu) end)
-    add("display", "자막 표시: " .. display_label(opts.display), function() mp.add_timeout(0.1, open_display_menu) end)
-    add("bar_hide", "재생 바 자동 숨김: " .. TAGS.bar_hide_label(), function()
+    add("language", input.core_tr("인터페이스 언어: %s", SM.language_summary()), function() mp.add_timeout(0.1, function() SM.open_language_menu(true) end) end)
+    add("models", input.core_tr("AI 구성 요소 관리: %s", AIM.components_summary()), function() mp.add_timeout(0.1, AIM.open_menu) end)
+    add("display", input.core_tr("자막 표시: %s", display_label(opts.display)), function() mp.add_timeout(0.1, open_display_menu) end)
+    add("upscale", input.core_tr("영상 업스케일: %s", UPS.summary()), function() mp.add_timeout(0.1, UPS.open) end)
+    add("bar_hide", input.core_tr("재생 바 자동 숨김: %s", TAGS.bar_hide_label()), function()
         TAGS.cycle_bar_hide()
         reopen_menu()
     end)
-    add("ai_tags", "AI 정보 태그 표시: " .. (opts.ai_tags and "켬" or "끔"), function()
+    add("ai_tags", input.core_tr("AI 정보 태그 표시: %s", input.core_tr(opts.ai_tags and "켬" or "끔")), function()
         TAGS.set_ai_tags(not opts.ai_tags)
         reopen_menu()
     end)
-    add("style", "번역 말투: " .. style_label(), function() mp.add_timeout(0.1, open_style_menu) end)
+    add("style", input.core_tr("번역 말투: %s", style_label()), function() mp.add_timeout(0.1, open_style_menu) end)
     local sec = secondary_text(st)
-    add("secondary", "원어 음성으로도 자막 만들기: " .. (opts.secondary and "켬" or "끔")
-        .. ((opts.secondary and sec) and (" · " .. sec) or ""), function()
+    add("secondary", input.core_tr("원어 음성으로도 자막 만들기: %s", input.core_tr(opts.secondary and "켬" or "끔")
+        .. ((opts.secondary and sec) and (" · " .. sec) or "")), function()
         set_secondary(not opts.secondary)
         reopen_menu()
     end)
-    local work, lang = tostring(st and st["nanum-profile-work"] or ""), lang_ko(st and st["nanum-original-language"])
+    local work, lang = tostring(st and st["nanum-profile-work"] or ""), lang_name(st and st["nanum-original-language"])
     if work ~= "" or lang then
-        add("original", "식별된 작품·원어: " .. ((work ~= "" and lang) and (work .. " · " .. lang) or (work ~= "" and work or lang)),
+        add("original", input.core_tr("식별된 작품·원어: %s", (work ~= "" and lang) and (work .. " · " .. lang) or (work ~= "" and work or lang)),
             reopen_menu)
     end
-    add("pgs", "디스크 자막(이미지) 문자 인식으로도 자막 만들기: " .. (opts.pgs and "켬" or "끔"), function()
+    add("pgs", input.core_tr("디스크 자막(이미지) 문자 인식으로도 자막 만들기: %s", input.core_tr(opts.pgs and "켬" or "끔")), function()
         SUBS.set_pgs(not opts.pgs)
         reopen_menu()
     end)
@@ -4199,33 +4518,34 @@ local function build_settings()
     local pgs_state = st and st["nanum-pgs-state"]
     local fallback = pgs_state ~= "unavailable" and tostring(st and st["nanum-pgs-reason"] or "") ~= ""
     if opts.pgs and pgs_lang and SUBS.OCR_PACKS[pgs_lang] and (pgs_state == "unavailable" or (fallback and pgs_state ~= "off")) then
-        add("pgs_pack", fallback and string.format("%s OCR 언어 팩 설치 (관리자 권한, 인식 정확도 향상)", lang_ko(pgs_lang) or pgs_lang)
-            or string.format("%s OCR 언어 팩 설치 (관리자 권한)", lang_ko(pgs_lang) or pgs_lang), function()
+        add("pgs_pack", input.core_tr(fallback and "%s OCR 언어 팩 설치 (관리자 권한, 인식 정확도 향상)" or "%s OCR 언어 팩 설치 (관리자 권한)",
+            lang_name(pgs_lang) or pgs_lang), function()
             mp.add_timeout(0.1, function() SUBS.open_ocr_install(pgs_lang) end)
         end)
     end
-    add("subsearch", "온라인 자막 찾기" .. (SUBS.watch and " · 다운로드 기다리는 중" or " (OpenSubtitles · Jimaku)"),
+    add("subsearch", input.core_tr(SUBS.watch and "온라인 자막 찾기 · 다운로드 기다리는 중" or "온라인 자막 찾기 (OpenSubtitles · Jimaku)"),
         function() mp.add_timeout(0.1, SUBS.open_search_menu) end)
-    add("subfile", "자막 파일 가져오기…", function() SUBS.pick_file() end)
-    add("youtube_url", "YouTube 주소로 재생…", function() mp.add_timeout(0.1, SUBS.yt.ask_url) end)
-    add("youtube", "YouTube 창·구성 요소·로그인: " .. SUBS.yt.summary(), function() mp.add_timeout(0.1, SUBS.yt.open_menu) end)
+    add("subfile", input.core_tr("자막 파일 가져오기…"), function() SUBS.pick_file() end)
+    add("youtube_url", input.core_tr("YouTube 주소로 재생…"), function() mp.add_timeout(0.1, SUBS.yt.ask_url) end)
+    add("web_url", input.core_tr("웹페이지 영상 주소로 재생… (Ctrl+Shift+Y)"), function() mp.add_timeout(0.1, SUBS.web.ask_url) end)
+    add("youtube", input.core_tr("YouTube 창·구성 요소·로그인: %s", SUBS.yt.summary()), function() mp.add_timeout(0.1, SUBS.yt.open_menu) end)
     local imp = SUBS.import_text(st)
     if imp then
-        add("subimport", "가져온 자막: " .. imp, function() mp.add_timeout(0.1, SUBS.open_adjust_menu) end)
+        add("subimport", input.core_tr("가져온 자막: %s", imp), function() mp.add_timeout(0.1, SUBS.open_adjust_menu) end)
     end
     add("glossary", glossary_label(st), function() mp.add_timeout(0.1, open_glossary_menu) end)
     local diag = mp.get_property_native("user-data/nanum/diagnostics")
-    add("diag", "진단 로그(디스크 읽기 상세): " .. ((type(diag) == "table" and diag.enabled == true) and "켬" or "끔"), function()
+    add("diag", input.core_tr("진단 로그(디스크 읽기 상세): %s", input.core_tr((type(diag) == "table" and diag.enabled == true) and "켬" or "끔")), function()
         local cur = mp.get_property_native("user-data/nanum/diagnostics")
         local on = type(cur) == "table" and cur.enabled == true
         if not mp.commandv("nanum-diagnostics", on and "off" or "on") then
-            notify("이 엔진 버전은 진단 로그를 지원하지 않습니다 (nanum 갱신 필요)", 4, "error")
+            notify(input.core_tr("이 엔진 버전은 진단 로그를 지원하지 않습니다 (nanum 갱신 필요)"), 4, "error")
         elseif on then
-            notify("진단 로그를 껐습니다 (읽기 오류/매우 느린 읽기만 last-playback.log에 남습니다)", 4)
+            notify(input.core_tr("진단 로그를 껐습니다. 기본 재생 로그는 저장하지 않습니다"), 4)
         else
             local f = type(cur) == "table" and cur.file or ""
-            notify("진단 로그 켬: 디스크 읽기/탐색을 시간 기록과 함께 저장합니다 (최대 8MiB, 최근 8개 보관, 영상 데이터·키는 기록 안 함)"
-                .. (f ~= "" and ("\n" .. f) or "\n%APPDATA%\\NanumPlayer\\diagnostics\\"), 8, "ok")
+            notify(input.core_tr("진단 로그 켬: 디스크 읽기/탐색을 시간 기록과 함께 저장합니다 (최대 8MiB, 최근 8개 보관, 영상 데이터·키는 기록 안 함)\n%s",
+                f ~= "" and f or "%APPDATA%\\NanumPlayer\\diagnostics\\"), 8, "ok")
         end
         reopen_menu()
     end)
@@ -4240,51 +4560,50 @@ local function build_settings()
             end
         end)
     end
-    if lib_supported() then
-        add("lib_ask", "저장 자막 다시 조회", function() library_action("ask") end)
+    if lib_supported(true) then
+        add("lib_ask", input.core_tr("저장 자막 다시 조회"), function() library_action("ask") end)
         if lib.has_translation then
-            add("lib_use", "저장된 번역 사용", function() library_action("use") end)
+            add("lib_use", input.core_tr("저장된 번역 사용"), function() library_action("use") end)
         end
         if lib.has_source then
-            add("lib_retranslate", "저장된 원문으로 다시 번역", function() library_action("retranslate", { keep_full = true }) end)
+            add("lib_retranslate", input.core_tr("저장된 원문으로 다시 번역"), function() library_action("retranslate", { keep_full = true }) end)
         end
-        add("lib_regenerate", "음성 인식부터 새로 생성", function() library_action("regenerate", { keep_full = true }) end)
+        add("lib_regenerate", input.core_tr("음성 인식부터 새로 생성"), function() library_action("regenerate", { keep_full = true }) end)
         if not ai_disabled then
-            add("lib_disable", "이 파일은 AI 자막 끄기", function() library_action("disable") end)
+            add("lib_disable", input.core_tr("이 파일은 AI 자막 끄기"), function() library_action("disable") end)
         end
-        add("lib_auto", "저장 자막 자동 사용: " .. (opts.library_auto_use and "켬" or "끔"), function()
+        add("lib_auto", input.core_tr("저장 자막 자동 사용: %s", input.core_tr(opts.library_auto_use and "켬" or "끔")), function()
             set_auto_use(not opts.library_auto_use)
             reopen_menu()
         end)
     end
     if pinned_aud then
-        add("audio", "AI 입력 음성: #" .. tostring(pinned_aud.src) .. " " .. (pinned_aud.lang or "?") .. " (재생 음성으로 변경…)", function()
+        add("audio", input.core_tr("AI 입력 음성: #%s %s (재생 음성으로 변경…)", tostring(pinned_aud.src), pinned_aud.lang or "?"), function()
             if build_audio_prompt() then
                 queue_prompt("audio", build_audio_prompt)
                 mp.add_timeout(0.3, pump_prompts)
             else
-                notify("재생 중인 음성이 AI 입력 음성과 같습니다", 3)
+                notify(input.core_tr("재생 중인 음성이 AI 입력 음성과 같습니다"), 3)
                 reopen_menu()
             end
         end)
     end
-    add("input", "입력 소스: " .. input_label(), function() mp.add_timeout(0.1, open_input_menu) end)
-    add("full", "전체 번역 모드: " .. (opts.full and "켬" or "끔"), function()
+    add("input", input.core_tr("입력 소스: %s", input_label()), function() mp.add_timeout(0.1, open_input_menu) end)
+    add("full", input.core_tr("전체 번역 모드: %s", input.core_tr(opts.full and "켬" or "끔")), function()
         opts.full = not opts.full
         full_settings_changed()
         reopen_menu()
     end)
-    add("full_engine", "전체 번역 엔진: " .. (opts.full_engine == "omp" and "oh-my-pi" or "Ollama"), function()
+    add("full_engine", input.core_tr("전체 번역 엔진: %s", opts.full_engine == "omp" and "oh-my-pi" or "Ollama"), function()
         opts.full_engine = opts.full_engine == "omp" and "ollama" or "omp"
         full_settings_changed()
         reopen_menu()
     end)
-    add("omp_model", "oh-my-pi 모델: " .. (opts.omp_model ~= "" and opts.omp_model or "(선택 안 됨)"),
+    add("omp_model", input.core_tr("oh-my-pi 모델: %s", opts.omp_model ~= "" and opts.omp_model or input.core_tr("(선택 안 됨)")),
         function() mp.add_timeout(0.1, open_omp_picker) end)
-    add("preroll", string.format("시작 프리롤: %d초", opts.preroll), function() ask_number("시작 프리롤", "preroll") end)
-    add("seek_preroll", string.format("탐색 후 프리롤: %d초", opts.seek_preroll), function() ask_number("탐색 후 프리롤", "seek_preroll") end)
-    add("timeout", string.format("프리롤 최대 대기: %d초", opts.timeout), function() ask_number("프리롤 최대 대기", "timeout") end)
-    add("auto_select", "AI 자막 자동 선택: " .. (opts.auto_select and "켬" or "끔"), function()
+    add("preroll", input.core_tr("시작 프리롤: %d초", opts.preroll), function() ask_number(input.core_tr("시작 프리롤"), "preroll") end)
+    add("timeout", input.core_tr("프리롤 최대 대기: %d초", opts.timeout), function() ask_number(input.core_tr("프리롤 최대 대기"), "timeout") end)
+    add("auto_select", input.core_tr("AI 자막 자동 선택: %s", input.core_tr(opts.auto_select and "켬" or "끔")), function()
         opts.auto_select = not opts.auto_select
         save_settings()
         reopen_menu()
@@ -4292,15 +4611,15 @@ local function build_settings()
     for _, e in ipairs(ENGINE) do
         local open = e.key == "translate_model" and function() mp.add_timeout(0.1, function() open_ollama_picker(e) end) end
             or function() ask_text(e) end
-        add("engine_" .. e.key, string.format("%s: %s", e.label, mp.get_property("options/" .. e.opt) or ""), open)
+        add("engine_" .. e.key, input.core_tr("%s: %s", input.core_tr(e.label), mp.get_property("options/" .. e.opt) or ""), open)
     end
     local ver = mp.get_property_native("user-data/nanum/app-version")
     ver = type(ver) == "string" and ver or ""
     if ver ~= "" then
         local mpv_ver = tostring(mp.get_property("mpv-version") or ""):match("(%d+%.%d+%.?%d*)") or ""
         local backend = cache_state() and cache_state()["nanum-ai-backend"] or (AIM.acc and AIM.acc.backend)
-        add("about", "정보: NanumPlayer " .. ver .. (mpv_ver ~= "" and (" · mpv " .. mpv_ver) or "")
-            .. " · 엔진 " .. (backend == "cuda" and "CUDA" or (backend == "cpu" and "CPU" or "—")), function()
+        add("about", input.core_tr("정보: NanumPlayer %s · 엔진 %s", ver .. (mpv_ver ~= "" and (" · mpv " .. mpv_ver) or ""),
+            backend == "cuda" and "CUDA" or (backend == "cpu" and "CPU" or "—")), function()
             SUBS.open_url("https://github.com/kimmingul/NanumPlayer/releases")
             reopen_menu()
         end)
@@ -4327,7 +4646,7 @@ function open_menu()
     menu_keep = false
     input.select({
         id = "nanum-settings",
-        prompt = "NanumPlayer 설정:",
+        prompt = input.core_tr("NanumPlayer 설정:"),
         style = "settings",
         items = items,
         keys = keys,
@@ -4341,8 +4660,11 @@ function open_menu()
 end
 
 mp.add_key_binding("ctrl+n", "nanum-settings", open_menu)
+mp.add_key_binding("ctrl+alt+l", "nanum-language", function() SM.open_language_menu(false) end)
 mp.add_key_binding(nil, "nanum-display", function() open_display_menu(true) end)
 mp.observe_property("user-data/nanum/diagnostics", "native", function() update_settings_menu() end)
+mp.add_key_binding(nil, "nanum-upscale", function() UPS.open() end)
+UPS.refresh_settings = update_settings_menu
 
 ----------------------------------------------------------------------------
 -- YouTube: the browser helper (nanum_youtube.exe) is used to choose a video and to log in; playback is
@@ -4359,7 +4681,7 @@ YT.BOOKMARKLET = "javascript:location.href='nanumplayer://open?url='+encodeURICo
 YT.COMP_NAME = { ["yt-dlp"] = "yt-dlp", deno = "JavaScript 런타임(deno)" }
 
 function YT.name(id)
-    return YT.COMP_NAME[id] or tostring(id or "")
+    return input.core_tr(YT.COMP_NAME[id] or tostring(id or ""))
 end
 
 -- Only YouTube pages are accepted (a web page can trigger nanumplayer:// links): https, youtube.com /
@@ -4430,46 +4752,48 @@ function YT.progress_text()
     local d = YT.data
     if not d then return nil end
     local name = YT.name(d.current)
-    if d.status == "checking" then return "최신 버전 확인 중…" end
-    if d.status == "verifying" then return name .. " 무결성 검증 중" end
-    if d.status == "extracting" then return name .. " 압축 푸는 중" end
-    local s = name .. " 내려받는 중"
+    if d.status == "checking" then return input.core_tr("최신 버전 확인 중…") end
+    if d.status == "verifying" then return input.core_tr("%s 무결성 검증 중", name) end
+    if d.status == "extracting" then return input.core_tr("%s 압축 푸는 중", name) end
     local f = YT.fraction()
-    if f then s = s .. string.format(" %d%% (%s / %s)", math.floor(f * 100 + 0.5), AIM.fmt_size(d.received), AIM.fmt_size(d.total)) end
-    return s
+    if f then
+        return input.core_tr("%s 내려받는 중 %d%% (%s / %s)", name, math.floor(f * 100 + 0.5), AIM.fmt_size(d.received), AIM.fmt_size(d.total))
+    end
+    return input.core_tr("%s 내려받는 중", name)
 end
 
 -- Short form for the settings row.
 function YT.summary()
     local d = YT.data
-    if not d then return YT.cmd_ok == false and "지원 안 됨" or "확인 중…" end
+    if not d then return YT.cmd_ok == false and input.core_tr("지원 안 됨") or input.core_tr("확인 중…") end
     if YT.active() then
         local f = YT.fraction()
-        return (d.status == "checking" and "최신 버전 확인 중…" or (YT.name(d.current) .. " 내려받는 중" .. (f and (" " .. math.floor(f * 100 + 0.5) .. "%") or "")))
+        return d.status == "checking" and input.core_tr("최신 버전 확인 중…")
+            or (input.core_tr("%s 내려받는 중", YT.name(d.current)) .. (f and (" " .. math.floor(f * 100 + 0.5) .. "%") or ""))
     end
     if d.installed ~= true then
         local bytes = YT.missing_bytes()
-        return "구성 요소 미설치" .. (bytes > 0 and (" · " .. AIM.fmt_size(bytes)) or "")
+        return bytes > 0 and input.core_tr("구성 요소 미설치 · %s", AIM.fmt_size(bytes)) or input.core_tr("구성 요소 미설치")
     end
     local v = tostring(d.version or "")
-    local s = "yt-dlp " .. (v ~= "" and v or "설치됨")
-    if d.update_available == true then s = s .. " · 업데이트 있음" end
+    local s = "yt-dlp " .. (v ~= "" and v or input.core_tr("설치됨"))
+    if d.update_available == true then s = s .. " · " .. input.core_tr("업데이트 있음") end
     return s
 end
 
 function YT.status_text()
     local d = YT.data
-    if not d then return YT.cmd_ok == false and "이 엔진 버전은 YouTube 구성 요소 관리를 지원하지 않습니다" or "확인 중…" end
+    if not d then return YT.cmd_ok == false and input.core_tr("이 엔진 버전은 YouTube 구성 요소 관리를 지원하지 않습니다") or input.core_tr("확인 중…") end
     if YT.active() then return YT.progress_text() end
-    if d.status == "done" then return "완료" end
-    if d.status == "cancelled" then return "취소됨" end
+    if d.status == "done" then return input.core_tr("완료") end
+    if d.status == "cancelled" then return input.core_tr("취소됨") end
     if d.status == "error" then
         local e = tostring(d.error or "")
-        return "오류 — " .. (e ~= "" and e or "알 수 없는 오류")
+        return input.core_tr("오류 — %s", e ~= "" and e or input.core_tr("알 수 없는 오류"))
     end
-    if d.installed ~= true then return "YouTube 재생에 필요한 구성 요소가 없습니다" end
-    if d.update_available == true then return "새 버전이 있습니다" end
-    return tostring(d.latest or "") ~= "" and "최신 버전입니다" or "설치됨 (최신 버전 여부는 '업데이트 확인'으로 확인)"
+    if d.installed ~= true then return input.core_tr("YouTube 재생에 필요한 구성 요소가 없습니다") end
+    if d.update_available == true then return input.core_tr("새 버전이 있습니다") end
+    return tostring(d.latest or "") ~= "" and input.core_tr("최신 버전입니다") or input.core_tr("설치됨 (최신 버전 여부는 '업데이트 확인'으로 확인)")
 end
 
 function YT.refresh()
@@ -4482,34 +4806,35 @@ function YT.download()
     if t - (YT.last_cmd or -10) < 0.7 then return false end        -- double click
     YT.last_cmd = t
     if YT.active() then
-        notify("이미 내려받는 중입니다 — 끝나거나 취소한 뒤 다시 선택하세요", 4, "warn")
+        notify(input.core_tr("이미 내려받는 중입니다 — 끝나거나 취소한 뒤 다시 선택하세요"), 4, "warn")
         return false
     end
     if not mp.commandv("nanum-download-youtube-tools") then
-        notify(YT.data and "내려받기를 시작하지 못했습니다 (다른 작업이 진행 중일 수 있습니다)"
-            or "이 엔진 버전은 YouTube 구성 요소를 지원하지 않습니다 (nanum 갱신 필요)", 5, "error")
+        notify(YT.data and input.core_tr("내려받기를 시작하지 못했습니다 (다른 작업이 진행 중일 수 있습니다)")
+            or input.core_tr("이 엔진 버전은 YouTube 구성 요소를 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error")
         return false
     end
     YT.toast_at = 0
     local bytes = YT.missing_bytes()
-    notify("YouTube 구성 요소 " .. ((YT.data and YT.data.installed == true) and "업데이트를" or "내려받기를") .. " 시작합니다"
-        .. (bytes > 0 and (" (" .. AIM.fmt_size(bytes) .. ")") or ""), 4, "busy", "yt-dl")
+    local updating = YT.data and YT.data.installed == true
+    local msg = updating and "YouTube 구성 요소 업데이트를 시작합니다" or "YouTube 구성 요소 내려받기를 시작합니다"
+    notify(bytes > 0 and input.core_tr(msg .. " (%s)", AIM.fmt_size(bytes)) or input.core_tr(msg), 4, "busy", "yt-dl")
     return true
 end
 
 function YT.cancel()
     if YT.downloading() then
         mp.commandv("nanum-cancel-youtube-download")
-        notify("YouTube 구성 요소 내려받기를 취소하는 중...", 3, "busy", "yt-dl")
+        notify(input.core_tr("YouTube 구성 요소 내려받기를 취소하는 중..."), 3, "busy", "yt-dl")
     else
-        notify("진행 중인 내려받기가 없습니다", 3)
+        notify(input.core_tr("진행 중인 내려받기가 없습니다"), 3)
     end
 end
 
 -- Progress toast that survives closing the menu (text changes at most once per second, refreshed every 3 s).
 function YT.heartbeat()
     if not YT.downloading() or fluent.open_id() == "nanum-youtube" then return end
-    local text = "YouTube 구성 요소 " .. YT.progress_text()
+    local text = input.core_tr("YouTube 구성 요소: %s", YT.progress_text())
     local t = mp.get_time()
     if (text ~= YT.toast_text and t - (YT.toast_at or 0) >= 1) or t - (YT.toast_at or 0) >= 3 then
         YT.toast_text, YT.toast_at = text, t
@@ -4526,7 +4851,7 @@ function YT.on_change(_, v)
     YT.sig = sig
     if d and prev and changed then
         if d.status == "done" then
-            notify("YouTube 구성 요소 준비 완료" .. ((tostring(d.version or "") ~= "") and (" · yt-dlp " .. d.version) or ""), 5, "ok", "yt-dl")
+            notify((tostring(d.version or "") ~= "") and input.core_tr("YouTube 구성 요소 준비 완료 · yt-dlp %s", d.version) or input.core_tr("YouTube 구성 요소 준비 완료"), 5, "ok", "yt-dl")
             if d.installed == true and YT.after then
                 local fn = YT.after
                 YT.after = nil
@@ -4535,11 +4860,11 @@ function YT.on_change(_, v)
         elseif d.status == "error" then
             YT.after = nil
             local e = tostring(d.error or "")
-            notify("YouTube 구성 요소 내려받기 실패" .. (e ~= "" and (": " .. e) or "")
-                .. "\nCtrl+N → YouTube에서 다시 시도할 수 있습니다", 9, "error", "yt-dl")
+            notify(input.core_tr("YouTube 구성 요소 내려받기 실패") .. (e ~= "" and (": " .. e) or "")
+                .. "\n" .. input.core_tr("Ctrl+N → YouTube에서 다시 시도할 수 있습니다"), 9, "error", "yt-dl")
         elseif d.status == "cancelled" then
             YT.after = nil
-            notify("YouTube 구성 요소 내려받기를 취소했습니다", 3, "info", "yt-dl")
+            notify(input.core_tr("YouTube 구성 요소 내려받기를 취소했습니다"), 3, "info", "yt-dl")
         end
     end
     if d then YT.heartbeat() end
@@ -4552,11 +4877,11 @@ function YT.ensure(fn)
     if YT.installed() ~= false then return fn() end
     local bytes = YT.missing_bytes()
     input.select({
-        prompt = "YouTube 구성 요소가 필요합니다",
+        prompt = input.core_tr("YouTube 구성 요소가 필요합니다"),
         items = {
-            "내려받고 계속" .. (bytes > 0 and (" (" .. AIM.fmt_size(bytes) .. ")") or ""),
-            "구성 요소 없이 계속 (재생이 실패할 수 있습니다)",
-            "취소",
+            bytes > 0 and input.core_tr("내려받고 계속 (%s)", AIM.fmt_size(bytes)) or input.core_tr("내려받고 계속"),
+            input.core_tr("구성 요소 없이 계속 (재생이 실패할 수 있습니다)"),
+            input.core_tr("취소"),
         },
         default_item = 1,
         submit = function(i)
@@ -4579,24 +4904,28 @@ function YT.app_path(name)
     return ok and type(p) == "string" and p or ""
 end
 
--- Starts / shows the browser helper where the user picks a video and logs in.
-function YT.launch_helper()
+-- Starts / shows the browser helper. extra: more helper arguments (the page mode passes --url <page>);
+-- text: the toast that tells the user what happens next.
+function YT.launch_helper(extra, text)
     local exe = YT.app_path("nanum_youtube.exe")
     if exe == "" or not require('mp.utils').file_info(exe) then
-        notify("YouTube 브라우저(nanum_youtube.exe)를 찾을 수 없습니다 — NanumPlayer를 다시 설치하세요", 7, "error", "yt")
+        notify(input.core_tr("YouTube 브라우저(nanum_youtube.exe)를 찾을 수 없습니다 — NanumPlayer를 다시 설치하세요"), 7, "error", "yt")
         return false
     end
+    local args = { exe }
+    for _, a in ipairs(type(extra) == "table" and extra or {}) do args[#args + 1] = a end
+    args[#args + 1] = "--language"          -- also forwarded to an already running helper, which relabels its window
+    args[#args + 1] = input.i18n.language()
     -- A bare name (--input-ipc-server=foo) is stored as "foo": the pipe is \\.\pipe\foo. No pipe in this window:
     -- the helper falls back to the player's default name.
     local pipe = mp.get_property("input-ipc-server")
-    local args = { exe }
     if type(pipe) == "string" and pipe ~= "" then
         if not pipe:lower():find("^\\\\%.\\pipe\\") then pipe = "\\\\.\\pipe\\" .. pipe end
         args[#args + 1] = "--pipe"
         args[#args + 1] = pipe
     end
     mp.command_native_async({ name = "subprocess", args = args, playback_only = false, detach = true }, function() end)
-    notify("YouTube 창을 엽니다 — 영상을 고르면 NanumPlayer에서 재생합니다", 5, "busy", "yt")
+    notify(type(text) == "string" and text or input.core_tr("YouTube 창을 엽니다 — 영상을 고르면 NanumPlayer에서 재생합니다"), 5, "busy", "yt")
     return true
 end
 
@@ -4616,8 +4945,7 @@ end
 function YT.play(url)
     local canon, start = YT.parse(url)
     if not canon then
-        notify("YouTube 영상 주소가 아닙니다: " .. tostring(url):sub(1, 80) ..
-            "\n(https://www.youtube.com/watch?v=… 또는 https://youtu.be/… 형식)", 6, "warn", "yt")
+        notify(input.core_tr("YouTube 영상 주소가 아닙니다: %s\n(https://www.youtube.com/watch?v=… 또는 https://youtu.be/… 형식)", tostring(url):sub(1, 80)), 6, "warn", "yt")
         return false
     end
     YT.ensure(function()
@@ -4625,7 +4953,7 @@ function YT.play(url)
         if start then args[#args + 1] = "start=" .. start end
         mp.commandv((table.unpack or unpack)(args))
         YT.raise()
-        notify("YouTube 영상을 불러오는 중…" .. (start and string.format(" (%d초부터)", start) or ""), 6, "busy", "yt")
+        notify(start and input.core_tr("YouTube 영상을 불러오는 중… (%d초부터)", start) or input.core_tr("YouTube 영상을 불러오는 중…"), 6, "busy", "yt")
     end)
     return true
 end
@@ -4638,7 +4966,7 @@ end
 
 function YT.ask_url()
     input.get({
-        prompt = "YouTube 주소 (복사한 주소를 붙여넣으세요):",
+        prompt = input.core_tr("YouTube 주소 (복사한 주소를 붙여넣으세요):"),
         default_text = YT.clipboard_url(),
         submit = function(text)
             input.terminate()
@@ -4657,23 +4985,23 @@ function YT.classify(text)
         return false
     end
     if has("not found or not enough permissions") then
-        return { key = "missing", text = "yt-dlp 구성 요소를 찾을 수 없습니다", hint = "Ctrl+N → YouTube에서 구성 요소를 내려받으세요" }
+        return { key = "missing", text = input.core_tr("yt-dlp 구성 요소를 찾을 수 없습니다"), hint = input.core_tr("Ctrl+N → YouTube에서 구성 요소를 내려받으세요") }
     elseif has("not a bot") then
-        return { key = "login", text = "YouTube가 로봇이 아닌지 확인을 요구합니다", hint = "YouTube 창에서 로그인 후 다시 시도하세요" }
+        return { key = "login", text = input.core_tr("YouTube가 로봇이 아닌지 확인을 요구합니다"), hint = input.core_tr("YouTube 창에서 로그인 후 다시 시도하세요") }
     elseif has("sign in", "log in", "login required", "private video", "members-only", "members only", "confirm your age", "age-restricted", "age restricted") then
-        return { key = "login", text = "로그인이 필요한 영상입니다", hint = "YouTube 창에서 로그인 후 다시 시도하세요" }
+        return { key = "login", text = input.core_tr("로그인이 필요한 영상입니다"), hint = input.core_tr("YouTube 창에서 로그인 후 다시 시도하세요") }
     elseif has("requested format is not available", "no video formats found", "no formats") then
-        return { key = "update", text = "재생할 수 있는 영상 형식을 찾지 못했습니다", hint = "구성 요소를 업데이트한 뒤 다시 시도하세요 (Ctrl+N → YouTube)" }
+        return { key = "update", text = input.core_tr("재생할 수 있는 영상 형식을 찾지 못했습니다"), hint = input.core_tr("구성 요소를 업데이트한 뒤 다시 시도하세요 (Ctrl+N → YouTube)") }
     elseif has("unable to extract", "nsig", "signature", "http error 403", "javascript runtime", "js runtime", "player response", "po token", "challenge") then
-        return { key = "update", text = "yt-dlp가 YouTube의 변경을 따라가지 못했습니다", hint = "구성 요소를 업데이트한 뒤 다시 시도하세요 (Ctrl+N → YouTube)" }
+        return { key = "update", text = input.core_tr("yt-dlp가 YouTube의 변경을 따라가지 못했습니다"), hint = input.core_tr("구성 요소를 업데이트한 뒤 다시 시도하세요 (Ctrl+N → YouTube)") }
     elseif has("video unavailable", "has been removed", "no longer available", "this video is not available", "copyright", "not made this video available", "geo") then
-        return { key = "gone", text = "재생할 수 없는 영상입니다 (삭제·비공개·지역 제한)", hint = "로그인하면 볼 수 있는 영상일 수 있습니다 — YouTube 창에서 로그인해 보세요" }
+        return { key = "gone", text = input.core_tr("재생할 수 없는 영상입니다 (삭제·비공개·지역 제한)"), hint = input.core_tr("로그인하면 볼 수 있는 영상일 수 있습니다 — YouTube 창에서 로그인해 보세요") }
     elseif has("unable to download", "urlopen error", "timed out", "getaddrinfo", "network is unreachable", "connection reset") then
-        return { key = "net", text = "네트워크 오류로 YouTube에 연결하지 못했습니다", hint = "인터넷 연결을 확인한 뒤 다시 시도하세요" }
+        return { key = "net", text = input.core_tr("네트워크 오류로 YouTube에 연결하지 못했습니다"), hint = input.core_tr("인터넷 연결을 확인한 뒤 다시 시도하세요") }
     end
     local first = tostring(text or ""):match("[Ee][Rr][Rr][Oo][Rr]:%s*([^\r\n]+)") or ""
-    return { key = "other", text = "YouTube 재생에 실패했습니다" .. (first ~= "" and (": " .. first:sub(1, 140)) or ""),
-        hint = "구성 요소를 업데이트하거나 YouTube 창에서 로그인한 뒤 다시 시도하세요" }
+    return { key = "other", text = first ~= "" and input.core_tr("YouTube 재생에 실패했습니다: %s", first:sub(1, 140)) or input.core_tr("YouTube 재생에 실패했습니다"),
+        hint = input.core_tr("구성 요소를 업데이트하거나 YouTube 창에서 로그인한 뒤 다시 시도하세요") }
 end
 
 -- Collects what ytdl_hook says while a file loads (the failure itself arrives as end-file).
@@ -4698,91 +5026,46 @@ function YT.on_play_error()
         actions[#actions + 1] = fn
     end
     if r.key == "missing" then
-        add("YouTube 구성 요소 내려받기", function() YT.download() end)
+        add(input.core_tr("YouTube 구성 요소 내려받기"), function() YT.download() end)
     elseif r.key == "login" or r.key == "gone" then
-        add("YouTube 창 열기 (로그인)", function() YT.open_browser() end)
+        add(input.core_tr("YouTube 창 열기 (로그인)"), function() YT.open_browser() end)
     elseif r.key == "update" or r.key == "other" then
-        add("구성 요소 업데이트", function() YT.refresh(); YT.download() end)
-        add("YouTube 창 열기 (로그인)", function() YT.open_browser() end)
+        add(input.core_tr("구성 요소 업데이트"), function() YT.refresh(); YT.download() end)
+        add(input.core_tr("YouTube 창 열기 (로그인)"), function() YT.open_browser() end)
     end
     if #items > 0 then
-        add("닫기", function() end)
+        add(input.core_tr("닫기"), function() end)
         mp.add_timeout(0.6, function()
             if fluent.modal_busy() then return end
-            input.select({ prompt = "YouTube 재생에 실패했습니다", items = items, submit = function(i) actions[i]() end })
+            input.select({ prompt = input.core_tr("YouTube 재생에 실패했습니다"), items = items, submit = function(i) actions[i]() end })
         end)
     end
     return true
 end
 
--- Windows tasklist: is the helper running? cb(true|false)
-function YT.helper_running(cb)
-    mp.command_native_async({ name = "subprocess", playback_only = false, capture_stdout = true,
-        args = { "tasklist", "/FI", "IMAGENAME eq nanum_youtube.exe", "/FO", "CSV", "/NH" } }, function(ok, res)
-        cb(ok and res and (res.stdout or ""):lower():find("nanum_youtube.exe", 1, true) ~= nil)
-    end)
-end
-
--- <root>\profile and <root>\cookies.txt of the helper (never anything else).
-function YT.login_paths()
-    local root = YT.data and type(YT.data.directory) == "string" and YT.data.directory ~= "" and YT.data.directory
-        or os.getenv("NANUMPLAYER_YOUTUBE_DIR")
-        or ((os.getenv("LOCALAPPDATA") or "") .. "\\NanumPlayer\\youtube")
-    root = root:gsub("/", "\\"):gsub("\\+$", "")
-    return root .. "\\profile", root .. "\\cookies.txt"
-end
-
-function YT.delete_login_now()
-    local profile, cookies = YT.login_paths()
-    local utils = require 'mp.utils'
-    local had = utils.file_info(profile) ~= nil or utils.file_info(cookies) ~= nil
-    if utils.file_info(profile) then
-        mp.command_native({ name = "subprocess", playback_only = false, args = { "cmd", "/c", "rmdir", "/s", "/q", profile } })
-    end
-    if utils.file_info(cookies) then os.remove(cookies) end
-    if utils.file_info(profile) or utils.file_info(cookies) then
-        notify("로그인 정보를 모두 지우지 못했습니다 — YouTube 창을 닫고 다시 시도하세요", 7, "error", "yt")
-    elseif had then
-        notify("YouTube 로그인 정보를 삭제했습니다 (다음에 YouTube 창을 열면 다시 로그인해야 합니다)", 6, "ok", "yt")
-    else
-        notify("삭제할 YouTube 로그인 정보가 없습니다", 4, "info", "yt")
-    end
-end
-
--- The helper keeps the profile open: ask it to quit (nanum_youtube.exe --quit), wait, then delete.
+-- The helper owns the private session and waits for its profile cleanup on --quit.
 function YT.delete_login()
-    YT.helper_running(function(running)
-        if not running then return YT.delete_login_now() end
-        local exe = YT.app_path("nanum_youtube.exe")
-        if exe ~= "" and require('mp.utils').file_info(exe) then
-            mp.command_native_async({ name = "subprocess", playback_only = false, args = { exe, "--quit" } }, function() end)
+    local exe = YT.app_path("nanum_youtube.exe")
+    if exe == "" or not require('mp.utils').file_info(exe) then
+        notify(input.core_tr("웹 도우미를 찾을 수 없습니다"), 6, "error", "yt")
+        return
+    end
+    notify(input.core_tr("시크릿 웹 세션을 종료하는 중…"), 6, "busy", "yt")
+    mp.command_native_async({ name = "subprocess", playback_only = false,
+        args = { exe, "--quit" } }, function(ok, res)
+        if ok and res and res.status == 0 then
+            notify(input.core_tr("시크릿 웹 세션을 종료했습니다. 다음 창에서는 다시 로그인해야 합니다"), 6, "ok", "yt")
+        else
+            notify(input.core_tr("시크릿 세션 정리를 완료하지 못했습니다. 웹 창을 닫고 다시 시도하세요"), 8, "error", "yt")
         end
-        notify("열려 있는 YouTube 창을 닫는 중…", 6, "busy", "yt")
-        local tries = 0
-        local timer
-        timer = mp.add_periodic_timer(1, function()
-            tries = tries + 1
-            YT.helper_running(function(still)
-                if not timer then return end
-                if not still then
-                    timer:kill()
-                    timer = nil
-                    mp.add_timeout(1.0, YT.delete_login_now)         -- the profile stays locked for a moment
-                elseif tries >= 8 then
-                    timer:kill()
-                    timer = nil
-                    notify("YouTube 창이 닫히지 않았습니다 — 창을 직접 닫은 뒤 다시 시도하세요", 8, "warn", "yt")
-                end
-            end)
-        end)
     end)
 end
 
 function YT.open_delete_confirm()
     local chosen = false
     input.select({
-        prompt = "YouTube 로그인 정보를 삭제할까요?",
-        items = { "삭제 (이 PC의 YouTube 창 로그인 정보와 쿠키)", "취소" },
+        prompt = input.core_tr("시크릿 웹 세션을 종료할까요?"),
+        items = { input.core_tr("종료 및 로그아웃 (YouTube·웹페이지)"), input.core_tr("취소") },
         default_item = 2,
         submit = function(i)
             chosen = true
@@ -4797,19 +5080,19 @@ end
 function YT.open_bookmarklet()
     local copied = SUBS.copy_text(YT.BOOKMARKLET)
     input.select({
-        prompt = copied and "북마클릿을 클립보드에 복사했습니다" or "북마클릿 (복사하지 못했습니다 — 아래 줄을 직접 복사하세요)",
+        prompt = copied and input.core_tr("북마클릿을 클립보드에 복사했습니다") or input.core_tr("북마클릿 (복사하지 못했습니다 — 아래 줄을 직접 복사하세요)"),
         items = {
-            "1. 브라우저 북마크 표시줄에서 '새 북마크'(또는 즐겨찾기 추가)를 만듭니다",
-            "2. 이름: NanumPlayer로 열기 / 주소(URL): 복사한 내용을 붙여넣습니다 (Ctrl+V)",
-            "3. 브라우저에서 YouTube 영상을 연 뒤 그 북마크를 누르면 NanumPlayer에서 재생됩니다",
+            input.core_tr("1. 브라우저 북마크 표시줄에서 '새 북마크'(또는 즐겨찾기 추가)를 만듭니다"),
+            input.core_tr("2. 이름: NanumPlayer로 열기 / 주소(URL): 복사한 내용을 붙여넣습니다 (Ctrl+V)"),
+            input.core_tr("3. 브라우저에서 YouTube 영상을 연 뒤 그 북마크를 누르면 NanumPlayer에서 재생됩니다"),
             YT.BOOKMARKLET,
-            "다시 복사",
-            "뒤로",
+            input.core_tr("다시 복사"),
+            input.core_tr("뒤로"),
         },
         default_item = 5,
         submit = function(i)
             if i == 5 then
-                notify(SUBS.copy_text(YT.BOOKMARKLET) and "북마클릿을 복사했습니다" or "복사하지 못했습니다", 3, "ok")
+                notify(input.core_tr(SUBS.copy_text(YT.BOOKMARKLET) and "북마클릿을 복사했습니다" or "복사하지 못했습니다"), 3, "ok")
             end
         end,
         closed = function()
@@ -4826,10 +5109,10 @@ function YT.build_menu()
         keys[#keys + 1] = key
     end
     local d = YT.data
-    add("status", "구성 요소 상태: " .. YT.status_text(), function()
+    add("status", input.core_tr("구성 요소 상태: %s", YT.status_text()), function()
         local cur = YT.data
         if cur and cur.status == "error" and tostring(cur.error or "") ~= "" then
-            notify("YouTube 구성 요소 오류: " .. cur.error, 9, "error")
+            notify(input.core_tr("YouTube 구성 요소 오류: %s", cur.error), 9, "error")
         end
     end)
     if d then
@@ -4838,47 +5121,48 @@ function YT.build_menu()
             local val
             if YT.downloading() and d.current == c.id then
                 if d.status == "verifying" then
-                    val, progress[key] = "무결성 검증 중", 1
+                    val, progress[key] = input.core_tr("무결성 검증 중"), 1
                 elseif d.status == "extracting" then
-                    val, progress[key] = "압축 푸는 중", 1
+                    val, progress[key] = input.core_tr("압축 푸는 중"), 1
                 else
                     local f = YT.fraction()
-                    val = string.format("내려받는 중 %s · %s / %s", f and (math.floor(f * 100 + 0.5) .. "%") or "…",
+                    val = input.core_tr("내려받는 중 %s · %s / %s", f and (math.floor(f * 100 + 0.5) .. "%") or "…",
                         AIM.fmt_size(d.received), AIM.fmt_size(d.total))
                     progress[key] = f or 0
                 end
             elseif c.installed then
-                val = "설치됨" .. (tostring(c.version or "") ~= "" and (" · " .. c.version) or "")
+                val = tostring(c.version or "") ~= "" and input.core_tr("설치됨 · %s", c.version) or input.core_tr("설치됨")
             else
-                val = "미설치 · " .. AIM.fmt_size(c.size)
+                val = input.core_tr("미설치 · %s", AIM.fmt_size(c.size))
             end
-            add(key, (c.installed and "● " or "  ") .. tostring(c.label or YT.name(c.id)) .. ": " .. val, function()
+            add(key, (c.installed and "● " or "  ") .. input.core_tr("%s: %s", tostring(c.label or YT.name(c.id)), val), function()
                 if not c.installed then YT.download() end
             end)
         end
         local need = d.installed ~= true
         local upd = d.update_available == true
-        add("download", (need and "구성 요소 내려받기: " or (upd and "구성 요소 업데이트: " or "구성 요소 업데이트: "))
-            .. (YT.active() and "진행 중" or (need and AIM.fmt_size(YT.missing_bytes())
-            or (upd and ("새 버전 " .. tostring(d.latest or "")) or "최신 버전입니다"))), function()
+        add("download", input.core_tr(need and "구성 요소 내려받기: %s" or "구성 요소 업데이트: %s",
+            YT.active() and input.core_tr("진행 중") or (need and AIM.fmt_size(YT.missing_bytes())
+            or (upd and input.core_tr("새 버전 %s", tostring(d.latest or "")) or input.core_tr("최신 버전입니다")))), function()
             if not need and not upd then
-                notify("최신 버전입니다 — '업데이트 확인'으로 새 버전이 있는지 먼저 확인하세요", 4, "info")
+                notify(input.core_tr("최신 버전입니다 — '업데이트 확인'으로 새 버전이 있는지 먼저 확인하세요"), 4, "info")
             else
                 YT.download()
             end
         end)
-        add("check", "업데이트 확인: " .. (tostring(d.latest or "") ~= "" and ("최신 " .. d.latest) or "아직 확인하지 않음"), function()
+        add("check", input.core_tr("업데이트 확인: %s", tostring(d.latest or "") ~= "" and input.core_tr("최신 %s", d.latest) or input.core_tr("아직 확인하지 않음")), function()
             if YT.active() then return end
             YT.refresh()
-            notify("최신 버전을 확인합니다", 3)
+            notify(input.core_tr("최신 버전을 확인합니다"), 3)
         end)
-        add("cancel", "내려받기 취소: " .. (YT.downloading() and "진행 중인 작업 중단" or "진행 중인 작업 없음"), YT.cancel)
+        add("cancel", input.core_tr("내려받기 취소: %s", input.core_tr(YT.downloading() and "진행 중인 작업 중단" or "진행 중인 작업 없음")), YT.cancel)
     end
-    add("browser", "YouTube 창 열기 (영상 선택·로그인)", function() mp.add_timeout(0.1, YT.open_browser) end)
-    add("url", "YouTube 주소로 재생…", function() mp.add_timeout(0.1, YT.ask_url) end)
-    add("bookmarklet", "'NanumPlayer로 열기' 북마클릿 복사 (다른 브라우저용)", function() mp.add_timeout(0.1, YT.open_bookmarklet) end)
-    add("logout", "YouTube 로그인 정보 삭제", function() mp.add_timeout(0.1, YT.open_delete_confirm) end)
-    add("back", "설정 메뉴로 돌아가기", function()
+    add("browser", input.core_tr("YouTube 시크릿 창 열기 (로그인은 이번 세션에서만 유지)"), function() mp.add_timeout(0.1, YT.open_browser) end)
+    add("url", input.core_tr("YouTube 주소로 재생…"), function() mp.add_timeout(0.1, YT.ask_url) end)
+    add("web", input.core_tr("웹페이지 영상 주소로 재생… (Ctrl+Shift+Y)"), function() mp.add_timeout(0.1, SUBS.web.ask_url) end)
+    add("bookmarklet", input.core_tr("'NanumPlayer로 열기' 북마클릿 복사 (다른 브라우저용)"), function() mp.add_timeout(0.1, YT.open_bookmarklet) end)
+    add("logout", input.core_tr("시크릿 웹 세션 종료 (로그아웃)"), function() mp.add_timeout(0.1, YT.open_delete_confirm) end)
+    add("back", input.core_tr("설정 메뉴로 돌아가기"), function()
         menu_keep = true
         mp.add_timeout(0.1, open_menu)
     end)
@@ -4897,7 +5181,7 @@ function YT.open_menu()
     YT.actions = actions
     input.select({
         id = "nanum-youtube",
-        prompt = "YouTube:",
+        prompt = input.core_tr("YouTube · 시크릿 웹:"),
         style = "settings",
         marks = true,
         keep_open = true,
@@ -4911,6 +5195,145 @@ function YT.open_menu()
     })
 end
 
+----------------------------------------------------------------------------
+-- Any web page (not only YouTube): `nanum_youtube.exe --url <page> --pipe <pipe>` opens the page in the browser
+-- helper, which finds the media the page really plays and sends ONE json string
+--   script-message nanum-web-open {"url","origin","referer","user_agent","title","cookie_jar"?}
+-- url: http(s) media / manifest, origin: top-level page, referer: the frame that holds the player, cookie_jar:
+-- in-memory Netscape cookies for that media URL, retaining domain/path/secure scope. Everything is applied as
+-- per-file loadfile options, so nothing of it reaches the next file. Playback / AI subtitles are the normal
+-- ones; no yt-dlp is involved. (Named SUBS.web, no new main-chunk local: the chunk is near the 200-local limit.)
+----------------------------------------------------------------------------
+SUBS.web = {}
+
+-- http(s) URL without whitespace / control characters / quotes / userinfo -> the URL | nil
+function SUBS.web.http_url(s, max)
+    if type(s) ~= "string" or s == "" or #s > (max or 8192) then return nil end
+    if s:find("[%c%s\127\"]") then return nil end
+    local auth = s:match("^[hH][tT][tT][pP][sS]?://([^/%?#]*)")
+    if not auth or auth == "" or auth:find("@", 1, true) or auth:find("^:") then return nil end
+    return s
+end
+
+-- A value that goes into an HTTP header: no CR / LF / other control characters.
+function SUBS.web.header(s, max)
+    if type(s) ~= "string" or #s > (max or 1024) or s:find("[%c\127]") then return nil end
+    s = s:match("^%s*(.-)%s*$")
+    return s ~= "" and s or nil
+end
+
+-- Single-line title, at most 200 bytes (never cut inside a UTF-8 sequence).
+function SUBS.web.clean_title(s)
+    s = s:gsub("[%c\127]+", " "):match("^%s*(.-)%s*$")
+    if #s > 200 then
+        local cut = 200
+        while cut > 0 do
+            local b = s:byte(cut + 1)
+            if b and b >= 0x80 and b < 0xC0 then cut = cut - 1 else break end
+        end
+        s = s:sub(1, cut)
+    end
+    return s ~= "" and s or nil
+end
+
+-- JSON payload -> { url, origin, referer, user_agent, title, cookie_jar } | nil, reason
+function SUBS.web.parse(payload)
+    if type(payload) ~= "string" or payload == "" or #payload > 65536 then return nil, "요청 형식이 올바르지 않습니다" end
+    local d = require('mp.utils').parse_json(payload)
+    if type(d) ~= "table" then return nil, "요청 형식이 올바르지 않습니다" end
+    local req = {}
+    req.url = SUBS.web.http_url(d.url)
+    if not req.url then return nil, "영상 주소가 올바른 http(s) 주소가 아닙니다" end
+    req.origin = SUBS.web.http_url(d.origin)
+    if not req.origin then return nil, "웹페이지 주소(origin)가 올바르지 않습니다" end
+    if d.referer ~= nil and d.referer ~= "" then
+        req.referer = SUBS.web.http_url(d.referer)
+        if not req.referer then return nil, "Referer가 올바르지 않습니다" end
+    end
+    if d.user_agent ~= nil and d.user_agent ~= "" then
+        req.user_agent = SUBS.web.header(d.user_agent)
+        if not req.user_agent then return nil, "User-Agent가 올바르지 않습니다" end
+    end
+    if d.title ~= nil then
+        if type(d.title) ~= "string" then return nil, "제목이 올바르지 않습니다" end
+        req.title = SUBS.web.clean_title(d.title)
+    end
+    if d.cookie_jar ~= nil and d.cookie_jar ~= "" then
+        if type(d.cookie_jar) ~= "string" or #d.cookie_jar > 60000 or d.cookie_jar:find("\0", 1, true) then
+            return nil, "메모리 쿠키 형식이 올바르지 않습니다"
+        end
+        req.cookie_jar = d.cookie_jar
+    end
+    return req
+end
+
+-- script-message nanum-web-open <json>
+function SUBS.web.play(payload)
+    local req, why = SUBS.web.parse(payload)
+    if not req then
+        mp.msg.warn("웹페이지 영상 요청 거부: " .. tostring(why))
+        notify(input.core_tr("웹페이지 영상을 열지 못했습니다: %s", input.core_tr(tostring(why))), 7, "error", "web")
+        return false
+    end
+    -- File-local only (a map, so commas in values are safe): ytdl_hook / headers / cookies end with this file.
+    local o = { ytdl = "no", ["nanum-origin-url"] = req.origin }
+    if req.referer then o.referrer = req.referer end
+    if req.user_agent then o["user-agent"] = req.user_agent end
+    if req.cookie_jar then
+        o.cookies = "yes"
+        o["cookies-file"] = "memory://" .. req.cookie_jar
+    end
+    if req.title then o["force-media-title"] = req.title end
+    local res = mp.command_native({ name = "loadfile", url = req.url, flags = "replace", index = -1, options = o })
+    if res == nil then
+        mp.msg.error("웹페이지 영상을 불러오지 못했습니다 (loadfile 거부)")
+        notify(input.core_tr("웹페이지 영상을 불러오지 못했습니다"), 7, "error", "web")
+        return false
+    end
+    SUBS.yt.raise()
+    notify(req.title and input.core_tr("웹페이지 영상을 불러오는 중…\n%s", req.title:sub(1, 60)) or input.core_tr("웹페이지 영상을 불러오는 중…"), 6, "busy", "web")
+    return true
+end
+
+-- Opens the page in the helper's browser window. The 'NanumPlayer에서 재생' button is always there; the helper looks for the media when it is clicked.
+function SUBS.web.open(url)
+    url = tostring(url or ""):match("^%s*(.-)%s*$")
+    if not SUBS.web.http_url(url, 2048) then
+        notify(input.core_tr("웹페이지 주소가 아닙니다 (http:// 또는 https:// 로 시작하는 주소)"), 6, "warn", "web")
+        return false
+    end
+    return SUBS.yt.launch_helper({ "--url", url },
+        input.core_tr("웹페이지 창을 엽니다 — 페이지에서 영상을 재생한 뒤 'NanumPlayer에서 재생'을 누르세요"))
+end
+
+function SUBS.web.clipboard_url()
+    local c = mp.get_property("clipboard/text")
+    c = type(c) == "string" and c:match("^%s*(.-)%s*$") or ""
+    return SUBS.web.http_url(c, 2048) and c or ""
+end
+
+function SUBS.web.ask_url()
+    input.get({
+        prompt = input.core_tr("시크릿 웹페이지 주소 (영상이 있는 페이지):"),
+        default_text = SUBS.web.clipboard_url(),
+        submit = function(text)
+            input.terminate()
+            if text:match("%S") then SUBS.web.open(text) end
+        end,
+    })
+end
+
+-- Ctrl+Shift+Y (mpv names that chord ctrl+Y); a script-message with a page url starts the page window at once.
+mp.add_key_binding("ctrl+Y", "nanum-web", SUBS.web.ask_url)
+mp.add_key_binding(nil, "nanum-web-url", SUBS.web.ask_url)
+mp.register_script_message("nanum-web-url", function(url)
+    if url and url:match("%S") then SUBS.web.open(url) else SUBS.web.ask_url() end
+end)
+mp.register_script_message("nanum-web-open", SUBS.web.play)
+-- Readiness for the helper: it waits for this property before it sends nanum-web-open.
+mp.set_property_native("user-data/nanum/web-ready", true)
+mp.register_event("shutdown", function() mp.set_property_native("user-data/nanum/web-ready", false) end)
+
 mp.add_key_binding("ctrl+y", "nanum-youtube", YT.open_browser)
 mp.add_key_binding(nil, "nanum-youtube-menu", YT.open_menu)
 mp.add_key_binding(nil, "nanum-youtube-url", YT.ask_url)
@@ -4922,27 +5345,12 @@ mp.add_periodic_timer(1, YT.heartbeat)
 end
 
 ----------------------------------------------------------------------------
--- Encrypted Blu-ray failures: the libbluray messages tell missing decryption
--- (MakeMKV not installed) from a failing one (installed but not activated / key
--- expired / disc not supported). Own scope: main chunk is near Lua's 200 locals.
+-- Independent disc backend errors. Own scope: the main chunk is near Lua's
+-- 200-local limit. Missing libraries and unsupported encryption stay distinct.
 ----------------------------------------------------------------------------
 do
 local DISC = { log = {}, path = nil }
 SUBS.disc = DISC
-DISC.DOWNLOAD_URL = "https://www.makemkv.com/download/"
-
--- <Program Files>\MakeMKV folder of an installed MakeMKV, or nil.
-function DISC.makemkv_dir()
-    local utils = require 'mp.utils'
-    for _, var in ipairs({ "ProgramFiles(x86)", "ProgramFiles", "ProgramW6432" }) do
-        local base = os.getenv(var)
-        if base and base ~= "" then
-            local dir = base .. "\\MakeMKV"
-            if utils.file_info(dir .. "\\libmmbd64.dll") then return dir end
-        end
-    end
-    return nil
-end
 
 function DISC.on_log(e)
     if e.prefix ~= "bd" or (e.level ~= "error" and e.level ~= "fatal") then return end
@@ -4956,6 +5364,7 @@ function DISC.classify(text)
     if text:find("cannot find libaacs", 1, true) or text:find("cannot find libbdplus", 1, true) then
         return "missing"
     end
+    if text:find("AACS key database unavailable", 1, true) then return "database" end
     if text:find("AACS error", 1, true) or text:find("Cannot decrypt BD+", 1, true) then
         return "failed"
     end
@@ -4968,34 +5377,30 @@ function DISC.on_play_error()
     local path = DISC.path
     DISC.log = {}
     if not kind then return false end
-    local dir = DISC.makemkv_dir()
     local title, text
-    if kind == "missing" or not dir then
-        title = "MakeMKV가 설치되어 있지 않습니다"
-        text = "암호화된 Blu-ray를 재생하려면 MakeMKV가 필요합니다. 설치 후 한 번 실행해 활성화(베타 키 또는 구매 키)하세요."
+    if kind == "missing" then
+        title = "내장 디스크 라이브러리를 찾을 수 없습니다"
+        text = "NanumPlayer의 disc 폴더가 누락되었거나 손상되었습니다. 배포본을 다시 설치하세요."
+    elseif kind == "database" then
+        title = "자동 키 DB를 준비하지 못했습니다"
+        text = "키 DB 다운로드 또는 검증에 실패했습니다. 인터넷 연결을 확인한 뒤 다시 시도하세요. 기존 DB는 유지됩니다."
     else
-        title = "MakeMKV로 디스크 암호를 풀지 못했습니다"
-        text = "MakeMKV는 설치되어 있지만 활성화되지 않았거나 키(베타 키)가 만료됐을 수 있습니다. MakeMKV를 실행해 등록 상태를 확인하세요."
+        title = "디스크 암호를 풀지 못했습니다"
+        text = "자동 키 DB 다운로드의 인터넷 연결을 확인하세요. DB에 키가 없거나 지원되지 않는 AACS·BD+ 보호 방식이면 열 수 없습니다."
     end
     mp.set_property_native("user-data/nanum/error-handled", true)
     mp.msg.error(title)
+    title, text = input.core_tr(title), input.core_tr(text)
     notify(title .. "\n" .. text, 12, "error", "disc")
     local items, actions = {}, {}
     local function add(label, fn)
         items[#items + 1] = label
         actions[#actions + 1] = fn
     end
-    if kind == "failed" and dir then
-        add("MakeMKV 실행 (등록·키 확인)", function()
-            mp.command_native_async({ name = "subprocess", args = { dir .. "\\makemkv.exe" },
-                playback_only = false, detach = true }, function() end)
-        end)
-    end
-    add("MakeMKV 받기 페이지 열기", function() SUBS.open_url(DISC.DOWNLOAD_URL) end)
     if path then
-        add("다시 시도", function() mp.commandv("loadfile", path, "replace") end)
+        add(input.core_tr("다시 시도"), function() mp.commandv("loadfile", path, "replace") end)
     end
-    add("닫기", function() end)
+    add(input.core_tr("닫기"), function() end)
     mp.add_timeout(0.6, function()
         if fluent.modal_busy() then return end
         input.select({ prompt = title, items = items, submit = function(i) actions[i]() end })
@@ -5012,7 +5417,7 @@ end
 
 ----------------------------------------------------------------------------
 -- AI component manager (Ctrl+N -> "AI 구성 요소 관리", or `script-binding nanum-models`):
--- CPU engine, optional CUDA engine / cuBLAS / reused CUDA Toolkit, and the speech models.
+-- Bundled CPU/CUDA engines, optional cuBLAS/reused CUDA Toolkit, and speech models.
 -- Stays open while downloading; rows, percentages and the progress bar follow
 -- user-data/nanum/models and user-data/nanum/accelerator in place (no reopening).
 -- Closing it does not stop a download: progress continues in toasts / the status chip.
@@ -5020,7 +5425,7 @@ end
 
 function AIM.open_dir(dir)
     if type(dir) ~= "string" or dir == "" then
-        notify("저장 위치를 알 수 없습니다", 3, "warn")
+        notify(input.core_tr("저장 위치를 알 수 없습니다"), 3, "warn")
         return
     end
     notify(dir, 5)
@@ -5036,8 +5441,8 @@ end
 -- A model that is already installed: keep it, or have the engine verify it again.
 function AIM.open_reinstall(m)
     input.select({
-        prompt = "이미 설치됨: " .. tostring(m.label or AIM.name(m.id)),
-        items = { "유지", "파일을 검증하고 필요하면 다시 내려받기" },
+        prompt = input.core_tr("이미 설치됨: %s", tostring(m.label or AIM.name(m.id))),
+        items = { input.core_tr("유지"), input.core_tr("파일을 검증하고 필요하면 다시 내려받기") },
         submit = function(i)
             if i == 2 then AIM.download(m.id) end
         end,
@@ -5050,11 +5455,11 @@ end
 function AIM.open_mode_menu()
     local items, default = {}, 1
     for i, m in ipairs(AIM.MODES) do
-        items[i] = (m == AIM.mode() and "● " or "  ") .. AIM.MODE_DESC[m]
+        items[i] = (m == AIM.mode() and "● " or "  ") .. input.core_tr(AIM.MODE_DESC[m])
         if m == AIM.mode() then default = i end
     end
     input.select({
-        prompt = "AI 가속 모드 (다음에 여는 파일부터 적용):",
+        prompt = input.core_tr("AI 가속 모드 (다음에 여는 파일부터 적용):"),
         items = items,
         default_item = default,
         submit = function(i) AIM.set_mode(AIM.MODES[i]) end,
@@ -5098,7 +5503,7 @@ end
 function AIM.open_license_file()
     local path = AIM.license_path()
     if not path then
-        notify("라이선스 파일을 찾을 수 없습니다 (앱 폴더의 LICENSE-NVIDIA-CUDA.txt)", 5, "warn")
+        notify(input.core_tr("라이선스 파일을 찾을 수 없습니다 (앱 폴더의 LICENSE-NVIDIA-CUDA.txt)"), 5, "warn")
         return false
     end
     if package.config:sub(1, 1) == "\\" then path = (path:gsub("/", "\\")) end
@@ -5129,11 +5534,11 @@ function AIM.open_license_dialog()
     if t - (AIM.license_at or -10) < 0.5 then return end        -- double click
     AIM.license_at = t
     input.select({
-        prompt = "NVIDIA CUDA 라이선스에 동의해야 내려받을 수 있습니다",
+        prompt = input.core_tr("NVIDIA CUDA 라이선스에 동의해야 내려받을 수 있습니다"),
         items = {
-            "라이선스 보기 (LICENSE-NVIDIA-CUDA.txt)",
-            "동의하고 CUDA 구성 요소 내려받기 (" .. AIM.fmt_size(AIM.acc_bytes()) .. ")",
-            "취소",
+            input.core_tr("라이선스 보기 (LICENSE-NVIDIA-CUDA.txt)"),
+            input.core_tr("동의하고 CUDA 구성 요소 내려받기 (%s)", AIM.fmt_size(AIM.acc_bytes())),
+            input.core_tr("취소"),
         },
         default_item = 1,
         submit = function(i)
@@ -5161,8 +5566,8 @@ end
 -- No NVIDIA driver was detected: installing CUDA components is probably useless, ask first.
 function AIM.open_nodriver_confirm()
     input.select({
-        prompt = "NVIDIA 드라이버를 찾을 수 없습니다",
-        items = { "취소", "그래도 CUDA 구성 요소 내려받기 (" .. AIM.fmt_size(AIM.acc_bytes()) .. ")" },
+        prompt = input.core_tr("NVIDIA 드라이버를 찾을 수 없습니다"),
+        items = { input.core_tr("취소"), input.core_tr("그래도 CUDA 구성 요소 내려받기 (%s)", AIM.fmt_size(AIM.acc_bytes())) },
         submit = function(i)
             if i == 2 then AIM.acc_download() end
         end,
@@ -5175,16 +5580,16 @@ end
 function AIM.cuda_row_value()
     local a = AIM.acc
     if a.cuda_available == true then
-        if a.toolkit == true then return "사용 가능 · cuBLAS: CUDA Toolkit " .. AIM.toolkit_label() .. " 사용" end
-        return "사용 가능"
+        if a.toolkit == true then return input.core_tr("사용 가능 · cuBLAS: CUDA Toolkit %s 사용", AIM.toolkit_label()) end
+        return input.core_tr("사용 가능")
     end
-    if AIM.cuda_update_needed() then return "엔진 업데이트 필요 · 내려받기 " .. AIM.fmt_size(AIM.acc_bytes()) end
+    if AIM.engine_reinstall_needed() then return input.core_tr("앱의 CUDA 엔진 복구 필요 · NanumPlayer 재설치") end
     local cause = AIM.cuda_cause()
-    if cause == "nodriver" then return "사용 불가 · NVIDIA 드라이버를 찾을 수 없음" end
-    if cause == "nocatalog" then return "미설치 · 구성 요소 목록을 읽을 수 없음" end
-    if cause == "missing" then return "미설치 · 내려받기 " .. AIM.fmt_size(AIM.acc_bytes()) end
+    if cause == "nodriver" then return input.core_tr("사용 불가 · NVIDIA 드라이버를 찾을 수 없음") end
+    if cause == "nocatalog" then return input.core_tr("미설치 · 구성 요소 목록을 읽을 수 없음") end
+    if cause == "missing" then return input.core_tr("미설치 · 내려받기 %s", AIM.fmt_size(AIM.acc_bytes())) end
     local r = tostring(a.reason or "")
-    return "사용 불가 · " .. (r ~= "" and r or "GPU/드라이버가 CUDA 13 엔진을 지원하지 않음")
+    return input.core_tr("사용 불가 · %s", r ~= "" and r or input.core_tr("GPU/드라이버가 CUDA 13 엔진을 지원하지 않음"))
 end
 
 function AIM.build_menu()
@@ -5195,39 +5600,39 @@ function AIM.build_menu()
         keys[#keys + 1] = key
     end
     local d, a = AIM.data, AIM.acc
-    add("status", "모델 상태: " .. AIM.status_text(), function()
+    add("status", input.core_tr("모델 상태: %s", AIM.status_text()), function()
         local cur = AIM.data
         if cur and cur.status == "error" and tostring(cur.error or "") ~= "" then
-            notify("AI 모델 오류: " .. cur.error, 9, "error")
+            notify(input.core_tr("AI 모델 오류: %s", cur.error), 9, "error")
         end
         AIM.refresh()
     end)
-    add("acc_status", "가속기 상태: " .. AIM.acc_status_text(), function()
+    add("acc_status", input.core_tr("가속기 상태: %s", AIM.acc_status_text()), function()
         local cur = AIM.acc
         if cur and cur.status == "error" and tostring(cur.error or "") ~= "" then
-            notify("CUDA 구성 요소 오류: " .. cur.error, 9, "error")
+            notify(input.core_tr("CUDA 구성 요소 오류: %s", cur.error), 9, "error")
         end
         AIM.refresh()
     end)
     local custom = AIM.custom_dll()
     if custom then
-        add("custom", "사용자 지정 AI DLL 사용 중: " .. custom, function()
-            notify("--nanum-ai-dll로 지정한 엔진을 그대로 사용합니다 (자동 교체 없음)", 5)
+        add("custom", input.core_tr("사용자 지정 AI DLL 사용 중: %s", custom), function()
+            notify(input.core_tr("--nanum-ai-dll로 지정한 엔진을 그대로 사용합니다 (자동 교체 없음)"), 5)
         end)
     end
-    add("accel_mode", "AI 가속 모드: " .. AIM.mode_text() .. (AIM.accel_opt_ok == false and " (이 엔진은 적용 불가)" or ""),
+    add("accel_mode", input.core_tr(AIM.accel_opt_ok == false and "AI 가속 모드: %s (이 엔진은 적용 불가)" or "AI 가속 모드: %s", AIM.mode_text()),
         AIM.open_mode_menu)
     if a then
         local cpu_ok = a.cpu_available ~= false
-        add("cpu", (cpu_ok and "● " or "  ") .. "CPU 엔진: " .. (cpu_ok and "사용 가능 (앱에 포함)"
-            or "사용 불가 — nanum_ai_cpu.dll을 불러오지 못함"),
+        add("cpu", (cpu_ok and "● " or "  ") .. input.core_tr("CPU 엔진: %s", input.core_tr(cpu_ok and "사용 가능 (앱에 포함)"
+            or "사용 불가 — nanum_ai_cpu.dll을 불러오지 못함")),
             function()
-                if not cpu_ok then notify("NanumPlayer를 다시 설치해 CPU 엔진을 복구하세요", 5, "warn") end
+                if not cpu_ok then notify(input.core_tr("NanumPlayer를 다시 설치해 CPU 엔진을 복구하세요"), 5, "warn") end
                 AIM.refresh()
             end)
-        add("cuda", (a.cuda_available == true and "● " or "  ") .. "CUDA 가속: " .. AIM.cuda_row_value(), function()
+        add("cuda", (a.cuda_available == true and "● " or "  ") .. input.core_tr("CUDA 가속: %s", AIM.cuda_row_value()), function()
             if a.cuda_available ~= true and AIM.cuda_cause() == "incompatible" then
-                notify("CUDA 구성 요소를 다시 받아도 해결되지 않습니다. 가속 모드를 자동/CPU만으로 쓰세요", 6, "warn")
+                notify(input.core_tr("CUDA 구성 요소를 다시 받아도 해결되지 않습니다. 가속 모드를 자동/CPU만으로 쓰세요"), 6, "warn")
             end
             AIM.refresh()
         end)
@@ -5235,39 +5640,44 @@ function AIM.build_menu()
         local cause = a.cuda_available ~= true and AIM.cuda_cause() or nil
         local val
         if AIM.acc_active() then
-            val = "진행 중"
+            val = input.core_tr("진행 중")
         elseif cause == "nocatalog" then
-            val = "내려받기 불가 · 구성 요소 목록(catalog.json)을 읽을 수 없음"
+            val = input.core_tr("내려받기 불가 · 구성 요소 목록(catalog.json)을 읽을 수 없음")
+        elseif cause == "bundled" then
+            val = input.core_tr("앱의 CUDA 엔진 복구 필요 · NanumPlayer 재설치")
         elseif #missing > 0 or cause == "missing" then
-            local engine, runtimes = AIM.missing_parts()
-            val = string.format("필요 %s · %s", #missing > 0 and (#missing .. "개") or "구성 요소", AIM.fmt_size(AIM.acc_bytes()))
-                .. ((engine and runtimes) and " (CUDA 13 Toolkit이 있으면 엔진만)" or "")
-                .. (cause == "nodriver" and " (NVIDIA 드라이버 미감지)" or "")
+            val = (#missing > 0 and input.core_tr("필요 %d개 · %s", #missing, AIM.fmt_size(AIM.acc_bytes()))
+                or input.core_tr("필요 구성 요소 · %s", AIM.fmt_size(AIM.acc_bytes())))
+                .. (cause == "nodriver" and (" " .. input.core_tr("(NVIDIA 드라이버 미감지)")) or "")
         elseif a.toolkit == true and a.cuda_available == true then
-            val = "필요 없음 · CUDA Toolkit " .. AIM.toolkit_label() .. " 사용"
+            val = input.core_tr("필요 없음 · CUDA Toolkit %s 사용", AIM.toolkit_label())
         elseif a.cuda_available == true then
-            val = "설치됨 · 사용 가능"
+            val = input.core_tr("설치됨 · 사용 가능")
         else
-            val = "설치됨 · 이 PC에서는 사용 불가 (다시 받아도 해결되지 않음)"
+            val = input.core_tr("설치됨 · 이 PC에서는 사용 불가 (다시 받아도 해결되지 않음)")
         end
-        add("acc_install", "CUDA 가속 구성 요소 " .. (AIM.cuda_update_needed() and "업데이트: " or "내려받기: ") .. val, function()
+        add("acc_install", input.core_tr("cuBLAS 내려받기: %s", val), function()
             local cur = AIM.acc
             if not cur or AIM.acc_active() then
-                if cur then notify("이미 내려받는 중입니다", 3, "warn") end
+                if cur then notify(input.core_tr("이미 내려받는 중입니다"), 3, "warn") end
                 return
             end
             local miss = AIM.acc_missing()
             local c = cur.cuda_available ~= true and AIM.cuda_cause() or nil
+            if c == "bundled" then
+                notify(AIM.toolkit_hint(), 7, "error")
+                return
+            end
             if #miss == 0 and c ~= "missing" and c ~= "nocatalog" then
                 if cur.cuda_available == true then
-                    notify("CUDA 구성 요소가 이미 설치되어 있습니다" .. (cur.toolkit == true and (" (cuBLAS는 CUDA Toolkit " .. AIM.toolkit_label() .. " 사용)") or ""), 4, "ok")
+                    notify(cur.toolkit == true and input.core_tr("CUDA 구성 요소가 이미 설치되어 있습니다 (cuBLAS는 CUDA Toolkit %s 사용)", AIM.toolkit_label())
+                        or input.core_tr("CUDA 구성 요소가 이미 설치되어 있습니다"), 4, "ok")
                 else
-                    notify("구성 요소는 설치되어 있지만 이 PC의 GPU/드라이버에서 CUDA를 쓸 수 없습니다. 다시 받아도 해결되지 않습니다", 6, "warn")
+                    notify(input.core_tr("구성 요소는 설치되어 있지만 이 PC의 GPU/드라이버에서 CUDA를 쓸 수 없습니다. 다시 받아도 해결되지 않습니다"), 6, "warn")
                 end
             elseif c == "nocatalog" then
-                notify("CUDA 구성 요소 목록(components\\catalog.json)을 읽을 수 없습니다"
-                    .. (tostring(cur.catalog_error or "") ~= "" and (": " .. cur.catalog_error) or "")
-                    .. "\nNanumPlayer를 다시 설치하세요", 7, "warn")
+                notify(input.core_tr("CUDA 구성 요소 목록(components\\catalog.json)을 읽을 수 없습니다%s\nNanumPlayer를 다시 설치하세요",
+                    tostring(cur.catalog_error or "") ~= "" and (": " .. cur.catalog_error) or ""), 7, "warn")
             elseif c == "nodriver" then
                 mp.add_timeout(0.1, AIM.open_nodriver_confirm)
             else
@@ -5275,7 +5685,7 @@ function AIM.build_menu()
             end
         end)
         if AIM.cublas_missing() or a.toolkit ~= true then
-            add("license", "NVIDIA CUDA 라이선스 (cuBLAS 내려받기용): " .. (AIM.license_accepted() and "동의함 · 보기" or "동의 필요 · 보기"),
+            add("license", input.core_tr("NVIDIA CUDA 라이선스 (cuBLAS 내려받기용): %s", input.core_tr(AIM.license_accepted() and "동의함 · 보기" or "동의 필요 · 보기")),
                 AIM.open_license_file)
         end
         for _, c in ipairs(AIM.acc_list()) do
@@ -5283,21 +5693,22 @@ function AIM.build_menu()
             local cval
             if AIM.acc_active() and a.current == c.id then
                 if a.status == "verifying" then
-                    cval = "무결성 검증 중"
+                    cval = input.core_tr("무결성 검증 중")
                     progress[key] = 1
                 else
                     local pct = AIM.acc_pct()
-                    cval = string.format("내려받는 중 %s · %s / %s", pct and (pct .. "%") or "…",
+                    cval = input.core_tr("내려받는 중 %s · %s / %s", pct and (pct .. "%") or "…",
                         AIM.fmt_size(a.received), AIM.fmt_size(a.total))
                     progress[key] = AIM.acc_fraction() or 0
                 end
             elseif c.installed then
-                cval = (c.source == "toolkit" and ("CUDA Toolkit " .. AIM.toolkit_label() .. " 사용"))
-                    or ("설치됨 · " .. AIM.fmt_size(c.size) .. " · " .. (AIM.COMP_SOURCE[c.source] or tostring(c.source or "")))
+                cval = (c.source == "toolkit" and input.core_tr("CUDA Toolkit %s 사용", AIM.toolkit_label()))
+                    or input.core_tr("설치됨 · %s · %s", AIM.fmt_size(c.size),
+                        AIM.COMP_SOURCE[c.source] and input.core_tr(AIM.COMP_SOURCE[c.source]) or tostring(c.source or ""))
             else
-                cval = "미설치 · " .. AIM.fmt_size(c.size)
+                cval = input.core_tr("미설치 · %s", AIM.fmt_size(c.size))
             end
-            add(key, (c.installed and "● " or "  ") .. tostring(c.label or AIM.acc_name(c.id)) .. ": " .. cval, function()
+            add(key, (c.installed and "● " or "  ") .. input.core_tr("%s: %s", tostring(c.label or AIM.acc_name(c.id)), cval), function()
                 if c.installed then
                     notify(tostring(c.path or c.filename or ""), 5)
                 else
@@ -5306,27 +5717,27 @@ function AIM.build_menu()
             end)
         end
         local tk = a.toolkit == true and type(a.toolkit_directory) == "string" and a.toolkit_directory ~= ""
-        add("toolkit", (tk and "● " or "  ") .. "CUDA Toolkit " .. (tk and (AIM.toolkit_label() .. ": 감지 · " .. a.toolkit_directory)
-            or "13: 설치되어 있지 않음 (설치하면 cuBLAS를 받지 않아도 GPU 사용)"), function()
+        add("toolkit", (tk and "● " or "  ") .. (tk and input.core_tr("CUDA Toolkit %s: 감지 · %s", AIM.toolkit_label(), a.toolkit_directory)
+            or input.core_tr("CUDA Toolkit 13: 설치되어 있지 않음 (설치하면 cuBLAS를 받지 않아도 GPU 사용)")), function()
             if tk then
-                notify(a.toolkit_directory .. "\n설치된 Toolkit은 읽기만 하며 변경하지 않습니다", 6)
+                notify(input.core_tr("%s\n설치된 Toolkit은 읽기만 하며 변경하지 않습니다", a.toolkit_directory), 6)
             else
                 notify(AIM.toolkit_hint() .. "\n" .. AIM.TOOLKIT_URL, 8)
                 SUBS.open_url(AIM.TOOLKIT_URL)
             end
         end)
     else
-        add("acc_unknown", "CPU / CUDA 가속 정보: " .. (AIM.acc_cmd_ok == false and "이 엔진 버전은 지원하지 않음 (nanum 갱신 필요)"
-            or "확인 중…"), function() AIM.refresh() end)
+        add("acc_unknown", input.core_tr("CPU / CUDA 가속 정보: %s", AIM.acc_cmd_ok == false and input.core_tr("이 엔진 버전은 지원하지 않음 (nanum 갱신 필요)")
+            or input.core_tr("확인 중…")), function() AIM.refresh() end)
     end
     if d then
         local miss, bytes = AIM.missing(), 0
         for _, m in ipairs(miss) do bytes = bytes + (tonumber(m.size) or 0) end
-        local all_val = AIM.active() and "진행 중"
-            or (#miss == 0 and "모두 설치됨" or string.format("미설치 %d개 · %s", #miss, AIM.fmt_size(bytes)))
-        add("all", "모든 모델 내려받기: " .. all_val, function()
+        local all_val = AIM.active() and input.core_tr("진행 중")
+            or (#miss == 0 and input.core_tr("모두 설치됨") or input.core_tr("미설치 %d개 · %s", #miss, AIM.fmt_size(bytes)))
+        add("all", input.core_tr("모든 모델 내려받기: %s", all_val), function()
             if not AIM.active() and #AIM.missing() == 0 then
-                notify("모든 모델이 이미 설치되어 있습니다", 3, "ok")
+                notify(input.core_tr("모든 모델이 이미 설치되어 있습니다"), 3, "ok")
             else
                 AIM.download("all")
             end
@@ -5336,25 +5747,26 @@ function AIM.build_menu()
             local val
             if AIM.active() and d.current == m.id then
                 if d.status == "verifying" then
-                    val = "무결성 검증 중"
+                    val = input.core_tr("무결성 검증 중")
                     progress[m.id] = 1
                 else
                     local pct = AIM.pct()
-                    val = string.format("내려받는 중 %s · %s / %s", pct and (pct .. "%") or "…",
+                    val = input.core_tr("내려받는 중 %s · %s / %s", pct and (pct .. "%") or "…",
                         AIM.fmt_size(d.received), AIM.fmt_size(d.total))
                     progress[m.id] = AIM.fraction() or 0
                 end
             elseif m.installed then
-                val = "설치됨 · " .. AIM.fmt_size(m.size)
+                val = input.core_tr("설치됨 · %s", AIM.fmt_size(m.size))
             else
-                local size, extra = tonumber(m.size) or 0, ""
+                local size, with_vad = tonumber(m.size) or 0, false
                 if m.id ~= "vad" and vad and vad.installed ~= true then
                     size = size + (tonumber(vad.size) or 0)
-                    extra = " (VAD 포함)"
+                    with_vad = true
                 end
-                val = "미설치 · " .. AIM.fmt_size(size) .. extra
+                val = input.core_tr(with_vad and "미설치 · %s (VAD 포함)" or "미설치 · %s", AIM.fmt_size(size))
             end
-            add(m.id, (m.installed and "● " or "  ") .. tostring(m.label or m.id) .. (AIM.OPTIONAL[m.id] and " (선택)" or "") .. ": " .. val, function()
+            add(m.id, (m.installed and "● " or "  ") .. input.core_tr("%s: %s", tostring(m.label or m.id)
+                .. (AIM.OPTIONAL[m.id] and (" " .. input.core_tr("(선택)")) or ""), val), function()
                 if m.installed and not (AIM.active() and AIM.data.current == m.id) then
                     AIM.open_reinstall(m)
                 else
@@ -5363,29 +5775,29 @@ function AIM.build_menu()
             end)
         end
     end
-    add("cancel", "내려받기 취소: " .. (AIM.any_active() and "진행 중인 작업 중단" or "진행 중인 작업 없음"), AIM.cancel)
+    add("cancel", input.core_tr("내려받기 취소: %s", input.core_tr(AIM.any_active() and "진행 중인 작업 중단" or "진행 중인 작업 없음")), AIM.cancel)
     if d then
-        add("dir", "모델 저장 위치: " .. ((type(d.directory) == "string" and d.directory ~= "") and d.directory or "(알 수 없음)"),
+        add("dir", input.core_tr("모델 저장 위치: %s", (type(d.directory) == "string" and d.directory ~= "") and d.directory or input.core_tr("(알 수 없음)")),
             function() AIM.open_dir(AIM.data and AIM.data.directory) end)
     end
     if a and type(a.directory) == "string" and a.directory ~= "" then
-        add("acc_dir", "CUDA 구성 요소 저장 위치: " .. a.directory, function() AIM.open_dir(AIM.acc and AIM.acc.directory) end)
+        add("acc_dir", input.core_tr("CUDA 구성 요소 저장 위치: %s", a.directory), function() AIM.open_dir(AIM.acc and AIM.acc.directory) end)
     end
-    add("refresh", "설치 상태 새로 확인: 파일 검사", function()
+    add("refresh", input.core_tr("설치 상태 새로 확인: 파일 검사"), function()
         AIM.refresh()
-        notify("설치 상태를 확인합니다", 2)
+        notify(input.core_tr("설치 상태를 확인합니다"), 2)
     end)
-    add("prompt", "모델 없음 안내 팝업: " .. (opts.model_prompt and "켬" or "끔"), function()
+    add("prompt", input.core_tr("모델 없음 안내 팝업: %s", input.core_tr(opts.model_prompt and "켬" or "끔")), function()
         opts.model_prompt = not opts.model_prompt
         save_settings()
         AIM.update_menu()
     end)
-    add("accel_prompt", "CUDA/엔진 안내 팝업: " .. (opts.accel_prompt and "켬" or "끔"), function()
+    add("accel_prompt", input.core_tr("CUDA/엔진 안내 팝업: %s", input.core_tr(opts.accel_prompt and "켬" or "끔")), function()
         opts.accel_prompt = not opts.accel_prompt
         save_settings()
         AIM.update_menu()
     end)
-    add("back", "설정 메뉴로 돌아가기", function()
+    add("back", input.core_tr("설정 메뉴로 돌아가기"), function()
         menu_keep = true
         mp.add_timeout(0.1, open_menu)
     end)
@@ -5422,7 +5834,7 @@ function AIM.open_menu()
     end
     input.select({
         id = "nanum-models",
-        prompt = "AI 구성 요소 관리:",
+        prompt = input.core_tr("AI 구성 요소 관리:"),
         style = "settings",
         marks = true,
         keep_open = true,
@@ -5442,6 +5854,56 @@ mp.observe_property("user-data/nanum/models", "native", AIM.on_change)
 mp.observe_property("user-data/nanum/accelerator", "native", AIM.on_acc_change)
 mp.add_periodic_timer(1, AIM.heartbeat)
 AIM.refresh()
+
+----------------------------------------------------------------------------
+-- Native Blu-ray/DVD ripping. The module uses in-process commands and receives
+-- progress through user-data/nanum/rip; Ctrl+B opens the drive/title picker.
+----------------------------------------------------------------------------
+;(function() -- Keep loader locals outside the main chunk's 200-local limit.
+    -- This build does not expand ~~exe_dir, and a single-file script has no
+    -- script directory. The module sits next to this file.
+    local script = (debug.getinfo(1, "S").source or ""):gsub("^@", "")
+    local dir = script:match("^(.*)[/\\]")
+    local f = dir and loadfile(dir .. "/nanum-rip.lua")
+    if f then
+        local okr, RIP = pcall(f)
+        if okr and type(RIP) == "table" then
+            RIP.mount({
+                notify = notify,
+                select = function(prompt, items, on_submit)
+                    local texts, values = {}, {}
+                    for i, it in ipairs(items) do
+                        texts[i], values[i] = it.text, it.value
+                    end
+                    input.select({
+                        id = "nanum-rip", prompt = prompt, items = texts,
+                        submit = function(i) on_submit(values[i]) end,
+                    })
+                end,
+            })
+        else
+            mp.msg.error("nanum-rip.lua: " .. tostring(RIP))
+        end
+    end
+end)()
+
+-- A live interface-language change: an open panel still shows the old language, so it is closed and the same
+-- panel is opened again; the status chip and the AI tags are recomputed.
+input.i18n.on_change(function()
+    local id = fluent.open_id()
+    if id then input.terminate() end
+    last_status = nil
+    TAGS.sig = nil
+    TAGS.update()
+    publish_status()
+    local reopen = ({
+        ["nanum-settings"] = open_menu,
+        ["nanum-models"] = AIM.open_menu,
+        ["nanum-youtube"] = SUBS.yt.open_menu,
+        ["nanum-glossary"] = function() open_glossary_menu() end,
+    })[id]
+    if reopen then mp.add_timeout(0.2, reopen) end
+end)
 
 -- Test hook (throwaway scripts run through mpv).
 if rawget(_G, "NANUM_TEST") then

@@ -249,6 +249,14 @@ static int selftest()
           "code fences and blank lines ignored");
     check(nanum::parse_numbered("<think>hmm\n1. x</think>\n1. a\n2. b", 2, out) && out[0] == "a",
           "think block removed");
+    check(nanum::parse_numbered("Draft:\n1. 잘못된 문장\n</think>\n```text\n1. 최종 자막\n```", 1, out) &&
+              out[0] == "최종 자막",
+          "provider-prefilled reasoning is excluded from the final subtitle");
+    check(!nanum::parse_numbered("<think>1. unfinished draft", 1, out),
+          "unfinished reasoning cannot become a subtitle");
+    check(nanum::parse_numbered("1. first<think>discard this draft</think>\n2. second", 2, out) &&
+              out[0] == "first" && out[1] == "second",
+          "inline reasoning removal preserves completed answer lines");
     check(!nanum::parse_numbered("1. a\n2. b", 3, out), "too few lines rejected");
     check(!nanum::parse_numbered("1. a\n2. b\n3. c", 2, out), "too many lines rejected");
     check(!nanum::parse_numbered("1. a\n3. c", 2, out), "skipped number rejected");

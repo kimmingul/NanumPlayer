@@ -98,9 +98,14 @@ inline bool split_number(const std::string &line, size_t &num, std::string &text
     return true;
 }
 
-inline std::string strip_think(const std::string &s)
+inline std::string strip_think(std::string t)
 {
-    std::string t = s;
+    // Some providers prefill <think> outside the returned text. Its closing
+    // delimiter still separates discarded drafts from the actual answer.
+    size_t close = t.find("</think>");
+    size_t open = t.find("<think>");
+    if (close != std::string::npos && (open == std::string::npos || close < open))
+        t.erase(0, close + 8);
     for (size_t a; (a = t.find("<think>")) != std::string::npos;) {
         size_t b = t.find("</think>", a);
         if (b == std::string::npos) {

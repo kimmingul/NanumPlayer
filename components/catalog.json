@@ -8,8 +8,7 @@
       "label": "Whisper CUDA 엔진",
       "filename": "nanum_ai_cuda.dll",
       "size": 55266200,
-      "sha256": "591ccc0c254754c887c47eb1002f67eb718d40e293ee98ef40fc45cc437f0f69",
-      "url": "https://github.com/kimmingul/NanumPlayer/releases/download/v1.6.1/nanum_ai_cuda.dll"
+      "sha256": "e22adf8b80b198fee67fc2079a38da471c6f5957f165d13bdb379bdef9421d83"
     },
     {
       "id": "cublas",

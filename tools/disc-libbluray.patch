@@ -1,0 +1,348 @@
+--- a/src/libbluray/disc/aacs.c
++++ b/src/libbluray/disc/aacs.c
+@@ -43,8 +43,6 @@
+     /* function pointers */
+     fptr_int       decrypt_unit;
+     fptr_int       decrypt_bus;
+-
+-    int            impl_id;
+ };
+ 
+ 
+@@ -84,53 +82,27 @@
+     return 0;
+ }
+ 
+-#define IMPL_USER       0
+-#define IMPL_LIBAACS    1
+-#define IMPL_LIBMMBD    2
+-
+-static void *_open_libaacs(int *impl_id)
+-{
+-    const char * const libaacs[] = {
+-      getenv("LIBAACS_PATH"),
+-      "libaacs",
+-      "libmmbd",
+-#ifdef _WIN64
+-      "libmmbd64",
+-#endif
+-    };
+-    unsigned ii;
+-
+-    for (ii = *impl_id; ii < sizeof(libaacs) / sizeof(libaacs[0]); ii++) {
+-        if (libaacs[ii]) {
+-            void *handle = dl_dlopen(libaacs[ii], "0");
+-            if (handle) {
+-                /* One more libmmbd check. This is needed if libaacs is just a link to libmmbd ... */
+-                fptr_int32 fp;
+-                *(void **)(&fp) = dl_dlsym(handle, "bdplus_get_code_date");
+-                if (fp && fp(NULL) == 0) {
+-                    ii = IMPL_LIBMMBD;
+-                }
+-
+-                *impl_id = ii;
+-                BD_DEBUG(DBG_BLURAY, "Using %s for AACS\n", libaacs[ii]);
+-                return handle;
+-            }
+-        }
+-    }
+-
+-    BD_DEBUG(DBG_BLURAY | DBG_CRIT, "No usable AACS libraries found!\n");
+-    return NULL;
+-}
+-
+-static BD_AACS *_load(int impl_id)
++/* NanumPlayer (2026-10-16): never fall back to another decryption backend. */
++static void *_open_libaacs(void)
++{
++    const char *path = getenv("LIBAACS_PATH");
++    if (!path || !*path)
++        path = "libaacs";
++    void *handle = dl_dlopen(path, "0");
++    if (handle)
++        BD_DEBUG(DBG_BLURAY, "Using %s for AACS\n", path);
++    else
++        BD_DEBUG(DBG_BLURAY | DBG_CRIT, "No usable AACS library found!\n");
++    return handle;
++}
++
++BD_AACS *bdpriv_aacs_load(void)
+ {
+     BD_AACS *p = calloc(1, sizeof(BD_AACS));
+     if (!p) {
+         return NULL;
+     }
+-    p->impl_id = impl_id;
+-
+-    p->h_libaacs = _open_libaacs(&p->impl_id);
++    p->h_libaacs = _open_libaacs();
+     if (!p->h_libaacs) {
+         X_FREE(p);
+         return NULL;
+@@ -155,11 +127,6 @@
+     }
+ 
+     return p;
+-}
+-
+-BD_AACS *bdpriv_aacs_load(int force_mmbd)
+-{
+-    return _load(force_mmbd ? IMPL_LIBMMBD : 0);
+ }
+ 
+ int bdpriv_aacs_open(BD_AACS *p, const char *device,
+@@ -192,36 +159,11 @@
+     } else if (open2) {
+         BD_DEBUG(DBG_BLURAY, "Using old aacs_open2(), no UDF support available\n");
+         p->aacs = open2(device, keyfile_path, &error_code);
+-
+-        /* libmmbd needs dev: for devices */
+-        if (!p->aacs && p->impl_id == IMPL_LIBMMBD && !strncmp(device, "/dev/", 5)) {
+-            char *tmp_device = str_printf("dev:%s", device);
+-            if (tmp_device) {
+-                p->aacs = open2(tmp_device, keyfile_path, &error_code);
+-                X_FREE(tmp_device);
+-            }
+-        }
+     } else if (open) {
+         BD_DEBUG(DBG_BLURAY, "Using old aacs_open(), no verbose error reporting available\n");
+         p->aacs = open(device, keyfile_path);
+     } else {
+         BD_DEBUG(DBG_BLURAY, "aacs_open() not found\n");
+-    }
+-
+-    if (error_code) {
+-        /* failed. try next aacs implementation if available. */
+-        BD_AACS *p2 = _load(p->impl_id + 1);
+-        if (p2) {
+-            if (!bdpriv_aacs_open(p2, device, file_open_handle, file_open_fp, keyfile_path)) {
+-                /* succeed - swap implementations */
+-                _unload(p);
+-                *p = *p2;
+-                X_FREE(p2);
+-                return 0;
+-            }
+-            /* failed - report original errors */
+-            bdpriv_aacs_unload(&p2);
+-        }
+     }
+ 
+     if (p->aacs) {
+--- a/src/libbluray/disc/aacs.h
++++ b/src/libbluray/disc/aacs.h
+@@ -30,7 +30,7 @@
+ typedef struct bd_aacs BD_AACS;
+ 
+ BD_PRIVATE int  bdpriv_aacs_required(void *h, int (*have_file)(void *, const char *, const char *));
+-BD_PRIVATE BD_AACS *bdpriv_aacs_load(int force_mmbd);
++BD_PRIVATE BD_AACS *bdpriv_aacs_load(void);
+ BD_PRIVATE int  bdpriv_aacs_open(BD_AACS *p, const char *device,
+                                  void *file_open_handle, AACS_FILE_OPEN2 file_open_fp,
+                                  const char *keyfile_path);
+--- a/src/libbluray/disc/bdplus.c
++++ b/src/libbluray/disc/bdplus.c
+@@ -47,8 +47,6 @@
+ 
+     /* old API */
+     fptr_p_void    title;
+-
+-    int impl_id;
+ };
+ 
+ 
+@@ -88,60 +86,30 @@
+     return 0;
+ }
+ 
+-#define IMPL_USER       0
+-#define IMPL_LIBBDPLUS  1
+-#define IMPL_LIBMMBD    2
+-
+-static void *_libbdplus_open(int *impl_id)
+-{
+-    const char * const libbdplus[] = {
+-      getenv("LIBBDPLUS_PATH"),
+-      "libbdplus",
+-      "libmmbd",
+-#ifdef _WIN64
+-      "libmmbd64",
+-#endif
+-    };
+-    unsigned ii;
+-
+-    for (ii = *impl_id; ii < sizeof(libbdplus) / sizeof(libbdplus[0]); ii++) {
+-        if (libbdplus[ii]) {
+-            void *handle = dl_dlopen(libbdplus[ii], "0");
+-            if (handle) {
+-                /* One more libmmbd check. This is needed if libbdplus is just a link to libmmbd ... */
+-                fptr_int32 fp;
+-                *(void **)(&fp) = dl_dlsym(handle, "bdplus_get_code_date");
+-                if (fp && fp(NULL) == 0) {
+-                    ii = IMPL_LIBMMBD;
+-                }
+-
+-                *impl_id = ii;
+-                BD_DEBUG(DBG_BLURAY, "Using %s for BD+\n", libbdplus[ii]);
+-                return handle;
+-            }
+-        }
+-    }
+-
+-    BD_DEBUG(DBG_BLURAY | DBG_CRIT, "No usable BD+ libraries found!\n");
+-    return NULL;
+-}
+-
+-int bdpriv_bdplus_is_mmbd(BD_BDPLUS *p)
+-{
+-    return p && (p->impl_id == IMPL_LIBMMBD);
+-}
+-
+-static BD_BDPLUS *_load(int impl_id)
++/* NanumPlayer (2026-10-16): never fall back to another decryption backend. */
++static void *_libbdplus_open(void)
++{
++    const char *path = getenv("LIBBDPLUS_PATH");
++    if (!path || !*path)
++        path = "libbdplus";
++    void *handle = dl_dlopen(path, "0");
++    if (handle)
++        BD_DEBUG(DBG_BLURAY, "Using %s for BD+\n", path);
++    else
++        BD_DEBUG(DBG_BLURAY | DBG_CRIT, "No usable BD+ library found!\n");
++    return handle;
++}
++
++BD_BDPLUS *bdpriv_bdplus_load(void)
+ {
+     BD_BDPLUS *p = calloc(1, sizeof(BD_BDPLUS));
+     if (!p) {
+         return NULL;
+     }
+-    p->impl_id = impl_id;
+ 
+     BD_DEBUG(DBG_BDPLUS, "attempting to load libbdplus\n");
+ 
+-    p->h_libbdplus = _libbdplus_open(&p->impl_id);
++    p->h_libbdplus = _libbdplus_open();
+     if (!p->h_libbdplus) {
+         X_FREE(p);
+         return NULL;
+@@ -172,11 +140,6 @@
+     return p;
+ }
+ 
+-BD_BDPLUS *bdpriv_bdplus_load()
+-{
+-    return _load(0);
+-}
+-
+ int bdpriv_bdplus_init(BD_BDPLUS *p, const char *root, const char *device,
+                    void *file_open_handle, BDPLUS_FILE_OPEN file_open_fp,
+                    const uint8_t *vid, const uint8_t *mk)
+@@ -185,28 +148,6 @@
+     fptr_void      set_fopen;
+ 
+     _libbdplus_close(p);
+-
+-    /* force libmmbd BD+ if no AACS media key:
+-     * - libbdplus requires media key
+-     * - libmmbd does not export media key
+-     *   (=> libbdplus won't work with libmmbd AACS)
+-     */
+-    if (mk == NULL && p->impl_id == IMPL_LIBBDPLUS) {
+-        BD_BDPLUS *p2 = _load(IMPL_LIBMMBD);
+-        if (p2) {
+-            if (!bdpriv_bdplus_init(p2, root, device, file_open_handle, file_open_fp, vid, mk)) {
+-                /* succeed - swap implementations */
+-                _unload(p);
+-                *p = *p2;
+-                X_FREE(p2);
+-                return 0;
+-            }
+-            /* failed - continue with original bd+ implementation */
+-            bdpriv_bdplus_unload(&p2);
+-        }
+-    }
+-
+-    /* */
+ 
+     *(void **)(&bdplus_init) = dl_dlsym(p->h_libbdplus, "bdplus_init");
+     *(void **)(&set_fopen)   = dl_dlsym(p->h_libbdplus, "bdplus_set_fopen");
+@@ -221,19 +162,10 @@
+         p->bdplus = bdplus_init(NULL, NULL, vid);
+         set_fopen(p->bdplus, file_open_handle, file_open_fp);
+     } else if (root) {
+-        /* Old libbdplus or libmmbd. Disc is mounted. */
++        /* Old libbdplus. Disc is mounted. */
+         p->bdplus = bdplus_init(root, NULL, vid);
+     } else if (device) {
+-        /* Unmounted device */
+-        if (p->impl_id == IMPL_LIBMMBD && !strncmp(device, "/dev/", 5)) {
+-            char *tmp = str_printf("dev:%s", device);
+-            if (tmp) {
+-                p->bdplus = bdplus_init(tmp, NULL, vid);
+-                X_FREE(tmp);
+-            }
+-        } else {
+-            BD_DEBUG(DBG_BLURAY | DBG_CRIT, "Too old libbdplus detected. Disc must be mounted first.\n");
+-        }
++        BD_DEBUG(DBG_BLURAY | DBG_CRIT, "Too old libbdplus detected. Disc must be mounted first.\n");
+     }
+ 
+     if (!p->bdplus) {
+@@ -272,11 +204,8 @@
+ {
+     switch (type) {
+         case BD_BDPLUS_TYPE:
+-            if (bdpriv_bdplus_is_mmbd(p)) {
+-                return (const uint8_t *)"mmbd";
+-            }
+             if ((int32_t)_bdplus_get(p, "bdplus_is_cached") > 0) {
+-                return (const uint8_t *)"mmbd;libbdplus";
++                return (const uint8_t *)"libbdplus";
+             }
+             break;
+     }
+--- a/src/libbluray/disc/bdplus.h
++++ b/src/libbluray/disc/bdplus.h
+@@ -31,7 +31,6 @@
+ 
+ BD_PRIVATE int  bdpriv_bdplus_required(void *have_file_handle, int (*have_file)(void *, const char *, const char *));
+ BD_PRIVATE BD_BDPLUS *bdpriv_bdplus_load(void);
+-BD_PRIVATE int  bdpriv_bdplus_is_mmbd(BD_BDPLUS *);
+ BD_PRIVATE int  bdpriv_bdplus_init(BD_BDPLUS *p, const char *root, const char *device,
+                                void *file_open_handle, BDPLUS_FILE_OPEN file_open_fp,
+                                const uint8_t *vid, const uint8_t *mk);
+--- a/src/libbluray/disc/dec.c
++++ b/src/libbluray/disc/dec.c
+@@ -240,12 +240,6 @@
+     i->bdplus_date    = bdpriv_bdplus_get_date(dec->bdplus);
+     i->bdplus_handled = 1;
+ 
+-    if (i->bdplus_date == 0) {
+-        // libmmbd -> no menu support
+-        //BD_DEBUG(DBG_BLURAY | DBG_CRIT, "WARNING: using libmmbd for BD+. On-disc menus won't work with all discs.\n");
+-        //i->no_menu_support = 1;
+-    }
+-
+     return 1;
+ }
+ 
+@@ -265,16 +259,12 @@
+ 
+ static void _dec_load(BD_DEC *dec, BD_ENC_INFO *i)
+ {
+-    int force_mmbd_aacs = 0;
+-
+     if (i->bdplus_detected) {
+-        /* load BD+ library and check BD+ library type. libmmbd doesn't work with libaacs */
+         dec->bdplus = bdpriv_bdplus_load();
+-        force_mmbd_aacs = dec->bdplus && bdpriv_bdplus_is_mmbd(dec->bdplus);
+     }
+ 
+     /* load AACS library */
+-    dec->aacs = bdpriv_aacs_load(force_mmbd_aacs);
++    dec->aacs = bdpriv_aacs_load();
+ 
+     i->libaacs_detected   = !!dec->aacs;
+     i->libbdplus_detected = !!dec->bdplus;

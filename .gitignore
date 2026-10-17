@@ -9,9 +9,10 @@
 __pycache__/
 *.pyc
 
-# MakeMKV's libmmbd renamed by the user: never committed or shipped
+# Disc libraries are generated and hash-verified by tools/prepare_disc.py.
 libaacs.dll
 libbdplus.dll
+/third_party/disc/
 
 # Media, samples and screenshots used by local checks
 *.wav

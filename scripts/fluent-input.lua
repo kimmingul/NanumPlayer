@@ -17,6 +17,41 @@ local mp = require 'mp'
 
 local F = {}
 
+-- Parent localization loader (scripts/nanum-i18n.lua), resolved like the other sibling modules.
+local function load_i18n()
+    local dirs = {}
+    local info = debug and debug.getinfo and debug.getinfo(1, "S")
+    local src = info and info.source or ""
+    if src:sub(1, 1) == "@" then
+        local d = src:sub(2):match("^(.*)[/\\][^/\\]*$")
+        if d then dirs[#dirs + 1] = d end
+    end
+    local sd = mp.get_script_directory and mp.get_script_directory()
+    if sd then dirs[#dirs + 1] = sd end
+    local ok, ed = pcall(mp.command_native, { "expand-path", "~~exe_dir/scripts" })
+    if ok and type(ed) == "string" and ed ~= "" then dirs[#dirs + 1] = ed end
+    for _, d in ipairs(dirs) do
+        local f = loadfile(d .. "/nanum-i18n.lua")
+        if f then
+            local okf, mod = pcall(f)
+            if okf and type(mod) == "table" then return mod end
+            mp.msg.error("nanum-i18n.lua: " .. tostring(mod))
+        end
+    end
+    mp.msg.error("fluent-input: scripts/nanum-i18n.lua not found; the UI stays in its source language")
+    local stub = {}
+    function stub.t(_, key, ...) if select("#", ...) > 0 then return string.format(key, ...) end return key end
+    function stub.translator(ns) return function(key, ...) return stub.t(ns, key, ...) end end
+    function stub.language() return "ko" end
+    function stub.on_change() end
+    return stub
+end
+
+F.i18n = load_i18n()
+F.tr = F.i18n.translator("fluent")
+F.core_tr = F.i18n.translator("core")
+local tr = F.tr
+
 local floor, ceil, min, max = math.floor, math.ceil, math.min, math.max
 local sin, cos, rad, sqrt = math.sin, math.cos, math.rad, math.sqrt
 
@@ -110,6 +145,8 @@ local function char_em(ch)
     if cp < 0x80 then
         return PUNCT[ch] or NARROW[ch] or WIDE[ch] or ((cp >= 65 and cp <= 90) and .64 or .54)
     end
+    if cp == 0xB7 then return .27 end
+    if cp < 0x250 then return .56 end                  -- Latin-1 / Latin Extended (Spanish accents)
     if (cp >= 0x1100 and cp <= 0x11FF) or (cp >= 0x2E80 and cp <= 0xA4CF) or (cp >= 0xAC00 and cp <= 0xD7A3)
         or (cp >= 0xF900 and cp <= 0xFAFF) or (cp >= 0xFF00 and cp <= 0xFF60) or (cp >= 0x3130 and cp <= 0x318F) then
         return 1.0
@@ -291,8 +328,20 @@ function Ass:shadow(x, y, w, h, r, strength)
     self:shape(rrect_path(x - 1, y + 5, w + 2, h + 2, r + 2), { fill = C.black, fa = strength or 0.4, blur = 10 })
 end
 
--- Split text into runs that use Segoe UI for Latin and Malgun Gothic for Hangul.
-local function font_runs(parts, base_font, ko_font)
+-- Script classes for font selection: Segoe UI for Latin, Malgun Gothic for Hangul, a per-language face for Han / kana.
+local function is_cjk(cp)
+    return (cp >= 0x3000 and cp <= 0x30FF) or (cp >= 0x31F0 and cp <= 0x31FF) or (cp >= 0x3400 and cp <= 0x4DBF)
+        or (cp >= 0x4E00 and cp <= 0x9FFF) or (cp >= 0xF900 and cp <= 0xFAFF) or (cp >= 0xFF00 and cp <= 0xFFEF)
+        or (cp >= 0x20000 and cp <= 0x2FA1F)
+end
+
+-- Typeface of Han / kana text for a UI language (nil: leave it to the base font and font fallback).
+local CJK_FONT = { ja = "Yu Gothic UI", ["zh-CN"] = "Microsoft YaHei UI", ["zh-TW"] = "Microsoft JhengHei UI", ko = "Malgun Gothic" }
+function F.cjk_font(lang)
+    return CJK_FONT[lang or F.i18n.language()]
+end
+
+local function font_runs(parts, base_font, ko_font, cjk_font)
     local out, cur = {}, nil
     local function put_font(f)
         if cur ~= f then
@@ -317,6 +366,8 @@ local function font_runs(parts, base_font, ko_font)
                 local want
                 if is_hangul(cp) then
                     want = ko_font
+                elseif is_cjk(cp) then
+                    want = cjk_font or base_font
                 elseif not is_neutral(cp) then
                     want = base_font
                 end
@@ -350,7 +401,7 @@ function Ass:text(x, y, s, o)
     end
     t[#t + 1] = "}"
     local parts = type(s) == "table" and s or { s }
-    t[#t + 1] = font_runs(parts, font, o.font_ko or F.FONT_KO)
+    t[#t + 1] = font_runs(parts, font, o.font_ko or F.FONT_KO, o.font_cjk or F.cjk_font())
     self.buf[#self.buf + 1] = table.concat(t)
 end
 
@@ -486,6 +537,15 @@ function I.youtube(A, cx, cy, s, color, a)
     A:shape(poly_path({ cx - 0.1 * s, cy - 0.14 * s, cx + 0.17 * s, cy, cx - 0.1 * s, cy + 0.14 * s }), solid(color, a))
 end
 
+-- Globe: ring, equator and a central meridian ring.
+function I.globe(A, cx, cy, s, color, a)
+    local th = max(1.3, 0.07 * s)
+    A:shape(annulus_path(cx, cy, 0.42 * s, 0.42 * s - th), solid(color, a))
+    A:shape(poly_path(line_pts(cx - 0.42 * s, cy, cx + 0.42 * s, cy, th)), solid(color, a))
+    A:shape(annulus_path(cx, cy, 0.2 * s, 0.2 * s - th), solid(color, a))
+    A:shape(poly_path(line_pts(cx, cy - 0.42 * s, cx, cy + 0.42 * s, th)), solid(color, a))
+end
+
 function I.search(A, cx, cy, s, color, a)
     local th = max(1.3, 0.09 * s)
     A:shape(annulus_path(cx - 0.08 * s, cy - 0.08 * s, 0.28 * s, 0.28 * s - th), solid(color, a))
@@ -572,7 +632,7 @@ local MODAL_PROP = "user-data/fluent/modal-" .. mp.get_script_name()
 
 local function report_error(where, err)
     mp.msg.error("fluent-input " .. where .. ": " .. tostring(err))
-    F.toast("UI 오류 (" .. where .. "): " .. tostring(err), 6, "error")
+    F.toast(tr("UI 오류 (%s): %s", where, tostring(err)), 6, "error")
 end
 
 local open_request, close_current, render_modal
@@ -598,8 +658,24 @@ local function text_of(s) return table.concat(s.chars) end
 
 -- Items ------------------------------------------------------------------
 
+-- "label: value" of a settings row; the separator is ASCII ':' or full-width '：' (ja / zh).
+local function split_setting(text)
+    local a, b = text:find(":", 1, true), text:find("：", 1, true)
+    local pos, len
+    if a and (not b or a < b) then pos, len = a, 1 elseif b then pos, len = b, 3 else return nil end
+    return text:sub(1, pos - 1), (text:sub(pos + len):match("^%s*(.*)$"))
+end
+
+-- Values that render as an on/off switch: the callers' own (already translated) 켬 / 끔 labels.
+local function toggle_labels()
+    local set = { ["켬"] = "on", ["끔"] = "off", [tr("켬")] = "on", [tr("끔")] = "off" }
+    set[F.core_tr("켬")], set[F.core_tr("끔")] = "on", "off"
+    return set
+end
+
 local function build_rows(t)
     local rows, has_marks = {}, t.marks == true
+    local toggles = toggle_labels()
     for _, it in ipairs(t.items or {}) do
         if tostring(it):sub(1, 4) == "● " then has_marks = true break end
     end
@@ -612,15 +688,17 @@ local function build_rows(t)
         elseif has_marks and text:sub(1, 2) == "  " then
             text = text:sub(3)
         end
-        local label, value = text, nil
+        local label, value, toggle = text, nil, nil
         if t.style == "settings" then
-            local l, v = text:match("^(.-):%s*(.*)$")
-            if l and #l <= 60 then
-                label, value = l, (v ~= "" and v or "(비어 있음)")
+            local l, v = split_setting(text)
+            if l and #l <= 120 then
+                label, value = l, (v ~= "" and v or tr("(비어 있음)"))
+                toggle = toggles[v]
             end
         end
         -- key: stable row identity across update_select (defaults to the item index)
-        rows[i] = { idx = i, key = t.keys and t.keys[i] or i, label = label, value = value, sel = sel, low = text:lower() }
+        rows[i] = { idx = i, key = t.keys and t.keys[i] or i, label = label, value = value, toggle = toggle,
+            sel = sel, low = text:lower() }
     end
     return rows, has_marks
 end
@@ -685,7 +763,7 @@ local function title_of(s)
     local p = tostring(s.t.prompt or "")
     p = p:gsub("%s*:%s*$", "")
     p = p:gsub("%s*：%s*$", "")
-    if p == "" then p = s.kind == "get" and "입력" or "선택" end
+    if p == "" then p = s.kind == "get" and tr("입력") or tr("선택") end
     return p
 end
 
@@ -762,8 +840,11 @@ function render_modal()
         x = floor((W - w) / 2)
         y = max(16, floor((H - h) * 0.4))
         geo.input = { x = x + pad, y = y + 64, w = w - 2 * pad, h = 46 }
-        geo.ok = { x = x + w - pad - 96, y = y + h - 62, w = 96, h = 36 }
-        geo.cancel = { x = x + w - pad - 96 - 12 - 96, y = y + h - 62, w = 96, h = 36 }
+        geo.cancel_label, geo.ok_label = tr("취소"), tr("확인")
+        local okw = max(96, ceil(text_w(geo.ok_label, 14) + 44))
+        local cancelw = max(96, ceil(text_w(geo.cancel_label, 14) + 44))
+        geo.ok = { x = x + w - pad - okw, y = y + h - 62, w = okw, h = 36 }
+        geo.cancel = { x = x + w - pad - okw - 12 - cancelw, y = y + h - 62, w = cancelw, h = 36 }
     end
     geo.card = { x = x, y = y, w = w, h = h }
     geo.close = { x = x + w - 44, y = y + 14, w = 30, h = 30 }
@@ -785,7 +866,7 @@ function render_modal()
             A:rrect(sb.x + 4, sb.y + sb.h - 2, sb.w - 8, 2, 1, { fill = C.accent, fa = 1 })
             I.search(A, sb.x + 20, sb.y + sb.h / 2, 16, C.text3, 1)
             if #s.chars == 0 then
-                A:text(sb.x + 38, sb.y + sb.h / 2, "입력하여 검색", { size = 14, color = C.text3 })
+                A:text(sb.x + 38, sb.y + sb.h / 2, fit(tr("입력하여 검색"), 14, sb.w - 50), { size = 14, color = C.text3 })
                 if s.blink_on then
                     A:rect(sb.x + 36, sb.y + sb.h / 2 - 9, 1.5, 18, { fill = C.accent, fa = 1 })
                 end
@@ -797,7 +878,7 @@ function render_modal()
         ensure_visible(s)
         local scroll_pad = n > vis and 12 or 0
         if n == 0 then
-            A:text(list.x + list.w / 2, list.y + list.h / 2, "일치하는 항목이 없습니다",
+            A:text(list.x + list.w / 2, list.y + list.h / 2, fit(tr("일치하는 항목이 없습니다"), 14, list.w - 24),
                 { size = 14, color = C.text3, an = 5 })
         end
         local mark_pad = s.has_marks and 26 or 0
@@ -822,8 +903,8 @@ function render_modal()
             local left = lx + mark_pad
             local right = list.x + list.w - scroll_pad - 14
             if r.value then
-                if r.value == "켬" or r.value == "끔" then
-                    draw_toggle(A, right - 40, cy - 10, r.value == "켬", focused or hot)
+                if r.toggle then
+                    draw_toggle(A, right - 40, cy - 10, r.toggle == "on", focused or hot)
                     A:text(right - 48, cy, r.value, { size = 13, color = C.text2, an = 6 })
                     right = right - 48 - text_w(r.value, 13) - 14
                 else
@@ -851,9 +932,11 @@ function render_modal()
             A:rrect(tx, ty, 3, th, 1.5, { fill = C.text2, fa = 0.7 })
         end
         local fy = list.y + list.h + 20
-        A:text(x + pad, fy, "↑↓ 이동   Enter 선택   Esc 닫기", { size = 12, color = C.text3 })
-        if n > vis or #s.chars > 0 then
-            A:text(x + w - pad, fy, string.format("%d / %d", n == 0 and 0 or s.focus, n), { size = 12, color = C.text3, an = 6 })
+        local count = (n > vis or #s.chars > 0) and string.format("%d / %d", n == 0 and 0 or s.focus, n) or nil
+        local hint_w = w - 2 * pad - (count and (text_w(count, 12) + 16) or 0)
+        A:text(x + pad, fy, fit(tr("↑↓ 이동   Enter 선택   Esc 닫기"), 12, hint_w), { size = 12, color = C.text3 })
+        if count then
+            A:text(x + w - pad, fy, count, { size = 12, color = C.text3, an = 6 })
         end
     else
         local ib = geo.input
@@ -870,9 +953,9 @@ function render_modal()
                 A:text(r.x + r.w / 2, r.y + r.h / 2, label, { size = 14, color = C.text, an = 5 })
             end
         end
-        button(geo.cancel, "취소", false)
-        button(geo.ok, "확인", true)
-        A:text(x + pad, y + h - 44, "Enter 확인   Esc 취소", { size = 12, color = C.text3 })
+        button(geo.cancel, geo.cancel_label, false)
+        button(geo.ok, geo.ok_label, true)
+        A:text(x + pad, y + h - 80, fit(tr("Enter 확인   Esc 취소"), 12, w - 2 * pad), { size = 12, color = C.text3 })
     end
 
     ov.res_x, ov.res_y = W, H
@@ -1222,6 +1305,14 @@ function open_request(kind, t)
     if not ok then report_error("render", err) end
     if t.opened then dispatch(t.opened) end
 end
+
+-- The built-in labels (placeholder, hints, buttons, fonts) follow the UI language; caller text stays as passed.
+F.i18n.on_change(function()
+    if cur then
+        local ok, err = pcall(render_modal)
+        if not ok then report_error("render", err) end
+    end
+end)
 
 ----------------------------------------------------------------------------
 -- Public API (mp.input compatible)

@@ -1,0 +1,219 @@
+{
+  "뒤로": {
+    "en": "Back",
+    "ja": "戻る",
+    "zh-CN": "后退",
+    "zh-TW": "上一頁",
+    "es": "Atrás"
+  },
+  "앞으로": {
+    "en": "Forward",
+    "ja": "進む",
+    "zh-CN": "前进",
+    "zh-TW": "下一頁",
+    "es": "Adelante"
+  },
+  "새로고침": {
+    "en": "Reload",
+    "ja": "再読み込み",
+    "zh-CN": "刷新",
+    "zh-TW": "重新整理",
+    "es": "Recargar"
+  },
+  "NanumPlayer에서 재생": {
+    "en": "Play in NanumPlayer",
+    "ja": "NanumPlayerで再生",
+    "zh-CN": "在 NanumPlayer 中播放",
+    "zh-TW": "在 NanumPlayer 中播放",
+    "es": "Reproducir en NanumPlayer"
+  },
+  "주소 또는 검색어를 입력하세요": {
+    "en": "Enter an address or search term",
+    "ja": "アドレスまたは検索語を入力してください",
+    "zh-CN": "输入网址或搜索词",
+    "zh-TW": "輸入網址或搜尋字詞",
+    "es": "Introduce una dirección o un término de búsqueda"
+  },
+  "확인": {
+    "en": "OK",
+    "ja": "OK",
+    "zh-CN": "确定",
+    "zh-TW": "確定",
+    "es": "Aceptar"
+  },
+  "실행 취소": {
+    "en": "Undo",
+    "ja": "元に戻す",
+    "zh-CN": "撤消",
+    "zh-TW": "復原",
+    "es": "Deshacer"
+  },
+  "잘라내기": {
+    "en": "Cut",
+    "ja": "切り取り",
+    "zh-CN": "剪切",
+    "zh-TW": "剪下",
+    "es": "Cortar"
+  },
+  "복사": {
+    "en": "Copy",
+    "ja": "コピー",
+    "zh-CN": "复制",
+    "zh-TW": "複製",
+    "es": "Copiar"
+  },
+  "붙여넣기": {
+    "en": "Paste",
+    "ja": "貼り付け",
+    "zh-CN": "粘贴",
+    "zh-TW": "貼上",
+    "es": "Pegar"
+  },
+  "삭제": {
+    "en": "Delete",
+    "ja": "削除",
+    "zh-CN": "删除",
+    "zh-TW": "刪除",
+    "es": "Eliminar"
+  },
+  "모두 선택": {
+    "en": "Select all",
+    "ja": "すべて選択",
+    "zh-CN": "全选",
+    "zh-TW": "全選",
+    "es": "Seleccionar todo"
+  },
+  "NanumPlayer를 실행할 수 없습니다.\nNanumPlayer.exe가 이 프로그램과 같은 폴더에 있는지 확인하세요.": {
+    "en": "Cannot start NanumPlayer.\nMake sure NanumPlayer.exe is in the same folder as this program.",
+    "ja": "NanumPlayerを起動できません。\nNanumPlayer.exe がこのプログラムと同じフォルダーにあるか確認してください。",
+    "zh-CN": "无法启动 NanumPlayer。\n请确认 NanumPlayer.exe 与本程序位于同一文件夹。",
+    "zh-TW": "無法啟動 NanumPlayer。\n請確認 NanumPlayer.exe 與本程式位於同一個資料夾。",
+    "es": "No se puede iniciar NanumPlayer.\nComprueba que NanumPlayer.exe esté en la misma carpeta que este programa."
+  },
+  "NanumPlayer에 연결할 수 없습니다.\nNanumPlayer가 실행 중인지 확인하세요.": {
+    "en": "Cannot connect to NanumPlayer.\nMake sure NanumPlayer is running.",
+    "ja": "NanumPlayerに接続できません。\nNanumPlayerが実行中か確認してください。",
+    "zh-CN": "无法连接到 NanumPlayer。\n请确认 NanumPlayer 正在运行。",
+    "zh-TW": "無法連線到 NanumPlayer。\n請確認 NanumPlayer 正在執行。",
+    "es": "No se puede conectar con NanumPlayer.\nComprueba que NanumPlayer esté en ejecución."
+  },
+  "NanumPlayer를 시작하는 중…": {
+    "en": "Starting NanumPlayer…",
+    "ja": "NanumPlayerを起動しています…",
+    "zh-CN": "正在启动 NanumPlayer…",
+    "zh-TW": "正在啟動 NanumPlayer…",
+    "es": "Iniciando NanumPlayer…"
+  },
+  "이 영상에 필요한 쿠키가 너무 커서 NanumPlayer로 넘길 수 없습니다.": {
+    "en": "The cookies this video needs are too large to pass to NanumPlayer.",
+    "ja": "この動画に必要なCookieが大きすぎるため、NanumPlayerに渡せません。",
+    "zh-CN": "此视频所需的 Cookie 过大，无法传递给 NanumPlayer。",
+    "zh-TW": "此影片所需的 Cookie 過大，無法傳遞給 NanumPlayer。",
+    "es": "Las cookies que necesita este vídeo son demasiado grandes para pasarlas a NanumPlayer."
+  },
+  "재생할 영상을 찾지 못했습니다.\n페이지에서 영상을 한 번 재생해 로딩을 시작한 뒤 다시 눌러 주세요.": {
+    "en": "No video to play was found.\nStart the video once on the page so it begins loading, then press the button again.",
+    "ja": "再生する動画が見つかりませんでした。\nページで動画を一度再生して読み込みを開始してから、もう一度押してください。",
+    "zh-CN": "未找到可播放的视频。\n请先在页面中播放一次视频以开始加载，然后再次点击。",
+    "zh-TW": "找不到可播放的影片。\n請先在頁面中播放一次影片以開始載入，然後再按一次。",
+    "es": "No se encontró ningún vídeo para reproducir.\nInicia el vídeo una vez en la página para que empiece a cargarse y vuelve a pulsar el botón."
+  },
+  "이 영상은 DRM(저작권 보호 암호화)으로 보호되어 NanumPlayer에서 재생할 수 없습니다.\nDRM은 우회하지 않습니다.": {
+    "en": "This video is protected by DRM (copyright-protection encryption) and cannot be played in NanumPlayer.\nDRM is not circumvented.",
+    "ja": "この動画はDRM（著作権保護の暗号化）で保護されているため、NanumPlayerでは再生できません。\nDRMは回避しません。",
+    "zh-CN": "此视频受 DRM（版权保护加密）保护，无法在 NanumPlayer 中播放。\n本程序不会绕过 DRM。",
+    "zh-TW": "此影片受 DRM（版權保護加密）保護，無法在 NanumPlayer 中播放。\n本程式不會繞過 DRM。",
+    "es": "Este vídeo está protegido por DRM (cifrado de protección de derechos de autor) y no se puede reproducir en NanumPlayer.\nNo se elude el DRM."
+  },
+  "이 영상은 브라우저 내부(MediaSource) 스트림이라 재생 주소(m3u8/mpd)를 찾지 못했습니다.\n영상을 처음부터 다시 로딩한 뒤 시도해 주세요. 파일 단위로 나뉜 암호화 스트림은 지원하지 않습니다.": {
+    "en": "This video is a stream internal to the browser (MediaSource), so no playback address (m3u8/mpd) was found.\nReload the video from the start and try again. Encrypted streams split into separate files are not supported.",
+    "ja": "この動画はブラウザー内部（MediaSource）のストリームのため、再生アドレス（m3u8/mpd）が見つかりませんでした。\n動画を最初から読み込み直してからもう一度お試しください。ファイル単位に分割された暗号化ストリームには対応していません。",
+    "zh-CN": "此视频是浏览器内部（MediaSource）流，未能找到播放地址（m3u8/mpd）。\n请从头重新加载视频后再试。不支持按文件分段的加密流。",
+    "zh-TW": "此影片是瀏覽器內部（MediaSource）串流，找不到播放位址（m3u8/mpd）。\n請從頭重新載入影片後再試。不支援以檔案為單位分段的加密串流。",
+    "es": "Este vídeo es una transmisión interna del navegador (MediaSource), por lo que no se encontró una dirección de reproducción (m3u8/mpd).\nVuelve a cargar el vídeo desde el principio e inténtalo de nuevo. No se admiten las transmisiones cifradas divididas en archivos."
+  },
+  "영상이 아직 로딩되지 않았습니다. 재생이 시작된 뒤 다시 눌러 주세요.": {
+    "en": "The video has not loaded yet. Press the button again after playback has started.",
+    "ja": "動画はまだ読み込まれていません。再生が始まってからもう一度押してください。",
+    "zh-CN": "视频尚未加载。请在开始播放后再次点击。",
+    "zh-TW": "影片尚未載入。請在開始播放後再按一次。",
+    "es": "El vídeo aún no se ha cargado. Vuelve a pulsar el botón cuando haya empezado la reproducción."
+  },
+  "이 영상의 주소(데이터/내부 주소)는 NanumPlayer에서 재생할 수 없습니다.": {
+    "en": "The address of this video (a data or internal address) cannot be played in NanumPlayer.",
+    "ja": "この動画のアドレス（データ／内部アドレス）はNanumPlayerでは再生できません。",
+    "zh-CN": "此视频的地址（数据/内部地址）无法在 NanumPlayer 中播放。",
+    "zh-TW": "此影片的位址（資料/內部位址）無法在 NanumPlayer 中播放。",
+    "es": "La dirección de este vídeo (dirección de datos o interna) no se puede reproducir en NanumPlayer."
+  },
+  "영상 주소가 올바르지 않아 재생할 수 없습니다.": {
+    "en": "The video address is not valid, so it cannot be played.",
+    "ja": "動画のアドレスが正しくないため、再生できません。",
+    "zh-CN": "视频地址无效，无法播放。",
+    "zh-TW": "影片位址無效，無法播放。",
+    "es": "La dirección del vídeo no es válida, por lo que no se puede reproducir."
+  },
+  "재생할 동영상 페이지가 아닙니다.\nYouTube에서 동영상을 선택하세요.": {
+    "en": "This is not a video page that can be played.\nChoose a video on YouTube.",
+    "ja": "再生できる動画ページではありません。\nYouTubeで動画を選択してください。",
+    "zh-CN": "这不是可播放的视频页面。\n请在 YouTube 上选择视频。",
+    "zh-TW": "這不是可播放的影片頁面。\n請在 YouTube 上選擇影片。",
+    "es": "Esta no es una página de vídeo reproducible.\nElige un vídeo en YouTube."
+  },
+  "시크릿(InPrivate) 브라우저 세션을 확인할 수 없어 창을 열지 않습니다.": {
+    "en": "The private (InPrivate) browser session could not be verified, so the window will not be opened.",
+    "ja": "プライベート（InPrivate）ブラウザーセッションを確認できないため、ウィンドウを開きません。",
+    "zh-CN": "无法确认无痕（InPrivate）浏览会话，因此不会打开窗口。",
+    "zh-TW": "無法確認無痕（InPrivate）瀏覽工作階段，因此不會開啟視窗。",
+    "es": "No se pudo comprobar la sesión de navegación privada (InPrivate), por lo que no se abrirá la ventana."
+  },
+  "WebView2를 시작할 수 없습니다.": {
+    "en": "WebView2 could not be started.",
+    "ja": "WebView2を起動できません。",
+    "zh-CN": "无法启动 WebView2。",
+    "zh-TW": "無法啟動 WebView2。",
+    "es": "No se puede iniciar WebView2."
+  },
+  "WebView2 창을 만들 수 없습니다.": {
+    "en": "The WebView2 window could not be created.",
+    "ja": "WebView2のウィンドウを作成できません。",
+    "zh-CN": "无法创建 WebView2 窗口。",
+    "zh-TW": "無法建立 WebView2 視窗。",
+    "es": "No se puede crear la ventana de WebView2."
+  },
+  "시크릿(InPrivate) 브라우저를 만들 수 없습니다. WebView2 런타임을 최신으로 업데이트하세요.": {
+    "en": "The private (InPrivate) browser could not be created. Update the WebView2 runtime to the latest version.",
+    "ja": "プライベート（InPrivate）ブラウザーを作成できません。WebView2ランタイムを最新に更新してください。",
+    "zh-CN": "无法创建无痕（InPrivate）浏览器。请将 WebView2 运行时更新到最新版本。",
+    "zh-TW": "無法建立無痕（InPrivate）瀏覽器。請將 WebView2 執行階段更新到最新版本。",
+    "es": "No se puede crear el navegador privado (InPrivate). Actualiza el runtime de WebView2 a la última versión."
+  },
+  "사용법: nanum_youtube.exe [--pipe <mpv 파이프>] [--url <주소>] [--language <auto|ko|en|ja|zh-CN|zh-TW|es>] [--export-cookies-only] [--quit]": {
+    "en": "Usage: nanum_youtube.exe [--pipe <mpv pipe>] [--url <address>] [--language <auto|ko|en|ja|zh-CN|zh-TW|es>] [--export-cookies-only] [--quit]",
+    "ja": "使い方: nanum_youtube.exe [--pipe <mpvパイプ>] [--url <アドレス>] [--language <auto|ko|en|ja|zh-CN|zh-TW|es>] [--export-cookies-only] [--quit]",
+    "zh-CN": "用法: nanum_youtube.exe [--pipe <mpv 管道>] [--url <网址>] [--language <auto|ko|en|ja|zh-CN|zh-TW|es>] [--export-cookies-only] [--quit]",
+    "zh-TW": "用法: nanum_youtube.exe [--pipe <mpv 管道>] [--url <網址>] [--language <auto|ko|en|ja|zh-CN|zh-TW|es>] [--export-cookies-only] [--quit]",
+    "es": "Uso: nanum_youtube.exe [--pipe <canalización de mpv>] [--url <dirección>] [--language <auto|ko|en|ja|zh-CN|zh-TW|es>] [--export-cookies-only] [--quit]"
+  },
+  "상태 폴더를 정할 수 없습니다.": {
+    "en": "The state folder could not be determined.",
+    "ja": "状態フォルダーを決定できません。",
+    "zh-CN": "无法确定状态文件夹。",
+    "zh-TW": "無法決定狀態資料夾。",
+    "es": "No se puede determinar la carpeta de estado."
+  },
+  "Microsoft Edge WebView2 런타임이 설치되어 있지 않아 YouTube 창을 열 수 없습니다.\n\n다음 주소에서 \"Evergreen 부트스트래퍼\"를 설치한 뒤 다시 시도하세요.\n": {
+    "en": "The Microsoft Edge WebView2 Runtime is not installed, so the YouTube window cannot be opened.\n\nInstall the \"Evergreen Bootstrapper\" from the following address and try again.\n",
+    "ja": "Microsoft Edge WebView2 ランタイムがインストールされていないため、YouTubeのウィンドウを開けません。\n\n次のアドレスから「Evergreen ブートストラッパー」をインストールしてから、もう一度お試しください。\n",
+    "zh-CN": "未安装 Microsoft Edge WebView2 运行时，无法打开 YouTube 窗口。\n\n请从以下地址安装“Evergreen 引导程序”，然后重试。\n",
+    "zh-TW": "未安裝 Microsoft Edge WebView2 執行階段，無法開啟 YouTube 視窗。\n\n請從下列網址安裝「Evergreen 啟動程式」，然後再試一次。\n",
+    "es": "El runtime de Microsoft Edge WebView2 no está instalado, por lo que no se puede abrir la ventana de YouTube.\n\nInstala el «Evergreen Bootstrapper» desde la siguiente dirección y vuelve a intentarlo.\n"
+  },
+  "브라우저 세션 폴더를 만들 수 없습니다.": {
+    "en": "The browser session folder could not be created.",
+    "ja": "ブラウザーのセッションフォルダーを作成できません。",
+    "zh-CN": "无法创建浏览器会话文件夹。",
+    "zh-TW": "無法建立瀏覽器工作階段資料夾。",
+    "es": "No se puede crear la carpeta de sesión del navegador."
+  }
+}

@@ -29,11 +29,20 @@ echo verified> "%PKG%\.verified"
 
 :compile
 call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" || exit /b 1
+
+rem Interface-language catalog (locales\web.json) -> wide lookup header. Python: the repo's .venv, else the
+rem py launcher, else python on PATH.
+set PY="%~dp0..\.venv\Scripts\python.exe"
+if exist %PY% goto havepy
+where py >nul 2>nul
+if errorlevel 1 (set "PY=python") else (set "PY=py -3")
+:havepy
+%PY% "%~dp0compile_translations.py" --input "%~dp0..\locales\web.json" --output "%OUT%\nanum_web_i18n.h" --prefix nanum_web --wide || exit /b 1
 pushd "%SRC%"
 rc /nologo /I"%~dp0..\third_party\mpv" /fo "%OUT%\nanum_youtube.res" nanum_youtube.rc || (popd & exit /b 1)
 popd
 cl /nologo /std:c++17 /EHsc /O2 /MT /W3 /utf-8 /DUNICODE /D_UNICODE ^
-  /I"%PKG%\build\native\include" "%SRC%\nanum_youtube.cpp" "%OUT%\nanum_youtube.res" ^
+  /I"%PKG%\build\native\include" /I"%OUT%" "%SRC%\nanum_youtube.cpp" "%OUT%\nanum_youtube.res" ^
   /Fo"%OUT%\\" /Fe"%OUT%\nanum_youtube.exe" ^
   /link /SUBSYSTEM:WINDOWS /MANIFEST:NO "%PKG%\build\native\x64\WebView2LoaderStatic.lib" || exit /b 1
 echo Built %OUT%\nanum_youtube.exe
