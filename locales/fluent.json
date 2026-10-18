@@ -335,27 +335,6 @@
     "zh-TW": "無法執行：%s",
     "es": "No se pudo ejecutar: %s"
   },
-  "번역만": {
-    "en": "Translation only",
-    "ja": "翻訳のみ",
-    "zh-CN": "仅译文",
-    "zh-TW": "僅譯文",
-    "es": "Solo traducción"
-  },
-  "번역+원문": {
-    "en": "Translation + original",
-    "ja": "翻訳+原文",
-    "zh-CN": "译文+原文",
-    "zh-TW": "譯文+原文",
-    "es": "Traducción + original"
-  },
-  "원문만": {
-    "en": "Original only",
-    "ja": "原文のみ",
-    "zh-CN": "仅原文",
-    "zh-TW": "僅原文",
-    "es": "Solo original"
-  },
   "자막 끄기": {
     "en": "Subtitles off",
     "ja": "字幕をオフ",
@@ -376,13 +355,6 @@
     "zh-CN": "此视频没有字幕轨道（AI 字幕准备好后会显示）",
     "zh-TW": "此影片沒有字幕軌（AI 字幕準備好後會顯示）",
     "es": "Este vídeo no tiene pistas de subtítulos (los subtítulos de IA aparecerán cuando estén listos)"
-  },
-  "자막 표시 방식: %s": {
-    "en": "Subtitle display: %s",
-    "ja": "字幕の表示方式: %s",
-    "zh-CN": "字幕显示方式：%s",
-    "zh-TW": "字幕顯示方式：%s",
-    "es": "Modo de subtítulos: %s"
   },
   "음성 트랙": {
     "en": "Audio track",

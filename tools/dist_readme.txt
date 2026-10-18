@@ -34,7 +34,7 @@ GPU video upscaling (Ctrl+N > Video upscaling)
   to quarter steps and capped at 4x; it skips processing when enlargement is not
   needed. Fixed factors multiply both dimensions, regardless of window size.
 - Custom shaders: add mpv-compatible .glsl/.hook/.frag files in the list manager;
-  select an entry to reorder or remove it. Shader packs are not bundled.
+  select an entry to reorder or remove it. Third-party shader packs are not bundled.
   Selected shaders follow existing user shaders, which are preserved.
 - Changes apply during playback and are saved in script-opts/nanum-upscale.conf
   under the settings directory. Renderer changes can briefly recreate the picture.
@@ -43,6 +43,26 @@ GPU video upscaling (Ctrl+N > Video upscaling)
 - This is separate from speech-recognition CUDA acceleration: no CUDA Toolkit
   is needed. RTX HDR conversion is not enabled. HDR/10-bit support depends on
   the driver and video processing path. Concurrent AI work can reduce frame rate.
+
+Built-in picture correction (Ctrl+N > Picture quality)
+- Presets: Original (default, no added correction), Sharper anime, Smoother old
+  anime, and Compressed video correction. No AI models or downloads are required.
+  Nine original lightweight GPU shaders total about 12.3 KiB.
+- Noise reduction, debanding, line enhancement, sharpening and color correction
+  each have Off / Weak / Medium / Strong settings. Color gently increases the
+  existing saturation/contrast; line enhancement darkens lines, not AI redrawing.
+- Compare before correction temporarily disables only these corrections.
+  Upscaling and unrelated user filters remain active. Comparison is not saved;
+  selecting Original disables corrections persistently.
+- RTX mode pauses line enhancement and sharpening to avoid duplicate processing;
+  their selected strengths return when leaving RTX. Denoise, deband and color
+  can remain active. Avoid doubling sharpening with custom shaders.
+- Requires gpu-next or gpu. Settings live in script-opts/nanum-picture.conf.
+  Existing filters/shaders and externally changed controls are preserved.
+  Unsupported rendering and shader errors appear in the menu.
+- These are spatial filters, not temporal flicker correction, AI recoloring or
+  animation restyling. Strong denoise can erase texture. Compare quality and
+  playback load, especially with HDR, high resolution or concurrent AI subtitles.
 
 Web-page videos (Ctrl+Shift+Y)
 - Click "웹페이지에서 재생하기" on the start screen, or choose
@@ -197,6 +217,15 @@ using the default angle, as lossless MKV files under %USERPROFILE%\Videos\NanumP
 Audio tracks, subtitles and chapters are retained. Ctrl+C cancels the native
 operation and removes only its unfinished file; completed files remain.
 Existing files are not overwritten. Scripted use: script-message nanum-rip.
+
+Ctrl+N > Create subtitle files makes SRT files for a local video or a Blu-ray title
+without playing it: the source is speech recognition, a text subtitle track or OCR of an
+image subtitle (PGS) track, followed by one translated SRT per chosen language. Files are
+<name>.<language>.srt next to the video (discs: %USERPROFILE%\Videos\NanumPlayer or a
+folder you choose); existing files are never overwritten (.2, .3, ...), unfinished files
+are never left behind, and cancelling keeps what was already saved. Nothing is written
+unless you start it. Scripted use: the nanum-generate command, script-message
+nanum-generate-start/-cancel, property user-data/nanum/generate.
 
 Playback failures cancel AI subtitle preparation and display an error.
 No normal playback log is saved by default.

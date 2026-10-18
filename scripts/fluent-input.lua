@@ -698,7 +698,8 @@ local function build_rows(t)
         end
         -- key: stable row identity across update_select (defaults to the item index)
         rows[i] = { idx = i, key = t.keys and t.keys[i] or i, label = label, value = value, toggle = toggle,
-            sel = sel, low = text:lower() }
+            sel = sel, low = text:lower(), badge = t.badges and t.badges[i] or nil,
+            badge_color = t.badge_colors and t.badge_colors[i] or nil }
     end
     return rows, has_marks
 end
@@ -811,6 +812,7 @@ function render_modal()
         local maxtext = 0
         for _, r in ipairs(s.rows) do
             local tw = text_w(r.label, 15) + (r.value and (text_w(r.value, 14) + 40) or 0)
+                + (r.badge and (text_w(r.badge, 11) + 36) or 0)
             if tw > maxtext then maxtext = tw end
         end
         w = clamp(maxtext + 110, s.style == "settings" and 480 or 380, min(W - 32, 680))
@@ -902,6 +904,13 @@ function render_modal()
             end
             local left = lx + mark_pad
             local right = list.x + list.w - scroll_pad - 14
+            if r.badge then
+                local bw = text_w(r.badge, 11) + 16
+                local col = C[r.badge_color or "text2"] or C.text2
+                A:rrect(right - bw, cy - 10, bw, 20, 10, { fill = col, fa = 0.16, stroke = col, sa = 0.55, sw = 1 })
+                A:text(right - bw / 2, cy, r.badge, { size = 11, color = col, an = 5 })
+                right = right - bw - 10
+            end
             if r.value then
                 if r.toggle then
                     draw_toggle(A, right - 40, cy - 10, r.toggle == "on", focused or hot)

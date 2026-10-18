@@ -678,13 +678,6 @@
   "zh-CN": "AI 正在重新生成作品信息和术语表（可能需要一些时间）",
   "zh-TW": "AI 正在重新產生作品資訊和術語表（可能需要一些時間）"
  },
- "AI로 가져오기 (영상에 시간을 맞추고 한국어로 번역)": {
-  "en": "Import with AI (sync to the video and translate into Korean)",
-  "es": "Importar con IA (sincronizar con el vídeo y traducir al coreano)",
-  "ja": "AIで取り込む (動画にタイミングを合わせて韓国語に翻訳)",
-  "zh-CN": "用 AI 导入（与视频对齐时间并翻译成韩语）",
-  "zh-TW": "用 AI 匯入（與影片對齊時間並翻譯成韓語）"
- },
  "AI로 다시 만들기 (직접 편집한 내용은 대체됩니다)": {
   "en": "Rebuild with AI (manual edits will be replaced)",
   "es": "Regenerar con IA (se reemplazarán las ediciones manuales)",
@@ -3548,33 +3541,12 @@
   "zh-CN": "已添加字幕文件：%s",
   "zh-TW": "已新增字幕檔案：%s"
  },
- "자막 표시 방식:": {
-  "en": "Subtitle display mode:",
-  "es": "Modo de visualización de subtítulos:",
-  "ja": "字幕の表示方式:",
-  "zh-CN": "字幕显示方式：",
-  "zh-TW": "字幕顯示方式："
- },
- "자막 표시: %s": {
-  "en": "Subtitle display: %s",
-  "es": "Mostrar subtítulos: %s",
-  "ja": "字幕表示: %s",
-  "zh-CN": "字幕显示：%s",
-  "zh-TW": "字幕顯示：%s"
- },
  "자막: %s": {
   "en": "Subtitles: %s",
   "es": "Subtítulos: %s",
   "ja": "字幕: %s",
   "zh-CN": "字幕：%s",
   "zh-TW": "字幕：%s"
- },
- "자막을 가져옵니다: %s\n영상 음성에 시간을 맞춘 뒤 한국어로 번역합니다": {
-  "en": "Importing subtitles: %s\nThey will be synced to the video's audio and then translated into Korean",
-  "es": "Importando subtítulos: %s\nSe sincronizarán con el audio del vídeo y luego se traducirán al coreano",
-  "ja": "字幕を取り込みます: %s\n動画の音声にタイミングを合わせてから韓国語に翻訳します",
-  "zh-CN": "正在导入字幕：%s\n将先与视频音频对齐时间，再翻译成韩语",
-  "zh-TW": "正在匯入字幕：%s\n將先與影片音訊對齊時間，再翻譯成韓語"
  },
  "자막을 내려받는 폴더 (비우면 Windows 다운로드 폴더):": {
   "en": "Folder to download subtitles to (leave empty for the Windows Downloads folder):",
@@ -4450,5 +4422,628 @@
   "ja": "← 戻る",
   "zh-CN": "← 返回",
   "zh-TW": "← 返回"
+ },
+ "원본": {
+  "en": "Original",
+  "es": "Original",
+  "ja": "オリジナル",
+  "zh-CN": "原始",
+  "zh-TW": "原始"
+ },
+ "사용자 지정": {
+  "en": "Custom",
+  "es": "Personalizado",
+  "ja": "カスタム",
+  "zh-CN": "自定义",
+  "zh-TW": "自訂"
+ },
+ "약함": {
+  "en": "Weak",
+  "es": "Débil",
+  "ja": "弱",
+  "zh-CN": "弱",
+  "zh-TW": "弱"
+ },
+ "중간": {
+  "en": "Medium",
+  "es": "Medio",
+  "ja": "中",
+  "zh-CN": "中",
+  "zh-TW": "中"
+ },
+ "강함": {
+  "en": "Strong",
+  "es": "Fuerte",
+  "ja": "強",
+  "zh-CN": "强",
+  "zh-TW": "強"
+ },
+ "애니 선명하게": {
+  "en": "Sharper anime",
+  "es": "Anime más nítido",
+  "ja": "アニメをくっきり",
+  "zh-CN": "动画更清晰",
+  "zh-TW": "動畫更清晰"
+ },
+ "옛날 애니 부드럽게": {
+  "en": "Smoother old anime",
+  "es": "Anime antiguo más suave",
+  "ja": "古いアニメをなめらかに",
+  "zh-CN": "老动画更柔和",
+  "zh-TW": "老動畫更柔和"
+ },
+ "압축 영상 보정": {
+  "en": "Compressed video repair",
+  "es": "Reparar vídeo comprimido",
+  "ja": "圧縮映像の補正",
+  "zh-CN": "压缩视频修复",
+  "zh-TW": "壓縮影片修復"
+ },
+ "노이즈 줄이기": {
+  "en": "Noise reduction",
+  "es": "Reducción de ruido",
+  "ja": "ノイズ低減",
+  "zh-CN": "降噪",
+  "zh-TW": "降噪"
+ },
+ "색 띠 완화": {
+  "en": "Debanding",
+  "es": "Reducir bandas de color",
+  "ja": "色の帯を軽減",
+  "zh-CN": "减轻色带",
+  "zh-TW": "減輕色帶"
+ },
+ "선 강조": {
+  "en": "Line enhancement",
+  "es": "Realce de líneas",
+  "ja": "線の強調",
+  "zh-CN": "线条增强",
+  "zh-TW": "線條增強"
+ },
+ "선명도": {
+  "en": "Sharpening",
+  "es": "Nitidez",
+  "ja": "シャープネス",
+  "zh-CN": "锐化",
+  "zh-TW": "銳化"
+ },
+ "색 보정": {
+  "en": "Color correction",
+  "es": "Corrección de color",
+  "ja": "色補正",
+  "zh-CN": "色彩校正",
+  "zh-TW": "色彩校正"
+ },
+ "보정 전 화면 비교 (임시): %s": {
+  "en": "Compare before correction (temporary): %s",
+  "es": "Comparar antes de la corrección (temporal): %s",
+  "ja": "補正前と比較（一時）: %s",
+  "zh-CN": "对比校正前（临时）：%s",
+  "zh-TW": "對比校正前（暫時）：%s"
+ },
+ "비교 중에도 업스케일 유지 · 비교 상태는 저장 안 함": {
+  "en": "Compare: upscale stays on; comparison is not saved",
+  "es": "Comparación: mantiene la ampliación; no se guarda",
+  "ja": "比較中もアップスケール維持・比較状態は保存しません",
+  "zh-CN": "对比时保留超分 · 不保存对比状态",
+  "zh-TW": "對比時保留升頻 · 不儲存對比狀態"
+ },
+ "보정 전 화면 비교 중 (임시)": {
+  "en": "Comparing before correction (temporary)",
+  "es": "Comparando antes de la corrección (temporal)",
+  "ja": "補正前を比較中（一時）",
+  "zh-CN": "正在对比校正前（临时）",
+  "zh-TW": "正在對比校正前（暫時）"
+ },
+ "영상 화질 보정 적용 중": {
+  "en": "Picture correction active",
+  "es": "Corrección de imagen activa",
+  "ja": "画質補正を適用中",
+  "zh-CN": "画质校正已生效",
+  "zh-TW": "畫質校正已生效"
+ },
+ "RTX 사용 중 — 일시 중지": {
+  "en": "RTX active — paused",
+  "es": "RTX activo — en pausa",
+  "ja": "RTX 使用中 — 一時停止",
+  "zh-CN": "RTX 使用中 — 已暂停",
+  "zh-TW": "RTX 使用中 — 已暫停"
+ },
+ "RTX: 선 강조·선명도 일시 중지 (중복 방지)": {
+  "en": "RTX: line enhancement/sharpening paused",
+  "es": "RTX: realce de líneas y nitidez en pausa",
+  "ja": "RTX: 線の強調・シャープネスを一時停止",
+  "zh-CN": "RTX：暂停线条增强与锐化，避免重复",
+  "zh-TW": "RTX：暫停線條增強與銳化，避免重複"
+ },
+ "사용자 셰이더: 선명화 중복 적용 주의": {
+  "en": "Custom shaders: avoid sharpening twice",
+  "es": "Shaders propios: evite duplicar la nitidez",
+  "ja": "ユーザーシェーダー: シャープネスの重複に注意",
+  "zh-CN": "自定义着色器：注意避免重复锐化",
+  "zh-TW": "自訂著色器：注意避免重複銳化"
+ },
+ "영상 화질: %s": {
+  "en": "Picture quality: %s",
+  "es": "Calidad de imagen: %s",
+  "ja": "映像画質: %s",
+  "zh-CN": "画面画质：%s",
+  "zh-TW": "畫面畫質：%s"
+ },
+ "영상 화질:": {
+  "en": "Picture quality:",
+  "es": "Calidad de imagen:",
+  "ja": "映像画質:",
+  "zh-CN": "画面画质：",
+  "zh-TW": "畫面畫質："
+ },
+ "프리셋: %s": {
+  "en": "Preset: %s",
+  "es": "Preajuste: %s",
+  "ja": "プリセット: %s",
+  "zh-CN": "预设：%s",
+  "zh-TW": "預設：%s"
+ },
+ "영상 화질 프리셋:": {
+  "en": "Picture quality preset:",
+  "es": "Preajuste de calidad de imagen:",
+  "ja": "映像画質プリセット:",
+  "zh-CN": "画面画质预设：",
+  "zh-TW": "畫面畫質預設："
+ },
+ "영상 화질 도우미(scripts/nanum-picture.lua)를 불러오지 못했습니다": {
+  "en": "Could not load the picture helper (scripts/nanum-picture.lua)",
+  "es": "No se pudo cargar el asistente de imagen (scripts/nanum-picture.lua)",
+  "ja": "画質ヘルパー (scripts/nanum-picture.lua) を読み込めませんでした",
+  "zh-CN": "无法加载画质辅助脚本 (scripts/nanum-picture.lua)",
+  "zh-TW": "無法載入畫質輔助指令碼 (scripts/nanum-picture.lua)"
+ },
+ "영상 화질 설정 실패: %s": {
+  "en": "Picture quality setting failed: %s",
+  "es": "Error al ajustar la calidad de imagen: %s",
+  "ja": "映像画質の設定に失敗しました: %s",
+  "zh-CN": "画面画质设置失败：%s",
+  "zh-TW": "畫面畫質設定失敗：%s"
+ },
+ "중국어 (간체)": {
+  "en": "Chinese (Simplified)",
+  "ja": "中国語（簡体字）",
+  "zh-CN": "中文（简体）",
+  "zh-TW": "中文（簡體）",
+  "es": "Chino (simplificado)"
+ },
+ "중국어 (번체)": {
+  "en": "Chinese (Traditional)",
+  "ja": "中国語（繁体字）",
+  "zh-CN": "中文（繁体）",
+  "zh-TW": "中文（繁體）",
+  "es": "Chino (tradicional)"
+ },
+ "아랍어": {
+  "en": "Arabic",
+  "ja": "アラビア語",
+  "zh-CN": "阿拉伯语",
+  "zh-TW": "阿拉伯語",
+  "es": "Árabe"
+ },
+ "힌디어": {
+  "en": "Hindi",
+  "ja": "ヒンディー語",
+  "zh-CN": "印地语",
+  "zh-TW": "印地語",
+  "es": "Hindi"
+ },
+ "태국어": {
+  "en": "Thai",
+  "ja": "タイ語",
+  "zh-CN": "泰语",
+  "zh-TW": "泰語",
+  "es": "Tailandés"
+ },
+ "베트남어": {
+  "en": "Vietnamese",
+  "ja": "ベトナム語",
+  "zh-CN": "越南语",
+  "zh-TW": "越南語",
+  "es": "Vietnamita"
+ },
+ "인도네시아어": {
+  "en": "Indonesian",
+  "ja": "インドネシア語",
+  "zh-CN": "印度尼西亚语",
+  "zh-TW": "印尼語",
+  "es": "Indonesio"
+ },
+ "말레이어": {
+  "en": "Malay",
+  "ja": "マレー語",
+  "zh-CN": "马来语",
+  "zh-TW": "馬來語",
+  "es": "Malayo"
+ },
+ "필리핀어": {
+  "en": "Filipino",
+  "ja": "フィリピン語",
+  "zh-CN": "菲律宾语",
+  "zh-TW": "菲律賓語",
+  "es": "Filipino"
+ },
+ "벵골어": {
+  "en": "Bengali",
+  "ja": "ベンガル語",
+  "zh-CN": "孟加拉语",
+  "zh-TW": "孟加拉語",
+  "es": "Bengalí"
+ },
+ "네덜란드어": {
+  "en": "Dutch",
+  "ja": "オランダ語",
+  "zh-CN": "荷兰语",
+  "zh-TW": "荷蘭語",
+  "es": "Neerlandés"
+ },
+ "폴란드어": {
+  "en": "Polish",
+  "ja": "ポーランド語",
+  "zh-CN": "波兰语",
+  "zh-TW": "波蘭語",
+  "es": "Polaco"
+ },
+ "튀르키예어": {
+  "en": "Turkish",
+  "ja": "トルコ語",
+  "zh-CN": "土耳其语",
+  "zh-TW": "土耳其語",
+  "es": "Turco"
+ },
+ "스웨덴어": {
+  "en": "Swedish",
+  "ja": "スウェーデン語",
+  "zh-CN": "瑞典语",
+  "zh-TW": "瑞典語",
+  "es": "Sueco"
+ },
+ "덴마크어": {
+  "en": "Danish",
+  "ja": "デンマーク語",
+  "zh-CN": "丹麦语",
+  "zh-TW": "丹麥語",
+  "es": "Danés"
+ },
+ "노르웨이어": {
+  "en": "Norwegian",
+  "ja": "ノルウェー語",
+  "zh-CN": "挪威语",
+  "zh-TW": "挪威語",
+  "es": "Noruego"
+ },
+ "핀란드어": {
+  "en": "Finnish",
+  "ja": "フィンランド語",
+  "zh-CN": "芬兰语",
+  "zh-TW": "芬蘭語",
+  "es": "Finés"
+ },
+ "체코어": {
+  "en": "Czech",
+  "ja": "チェコ語",
+  "zh-CN": "捷克语",
+  "zh-TW": "捷克語",
+  "es": "Checo"
+ },
+ "그리스어": {
+  "en": "Greek",
+  "ja": "ギリシャ語",
+  "zh-CN": "希腊语",
+  "zh-TW": "希臘語",
+  "es": "Griego"
+ },
+ "히브리어": {
+  "en": "Hebrew",
+  "ja": "ヘブライ語",
+  "zh-CN": "希伯来语",
+  "zh-TW": "希伯來語",
+  "es": "Hebreo"
+ },
+ "헝가리어": {
+  "en": "Hungarian",
+  "ja": "ハンガリー語",
+  "zh-CN": "匈牙利语",
+  "zh-TW": "匈牙利語",
+  "es": "Húngaro"
+ },
+ "루마니아어": {
+  "en": "Romanian",
+  "ja": "ルーマニア語",
+  "zh-CN": "罗马尼亚语",
+  "zh-TW": "羅馬尼亞語",
+  "es": "Rumano"
+ },
+ "우크라이나어": {
+  "en": "Ukrainian",
+  "ja": "ウクライナ語",
+  "zh-CN": "乌克兰语",
+  "zh-TW": "烏克蘭語",
+  "es": "Ucraniano"
+ },
+ "페르시아어": {
+  "en": "Persian",
+  "ja": "ペルシア語",
+  "zh-CN": "波斯语",
+  "zh-TW": "波斯語",
+  "es": "Persa"
+ },
+ "%s (AI 번역)": {
+  "en": "%s (AI translation)",
+  "ja": "%s（AI翻訳）",
+  "zh-CN": "%s（AI 翻译）",
+  "zh-TW": "%s（AI 翻譯）",
+  "es": "%s (traducción IA)"
+ },
+ "%s (AI 음성 인식)": {
+  "en": "%s (AI speech recognition)",
+  "ja": "%s（AI音声認識）",
+  "zh-CN": "%s（AI 语音识别）",
+  "zh-TW": "%s（AI 語音辨識）",
+  "es": "%s (reconocimiento de voz IA)"
+ },
+ "%s (AI 전체 번역)": {
+  "en": "%s (AI full translation)",
+  "ja": "%s（AI全体翻訳）",
+  "zh-CN": "%s（AI 全文翻译）",
+  "zh-TW": "%s（AI 全文翻譯）",
+  "es": "%s (traducción completa IA)"
+ },
+ "%s + 원문": {
+  "en": "%s + original",
+  "ja": "%s＋原文",
+  "zh-CN": "%s + 原文",
+  "zh-TW": "%s + 原文",
+  "es": "%s + original"
+ },
+ "%s + 원문 (AI)": {
+  "en": "%s + original (AI)",
+  "ja": "%s＋原文（AI）",
+  "zh-CN": "%s + 原文（AI）",
+  "zh-TW": "%s + 原文（AI）",
+  "es": "%s + original (IA)"
+ },
+ "%s 원문 (AI 음성 인식)": {
+  "en": "%s original (AI speech recognition)",
+  "ja": "%s 原文（AI音声認識）",
+  "zh-CN": "%s 原文（AI 语音识别）",
+  "zh-TW": "%s 原文（AI 語音辨識）",
+  "es": "%s original (reconocimiento de voz IA)"
+ },
+ "원문 (AI 음성 인식)": {
+  "en": "Original (AI speech recognition)",
+  "ja": "原文（AI音声認識）",
+  "zh-CN": "原文（AI 语音识别）",
+  "zh-TW": "原文（AI 語音辨識）",
+  "es": "Original (reconocimiento de voz IA)"
+ },
+ "%s 원문 (디스크 자막 OCR)": {
+  "en": "%s original (disc subtitle OCR)",
+  "ja": "%s 原文（ディスク字幕OCR）",
+  "zh-CN": "%s 原文（光盘字幕 OCR）",
+  "zh-TW": "%s 原文（光碟字幕 OCR）",
+  "es": "%s original (OCR de subtítulos del disco)"
+ },
+ "%s 자막 표시 중 · AI 작업 건너뜀": {
+  "en": "Showing %s subtitles · AI work skipped",
+  "ja": "%s字幕を表示中 · AI処理をスキップ",
+  "zh-CN": "正在显示%s字幕 · 已跳过 AI 处理",
+  "zh-TW": "正在顯示%s字幕 · 已略過 AI 處理",
+  "es": "Mostrando subtítulos en %s · trabajo de IA omitido"
+ },
+ "%s 자막이 있어 바로 표시합니다 · AI 작업은 건너뜁니다 (AI 자막을 고르면 다시 시작)": {
+  "en": "%s subtitles found: showing them directly and skipping the AI work (choose an AI subtitle to start it again)",
+  "ja": "%s字幕があるのでそのまま表示し、AI処理はスキップします（AI字幕を選ぶと再開）",
+  "zh-CN": "已有%s字幕，直接显示并跳过 AI 处理（选择 AI 字幕即可重新开始）",
+  "zh-TW": "已有%s字幕，直接顯示並略過 AI 處理（選擇 AI 字幕即可重新開始）",
+  "es": "Hay subtítulos en %s: se muestran directamente y se omite el trabajo de IA (elija un subtítulo IA para reanudarlo)"
+ },
+ "AI 자막 작업을 다시 시작합니다": {
+  "en": "Restarting the AI subtitle work",
+  "ja": "AI字幕の作成を再開します",
+  "zh-CN": "重新开始 AI 字幕处理",
+  "zh-TW": "重新開始 AI 字幕處理",
+  "es": "Se reanuda el trabajo de subtítulos con IA"
+ },
+ "AI 작업 꺼짐 · 자막 목록에서 AI 자막을 고르면 시작합니다": {
+  "en": "AI work is off · choose an AI subtitle in the list to start it",
+  "ja": "AI処理はオフです · 字幕リストでAI字幕を選ぶと開始します",
+  "zh-CN": "AI 处理已关闭 · 在字幕列表中选择 AI 字幕即可开始",
+  "zh-TW": "AI 處理已關閉 · 在字幕清單中選擇 AI 字幕即可開始",
+  "es": "Trabajo de IA desactivado · elija un subtítulo IA en la lista para iniciarlo"
+ },
+ "AI로 시간 맞추고 %s로 번역": {
+  "en": "Align timing with AI and translate to %s",
+  "ja": "AIで時間を合わせて%sに翻訳",
+  "zh-CN": "用 AI 对齐时间并翻译为%s",
+  "zh-TW": "用 AI 對齊時間並翻譯為%s",
+  "es": "Ajustar el tiempo con IA y traducir a %s"
+ },
+ "AI로 영상에 시간 맞추기 (이미 %s 자막)": {
+  "en": "Align timing with AI (already %s subtitles)",
+  "ja": "AIで映像に時間を合わせる（すでに%s字幕）",
+  "zh-CN": "用 AI 对齐视频时间（已是%s字幕）",
+  "zh-TW": "用 AI 對齊影片時間（已是%s字幕）",
+  "es": "Ajustar el tiempo con IA (ya son subtítulos en %s)"
+ },
+ "강제": {
+  "en": "Forced",
+  "ja": "強制",
+  "zh-CN": "强制",
+  "zh-TW": "強制",
+  "es": "Forzados"
+ },
+ "그대로 표시 (원본 자막 그대로)": {
+  "en": "Show as it is (original subtitle)",
+  "ja": "そのまま表示（元の字幕のまま）",
+  "zh-CN": "按原样显示（原始字幕）",
+  "zh-TW": "依原樣顯示（原始字幕）",
+  "es": "Mostrar tal cual (subtítulo original)"
+ },
+ "끄기": {
+  "en": "Off",
+  "ja": "オフ",
+  "zh-CN": "关闭",
+  "zh-TW": "關閉",
+  "es": "Desactivado"
+ },
+ "목표 언어 원본 자막이 있으면 바로 표시: %s": {
+  "en": "Show an original subtitle in the target language directly: %s",
+  "ja": "目標言語の元字幕があればそのまま表示: %s",
+  "zh-CN": "有目标语言原始字幕时直接显示：%s",
+  "zh-TW": "有目標語言原始字幕時直接顯示：%s",
+  "es": "Mostrar directamente un subtítulo original en el idioma de destino: %s"
+ },
+ "번역 목표 언어 (다음에 여는 파일부터 적용):": {
+  "en": "Translation target language (applies from the next file):",
+  "ja": "翻訳先の言語（次に開くファイルから適用）:",
+  "zh-CN": "翻译目标语言（从下一个打开的文件开始生效）：",
+  "zh-TW": "翻譯目標語言（從下一個開啟的檔案開始生效）：",
+  "es": "Idioma de traducción (se aplica desde el siguiente archivo):"
+ },
+ "번역 목표 언어 (모델이 알아듣는 언어 이름, 예: Italian):": {
+  "en": "Translation target language (language name the model understands, e.g. Italian):",
+  "ja": "翻訳先の言語（モデルが理解する言語名、例: Italian）:",
+  "zh-CN": "翻译目标语言（模型能理解的语言名称，例如 Italian）：",
+  "zh-TW": "翻譯目標語言（模型能理解的語言名稱，例如 Italian）：",
+  "es": "Idioma de traducción (nombre del idioma que entiende el modelo, p. ej. Italian):"
+ },
+ "번역 목표 언어: %s": {
+  "en": "Translation target language: %s",
+  "ja": "翻訳先の言語: %s",
+  "zh-CN": "翻译目标语言：%s",
+  "zh-TW": "翻譯目標語言：%s",
+  "es": "Idioma de traducción: %s"
+ },
+ "번역 목표 언어: %s (다음에 여는 파일부터 적용)": {
+  "en": "Translation target language: %s (applies from the next file)",
+  "ja": "翻訳先の言語: %s（次に開くファイルから適用）",
+  "zh-CN": "翻译目标语言：%s（从下一个打开的文件开始生效）",
+  "zh-TW": "翻譯目標語言：%s（從下一個開啟的檔案開始生效）",
+  "es": "Idioma de traducción: %s (se aplica desde el siguiente archivo)"
+ },
+ "이 빌드에는 전체 자막 생성 기능이 없습니다": {
+  "en": "This build has no whole-movie subtitle generation",
+  "ja": "このビルドには全体字幕生成機能がありません",
+  "zh-CN": "此版本没有完整字幕生成功能",
+  "zh-TW": "此版本沒有完整字幕產生功能",
+  "es": "Esta versión no incluye la generación completa de subtítulos"
+ },
+ "자동 — Windows 표시 언어 (%s)": {
+  "en": "Automatic — Windows display language (%s)",
+  "ja": "自動 — Windowsの表示言語（%s）",
+  "zh-CN": "自动 — Windows 显示语言（%s）",
+  "zh-TW": "自動 — Windows 顯示語言（%s）",
+  "es": "Automático — idioma de Windows (%s)"
+ },
+ "자동 생성": {
+  "en": "auto-generated",
+  "ja": "自動生成",
+  "zh-CN": "自动生成",
+  "zh-TW": "自動產生",
+  "es": "generado automáticamente"
+ },
+ "자막 선택: %s": {
+  "en": "Subtitle: %s",
+  "ja": "字幕: %s",
+  "zh-CN": "字幕：%s",
+  "zh-TW": "字幕：%s",
+  "es": "Subtítulo: %s"
+ },
+ "자막 파일 불러오기…": {
+  "en": "Load a subtitle file…",
+  "ja": "字幕ファイルを読み込む…",
+  "zh-CN": "加载字幕文件…",
+  "zh-TW": "載入字幕檔…",
+  "es": "Cargar un archivo de subtítulos…"
+ },
+ "자막 파일: %s": {
+  "en": "Subtitle file: %s",
+  "ja": "字幕ファイル: %s",
+  "zh-CN": "字幕文件：%s",
+  "zh-TW": "字幕檔：%s",
+  "es": "Archivo de subtítulos: %s"
+ },
+ "자막 파일을 그대로 표시합니다: %s": {
+  "en": "Showing the subtitle file as it is: %s",
+  "ja": "字幕ファイルをそのまま表示します: %s",
+  "zh-CN": "按原样显示字幕文件：%s",
+  "zh-TW": "依原樣顯示字幕檔：%s",
+  "es": "Mostrando el archivo de subtítulos tal cual: %s"
+ },
+ "자막 파일을 불러오지 못했습니다: %s": {
+  "en": "Could not load the subtitle file: %s",
+  "ja": "字幕ファイルを読み込めませんでした: %s",
+  "zh-CN": "无法加载字幕文件：%s",
+  "zh-TW": "無法載入字幕檔：%s",
+  "es": "No se pudo cargar el archivo de subtítulos: %s"
+ },
+ "자막:": {
+  "en": "Subtitles:",
+  "ja": "字幕:",
+  "zh-CN": "字幕：",
+  "zh-TW": "字幕：",
+  "es": "Subtítulos:"
+ },
+ "자막을 가져옵니다: %s\n영상 음성에 시간을 맞춘 뒤 %s로 번역합니다": {
+  "en": "Importing subtitles: %s\nAligning them to the speech, then translating to %s",
+  "ja": "字幕を取り込みます: %s\n音声に時間を合わせてから%sに翻訳します",
+  "zh-CN": "正在导入字幕：%s\n将先与视频语音对齐时间，再翻译为%s",
+  "zh-TW": "正在匯入字幕：%s\n將先與影片語音對齊時間，再翻譯為%s",
+  "es": "Importando subtítulos: %s\nSe ajustan al audio y luego se traducen a %s"
+ },
+ "전체 자막 생성…": {
+  "en": "Generate full subtitles…",
+  "ja": "全体字幕を生成…",
+  "zh-CN": "生成完整字幕…",
+  "zh-TW": "產生完整字幕…",
+  "es": "Generar subtítulos completos…"
+ },
+ "직접 입력…": {
+  "en": "Type it in…",
+  "ja": "直接入力…",
+  "zh-CN": "手动输入…",
+  "zh-TW": "手動輸入…",
+  "es": "Escribirlo…"
+ },
+ "AI": {
+  "en": "AI",
+  "ja": "AI",
+  "zh-CN": "AI",
+  "zh-TW": "AI",
+  "es": "AI"
+ },
+ "원본 자막": {
+  "en": "Original",
+  "ja": "元字幕",
+  "zh-CN": "原始字幕",
+  "zh-TW": "原始字幕",
+  "es": "Original"
+ },
+ "OCR": {
+  "en": "OCR",
+  "ja": "OCR",
+  "zh-CN": "OCR",
+  "zh-TW": "OCR",
+  "es": "OCR"
+ },
+ "원문 (디스크 자막 OCR)": {
+  "en": "Original (disc subtitle OCR)",
+  "ja": "原文（ディスク字幕OCR）",
+  "zh-CN": "原文（光盘字幕 OCR）",
+  "zh-TW": "原文（光碟字幕 OCR）",
+  "es": "Original (OCR de subtítulos del disco)"
+ },
+ "번역 서버에 연결할 수 없습니다 · 번역되지 않은 줄은 원문으로 표시합니다": {
+  "en": "Cannot reach the translation server · lines that are not translated show their original text",
+  "ja": "翻訳サーバーに接続できません · 翻訳されない行は原文を表示します",
+  "zh-CN": "无法连接翻译服务器 · 未翻译的行将显示原文",
+  "zh-TW": "無法連線翻譯伺服器 · 未翻譯的行將顯示原文",
+  "es": "No se puede conectar con el servidor de traducción · las líneas sin traducir muestran el texto original"
  }
 }

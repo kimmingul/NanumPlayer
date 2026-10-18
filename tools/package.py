@@ -107,7 +107,7 @@ with open(os.path.join(ROOT, "components", "catalog.json"), encoding="utf-8") as
 
 
 # Fail before staging if a supported UI language is missing or a format changed.
-for namespace in ("core", "fluent", "native", "web"):
+for namespace in ("core", "fluent", "generate", "native", "web"):
     load_catalog(os.path.join(ROOT, "locales", namespace + ".json"))
 
 # Never remove a distribution the user may currently be running.
@@ -181,9 +181,12 @@ for library in ("libdvdcss", "libdvdread", "libdvdnav"):
                  os.path.join(stage, "disc", library + "-COPYING"))
 
 for script in ("nanum.lua", "nanum-fluent.lua", "fluent-input.lua", "nanum-rip.lua",
-               "nanum-i18n.lua", "nanum-upscale.lua"):
+               "nanum-i18n.lua", "nanum-upscale.lua", "nanum-picture.lua", "nanum-generate.lua",
+               "nanum-subtitles.lua"):
     copy(os.path.join(ROOT, "scripts", script), os.path.join(stage, "scripts"))
-for namespace in ("core", "fluent"):
+shutil.copytree(os.path.join(ROOT, "scripts", "shaders", "nanum-picture"),
+                os.path.join(stage, "scripts", "shaders", "nanum-picture"))
+for namespace in ("core", "fluent", "generate"):
     copy(os.path.join(ROOT, "locales", namespace + ".json"), os.path.join(stage, "locales"))
 copy(os.path.join(ROOT, "models", "catalog.json"), os.path.join(stage, "models"))
 copy(os.path.join(ROOT, "components", "catalog.json"), os.path.join(stage, "components"))

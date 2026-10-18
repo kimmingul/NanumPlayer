@@ -57,6 +57,14 @@
   "es": "no se puede leer %s",
   "ko": "%s을(를) 읽을 수 없습니다"
  },
+ "%s cannot be written (error %lu).": {
+  "ko": "%s에 쓸 수 없습니다 (오류 %lu).",
+  "en": "%s cannot be written (error %lu).",
+  "ja": "%s に書き込めません (エラー %lu)。",
+  "zh-CN": "无法写入 %s（错误 %lu）。",
+  "zh-TW": "無法寫入 %s（錯誤 %lu）。",
+  "es": "No se puede escribir %s (error %lu)."
+ },
  "%s does not contain a Blu-ray or DVD-Video disc.": {
   "ko": "%s에 Blu-ray 또는 DVD-Video 디스크가 없습니다.",
   "en": "%s does not contain a Blu-ray or DVD-Video disc.",
@@ -209,6 +217,14 @@
   "zh-TW": "%s 已被截斷。",
   "es": "%s está truncado."
  },
+ "%s lines could not be translated into %s and are missing": {
+  "ko": "%s개 줄을 %s(으)로 번역하지 못해 빠졌습니다",
+  "en": "%s lines could not be translated into %s and are missing",
+  "ja": "%s行を%sに翻訳できず、欠けています",
+  "zh-CN": "有 %s 行无法翻译为%s，已缺失",
+  "zh-TW": "有 %s 行無法翻譯為%s，已缺漏",
+  "es": "%s líneas no se pudieron traducir a %s y faltan"
+ },
  "%s source, not translated | %s | %s": {
   "ko": "%s 원문, 번역 안 됨 | %s | %s",
   "en": "%s source, not translated | %s | %s",
@@ -311,6 +327,14 @@
   "zh-CN": "另一个光盘操作仍在运行。",
   "zh-TW": "另一個光碟操作仍在執行中。",
   "es": "Todavía se está ejecutando otra operación de disco."
+ },
+ "Another subtitle generation is still running.": {
+  "ko": "다른 자막 생성이 아직 실행 중입니다.",
+  "en": "Another subtitle generation is still running.",
+  "ja": "別の字幕生成がまだ実行中です。",
+  "zh-CN": "另一个字幕生成任务仍在运行。",
+  "zh-TW": "另一個字幕產生工作仍在執行。",
+  "es": "Otra generación de subtítulos sigue en curso."
  },
  "BDMV 폴더가 있는 드라이브가 여러 개 있습니다.": {
   "en": "More than one drive contains a BDMV folder.",
@@ -553,6 +577,14 @@
   "zh-TW": "正在檢查內建的 CUDA 引擎 %s...",
   "es": "Comprobando el motor CUDA incluido %s...",
   "ko": "내장 CUDA 엔진 %s 확인 중..."
+ },
+ "Choose a folder for the subtitle files.": {
+  "ko": "자막 파일을 저장할 폴더를 선택하세요.",
+  "en": "Choose a folder for the subtitle files.",
+  "ja": "字幕ファイルの保存先フォルダーを選択してください。",
+  "zh-CN": "请选择保存字幕文件的文件夹。",
+  "zh-TW": "請選擇儲存字幕檔案的資料夾。",
+  "es": "Elija una carpeta para los archivos de subtítulos."
  },
  "Closing the output file failed: %s": {
   "ko": "출력 파일을 닫지 못했습니다: %s",
@@ -984,6 +1016,14 @@
   "zh-TW": "該檔案可能正被播放中的檔案佔用,請關閉後重試。",
   "es": "Es posible que un archivo en reproducción esté usando este archivo; ciérrelo y vuelva a intentarlo."
  },
+ "The folder %s cannot be created.": {
+  "ko": "%s 폴더를 만들 수 없습니다.",
+  "en": "The folder %s cannot be created.",
+  "ja": "フォルダー %s を作成できません。",
+  "zh-CN": "无法创建文件夹 %s。",
+  "zh-TW": "無法建立資料夾 %s。",
+  "es": "No se puede crear la carpeta %s."
+ },
  "The latest %s release has an unexpected format.": {
   "ko": "최신 %s 릴리스의 형식이 예상과 다릅니다.",
   "en": "The latest %s release has an unexpected format.",
@@ -1031,6 +1071,14 @@
   "zh-CN": "%s 的发布信息不是有效的 JSON。",
   "zh-TW": "%s 的發行資訊不是有效的 JSON。",
   "es": "La información de versión de %s no es un JSON válido."
+ },
+ "The request is not a valid JSON object.": {
+  "ko": "요청이 올바른 JSON 객체가 아닙니다.",
+  "en": "The request is not a valid JSON object.",
+  "ja": "要求は有効な JSON オブジェクトではありません。",
+  "zh-CN": "请求不是有效的 JSON 对象。",
+  "zh-TW": "要求不是有效的 JSON 物件。",
+  "es": "La solicitud no es un objeto JSON válido."
  },
  "The server %s announced %llu bytes for %s, expected %lld bytes.": {
   "ko": "서버 %s이(가) %llu바이트라고 알렸지만 %s의 예상 크기는 %lld바이트입니다.",
@@ -1199,6 +1247,14 @@
   "zh-CN": "标题 %d",
   "zh-TW": "標題 %d",
   "es": "Título %d"
+ },
+ "Too many target languages.": {
+  "ko": "목표 언어가 너무 많습니다.",
+  "en": "Too many target languages.",
+  "ja": "対象言語が多すぎます。",
+  "zh-CN": "目标语言过多。",
+  "zh-TW": "目標語言過多。",
+  "es": "Demasiados idiomas de destino."
  },
  "Unknown model download target.": {
   "ko": "알 수 없는 모델 다운로드 대상입니다.",
@@ -1692,6 +1748,14 @@
   "es": "no se encontró ninguna GPU NVIDIA compatible (capacidad de cómputo 8.6 o superior) ni su controlador",
   "ko": "호환되는 NVIDIA GPU(컴퓨트 capability 8.6 이상)와 드라이버를 찾을 수 없습니다"
  },
+ "no glossary of the work could be made: %s": {
+  "ko": "작품 용어집을 만들지 못했습니다: %s",
+  "en": "no glossary of the work could be made: %s",
+  "ja": "作品の用語集を作成できませんでした: %s",
+  "zh-CN": "无法生成作品术语表：%s",
+  "zh-TW": "無法產生作品術語表：%s",
+  "es": "no se pudo crear un glosario de la obra: %s"
+ },
  "no image subtitle track": {
   "ko": "이미지 자막 트랙이 없습니다",
   "en": "no image subtitle track",
@@ -2132,6 +2196,14 @@
   "zh-TW": "已儲存的轉錄內容為空",
   "es": "la transcripción guardada está vacía"
  },
+ "the speech recognition model is not installed: %s": {
+  "ko": "음성 인식 모델이 설치되어 있지 않습니다: %s",
+  "en": "the speech recognition model is not installed: %s",
+  "ja": "音声認識モデルがインストールされていません: %s",
+  "zh-CN": "未安装语音识别模型：%s",
+  "zh-TW": "尚未安裝語音辨識模型：%s",
+  "es": "el modelo de reconocimiento de voz no está instalado: %s"
+ },
  "the subtitle file does not exist": {
   "ko": "자막 파일이 없습니다",
   "en": "the subtitle file does not exist",
@@ -2172,6 +2244,14 @@
   "zh-TW": "字幕軌中沒有文字",
   "es": "la pista de subtítulos no tiene texto"
  },
+ "the subtitles have nothing to translate": {
+  "ko": "번역할 자막이 없습니다",
+  "en": "the subtitles have nothing to translate",
+  "ja": "翻訳する字幕がありません",
+  "zh-CN": "没有可翻译的字幕",
+  "zh-TW": "沒有可翻譯的字幕",
+  "es": "los subtítulos no tienen nada que traducir"
+ },
  "the text subtitle track was not found": {
   "ko": "텍스트 자막 트랙을 찾을 수 없습니다",
   "en": "the text subtitle track was not found",
@@ -2196,6 +2276,14 @@
   "zh-TW": "翻譯模型沒有回應",
   "es": "el modelo de traducción no respondió"
  },
+ "the translator returned no text": {
+  "ko": "번역기가 아무 텍스트도 돌려주지 않았습니다",
+  "en": "the translator returned no text",
+  "ja": "翻訳エンジンがテキストを返しませんでした",
+  "zh-CN": "翻译器没有返回任何文本",
+  "zh-TW": "翻譯器沒有傳回任何文字",
+  "es": "el traductor no devolvió ningún texto"
+ },
  "translation cue insert": {
   "ko": "번역 줄 추가",
   "en": "translation cue insert",
@@ -2212,6 +2300,22 @@
   "zh-TW": "新增譯文",
   "es": "inserción de traducción"
  },
+ "translation into %s failed: %s": {
+  "ko": "%s(으)로 번역하지 못했습니다: %s",
+  "en": "translation into %s failed: %s",
+  "ja": "%sへの翻訳に失敗しました: %s",
+  "zh-CN": "翻译为%s失败：%s",
+  "zh-TW": "翻譯為%s失敗：%s",
+  "es": "falló la traducción a %s: %s"
+ },
+ "translation is turned off: no translation server is set": {
+  "ko": "번역이 꺼져 있습니다: 번역 서버가 설정되어 있지 않습니다",
+  "en": "translation is turned off: no translation server is set",
+  "ja": "翻訳はオフです: 翻訳サーバーが設定されていません",
+  "zh-CN": "翻译已关闭：未设置翻译服务器",
+  "zh-TW": "翻譯已關閉：未設定翻譯伺服器",
+  "es": "la traducción está desactivada: no hay servidor de traducción"
+ },
  "translation trim": {
   "ko": "번역 정리",
   "en": "translation trim",
@@ -2227,6 +2331,14 @@
   "zh-CN": "未知错误",
   "zh-TW": "未知錯誤",
   "es": "error desconocido"
+ },
+ "url and source (stt, text or ocr) are required.": {
+  "ko": "url과 source(stt, text, ocr)가 필요합니다.",
+  "en": "url and source (stt, text or ocr) are required.",
+  "ja": "url と source (stt、text、ocr) が必要です。",
+  "zh-CN": "需要 url 和 source（stt、text 或 ocr）。",
+  "zh-TW": "需要 url 和 source（stt、text 或 ocr）。",
+  "es": "Se requieren url y source (stt, text u ocr)."
  },
  "voice detection model": {
   "ko": "음성 감지 모델",
@@ -2470,5 +2582,173 @@
   "zh-CN": "韩语",
   "zh-TW": "韓文",
   "es": "coreano"
+ },
+ "중국어 (간체)": {
+  "en": "Chinese (Simplified)",
+  "ja": "中国語（簡体字）",
+  "zh-CN": "中文（简体）",
+  "zh-TW": "中文（簡體）",
+  "es": "Chino (simplificado)"
+ },
+ "중국어 (번체)": {
+  "en": "Chinese (Traditional)",
+  "ja": "中国語（繁体字）",
+  "zh-CN": "中文（繁体）",
+  "zh-TW": "中文（繁體）",
+  "es": "Chino (tradicional)"
+ },
+ "아랍어": {
+  "en": "Arabic",
+  "ja": "アラビア語",
+  "zh-CN": "阿拉伯语",
+  "zh-TW": "阿拉伯語",
+  "es": "Árabe"
+ },
+ "힌디어": {
+  "en": "Hindi",
+  "ja": "ヒンディー語",
+  "zh-CN": "印地语",
+  "zh-TW": "印地語",
+  "es": "Hindi"
+ },
+ "태국어": {
+  "en": "Thai",
+  "ja": "タイ語",
+  "zh-CN": "泰语",
+  "zh-TW": "泰語",
+  "es": "Tailandés"
+ },
+ "베트남어": {
+  "en": "Vietnamese",
+  "ja": "ベトナム語",
+  "zh-CN": "越南语",
+  "zh-TW": "越南語",
+  "es": "Vietnamita"
+ },
+ "인도네시아어": {
+  "en": "Indonesian",
+  "ja": "インドネシア語",
+  "zh-CN": "印度尼西亚语",
+  "zh-TW": "印尼語",
+  "es": "Indonesio"
+ },
+ "말레이어": {
+  "en": "Malay",
+  "ja": "マレー語",
+  "zh-CN": "马来语",
+  "zh-TW": "馬來語",
+  "es": "Malayo"
+ },
+ "필리핀어": {
+  "en": "Filipino",
+  "ja": "フィリピン語",
+  "zh-CN": "菲律宾语",
+  "zh-TW": "菲律賓語",
+  "es": "Filipino"
+ },
+ "벵골어": {
+  "en": "Bengali",
+  "ja": "ベンガル語",
+  "zh-CN": "孟加拉语",
+  "zh-TW": "孟加拉語",
+  "es": "Bengalí"
+ },
+ "네덜란드어": {
+  "en": "Dutch",
+  "ja": "オランダ語",
+  "zh-CN": "荷兰语",
+  "zh-TW": "荷蘭語",
+  "es": "Neerlandés"
+ },
+ "폴란드어": {
+  "en": "Polish",
+  "ja": "ポーランド語",
+  "zh-CN": "波兰语",
+  "zh-TW": "波蘭語",
+  "es": "Polaco"
+ },
+ "튀르키예어": {
+  "en": "Turkish",
+  "ja": "トルコ語",
+  "zh-CN": "土耳其语",
+  "zh-TW": "土耳其語",
+  "es": "Turco"
+ },
+ "스웨덴어": {
+  "en": "Swedish",
+  "ja": "スウェーデン語",
+  "zh-CN": "瑞典语",
+  "zh-TW": "瑞典語",
+  "es": "Sueco"
+ },
+ "덴마크어": {
+  "en": "Danish",
+  "ja": "デンマーク語",
+  "zh-CN": "丹麦语",
+  "zh-TW": "丹麥語",
+  "es": "Danés"
+ },
+ "노르웨이어": {
+  "en": "Norwegian",
+  "ja": "ノルウェー語",
+  "zh-CN": "挪威语",
+  "zh-TW": "挪威語",
+  "es": "Noruego"
+ },
+ "핀란드어": {
+  "en": "Finnish",
+  "ja": "フィンランド語",
+  "zh-CN": "芬兰语",
+  "zh-TW": "芬蘭語",
+  "es": "Finés"
+ },
+ "체코어": {
+  "en": "Czech",
+  "ja": "チェコ語",
+  "zh-CN": "捷克语",
+  "zh-TW": "捷克語",
+  "es": "Checo"
+ },
+ "그리스어": {
+  "en": "Greek",
+  "ja": "ギリシャ語",
+  "zh-CN": "希腊语",
+  "zh-TW": "希臘語",
+  "es": "Griego"
+ },
+ "히브리어": {
+  "en": "Hebrew",
+  "ja": "ヘブライ語",
+  "zh-CN": "希伯来语",
+  "zh-TW": "希伯來語",
+  "es": "Hebreo"
+ },
+ "헝가리어": {
+  "en": "Hungarian",
+  "ja": "ハンガリー語",
+  "zh-CN": "匈牙利语",
+  "zh-TW": "匈牙利語",
+  "es": "Húngaro"
+ },
+ "루마니아어": {
+  "en": "Romanian",
+  "ja": "ルーマニア語",
+  "zh-CN": "罗马尼亚语",
+  "zh-TW": "羅馬尼亞語",
+  "es": "Rumano"
+ },
+ "우크라이나어": {
+  "en": "Ukrainian",
+  "ja": "ウクライナ語",
+  "zh-CN": "乌克兰语",
+  "zh-TW": "烏克蘭語",
+  "es": "Ucraniano"
+ },
+ "페르시아어": {
+  "en": "Persian",
+  "ja": "ペルシア語",
+  "zh-CN": "波斯语",
+  "zh-TW": "波斯語",
+  "es": "Persa"
  }
 }

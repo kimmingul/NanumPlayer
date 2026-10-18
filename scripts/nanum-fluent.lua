@@ -228,7 +228,8 @@ local function open_web() run("script-binding", "nanum-web") end
 local function open_disc() run("nanum-open-disc") end
 local function open_ai() run("script-binding", "nanum-settings") end
 
-local DISPLAY_NAME = { translation = "번역만", bilingual = "번역+원문", source = "원문만" }
+-- Subtitle list: scripts/nanum.lua draws one list (AI translation / originals / files) and the button opens it
+-- above itself. Only when that script is not running (no user-data/nanum/sub-menu) the plain track list is used.
 
 local function track_menu(kind, anchor)
     local tracks = mp.get_property_native("track-list") or {}
@@ -262,10 +263,6 @@ local function track_menu(kind, anchor)
         end
         items[1] = (any_sel and "  " or "● ") .. items[1]
         if not any_sel then def = 1 end
-        -- how the AI subtitles are shown (translation / translation + source / source)
-        local mode = mp.get_property("options/nanum-display")
-        items[#items + 1] = "  " .. tr("자막 표시 방식: %s", tr(DISPLAY_NAME[mode] or "번역만")) .. " …"
-        values[#values + 1] = "display"
     end
     F.select({
         prompt = kind == "audio" and tr("음성 트랙") or tr("자막 트랙"),
@@ -274,10 +271,6 @@ local function track_menu(kind, anchor)
         anchor = anchor,
         submit = function(i)
             local v = values[i]
-            if v == "display" then
-                run("script-binding", "nanum-display")
-                return
-            end
             if kind == "audio" then
                 mp.set_property_number("aid", v)
             else
@@ -317,7 +310,11 @@ local function activate(id)
     elseif id == "audio" then
         track_menu("audio", el and L.panel and { x = el.x + el.w / 2, y = L.panel.y })
     elseif id == "sub" then
-        track_menu("sub", el and L.panel and { x = el.x + el.w / 2, y = L.panel.y })
+        if mp.get_property_native("user-data/nanum/sub-menu") == true and el and L.panel then
+            run("script-message", "nanum-subtitles-open", string.format("%d", floor(el.x + el.w / 2)), string.format("%d", floor(L.panel.y)))
+        else
+            track_menu("sub", el and L.panel and { x = el.x + el.w / 2, y = L.panel.y })
+        end
     elseif id == "chip" and S.status and S.status.action == "models" then
         run("script-binding", "nanum-models")
     elseif id:find("^tag%d$") then

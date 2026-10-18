@@ -99,6 +99,7 @@ local opts = {
     target_language = "",
     translate_endpoint = "",
     display = "translation",
+    original_first = true,      -- a subtitle already in the target language is shown directly and the AI work is skipped
     library_auto_use = false,
     model_prompt = true,
     accel_prompt = true,
@@ -143,7 +144,7 @@ do
     if okc and (cli == "cpu" or cli == "cuda") then session_accel = cli end
 end
 
-local FULL_TITLE = "ko (AI full)"
+local FULL_SUFFIX = " (AI full)"       -- the title of the complete translation track ends with this (it names the target language)
 
 -- The player's virtual AI subtitle tracks are recognised by the demuxer stream id it publishes in
 -- demuxer-cache-state (their titles are localised and name the audio language): the primary track is
@@ -163,13 +164,17 @@ end
 -- "full" | nil (not one of ours)
 local function ai_role(t)
     if type(t) ~= "table" or t.type ~= "sub" then return nil end
-    if t.title == FULL_TITLE then return "full" end
+    if type(t.title) == "string" and t.title:sub(-#FULL_SUFFIX) == FULL_SUFFIX then return "full" end
     local s = t["src-id"]
     if t.external or type(s) ~= "number" then return nil end
     if s == ai_ids.primary then return "primary" end
     if s == ai_ids.secondary then return "secondary" end
     if s == ai_ids.pgs then return "pgs" end
     if s == ai_ids.import then return "import" end
+    -- the player's virtual tracks have the demuxer ids 0x4e414e + input (nanum.c virtual_id()); the state that
+    -- names them may not have been published yet when a file has just loaded
+    local k = s - 0x4e414e
+    if k >= 0 and k <= 3 then return ({ [0] = "primary", "secondary", "pgs", "import" })[k] end
     return nil
 end
 
@@ -582,12 +587,18 @@ local function auto_select_primary(st)
     local t = ai_track("primary")
     if not t then return end
     selected_once = true
+    -- the old "원문만" display setting: with a subtitle-based input the original track is that text
+    local original = (opts.display == "source" and SUBS.ux) and SUBS.ux.source_track() or nil
+    if original then
+        if not original.selected then mp.set_property_number("sid", original.id) end
+        return
+    end
     if not t.selected then mp.set_property_number("sid", t.id) end
 end
 
 local function select_full_track(path)
     for _, t in ipairs(mp.get_property_native("track-list") or {}) do
-        if t.type == "sub" and t.title == FULL_TITLE and t["external-filename"] == path then
+        if t.type == "sub" and ai_role(t) == "full" and t["external-filename"] == path then
             if not t.selected then mp.set_property_number("sid", t.id) end
             return
         end
@@ -771,7 +782,7 @@ local function library_action(action, o)
         regenerate = "음성 인식부터 새로 생성합니다 (기존 자막은 완료될 때까지 유지)",
         disable = "이 파일에서는 AI 자막을 사용하지 않습니다",
     }
-    notify(messages[action] and input.core_tr(messages[action]) or action, 3)
+    if not o.quiet then notify(messages[action] and input.core_tr(messages[action]) or action, 3) end
     local function finish()
         lib_action_timer = nil
         if action ~= "ask" and not set_opt_soft("nanum-library-action", action) then
@@ -787,7 +798,7 @@ local function library_action(action, o)
             end
         end
         resync()
-        if action ~= "disable" then
+        if action ~= "disable" and not o.keep_selection then
             mp.add_timeout(1.5, function()
                 if not keep_full and last_full_state ~= "done" then select_live() end
             end)
@@ -1766,7 +1777,7 @@ end
 
 local function find_full_track(path)
     for _, t in ipairs(mp.get_property_native("track-list") or {}) do
-        if t.type == "sub" and t.title == FULL_TITLE and t["external-filename"] == path then return t end
+        if t.type == "sub" and ai_role(t) == "full" and t["external-filename"] == path then return t end
     end
     return nil
 end
@@ -1776,7 +1787,7 @@ local function prune_full_tracks()
     local keep = applied_path and find_full_track(applied_path)
     if not keep then return end
     for _, t in ipairs(mp.get_property_native("track-list") or {}) do
-        if t.type == "sub" and t.title == FULL_TITLE and t.id ~= keep.id and not t.selected then
+        if t.type == "sub" and ai_role(t) == "full" and t.id ~= keep.id and not t.selected then
             mp.commandv("sub-remove", tostring(t.id))
         end
     end
@@ -1801,7 +1812,8 @@ local function apply_full(path, reload)
         if reload then mp.commandv("sub-reload", tostring(existing.id)) end
         if select and not existing.selected then mp.set_property_number("sid", existing.id) end
     else
-        mp.commandv("sub-add", path, select and "select" or "auto", FULL_TITLE, "ko")
+        local tgt = SUBS.ux and SUBS.ux.target() or nil
+        mp.commandv("sub-add", path, select and "select" or "auto", (tgt and tgt.label or "ko") .. FULL_SUFFIX, tgt and tgt.code or "ko")
     end
     applied_path = path
     keep_full = false
@@ -1969,6 +1981,11 @@ local function compute_status()
         return input.core_tr("네트워크에서 미리 받는 중"), "busy"
     end
     if not AIM.engine_enabled() then return "", "info" end
+    do
+        local skip_text, skip_kind = nil, nil
+        if SUBS.ux then skip_text, skip_kind = SUBS.ux.status() end
+        if skip_text then return skip_text, skip_kind end
+    end
     if ai_disabled then return input.core_tr("AI 자막 꺼짐"), "info" end
     local reason, info = AIM.block_reason()
     if reason == "models" then
@@ -2013,6 +2030,10 @@ local function compute_status()
     if st and st["nanum-glossary-apply-state"] == "running" then return glossary_apply_text(st), "busy" end
     local its = st and st["nanum-import-state"]
     if its == "aligning" or its == "translating" then return SUBS.import_text(st), "busy" end
+    if SUBS.server_down and st and st["nanum-profile-state"] == "error" then
+        -- the translation of a line that fails is shown as its original text (never a blank screen)
+        return input.core_tr("번역 서버에 연결할 수 없습니다 · 번역되지 않은 줄은 원문으로 표시합니다"), "warn"
+    end
     local r = ready_until()
     if r then
         local ahead = r - abs_pos()
@@ -2039,6 +2060,7 @@ local function on_cache_state(_, st)
     refresh_ai_ids(st)
     auto_select_primary(st)
     on_profile(st)
+    if st["nanum-profile-state"] == "error" then SUBS.probe_server() elseif SUBS.server_down then SUBS.server_down = false end
     on_glossary_apply(st)
     SUBS.on_state(st)
     local s = st["nanum-full-state"]
@@ -2114,6 +2136,7 @@ mp.register_event("start-file", function()
     gloss_wait = nil
     gloss_apply_prev, gloss_pending = nil, nil
     cancel_glossary_edit()
+    if SUBS.ux then SUBS.ux.reset() end
     prepare_file_options()
     sel_mode = opts.input_mode
     sel_track_id = nil
@@ -2150,6 +2173,7 @@ mp.register_event("file-loaded", function()
     last_aid = mp.get_property_number("aid")    -- baseline, no change event is sent for it
     pin_audio(mp.get_property_native("track-list"))
     if lib_option_ok then lib_probe_until = loaded_at + 6 end
+    if SUBS.ux then SUBS.ux.file_loaded() end      -- a subtitle already in the target language: shown, AI work skipped
     apply_full_options()
     reevaluate(false)
     AIM.file_block, AIM.file_accel = nil, nil
@@ -2225,6 +2249,7 @@ mp.observe_property("track-list", "native", function(_, tracks)
     end
     if tracks then auto_select_primary() end
     if tracks then SUBS.on_tracks(tracks) end
+    if tracks and SUBS.ux then SUBS.ux.tracks_changed() end
 end)
 
 -- Playback audio only. The AI input stays pinned to the track chosen at load
@@ -2343,6 +2368,7 @@ function save_settings()
     f:write(string.format("acceleration=%s\naccel_prompt=%s\n", opts.acceleration, opts.accel_prompt and "yes" or "no"))
     f:write(string.format("translate_style=%s\nsecondary=%s\n", opts.translate_style, opts.secondary and "yes" or "no"))
     f:write("pgs=" .. (opts.pgs and "yes" or "no") .. "\n")
+    f:write("original_first=" .. (opts.original_first and "yes" or "no") .. "\n")
     f:write(string.format("bar_hide=%s\nai_tags=%s\n", opts.bar_hide, opts.ai_tags and "yes" or "no"))
     if opts.downloads_dir ~= "" then f:write("downloads_dir=" .. opts.downloads_dir .. "\n") end
     if opts.translate_style_text ~= "" then f:write("translate_style_text=" .. opts.translate_style_text .. "\n") end
@@ -2367,45 +2393,15 @@ local function reopen_menu()
     mp.add_timeout(0.1, open_menu)
 end
 
-local DISPLAYS = {
-    { key = "translation", label = "번역만" },
-    { key = "bilingual", label = "번역+원문" },
-    { key = "source", label = "원문만" },
-}
-
-local function display_label(key)
-    for _, d in ipairs(DISPLAYS) do
-        if d.key == key then return input.core_tr(d.label) end
-    end
-    return key
-end
-
--- Presentation only: the engine re-renders without any reprocessing.
+-- How the AI entries present their cues (translation / translation + original / original only). Presentation
+-- only: the engine re-renders without any reprocessing. The saved value is the last AI presentation chosen in
+-- the subtitle list (older versions saved it as the "자막 표시" setting).
 local function set_display(key)
     opts.display = key
     save_settings()
-    if set_opt_soft("nanum-display", key) then
-        notify(input.core_tr("자막 표시: %s", display_label(key)), 2, "ok")
-    else
-        notify(input.core_tr("이 엔진 버전은 자막 표시 방식 전환을 지원하지 않습니다 (nanum 갱신 필요)"), 4, "error")
-    end
-end
-
-local function open_display_menu(standalone)
-    local items, default = {}, 1
-    for i, d in ipairs(DISPLAYS) do
-        items[i] = (d.key == opts.display and "● " or "  ") .. input.core_tr(d.label)
-        if d.key == opts.display then default = i end
-    end
-    input.select({
-        prompt = input.core_tr("자막 표시 방식:"),
-        items = items,
-        default_item = default,
-        submit = function(i)
-            set_display(DISPLAYS[i].key)
-            if not standalone then reopen_menu() end
-        end,
-    })
+    if set_opt_soft("nanum-display", key) then return true end
+    notify(input.core_tr("이 엔진 버전은 자막 표시 방식 전환을 지원하지 않습니다 (nanum 갱신 필요)"), 4, "error")
+    return false
 end
 
 -- Apply changed full-mode settings; the engine restarts, so resync.
@@ -3225,6 +3221,7 @@ local TITLE_STOP = {
 function SUBS.reset()
     SUBS.cancel_watch(true)
     SUBS.import_prev, SUBS.ext_seen, SUBS.last_text = nil, nil, nil
+    SUBS.server_down, SUBS.probe_at = false, nil
 end
 
 -- Percent-encoding of the UTF-8 bytes.
@@ -3398,16 +3395,42 @@ function SUBS.start_search(site)
         input.core_tr(site.label), q, SUBS.watch.dir), 9, "busy", "subs")
 end
 
--- Hands a subtitle file to the player.
+-- Is the translation server answering? Asked once (at most every 30 s) when the player's first query failed, so that
+-- the status chip can say why lines show their original text.
+function SUBS.probe_server()
+    if SUBS.probing or mp.get_time() - (SUBS.probe_at or -100) < 30 then return end
+    local endpoint = get_opt("nanum-translate-endpoint") or ""
+    if endpoint == "" then return end
+    SUBS.probing, SUBS.probe_at = true, mp.get_time()
+    mp.command_native_async({ name = "subprocess", playback_only = false, capture_stdout = true,
+        args = { "curl.exe", "-s", "--max-time", "3", (endpoint:gsub("/+$", "")) .. "/api/tags" } }, function(ok, res)
+        SUBS.probing = false
+        SUBS.server_down = not (ok and res and res.status == 0 and (res.stdout or "") ~= "")
+        publish_status()
+    end)
+end
+
+-- Hands a subtitle file to the player: show it as it is, or have the AI align and translate it.
 function SUBS.send(path, origin, lang)
+    if not (file_active and file_loaded) then
+        notify(input.core_tr("영상을 재생한 뒤에 사용할 수 있습니다"), 4, "warn")
+        return
+    end
+    if SUBS.ux then return SUBS.ux.import(path:gsub("/", "\\"), origin, lang) end
+    SUBS.translate_import(path, origin, lang)
+end
+
+-- The AI path: the player aligns the file to the speech, translates it and publishes the track (nanum-track-import).
+function SUBS.translate_import(path, origin, lang)
     if not (file_active and file_loaded) then
         notify(input.core_tr("영상을 재생한 뒤에 사용할 수 있습니다"), 4, "warn")
         return
     end
     path = path:gsub("/", "\\")
     SUBS.import_prev = nil
+    local target = SUBS.ux and SUBS.ux.target().label or input.core_tr("한국어")
     if SUBS.request("nanum-import-sub", path .. "|" .. (lang or "") .. "|" .. origin) then
-        notify(input.core_tr("자막을 가져옵니다: %s\n영상 음성에 시간을 맞춘 뒤 한국어로 번역합니다", path:match("([^\\]*)$") or path), 6, "busy", "subs")
+        notify(input.core_tr("자막을 가져옵니다: %s\n영상 음성에 시간을 맞춘 뒤 %s로 번역합니다", path:match("([^\\]*)$") or path, target), 6, "busy", "subs")
     else
         notify(input.core_tr("이 엔진 버전은 자막 가져오기를 지원하지 않습니다 (nanum 갱신 필요)"), 5, "error", "subs")
     end
@@ -3589,14 +3612,15 @@ function SUBS.on_tracks(tracks)
             seen[t.id] = true
             local path = t["external-filename"]
             local ext = type(path) == "string" and path:lower():match("%.(%w+)$") or nil
-            if t.title ~= FULL_TITLE and ext and SUBS.EXT[ext] and mp.get_time() - loaded_at > 2.5 then
+            if ai_role(t) ~= "full" and ext and SUBS.EXT[ext] and mp.get_time() - loaded_at > 2.5 then
                 queue_prompt("dropsub", function()
                     return {
                         prompt = input.core_tr("자막 파일을 추가했습니다: %s", path:match("([^\\/]*)$") or path),
-                        items = { input.core_tr("AI로 가져오기 (영상에 시간을 맞추고 한국어로 번역)"), input.core_tr("그대로 외부 자막으로 사용") },
+                        items = { input.core_tr("그대로 외부 자막으로 사용"),
+                            input.core_tr("AI로 시간 맞추고 %s로 번역", SUBS.ux and SUBS.ux.target().label or input.core_tr("한국어")) },
                         default_item = 1,
                         submit = function(i)
-                            if i == 1 then SUBS.send(path, "파일", "") end
+                            if i == 2 then SUBS.translate_import(path, "파일", "") end
                         end,
                     }
                 end)
@@ -4470,6 +4494,279 @@ do
     end
 end
 
+----------------------------------------------------------------------------
+-- Video picture correction (scripts/nanum-picture.lua controller). Built-in lightweight filters; no model files.
+----------------------------------------------------------------------------
+local PIC = {
+    PRESETS = { "original", "anime", "oldanime", "compressed" },
+    FILTERS = { "denoise", "deband", "lines", "sharpen", "color" },
+}
+
+function PIC.state()
+    local st
+    if PIC.ctl then
+        local ok, r = pcall(PIC.ctl.get_state)
+        if ok and type(r) == "table" then st = r end
+    end
+    return st or PIC.last or { preset = "original", denoise = 0, deband = 0, lines = 0, sharpen = 0, color = 0,
+        comparing = false, rtx = false, status = "original", detail = "" }
+end
+
+function PIC.preset_label(p)
+    if p == "anime" then return input.core_tr("애니 선명하게") end
+    if p == "oldanime" then return input.core_tr("옛날 애니 부드럽게") end
+    if p == "compressed" then return input.core_tr("압축 영상 보정") end
+    if p == "custom" then return input.core_tr("사용자 지정") end
+    return input.core_tr("원본")
+end
+
+function PIC.filter_label(f)
+    if f == "denoise" then return input.core_tr("노이즈 줄이기") end
+    if f == "deband" then return input.core_tr("색 띠 완화") end
+    if f == "lines" then return input.core_tr("선 강조") end
+    if f == "sharpen" then return input.core_tr("선명도") end
+    return input.core_tr("색 보정")
+end
+
+function PIC.level_label(n)
+    n = tonumber(n) or 0
+    if n <= 0 then return input.core_tr("끔") end
+    if n == 1 then return input.core_tr("약함") end
+    if n == 2 then return input.core_tr("중간") end
+    return input.core_tr("강함")
+end
+
+function PIC.suppressed(st, f)
+    return st.rtx and (f == "lines" or f == "sharpen") and (tonumber(st[f]) or 0) > 0
+end
+
+function PIC.status_text(st)
+    local s, d = st.status, tostring(st.detail or "")
+    local t
+    if s == "comparing" then t = input.core_tr("보정 전 화면 비교 중 (임시)")
+    elseif s == "active" then t = input.core_tr("영상 화질 보정 적용 중")
+    elseif s == "waiting" then t = input.core_tr("대기 중 — 영상이 재생되면 적용합니다")
+    elseif s == "error" then t = input.core_tr("오류")
+    else t = input.core_tr("원본") end
+    if d ~= "" then t = t .. " (" .. d .. ")" end
+    return t
+end
+
+function PIC.summary()
+    local st = PIC.state()
+    local t = PIC.preset_label(st.preset)
+    if st.status == "error" then t = t .. " · " .. input.core_tr("오류") end
+    return t
+end
+
+function PIC.call(name, arg)
+    if not PIC.ctl then
+        notify(input.core_tr("영상 화질 도우미(scripts/nanum-picture.lua)를 불러오지 못했습니다"), 6, "error")
+        return false
+    end
+    local ok, a, b = pcall(PIC.ctl[name], arg)
+    if ok and a == true then return true end
+    notify(input.core_tr("영상 화질 설정 실패: %s", tostring(ok and b or a)), 6, "error")
+    return false
+end
+
+function PIC.build()
+    local st = PIC.state()
+    local items, acts, keys = {}, {}, {}
+    local function add(key, text, fn)
+        items[#items + 1] = text
+        acts[#acts + 1] = fn
+        keys[#keys + 1] = key
+    end
+    local function again() mp.add_timeout(0.1, PIC.open) end
+    add("status", input.core_tr("상태: %s", PIC.status_text(st)), again)
+    add("preset", input.core_tr("프리셋: %s", PIC.preset_label(st.preset)), function() mp.add_timeout(0.1, PIC.open_preset) end)
+    for _, f in ipairs(PIC.FILTERS) do
+        local lv = PIC.level_label(st[f])
+        if PIC.suppressed(st, f) then lv = lv .. " · " .. input.core_tr("RTX 사용 중 — 일시 중지") end
+        add(f, input.core_tr("%s: %s", PIC.filter_label(f), lv), function() mp.add_timeout(0.1, function() PIC.open_level(f) end) end)
+    end
+    add("compare", input.core_tr("보정 전 화면 비교 (임시): %s", input.core_tr(st.comparing and "켬" or "끔")), function()
+        PIC.call("set_compare", not st.comparing)
+        again()
+    end)
+    add("note_compare", input.core_tr("비교 중에도 업스케일 유지 · 비교 상태는 저장 안 함"), again)
+    if st.rtx then
+        add("note_rtx", input.core_tr("RTX: 선 강조·선명도 일시 중지 (중복 방지)"), again)
+    end
+    if UPS.state().mode == "shader" then
+        add("note_shader", input.core_tr("사용자 셰이더: 선명화 중복 적용 주의"), again)
+    end
+    add("upscale", input.core_tr("영상 업스케일: %s", UPS.summary()), function() mp.add_timeout(0.1, UPS.open) end)
+    add("back", input.core_tr("← 설정으로 돌아가기"), function() reopen_menu() end)
+    return items, acts, keys
+end
+
+function PIC.refresh()
+    if PIC.refresh_pending then return end
+    PIC.refresh_pending = true
+    mp.add_timeout(0.05, function()
+        PIC.refresh_pending = false
+        local id = fluent.open_id()
+        if id == "nanum-picture" then
+            local items, acts, keys = PIC.build()
+            PIC.acts = acts
+            fluent.update_select("nanum-picture", items, { keys = keys })
+        elseif id == "nanum-settings" and UPS.refresh_settings then
+            UPS.refresh_settings()
+        end
+    end)
+end
+
+function PIC.open()
+    local items, acts, keys = PIC.build()
+    PIC.acts = acts
+    input.select({
+        id = "nanum-picture",
+        prompt = input.core_tr("영상 화질:"),
+        items = items,
+        keys = keys,
+        submit = function(i)
+            local fn = PIC.acts[i]
+            if fn then fn() end
+        end,
+    })
+end
+
+function PIC.open_preset()
+    local st = PIC.state()
+    local items, default = {}, 1
+    for i, p in ipairs(PIC.PRESETS) do
+        items[i] = (p == st.preset and "● " or "  ") .. PIC.preset_label(p)
+        if p == st.preset then default = i end
+    end
+    if st.preset == "custom" then
+        items[#items + 1] = "● " .. PIC.preset_label("custom")
+        default = #items
+    end
+    items[#items + 1] = input.core_tr("← 뒤로")
+    input.select({
+        prompt = input.core_tr("영상 화질 프리셋:"),
+        items = items,
+        default_item = default,
+        submit = function(i)
+            if PIC.PRESETS[i] then PIC.call("set_preset", PIC.PRESETS[i]) end
+            mp.add_timeout(0.1, PIC.open)
+        end,
+    })
+end
+
+function PIC.open_level(f)
+    local st = PIC.state()
+    local cur = tonumber(st[f]) or 0
+    local items = {}
+    for n = 0, 3 do items[n + 1] = (n == cur and "● " or "  ") .. PIC.level_label(n) end
+    items[#items + 1] = input.core_tr("← 뒤로")
+    input.select({
+        prompt = PIC.filter_label(f) .. ":",
+        items = items,
+        default_item = cur + 1,
+        submit = function(i)
+            if i <= 4 then PIC.call("set_filter", { name = f, level = i - 1 }) end
+            mp.add_timeout(0.1, PIC.open)
+        end,
+    })
+end
+
+do
+    local factory = load_helper("nanum-picture.lua", "function")
+    if factory then
+        local ok, ctl = pcall(factory, { changed = function(st)
+            if type(st) == "table" then PIC.last = st end
+            PIC.refresh()
+        end })
+        if ok and type(ctl) == "table" then
+            PIC.ctl = ctl
+        else
+            mp.msg.error("nanum-picture.lua: " .. tostring(ctl))
+        end
+    end
+end
+
+-- Subtitle list (the subtitle button and Ctrl+N), target language, subtitle files: scripts/nanum-subtitles.lua.
+-- Hooks it needs from this script (the module cannot see the locals of this file).
+do
+    local function primary_is_text()
+        local st = cache_state()
+        local active = st and st["nanum-input-active"]
+        if active then return active == "sub" end
+        return resolve_choice(mp.get_property_native("track-list") or {}).input == "sub"
+    end
+    local factory = load_helper("nanum-subtitles.lua", "function")
+    if factory then
+        local ok, ux = pcall(factory, {
+            input = input, notify = notify, opts = opts, save_settings = save_settings,
+            norm_lang = norm_lang, track_lang = track_lang, lang_name = lang_name, ai_role = ai_role,
+            get_display = function() return opts.display end,
+            set_display = set_display,
+            file_ready = function() return file_active and file_loaded end,
+            loaded_at = function() return loaded_at end,
+            primary_is_text = primary_is_text,
+            -- the text subtitle track the AI reads (nil when it works from speech)
+            input_track = function()
+                if not primary_is_text() then return nil end
+                return resolve_choice(mp.get_property_native("track-list") or {}).track
+            end,
+            primary_source_lang = function()
+                local tracks = mp.get_property_native("track-list") or {}
+                if primary_is_text() then
+                    local c = resolve_choice(tracks)
+                    return c.track and norm_lang(track_lang(c.track)) or nil
+                end
+                return stt_language(tracks)
+            end,
+            pgs_language = function()
+                local st = cache_state()
+                return st and norm_lang(st["nanum-pgs-language"]) or nil
+            end,
+            -- AI work switched off by the user ("이 파일은 AI 자막 끄기") rather than by the original-subtitle policy
+            ai_off_by_user = function() return ai_disabled and not (SUBS.ux and SUBS.ux.skip) end,
+            ai_off_by_skip = function() return ai_disabled end,
+            -- on: stop the AI work of this file (live input, disc OCR, original-language audio) while an original
+            -- subtitle is shown; off: take it up again. silent: only put the player options back (new file).
+            skip_ai = function(on, silent)
+                if on then
+                    SUBS.skip_prev = SUBS.skip_prev or { pgs = get_opt("nanum-pgs"), secondary = get_opt("nanum-secondary") }
+                    set_opt_soft("nanum-pgs", "no")
+                    set_opt_soft("nanum-secondary", "no")
+                    library_action("disable", { quiet = true })
+                    return
+                end
+                local prev = SUBS.skip_prev
+                SUBS.skip_prev = nil
+                if prev then
+                    if prev.pgs then set_opt_soft("nanum-pgs", prev.pgs) end
+                    if prev.secondary then set_opt_soft("nanum-secondary", prev.secondary) end
+                end
+                if not silent then library_action("ask", { quiet = true, keep_selection = true }) end
+            end,
+            pick_file = function() SUBS.pick_file() end,
+            translate_import = function(path, origin, lang) SUBS.translate_import(path, origin, lang) end,
+        })
+        if ok and type(ux) == "table" then
+            SUBS.ux = ux
+            mp.set_property_native("user-data/nanum/sub-menu", true)
+        else
+            mp.msg.error("nanum-subtitles.lua: " .. tostring(ux))
+        end
+    end
+    -- Whole-movie subtitle generation without playback: scripts/nanum-generate.lua (may be missing in old builds).
+    local generate = load_helper("nanum-generate.lua", "function")
+    if generate then
+        local ok, g = pcall(generate, { input = input, notify = notify, reopen_menu = reopen_menu })
+        if ok and type(g) == "table" and type(g.open) == "function" then
+            SUBS.gen = g
+        else
+            mp.msg.error("nanum-generate.lua: " .. tostring(g))
+        end
+    end
+end
+
 local function build_settings()
     local items, actions, keys = {}, {}, {}
     local function add(key, text, fn)
@@ -4484,8 +4781,16 @@ local function build_settings()
     end
     add("language", input.core_tr("인터페이스 언어: %s", SM.language_summary()), function() mp.add_timeout(0.1, function() SM.open_language_menu(true) end) end)
     add("models", input.core_tr("AI 구성 요소 관리: %s", AIM.components_summary()), function() mp.add_timeout(0.1, AIM.open_menu) end)
-    add("display", input.core_tr("자막 표시: %s", display_label(opts.display)), function() mp.add_timeout(0.1, open_display_menu) end)
+    if SUBS.ux then
+        add("subtitles", input.core_tr("자막 선택: %s", SUBS.ux.summary()), function() mp.add_timeout(0.1, function() SUBS.ux.open() end) end)
+        add("original_first", input.core_tr("목표 언어 원본 자막이 있으면 바로 표시: %s", input.core_tr(opts.original_first and "켬" or "끔")), function()
+            opts.original_first = not opts.original_first
+            save_settings()
+            reopen_menu()
+        end)
+    end
     add("upscale", input.core_tr("영상 업스케일: %s", UPS.summary()), function() mp.add_timeout(0.1, UPS.open) end)
+    add("picture", input.core_tr("영상 화질: %s", PIC.summary()), function() mp.add_timeout(0.1, PIC.open) end)
     add("bar_hide", input.core_tr("재생 바 자동 숨김: %s", TAGS.bar_hide_label()), function()
         TAGS.cycle_bar_hide()
         reopen_menu()
@@ -4526,6 +4831,14 @@ local function build_settings()
     add("subsearch", input.core_tr(SUBS.watch and "온라인 자막 찾기 · 다운로드 기다리는 중" or "온라인 자막 찾기 (OpenSubtitles · Jimaku)"),
         function() mp.add_timeout(0.1, SUBS.open_search_menu) end)
     add("subfile", input.core_tr("자막 파일 가져오기…"), function() SUBS.pick_file() end)
+    add("generate", input.core_tr("전체 자막 생성…"), function()
+        if SUBS.gen then
+            SUBS.gen.open()
+        else
+            notify(input.core_tr("이 빌드에는 전체 자막 생성 기능이 없습니다"), 4, "warn")
+            reopen_menu()
+        end
+    end)
     add("youtube_url", input.core_tr("YouTube 주소로 재생…"), function() mp.add_timeout(0.1, SUBS.yt.ask_url) end)
     add("web_url", input.core_tr("웹페이지 영상 주소로 재생… (Ctrl+Shift+Y)"), function() mp.add_timeout(0.1, SUBS.web.ask_url) end)
     add("youtube", input.core_tr("YouTube 창·구성 요소·로그인: %s", SUBS.yt.summary()), function() mp.add_timeout(0.1, SUBS.yt.open_menu) end)
@@ -4610,8 +4923,11 @@ local function build_settings()
     end)
     for _, e in ipairs(ENGINE) do
         local open = e.key == "translate_model" and function() mp.add_timeout(0.1, function() open_ollama_picker(e) end) end
+            or (e.key == "target_language" and SUBS.ux) and function() SUBS.ux.open_target_menu(reopen_menu) end
             or function() ask_text(e) end
-        add("engine_" .. e.key, input.core_tr("%s: %s", input.core_tr(e.label), mp.get_property("options/" .. e.opt) or ""), open)
+        local shown = mp.get_property("options/" .. e.opt) or ""
+        if e.key == "target_language" and SUBS.ux then shown = SUBS.ux.target().label end
+        add("engine_" .. e.key, input.core_tr("%s: %s", input.core_tr(e.label), shown), open)
     end
     local ver = mp.get_property_native("user-data/nanum/app-version")
     ver = type(ver) == "string" and ver or ""
@@ -4661,9 +4977,27 @@ end
 
 mp.add_key_binding("ctrl+n", "nanum-settings", open_menu)
 mp.add_key_binding("ctrl+alt+l", "nanum-language", function() SM.open_language_menu(false) end)
-mp.add_key_binding(nil, "nanum-display", function() open_display_menu(true) end)
+mp.add_key_binding(nil, "nanum-subtitles", function() if SUBS.ux then SUBS.ux.open() end end)
+-- The subtitle button of the playback bar (scripts/nanum-fluent.lua) opens the same list above itself.
+mp.register_script_message("nanum-subtitles-open", function(x, y)
+    if not SUBS.ux then return end
+    local ax, ay = tonumber(x), tonumber(y)
+    SUBS.ux.open((ax and ay) and { x = ax, y = ay } or nil)
+end)
+-- script-message nanum-subtitle-file <path> [language]: the same choice as "자막 파일 불러오기…" for a known file.
+mp.register_script_message("nanum-subtitle-file", function(path, lang)
+    if path and path ~= "" then SUBS.send(path, "파일", lang or "") end
+end)
+-- script-message nanum-subtitle-show <path> [language]: show the file as it is (an already loaded one is just selected).
+mp.register_script_message("nanum-subtitle-show", function(path, lang)
+    if SUBS.ux and path and path ~= "" then SUBS.ux.add_file(path, lang) end
+end)
 mp.observe_property("user-data/nanum/diagnostics", "native", function() update_settings_menu() end)
 mp.add_key_binding(nil, "nanum-upscale", function() UPS.open() end)
+mp.add_key_binding(nil, "nanum-picture", function() PIC.open() end)
+mp.add_key_binding(nil, "nanum-picture-compare", function()
+    PIC.call("set_compare", not PIC.state().comparing)
+end)
 UPS.refresh_settings = update_settings_menu
 
 ----------------------------------------------------------------------------
@@ -4949,9 +5283,13 @@ function YT.play(url)
         return false
     end
     YT.ensure(function()
-        local args = { "loadfile", canon, "replace", "-1" }
-        if start then args[#args + 1] = "start=" .. start end
-        mp.commandv((table.unpack or unpack)(args))
+        -- Uploader subtitles (never the automatic captions: write-subs without write-auto-subs) in the target language
+        -- and English become external tracks through ytdl_hook; the subtitle list shows them as originals.
+        local code = SUBS.ux and SUBS.ux.target().code or nil
+        local langs = (code and code ~= "en") and ("(" .. code .. "|en).*") or "en.*"
+        local o = { ["ytdl-raw-options-append"] = "sub-langs=" .. langs }
+        if start then o.start = tostring(start) end
+        mp.command_native({ name = "loadfile", url = canon, flags = "replace", index = -1, options = o })
         YT.raise()
         notify(start and input.core_tr("YouTube 영상을 불러오는 중… (%d초부터)", start) or input.core_tr("YouTube 영상을 불러오는 중…"), 6, "busy", "yt")
     end)
@@ -5901,6 +6239,7 @@ input.i18n.on_change(function()
         ["nanum-models"] = AIM.open_menu,
         ["nanum-youtube"] = SUBS.yt.open_menu,
         ["nanum-glossary"] = function() open_glossary_menu() end,
+        ["nanum-subtitles"] = function() if SUBS.ux then SUBS.ux.open() end end,
     })[id]
     if reopen then mp.add_timeout(0.2, reopen) end
 end)
@@ -5923,7 +6262,7 @@ if rawget(_G, "NANUM_TEST") then
         set_style = set_style, set_secondary = set_secondary, edit_glossary = edit_glossary,
         override_set_opt_soft = function(f) set_opt_soft = f end,
         regenerate_glossary = regenerate_glossary, open_glossary_menu = open_glossary_menu,
-        open_style_menu = open_style_menu, open_display_menu = open_display_menu,
+        open_style_menu = open_style_menu,
         -- pretend a file is playing and the player published this demuxer-cache-state
         fake_playback = function(st)
             cache_state = function() return st end
