@@ -99,6 +99,7 @@ local S = {
     first_vol = true,
     quiet_until = 0,
     app_version = "",           -- user-data/nanum/app-version
+    pic = { tip = "", on = false, err = false },   -- user-data/nanum-ui/picture (upscale / picture state summary)
 }
 
 local overlay = mp.create_osd_overlay("ass-events")
@@ -315,6 +316,9 @@ local function activate(id)
         else
             track_menu("sub", el and L.panel and { x = el.x + el.w / 2, y = L.panel.y })
         end
+    elseif id == "pic" then
+        local ax, ay = el and L.panel and floor(el.x + el.w / 2), L.panel and floor(L.panel.y)
+        run("script-message", "nanum-picture-open", ax and string.format("%d", ax) or "", ay and string.format("%d", ay) or "")
     elseif id == "chip" and S.status and S.status.action == "models" then
         run("script-binding", "nanum-models")
     elseif id:find("^tag%d$") then
@@ -388,13 +392,13 @@ local function layout_play(m)
     end
 
     local cy2 = py + 80
-    local labels = { ai = "AI", sub = tr("자막"), audio = tr("음성") }
-    local pill_ids = { "ai", "sub", "audio" }
+    local labels = { ai = "AI", pic = tr("화질"), sub = tr("자막"), audio = tr("음성") }
+    local pill_ids = { "ai", "pic", "sub", "audio" }
     -- Everything below shares one row: take the richest variant that fits (volume slider, open buttons,
     -- pill labels, 10 s buttons), so longer English / Spanish labels never overlap.
     local function row_width(v)
         local left = 22 + 46 + (v.skip and (8 + 38 + 38) or 0) + 10 + 38 + (v.slider and 96 or 0)
-        local right = 22 + 38 + 14 + 3 * 6 + (v.open and (8 + 38 + 6 + 38) or 0)
+        local right = 22 + 38 + 14 + #pill_ids * 6 + (v.open and (8 + 38 + 6 + 38) or 0)
         for _, id in ipairs(pill_ids) do right = right + pill_w(labels[id], v.labels) end
         return left + right + 12
     end
@@ -439,6 +443,7 @@ local function layout_play(m)
         rx = rx - 6
     end
     pill("ai", tr("AI 자막 설정") .. " (Ctrl+N)")
+    pill("pic", tr("화질") .. (S.pic.tip ~= "" and (" · " .. S.pic.tip) or "") .. " (Ctrl+I)")
     pill("sub", tr("자막 트랙") .. " · " .. (S.cur_sub or tr("꺼짐")))
     pill("audio", tr("음성 트랙") .. (S.cur_audio and (" · " .. S.cur_audio) or ""))
     if v.open then
@@ -836,12 +841,12 @@ local function draw_play(A, L, m)
         btn("disc", 8, function(cx, cy2) I.disc(TA, cx, cy2, 22, C.text, 1) end)
         btn("fs", 8, function(cx, cy2) I.fullscreen(TA, cx, cy2, 22, C.text, 1, fs) end)
         local show_labels = L.byid.audio and L.byid.audio.w > 38
-        for _, id in ipairs({ "audio", "sub", "ai" }) do
+        for _, id in ipairs({ "audio", "sub", "pic", "ai" }) do
             local el = L.byid[id]
             if el then
                 hover_bg(TA, el, 8)
                 -- state dot for AI drawn below
-                local icon_fn = id == "audio" and I.audio or (id == "sub" and I.subtitle or I.sparkle)
+                local icon_fn = id == "audio" and I.audio or (id == "sub" and I.subtitle or (id == "pic" and I.picture or I.sparkle))
                 local tcol = C.text
                 if id == "sub" and not S.cur_sub then tcol = C.text3 end
                 local ix = show_labels and (el.x + 20) or (el.x + el.w / 2)
@@ -851,6 +856,9 @@ local function draw_play(A, L, m)
                 end
                 if id == "ai" and S.status then
                     TA:circle(el.x + el.w - 9, el.y + 9, 4, { fill = kind_color(S.status.kind), fa = 1 })
+                end
+                if id == "pic" and (S.pic.on or S.pic.err) then
+                    TA:circle(el.x + el.w - 9, el.y + 9, 4, { fill = S.pic.err and C.warn or C.accent, fa = 1 })
                 end
             end
         end
@@ -1284,6 +1292,14 @@ mp.observe_property("user-data/nanum-ui/tags", "native", function(_, v)
         for _, tg in ipairs(v) do
             if type(tg) == "table" and type(tg.text) == "string" then S.tags[#S.tags + 1] = tg end
         end
+    end
+    S.layout_key = nil
+    dirty()
+end)
+mp.observe_property("user-data/nanum-ui/picture", "native", function(_, v)
+    S.pic = { tip = "", on = false, err = false }
+    if type(v) == "table" then
+        S.pic = { tip = type(v.tip) == "string" and v.tip or "", on = v.on == true, err = v.err == true }
     end
     S.layout_key = nil
     dirty()

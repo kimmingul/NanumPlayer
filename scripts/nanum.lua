@@ -4247,7 +4247,6 @@ end
 
 function UPS.mode_label(m)
     if m == "quality" then return input.core_tr("고품질 크기 조정") end
-    if m == "rtx" then return input.core_tr("NVIDIA RTX 업스케일") end
     if m == "shader" then return input.core_tr("사용자 셰이더") end
     return input.core_tr("기본")
 end
@@ -4274,8 +4273,7 @@ end
 
 function UPS.summary()
     local st = UPS.state()
-    local t = UPS.mode_label(st.mode)
-    if st.mode == "rtx" then t = t .. " " .. UPS.scale_label(st.scale) end
+    local t = st.mode == "rtx" and input.core_tr("RTX %s", UPS.scale_label(st.scale)) or UPS.mode_label(st.mode)
     if st.status == "error" then t = t .. " · " .. input.core_tr("오류") end
     return t
 end
@@ -4292,97 +4290,9 @@ function UPS.call(name, arg)
     return false
 end
 
-function UPS.build()
-    local st = UPS.state()
-    local items, acts, keys = {}, {}, {}
-    local function add(key, text, fn)
-        items[#items + 1] = text
-        acts[#acts + 1] = fn
-        keys[#keys + 1] = key
-    end
-    local function again() mp.add_timeout(0.1, UPS.open) end
-    add("status", input.core_tr("상태: %s", UPS.status_text(st)), again)
-    add("mode", input.core_tr("방식: %s", UPS.mode_label(st.mode)), function() mp.add_timeout(0.1, UPS.open_mode) end)
-    if st.mode == "rtx" then
-        add("scale", input.core_tr("RTX 배율: %s", UPS.scale_label(st.scale)), function() mp.add_timeout(0.1, UPS.open_scale) end)
-    end
-    add("shaders", input.core_tr("사용자 셰이더 목록 관리: %d개", #st.shaders), function() mp.add_timeout(0.1, UPS.open_shaders) end)
-    add("note", input.core_tr("RTX: 지원 NVIDIA GPU · D3D11 · 드라이버에서 VSR 켜기"), again)
-    add("back", input.core_tr("← 설정으로 돌아가기"), function() reopen_menu() end)
-    return items, acts, keys
-end
-
+-- The unified picture menu (PIC.open) shows the state: a change of the upscale controller refreshes it.
 function UPS.refresh()
-    if UPS.settings_refresh_pending then return end
-    UPS.settings_refresh_pending = true
-    mp.add_timeout(0.05, function()
-        UPS.settings_refresh_pending = false
-        local id = fluent.open_id()
-        if id == "nanum-upscale" then
-            local items, acts, keys = UPS.build()
-            UPS.acts = acts
-            fluent.update_select("nanum-upscale", items, { keys = keys })
-        elseif id == "nanum-settings" and UPS.refresh_settings then
-            UPS.refresh_settings()
-        end
-    end)
-end
-
-function UPS.open()
-    local items, acts, keys = UPS.build()
-    UPS.acts = acts
-    input.select({
-        id = "nanum-upscale",
-        prompt = input.core_tr("영상 업스케일:"),
-        items = items,
-        keys = keys,
-        submit = function(i)
-            local fn = UPS.acts[i]
-            if fn then fn() end
-        end,
-    })
-end
-
-function UPS.open_mode()
-    local st = UPS.state()
-    local items, default = {}, 1
-    local desc = {
-        default = input.core_tr("기본 — 추가 업스케일 없음"),
-        quality = input.core_tr("고품질 크기 조정 (GPU 렌더러)"),
-        rtx = input.core_tr("NVIDIA RTX 업스케일 (NVIDIA GPU·드라이버 RTX VSR 필요)"),
-        shader = input.core_tr("사용자 셰이더 (직접 고른 GLSL 파일)"),
-    }
-    for i, m in ipairs(UPS.MODES) do
-        items[i] = (m == st.mode and "● " or "  ") .. desc[m]
-        if m == st.mode then default = i end
-    end
-    input.select({
-        prompt = input.core_tr("업스케일 방식:"),
-        items = items,
-        default_item = default,
-        submit = function(i)
-            UPS.call("set_mode", UPS.MODES[i])
-            mp.add_timeout(0.1, UPS.open)
-        end,
-    })
-end
-
-function UPS.open_scale()
-    local st = UPS.state()
-    local items, default = {}, 1
-    for i, s in ipairs(UPS.SCALES) do
-        items[i] = (s == st.scale and "● " or "  ") .. UPS.scale_label(s)
-        if s == st.scale then default = i end
-    end
-    input.select({
-        prompt = input.core_tr("RTX 배율:"),
-        items = items,
-        default_item = default,
-        submit = function(i)
-            UPS.call("set_scale", UPS.SCALES[i])
-            mp.add_timeout(0.1, UPS.open)
-        end,
-    })
+    if UPS.refresh_ui then UPS.refresh_ui() end
 end
 
 function UPS.base(p) return tostring(p):match("([^/\\]+)$") or tostring(p) end
@@ -4439,7 +4349,7 @@ function UPS.open_shaders(at)
     local n = #items
     items[#items + 1] = input.core_tr("+ 셰이더 파일 추가… (고른 순서대로 적용)")
     items[#items + 1] = input.core_tr("목록 모두 비우기")
-    items[#items + 1] = input.core_tr("← 업스케일 설정으로 돌아가기")
+    items[#items + 1] = input.core_tr("← 영상 화질로 돌아가기")
     input.select({
         prompt = input.core_tr("사용자 셰이더 (위에서부터 순서대로 적용):"),
         items = items,
@@ -4554,11 +4464,26 @@ function PIC.status_text(st)
     return t
 end
 
+-- What is switched on, for the settings row, the bar tooltip and the bar dot ("기본" when nothing is).
+function PIC.parts()
+    local u, p = UPS.state(), PIC.state()
+    local parts = {}
+    if u.mode ~= "default" then parts[#parts + 1] = UPS.summary() end
+    if p.preset ~= "original" then
+        parts[#parts + 1] = PIC.preset_label(p.preset) .. (p.status == "error" and (" · " .. input.core_tr("오류")) or "")
+    end
+    return parts, (u.status == "error" or p.status == "error")
+end
+
 function PIC.summary()
-    local st = PIC.state()
-    local t = PIC.preset_label(st.preset)
-    if st.status == "error" then t = t .. " · " .. input.core_tr("오류") end
-    return t
+    local parts = PIC.parts()
+    return #parts > 0 and table.concat(parts, " · ") or input.core_tr("기본")
+end
+
+-- user-data/nanum-ui/picture for the picture button of the playback bar (scripts/nanum-fluent.lua).
+function PIC.publish()
+    local parts, err = PIC.parts()
+    pcall(mp.set_property_native, "user-data/nanum-ui/picture", { tip = table.concat(parts, " · "), on = #parts > 0, err = err })
 end
 
 function PIC.call(name, arg)
@@ -4572,36 +4497,74 @@ function PIC.call(name, arg)
     return false
 end
 
+-- One quick menu for both features: upscale choices and picture presets (picture button of the bar, Ctrl+I,
+-- the Ctrl+N row). It stays open after a choice and is refreshed from the controllers' state.
+PIC.CHOICES = {
+    { mode = "default" }, { mode = "quality" },
+    { mode = "rtx", scale = "auto" }, { mode = "rtx", scale = "1.5" }, { mode = "rtx", scale = "2" }, { mode = "rtx", scale = "3" },
+    { mode = "shader" },
+}
+
+function PIC.choice_label(c)
+    if c.mode == "rtx" then return input.core_tr("RTX %s", UPS.scale_label(c.scale)) end
+    return UPS.mode_label(c.mode)
+end
+
+function PIC.choice_current(c, st)
+    if st.mode ~= c.mode then return false end
+    if c.mode ~= "rtx" then return true end
+    return tostring(st.scale) == c.scale or (tonumber(st.scale) ~= nil and tonumber(st.scale) == tonumber(c.scale))
+end
+
+function PIC.pick_upscale(c)
+    local st = UPS.state()
+    if c.mode == "rtx" then
+        -- the factor first: the mode switch then applies it once
+        if UPS.call("set_scale", c.scale) and st.mode ~= "rtx" then UPS.call("set_mode", "rtx") end
+    else
+        UPS.call("set_mode", c.mode)
+    end
+end
+
+function PIC.status_line()
+    local u, p = UPS.state(), PIC.state()
+    if u.status == "error" then return UPS.status_text(u) end
+    if p.status == "error" then return PIC.status_text(p) end
+    if u.mode ~= "default" then return UPS.status_text(u) end
+    return PIC.status_text(p)
+end
+
 function PIC.build()
-    local st = PIC.state()
+    local ust, st = UPS.state(), PIC.state()
     local items, acts, keys = {}, {}, {}
-    local function add(key, text, fn)
-        items[#items + 1] = text
-        acts[#acts + 1] = fn
+    local default = 2
+    local function add(key, text, fn, mark)
+        items[#items + 1] = (mark and "● " or "  ") .. text
+        acts[#acts + 1] = fn or function() end
         keys[#keys + 1] = key
     end
-    local function again() mp.add_timeout(0.1, PIC.open) end
-    add("status", input.core_tr("상태: %s", PIC.status_text(st)), again)
-    add("preset", input.core_tr("프리셋: %s", PIC.preset_label(st.preset)), function() mp.add_timeout(0.1, PIC.open_preset) end)
-    for _, f in ipairs(PIC.FILTERS) do
-        local lv = PIC.level_label(st[f])
-        if PIC.suppressed(st, f) then lv = lv .. " · " .. input.core_tr("RTX 사용 중 — 일시 중지") end
-        add(f, input.core_tr("%s: %s", PIC.filter_label(f), lv), function() mp.add_timeout(0.1, function() PIC.open_level(f) end) end)
+    add("status", input.core_tr("상태: %s", PIC.status_line()))
+    add("h_up", input.core_tr("업스케일: %s", UPS.summary()))
+    for i, c in ipairs(PIC.CHOICES) do
+        local cur = PIC.choice_current(c, ust)
+        if cur then default = #items + 1 end
+        add("up" .. i, PIC.choice_label(c), function() PIC.pick_upscale(c) end, cur)
     end
+    add("h_pic", input.core_tr("보정: %s", PIC.preset_label(st.preset)))
+    for _, p in ipairs(PIC.PRESETS) do
+        add("p_" .. p, PIC.preset_label(p), function() PIC.call("set_preset", p) end, st.preset == p)
+    end
+    if st.preset == "custom" then add("p_custom", PIC.preset_label("custom"), nil, true) end
     add("compare", input.core_tr("보정 전 화면 비교 (임시): %s", input.core_tr(st.comparing and "켬" or "끔")), function()
-        PIC.call("set_compare", not st.comparing)
-        again()
+        PIC.call("set_compare", not PIC.state().comparing)
     end)
-    add("note_compare", input.core_tr("비교 중에도 업스케일 유지 · 비교 상태는 저장 안 함"), again)
-    if st.rtx then
-        add("note_rtx", input.core_tr("RTX: 선 강조·선명도 일시 중지 (중복 방지)"), again)
-    end
-    if UPS.state().mode == "shader" then
-        add("note_shader", input.core_tr("사용자 셰이더: 선명화 중복 적용 주의"), again)
-    end
-    add("upscale", input.core_tr("영상 업스케일: %s", UPS.summary()), function() mp.add_timeout(0.1, UPS.open) end)
-    add("back", input.core_tr("← 설정으로 돌아가기"), function() reopen_menu() end)
-    return items, acts, keys
+    if st.comparing then add("note_compare", input.core_tr("비교 중에도 업스케일 유지 · 비교 상태는 저장 안 함")) end
+    if ust.mode == "rtx" then add("note_rtx_gpu", input.core_tr("RTX — NVIDIA GPU와 드라이버 VSR 필요")) end
+    if st.rtx then add("note_rtx", input.core_tr("RTX 사용 중 — 선 강조·선명도 일시 중지")) end
+    if ust.mode == "shader" then add("note_shader", input.core_tr("사용자 셰이더 — 선명화 중복 적용 주의")) end
+    add("detail", input.core_tr("세부 설정…"), function() mp.add_timeout(0.1, PIC.open_detail) end)
+    if PIC.from_settings then add("back", input.core_tr("← 설정으로 돌아가기"), function() reopen_menu() end) end
+    return items, acts, keys, default
 end
 
 function PIC.refresh()
@@ -4609,25 +4572,36 @@ function PIC.refresh()
     PIC.refresh_pending = true
     mp.add_timeout(0.05, function()
         PIC.refresh_pending = false
+        PIC.publish()
         local id = fluent.open_id()
         if id == "nanum-picture" then
             local items, acts, keys = PIC.build()
             PIC.acts = acts
             fluent.update_select("nanum-picture", items, { keys = keys })
+        elseif id == "nanum-picture-detail" then
+            local items, acts, keys = PIC.build_detail()
+            PIC.detail_acts = acts
+            fluent.update_select("nanum-picture-detail", items, { keys = keys })
         elseif id == "nanum-settings" and UPS.refresh_settings then
             UPS.refresh_settings()
         end
     end)
 end
 
-function PIC.open()
-    local items, acts, keys = PIC.build()
+function PIC.open(anchor, from_settings)
+    PIC.anchor, PIC.from_settings = anchor, from_settings
+    local items, acts, keys, default = PIC.build()
     PIC.acts = acts
     input.select({
         id = "nanum-picture",
         prompt = input.core_tr("영상 화질:"),
+        marks = true,
+        style = "settings",
+        keep_open = true,
         items = items,
         keys = keys,
+        default_item = default,
+        anchor = anchor,
         submit = function(i)
             local fn = PIC.acts[i]
             if fn then fn() end
@@ -4635,25 +4609,41 @@ function PIC.open()
     })
 end
 
-function PIC.open_preset()
+function PIC.reopen() PIC.open(PIC.anchor, PIC.from_settings) end
+
+-- "세부 설정…": the five filter levels and the user shader list.
+function PIC.build_detail()
     local st = PIC.state()
-    local items, default = {}, 1
-    for i, p in ipairs(PIC.PRESETS) do
-        items[i] = (p == st.preset and "● " or "  ") .. PIC.preset_label(p)
-        if p == st.preset then default = i end
+    local items, acts, keys = {}, {}, {}
+    local function add(key, text, fn)
+        items[#items + 1] = text
+        acts[#acts + 1] = fn
+        keys[#keys + 1] = key
     end
-    if st.preset == "custom" then
-        items[#items + 1] = "● " .. PIC.preset_label("custom")
-        default = #items
+    local function again() mp.add_timeout(0.1, PIC.open_detail) end
+    for _, f in ipairs(PIC.FILTERS) do
+        local lv = PIC.level_label(st[f])
+        if PIC.suppressed(st, f) then lv = lv .. " · " .. input.core_tr("RTX 사용 중 — 일시 중지") end
+        add(f, input.core_tr("%s: %s", PIC.filter_label(f), lv), function() mp.add_timeout(0.1, function() PIC.open_level(f) end) end)
     end
-    items[#items + 1] = input.core_tr("← 뒤로")
+    add("shaders", input.core_tr("사용자 셰이더 목록 관리: %d개", #UPS.state().shaders), function() mp.add_timeout(0.1, UPS.open_shaders) end)
+    if st.rtx then add("note_rtx", input.core_tr("RTX 사용 중 — 선 강조·선명도 일시 중지"), again) end
+    if UPS.state().mode == "shader" then add("note_shader", input.core_tr("사용자 셰이더 — 선명화 중복 적용 주의"), again) end
+    add("back", input.core_tr("← 뒤로"), function() mp.add_timeout(0.1, PIC.reopen) end)
+    return items, acts, keys
+end
+
+function PIC.open_detail()
+    local items, acts, keys = PIC.build_detail()
+    PIC.detail_acts = acts
     input.select({
-        prompt = input.core_tr("영상 화질 프리셋:"),
+        id = "nanum-picture-detail",
+        prompt = input.core_tr("영상 화질 세부 설정:"),
         items = items,
-        default_item = default,
+        keys = keys,
         submit = function(i)
-            if PIC.PRESETS[i] then PIC.call("set_preset", PIC.PRESETS[i]) end
-            mp.add_timeout(0.1, PIC.open)
+            local fn = PIC.detail_acts[i]
+            if fn then fn() end
         end,
     })
 end
@@ -4670,7 +4660,7 @@ function PIC.open_level(f)
         default_item = cur + 1,
         submit = function(i)
             if i <= 4 then PIC.call("set_filter", { name = f, level = i - 1 }) end
-            mp.add_timeout(0.1, PIC.open)
+            mp.add_timeout(0.1, PIC.open_detail)
         end,
     })
 end
@@ -4689,6 +4679,10 @@ do
         end
     end
 end
+
+UPS.refresh_ui = PIC.refresh
+function UPS.open() PIC.reopen() end
+PIC.refresh()
 
 -- Subtitle list (the subtitle button and Ctrl+N), target language, subtitle files: scripts/nanum-subtitles.lua.
 -- Hooks it needs from this script (the module cannot see the locals of this file).
@@ -4791,8 +4785,7 @@ local function build_settings()
             reopen_menu()
         end)
     end
-    add("upscale", input.core_tr("영상 업스케일: %s", UPS.summary()), function() mp.add_timeout(0.1, UPS.open) end)
-    add("picture", input.core_tr("영상 화질: %s", PIC.summary()), function() mp.add_timeout(0.1, PIC.open) end)
+    add("picture", input.core_tr("영상 화질: %s", PIC.summary()), function() mp.add_timeout(0.1, function() PIC.open(nil, true) end) end)
     if SUBS.disc and SUBS.disc.ctl then
         add("disc", input.core_tr("Blu-ray/DVD 복호화 구성 요소: %s", SUBS.disc.ctl.summary()), function() mp.add_timeout(0.1, SUBS.disc.ctl.open) end)
     end
@@ -4998,8 +4991,13 @@ mp.register_script_message("nanum-subtitle-show", function(path, lang)
     if SUBS.ux and path and path ~= "" then SUBS.ux.add_file(path, lang) end
 end)
 mp.observe_property("user-data/nanum/diagnostics", "native", function() update_settings_menu() end)
-mp.add_key_binding(nil, "nanum-upscale", function() UPS.open() end)
-mp.add_key_binding(nil, "nanum-picture", function() PIC.open() end)
+-- Picture quality: upscale and picture correction in one menu (Ctrl+I, Ctrl+N row, picture button of the bar).
+mp.add_key_binding("ctrl+i", "nanum-picture", function() PIC.open() end)
+mp.add_key_binding(nil, "nanum-upscale", function() PIC.open() end)
+mp.register_script_message("nanum-picture-open", function(x, y)
+    local ax, ay = tonumber(x), tonumber(y)
+    PIC.open((ax and ay) and { x = ax, y = ay } or nil)
+end)
 mp.add_key_binding(nil, "nanum-picture-compare", function()
     PIC.call("set_compare", not PIC.state().comparing)
 end)
@@ -6228,6 +6226,7 @@ input.i18n.on_change(function()
     last_status = nil
     TAGS.sig = nil
     TAGS.update()
+    PIC.publish()
     publish_status()
     local reopen = ({
         ["nanum-settings"] = open_menu,
@@ -6235,6 +6234,8 @@ input.i18n.on_change(function()
         ["nanum-youtube"] = SUBS.yt.open_menu,
         ["nanum-glossary"] = function() open_glossary_menu() end,
         ["nanum-subtitles"] = function() if SUBS.ux then SUBS.ux.open() end end,
+        ["nanum-picture"] = function() PIC.reopen() end,
+        ["nanum-picture-detail"] = function() PIC.open_detail() end,
     })[id]
     if reopen then mp.add_timeout(0.2, reopen) end
 end)

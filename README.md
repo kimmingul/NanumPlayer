@@ -41,8 +41,8 @@ English · [한국어](README.ko.md)
 - **Glossary and translation style.** The player builds a per-work glossary of character and proper
   names, you can edit it, and edits re-translate the subtitles that contain the changed names.
 - **Picture quality and GPU upscaling.** Built-in correction presets (denoise, deband, line
-  enhancement, sharpening, color) use 9 small GPU shaders, and the upscale menu offers high-quality
-  scaling, NVIDIA RTX Video Super Resolution and your own mpv shaders.
+  enhancement, sharpening, color) use 9 small GPU shaders, and the Picture button (or Ctrl+I) opens one menu
+  with high-quality scaling, NVIDIA RTX Video Super Resolution and your own mpv shaders.
 - **YouTube and web pages.** Sign in and pick videos in a built-in browser window; NanumPlayer plays the
   video and adds the AI subtitles. These windows always use an InPrivate session.
 - **Private by default.** No playback log, history, translation cache or crash dump is kept unless you

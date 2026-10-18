@@ -10,6 +10,16 @@ shipped in the release named after them. Dates are release dates (UTC); internal
 
 ## [Unreleased]
 
+## [1.13.2] - 2026-10-18
+
+### Added
+- **Picture** button in the playback bar (with a status dot and tooltip) and the **Ctrl+I** shortcut open a
+  quick picture menu: upscaling (default, high quality, RTX auto/1.5x/2x/3x, custom shaders), correction
+  presets, before/after comparison and detailed settings.
+
+### Changed
+- Ctrl+N: **Video upscaling** and **Picture quality** are merged into one **Picture quality** entry.
+
 ## [1.13.1] - 2026-10-18
 
 ### Changed
@@ -355,7 +365,8 @@ below.
 
 - Packaging output is separated into per-version folders so a running older package is not deleted.
 
-[Unreleased]: https://github.com/kimmingul/NanumPlayer/compare/v1.13.1...HEAD
+[Unreleased]: https://github.com/kimmingul/NanumPlayer/compare/v1.13.2...HEAD
+[1.13.2]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.13.2
 [1.13.1]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.13.1
 [1.13.0]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.13.0
 [1.12.0]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.12.0

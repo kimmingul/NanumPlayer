@@ -755,5 +755,12 @@
     "zh-CN": "选择驱动器：",
     "zh-TW": "選擇光碟機：",
     "es": "Selecciona una unidad:"
+  },
+  "화질": {
+    "en": "Picture",
+    "ja": "画質",
+    "zh-CN": "画质",
+    "zh-TW": "畫質",
+    "es": "Imagen"
   }
 }

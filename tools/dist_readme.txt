@@ -25,7 +25,7 @@ Interface language and version
 - A running browser relabels its app buttons without losing the private session;
   WebView2's own menus use the new language when the next browser session starts.
 
-GPU video upscaling (Ctrl+N > Video upscaling)
+GPU video upscaling (Picture button / Ctrl+I > Upscale; also Ctrl+N > Picture quality)
 - Default restores options owned by this feature; unrelated filters and shaders
   remain intact. High-quality scaling uses ewa_lanczossharp with antiring 0.6.
 - NVIDIA RTX selects gpu-next, D3D11, D3D11VA and the d3d11vpp NVIDIA extension.
@@ -45,7 +45,7 @@ GPU video upscaling (Ctrl+N > Video upscaling)
   is needed. RTX HDR conversion is not enabled. HDR/10-bit support depends on
   the driver and video processing path. Concurrent AI work can reduce frame rate.
 
-Built-in picture correction (Ctrl+N > Picture quality)
+Built-in picture correction (Picture button / Ctrl+I > Correction)
 - Presets: Original (default, no added correction), Sharper anime, Smoother old
   anime, and Compressed video repair. No AI models or downloads are required.
   Nine original lightweight GPU shaders total about 12.3 KiB.
@@ -166,6 +166,7 @@ Keys
   Ctrl+N   AI subtitle settings (input source, full translation, engine, model)
   Ctrl+K   AI subtitle status
   Ctrl+Alt+L  Interface language
+  Ctrl+I   Picture quality (upscale and correction)
   Ctrl+O   Native file picker
   Ctrl+D   Blu-ray drive/folder
   Ctrl+A   Audio track panel

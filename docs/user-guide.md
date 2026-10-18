@@ -319,8 +319,11 @@ not supported by this feature; use the AI subtitles while playing. For scripting
 
 ### GPU upscaling
 
-**Ctrl+N → Video upscale → Mode.** This is independent of CUDA speech recognition and needs no CUDA
-Toolkit.
+The **Picture** button on the playback bar (also **Ctrl+I**, or **Ctrl+N → Picture quality**) opens one menu
+for upscaling and picture correction; it stays open so you can see each change. The button shows a blue dot
+while an upscale method or a correction is on, and a yellow one after an error. The upscale choices are
+under **Upscale**, and **Details…** has the per-control levels and the user shader list. Upscaling is
+independent of CUDA speech recognition and needs no CUDA Toolkit.
 
 - **Default**: no extra processing; restores renderer and scaler settings this feature changed. Your
   own filters and shaders are kept.
@@ -347,7 +350,7 @@ can increase dropped frames: lower the factor or compare with high-quality scali
 
 ### Built-in picture quality
 
-**Ctrl+N → Picture quality**. Presets: **Original** (default, no correction), **Sharper anime**,
+The **Correction** section of the same menu (**Picture** button, **Ctrl+I**). Presets: **Original** (default, no correction), **Sharper anime**,
 **Smoother old anime**, **Compressed video repair**. It uses no AI model and no download, only nine
 original lightweight GPU shaders (about 12.3 KiB in total) and mpv's built-in features, independent of
 any external Anime4K pack.
@@ -440,6 +443,7 @@ The interface language is independent of the speech and subtitle languages.
 | Ctrl+D | Open Blu-ray drive or folder |
 | Ctrl+A | Audio track panel |
 | Ctrl+T | Plain subtitle track list |
+| Ctrl+I | Picture quality (upscale and correction) |
 | Ctrl+B | Save a Blu-ray or DVD title to MKV (Ctrl+C cancels) |
 | Ctrl+Y | YouTube |
 | Ctrl+Shift+Y | Play from a web page |

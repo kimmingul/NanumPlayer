@@ -491,6 +491,17 @@ function I.subtitle(A, cx, cy, s, color, a)
     A:rrect(cx + 0.12 * s, cy + 0.1 * s - h / 2, 0.16 * s, h, h / 2, solid(color, a))
 end
 
+-- Picture quality: a photo frame with a sun and two hills.
+function I.picture(A, cx, cy, s, color, a)
+    local sw = max(1.2, 0.08 * s)
+    A:rrect(cx - 0.42 * s + sw / 2, cy - 0.33 * s + sw / 2, 0.84 * s - sw, 0.66 * s - sw, 0.1 * s,
+        stroke_only(color, a, sw))
+    A:circle(cx - 0.17 * s, cy - 0.1 * s, 0.07 * s, solid(color, a))
+    A:shape(poly_path({ cx - 0.36 * s, cy + 0.2 * s, cx - 0.1 * s, cy - 0.02 * s, cx + 0.08 * s, cy + 0.14 * s,
+        cx + 0.18 * s, cy + 0.06 * s, cx + 0.36 * s, cy + 0.2 * s }),
+        { fill = color, fa = a or 1, stroke = color, sa = a or 1, sw = 0.6 })
+end
+
 local function star_pts(cx, cy, r, inner)
     local p = { 0, -1, inner, -inner, 1, 0, inner, inner, 0, 1, -inner, inner, -1, 0, -inner, -inner }
     for i = 1, #p, 2 do

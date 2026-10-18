@@ -7,7 +7,7 @@ import { Aside } from '@astrojs/starlight/components';
 import Shot from '../../../components/Shot.astro';
 import upscale from '../../../assets/upscale-en.png';
 
-Choose a method in **Ctrl+N → Video upscale**. It changes while the video plays and is saved in `script-opts\nanum-upscale.conf` in your settings folder. This is independent of CUDA speech recognition: you do **not** need the CUDA Toolkit for upscaling.
+Choose a method under **Upscale** in the **Picture** button's menu (or **Ctrl+I**, or **Ctrl+N → Picture quality**). The menu stays open so you can see each change, and the button shows a blue dot while an upscale method or picture correction is on. It changes while the video plays and is saved in `script-opts\nanum-upscale.conf` in your settings folder. This is independent of CUDA speech recognition: you do **not** need the CUDA Toolkit for upscaling.
 
 <Shot src={upscale} alt="The Video upscale menu listing Default, High-quality scaling, NVIDIA RTX upscaling and User shaders." caption="Video upscale (Ctrl+N)." widths={[480, 800]} />
 

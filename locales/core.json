@@ -4143,26 +4143,12 @@
   "zh-CN": "检查中…",
   "zh-TW": "檢查中…"
  },
- "영상 업스케일: %s": {
-  "en": "Video upscale: %s",
-  "es": "Ampliación de vídeo: %s",
-  "ja": "映像アップスケール: %s",
-  "zh-CN": "视频超分：%s",
-  "zh-TW": "影片升頻：%s"
- },
  "고품질 크기 조정": {
   "en": "High-quality scaling",
   "es": "Escalado de alta calidad",
   "ja": "高品質スケーリング",
   "zh-CN": "高质量缩放",
   "zh-TW": "高品質縮放"
- },
- "NVIDIA RTX 업스케일": {
-  "en": "NVIDIA RTX upscaling",
-  "es": "Ampliación NVIDIA RTX",
-  "ja": "NVIDIA RTX アップスケール",
-  "zh-CN": "NVIDIA RTX 超分",
-  "zh-TW": "NVIDIA RTX 升頻"
  },
  "사용자 셰이더": {
   "en": "User shaders",
@@ -4234,33 +4220,12 @@
   "zh-CN": "状态：%s",
   "zh-TW": "狀態：%s"
  },
- "방식: %s": {
-  "en": "Mode: %s",
-  "es": "Modo: %s",
-  "ja": "方式: %s",
-  "zh-CN": "方式：%s",
-  "zh-TW": "方式：%s"
- },
- "RTX 배율: %s": {
-  "en": "RTX scale: %s",
-  "es": "Escala RTX: %s",
-  "ja": "RTX 倍率: %s",
-  "zh-CN": "RTX 倍率：%s",
-  "zh-TW": "RTX 倍率：%s"
- },
  "사용자 셰이더 목록 관리: %d개": {
   "en": "Manage user shader list: %d",
   "es": "Gestionar lista de shaders: %d",
   "ja": "ユーザーシェーダー一覧を管理: %d 個",
   "zh-CN": "管理用户着色器列表：%d 个",
   "zh-TW": "管理使用者著色器清單：%d 個"
- },
- "RTX: 지원 NVIDIA GPU · D3D11 · 드라이버에서 VSR 켜기": {
-  "en": "RTX: supported NVIDIA GPU · D3D11 · enable VSR in the driver",
-  "es": "RTX: GPU NVIDIA compatible · D3D11 · activar VSR en el controlador",
-  "ja": "RTX: 対応 NVIDIA GPU · D3D11 · ドライバーで VSR を有効化",
-  "zh-CN": "RTX：支持的 NVIDIA GPU · D3D11 · 在驱动中启用 VSR",
-  "zh-TW": "RTX：支援的 NVIDIA GPU · D3D11 · 在驅動程式中啟用 VSR"
  },
  "← 설정으로 돌아가기": {
   "en": "← Back to settings",
@@ -4269,54 +4234,12 @@
   "zh-CN": "← 返回设置",
   "zh-TW": "← 返回設定"
  },
- "영상 업스케일:": {
-  "en": "Video upscale:",
-  "es": "Ampliación de vídeo:",
-  "ja": "映像アップスケール:",
-  "zh-CN": "视频超分：",
-  "zh-TW": "影片升頻："
- },
- "업스케일 방식:": {
-  "en": "Upscale mode:",
-  "es": "Modo de ampliación:",
-  "ja": "アップスケール方式:",
-  "zh-CN": "超分方式：",
-  "zh-TW": "升頻方式："
- },
- "고품질 크기 조정 (GPU 렌더러)": {
-  "en": "High-quality scaling (GPU renderer)",
-  "es": "Escalado de alta calidad (renderizador GPU)",
-  "ja": "高品質スケーリング (GPU レンダラー)",
-  "zh-CN": "高质量缩放（GPU 渲染器）",
-  "zh-TW": "高品質縮放（GPU 渲染器）"
- },
  "기본 — 추가 업스케일 없음": {
   "en": "Default — no extra upscaling",
   "es": "Predeterminado — sin ampliación adicional",
   "ja": "標準 — 追加のアップスケールなし",
   "zh-CN": "默认 — 不额外超分",
   "zh-TW": "預設 — 不額外升頻"
- },
- "NVIDIA RTX 업스케일 (NVIDIA GPU·드라이버 RTX VSR 필요)": {
-  "en": "NVIDIA RTX upscaling (needs NVIDIA GPU and driver RTX VSR)",
-  "es": "Ampliación NVIDIA RTX (requiere GPU NVIDIA y RTX VSR en el controlador)",
-  "ja": "NVIDIA RTX アップスケール (NVIDIA GPU とドライバーの RTX VSR が必要)",
-  "zh-CN": "NVIDIA RTX 超分（需要 NVIDIA GPU 及驱动 RTX VSR）",
-  "zh-TW": "NVIDIA RTX 升頻（需要 NVIDIA GPU 與驅動程式 RTX VSR）"
- },
- "사용자 셰이더 (직접 고른 GLSL 파일)": {
-  "en": "User shaders (GLSL files you choose)",
-  "es": "Shaders del usuario (archivos GLSL que elijas)",
-  "ja": "ユーザーシェーダー (自分で選んだ GLSL ファイル)",
-  "zh-CN": "用户着色器（自选 GLSL 文件）",
-  "zh-TW": "使用者著色器（自選 GLSL 檔案）"
- },
- "RTX 배율:": {
-  "en": "RTX scale:",
-  "es": "Escala RTX:",
-  "ja": "RTX 倍率:",
-  "zh-CN": "RTX 倍率：",
-  "zh-TW": "RTX 倍率："
  },
  "추가할 셰이더 파일 선택": {
   "en": "Choose a shader file to add",
@@ -4352,13 +4275,6 @@
   "ja": "一覧をすべて消去",
   "zh-CN": "清空整个列表",
   "zh-TW": "清空整個清單"
- },
- "← 업스케일 설정으로 돌아가기": {
-  "en": "← Back to upscale settings",
-  "es": "← Volver a la ampliación",
-  "ja": "← アップスケール設定に戻る",
-  "zh-CN": "← 返回超分设置",
-  "zh-TW": "← 返回升頻設定"
  },
  "사용자 셰이더 (위에서부터 순서대로 적용):": {
   "en": "User shaders (applied from the top down):",
@@ -4521,20 +4437,6 @@
   "zh-CN": "RTX 使用中 — 已暂停",
   "zh-TW": "RTX 使用中 — 已暫停"
  },
- "RTX: 선 강조·선명도 일시 중지 (중복 방지)": {
-  "en": "RTX: line enhancement/sharpening paused",
-  "es": "RTX: realce de líneas y nitidez en pausa",
-  "ja": "RTX: 線の強調・シャープネスを一時停止",
-  "zh-CN": "RTX：暂停线条增强与锐化，避免重复",
-  "zh-TW": "RTX：暫停線條增強與銳化，避免重複"
- },
- "사용자 셰이더: 선명화 중복 적용 주의": {
-  "en": "Custom shaders: avoid sharpening twice",
-  "es": "Shaders propios: evite duplicar la nitidez",
-  "ja": "ユーザーシェーダー: シャープネスの重複に注意",
-  "zh-CN": "自定义着色器：注意避免重复锐化",
-  "zh-TW": "自訂著色器：注意避免重複銳化"
- },
  "영상 화질: %s": {
   "en": "Picture quality: %s",
   "es": "Calidad de imagen: %s",
@@ -4548,20 +4450,6 @@
   "ja": "映像画質:",
   "zh-CN": "画面画质：",
   "zh-TW": "畫面畫質："
- },
- "프리셋: %s": {
-  "en": "Preset: %s",
-  "es": "Preajuste: %s",
-  "ja": "プリセット: %s",
-  "zh-CN": "预设：%s",
-  "zh-TW": "預設：%s"
- },
- "영상 화질 프리셋:": {
-  "en": "Picture quality preset:",
-  "es": "Preajuste de calidad de imagen:",
-  "ja": "映像画質プリセット:",
-  "zh-CN": "画面画质预设：",
-  "zh-TW": "畫面畫質預設："
  },
  "영상 화질 도우미(scripts/nanum-picture.lua)를 불러오지 못했습니다": {
   "en": "Could not load the picture helper (scripts/nanum-picture.lua)",
@@ -5311,5 +5199,68 @@
   "zh-CN": "是否安装解密组件?",
   "zh-TW": "是否安裝解密元件?",
   "es": "¿Instalar los componentes de descifrado?"
+ },
+ "RTX %s": {
+  "en": "RTX %s",
+  "es": "RTX %s",
+  "ja": "RTX %s",
+  "zh-CN": "RTX %s",
+  "zh-TW": "RTX %s"
+ },
+ "← 영상 화질로 돌아가기": {
+  "en": "← Back to picture quality",
+  "es": "← Volver a calidad de imagen",
+  "ja": "← 映像画質に戻る",
+  "zh-CN": "← 返回画面画质",
+  "zh-TW": "← 返回畫面畫質"
+ },
+ "업스케일: %s": {
+  "en": "Upscale: %s",
+  "es": "Ampliación: %s",
+  "ja": "アップスケール: %s",
+  "zh-CN": "超分：%s",
+  "zh-TW": "升頻：%s"
+ },
+ "보정: %s": {
+  "en": "Correction: %s",
+  "es": "Corrección: %s",
+  "ja": "補正: %s",
+  "zh-CN": "校正：%s",
+  "zh-TW": "校正：%s"
+ },
+ "세부 설정…": {
+  "en": "Details…",
+  "es": "Detalles…",
+  "ja": "詳細設定…",
+  "zh-CN": "详细设置…",
+  "zh-TW": "詳細設定…"
+ },
+ "영상 화질 세부 설정:": {
+  "en": "Picture quality details:",
+  "es": "Detalles de calidad de imagen:",
+  "ja": "映像画質の詳細設定:",
+  "zh-CN": "画面画质详细设置：",
+  "zh-TW": "畫面畫質詳細設定："
+ },
+ "RTX — NVIDIA GPU와 드라이버 VSR 필요": {
+  "en": "RTX — needs an NVIDIA GPU and driver VSR",
+  "es": "RTX — requiere GPU NVIDIA y VSR del controlador",
+  "ja": "RTX — NVIDIA GPUとドライバーのVSRが必要",
+  "zh-CN": "RTX — 需要 NVIDIA GPU 和驱动 VSR",
+  "zh-TW": "RTX — 需要 NVIDIA GPU 與驅動程式 VSR"
+ },
+ "RTX 사용 중 — 선 강조·선명도 일시 중지": {
+  "en": "RTX on — line enhancement/sharpening paused",
+  "es": "RTX activo — realce de líneas y nitidez en pausa",
+  "ja": "RTX使用中 — 線の強調・シャープネスを一時停止",
+  "zh-CN": "RTX 使用中 — 暂停线条增强与锐化",
+  "zh-TW": "RTX 使用中 — 暫停線條增強與銳化"
+ },
+ "사용자 셰이더 — 선명화 중복 적용 주의": {
+  "en": "Custom shaders — avoid sharpening twice",
+  "es": "Shaders propios — evite duplicar la nitidez",
+  "ja": "ユーザーシェーダー — シャープネスの重複に注意",
+  "zh-CN": "自定义着色器 — 注意避免重复锐化",
+  "zh-TW": "自訂著色器 — 注意避免重複銳化"
  }
 }
