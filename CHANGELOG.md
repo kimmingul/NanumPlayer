@@ -10,6 +10,16 @@ shipped in the release named after them. Dates are release dates (UTC); internal
 
 ## [Unreleased]
 
+## [1.13.1] - 2026-10-18
+
+### Changed
+- The playback header no longer shows the app version; the window title shows it instead
+  (`<video> - NanumPlayer 1.13.1`). The start screen keeps its version badge.
+
+### Fixed
+- AI subtitles (and other ASS/image subtitles) are lifted above the playback bar instead of being hidden
+  behind it.
+
 ## [1.13.0] - 2026-10-18
 
 Changes made while preparing the public launch of the project.
@@ -345,7 +355,8 @@ below.
 
 - Packaging output is separated into per-version folders so a running older package is not deleted.
 
-[Unreleased]: https://github.com/kimmingul/NanumPlayer/compare/v1.13.0...HEAD
+[Unreleased]: https://github.com/kimmingul/NanumPlayer/compare/v1.13.1...HEAD
+[1.13.1]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.13.1
 [1.13.0]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.13.0
 [1.12.0]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.12.0
 [1.10.0]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.10.0

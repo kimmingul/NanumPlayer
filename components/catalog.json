@@ -29,12 +29,12 @@
   ],
   "disc_components": {
     "id": "disc_components",
-    "version": "1.13.0",
+    "version": "1.13.1",
     "label": "Blu-ray/DVD decryption components",
-    "filename": "NanumPlayer-disc-components-1.13.0.zip",
+    "filename": "NanumPlayer-disc-components-1.13.1.zip",
     "size": 10016821,
     "sha256": "bade090a3782e27a856107aa5dce2ca87768ae627f0f6c0c38f7cc4c4713bc50",
-    "url": "https://github.com/kimmingul/NanumPlayer-disc-components/releases/download/v1.13.0/NanumPlayer-disc-components-1.13.0.zip",
+    "url": "https://github.com/kimmingul/NanumPlayer-disc-components/releases/download/v1.13.1/NanumPlayer-disc-components-1.13.1.zip",
     "files": [
       {
         "name": "README.txt",

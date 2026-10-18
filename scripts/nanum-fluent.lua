@@ -3,7 +3,7 @@
 -- Draws a Windows 11 style dark UI on one ASS overlay (no mpv OSC):
 --   * idle: heading, "파일 열기" / "Blu-ray 열기" cards, "YouTube" / "웹페이지에서 재생하기" / "AI 자막 설정" pills,
 --     app version and language switch in the corners,
---   * playback: auto-hiding header (title, app version, AI status) and rounded bottom panel
+--   * playback: auto-hiding header (title, AI status) and rounded bottom panel
 --     (timeline with drag + preview, play, +-10 s, volume, open file / disc,
 --     audio / subtitle track lists, AI settings, fullscreen),
 --   * toasts that replace the stock OSD text.
@@ -449,21 +449,13 @@ local function layout_play(m)
         add_el(L, "open", rx, cy2 - 19, 38, 38, tr("파일 열기") .. " (Ctrl+O)")
     end
 
-    -- header, right to left: app version, then the AI status chip (the title keeps what is left)
+    -- header, right to left: the AI status chip (the title keeps what is left); the app version is in
+    -- the window title instead
     local hd = L.header
-    local vt, vw
-    if S.app_version ~= "" then
-        vt = (pw >= 560 and "NanumPlayer " or "v") .. S.app_version
-        vw = ceil(text_w(vt, 12.5))
-    end
     local right = hd.x + hd.w - 16
-    if vt then
-        L.ver = { text = vt, x = right - vw, y = hd.y, w = vw, h = hd.h }
-        right = L.ver.x - 14
-    end
     if S.status then
-        local cw = clamp(text_w(S.status.text, 12.5) + 56, 80, pw * (vt and 0.4 or 0.5))
-        add_el(L, "chip", right - cw + (vt and 0 or 4), hd.y + 8, cw, 30,
+        local cw = clamp(text_w(S.status.text, 12.5) + 56, 80, pw * 0.5)
+        add_el(L, "chip", right - cw + 4, hd.y + 8, cw, 30,
             S.status.action == "models" and tr("AI 구성 요소 관리 열기") or tr("AI 자막 설정 열기"), { kind = "chip" })
         right = right - cw - 12
     end
@@ -729,9 +721,6 @@ local function draw_play(A, L, m)
         TA:rrect(hd.x + 16, hd.y + hd.h / 2 - 8, 3, 16, 1.5, { fill = C.accent, fa = 1 })
         TA:text(title_x, hd.y + hd.h / 2, fit(title_text(), 15, max(40, L.title_right - title_x)),
             { size = 15, bold = true, color = C.text })
-        if L.ver then
-            TA:text(L.ver.x + L.ver.w, hd.y + hd.h / 2, L.ver.text, { size = 12.5, color = C.text2, an = 6 })
-        end
         if chip then draw_status_chip(TA, chip) end
 
         -- panel
