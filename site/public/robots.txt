@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kimmingul.github.io/NanumPlayer/sitemap-index.xml

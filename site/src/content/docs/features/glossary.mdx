@@ -1,0 +1,50 @@
+---
+title: Glossary and translation style
+description: How NanumPlayer keeps character and place names consistent with a per-work glossary, how to edit it, and how to choose the translation speech style.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Translating dialogue line by line is where names go wrong: the same character becomes three different spellings. NanumPlayer fixes this with a per-work **glossary**.
+
+## How the glossary is made
+
+When a video starts, the translation model identifies the work from the disc name, title tags and file name, together with the audio language list. It then builds a glossary of characters, places, organizations and invented terms:
+
+- the original spelling and the romanized or English spelling (both name orders),
+- the family name, given name and full name, all mapped to **one** translated spelling.
+
+Live translation receives the entries that appear in the current line plus the main characters. Full translation receives the whole glossary.
+
+## Review and edit it
+
+Open **Ctrl+N → Glossary** to:
+
+- see the list,
+- add, change or delete entries,
+- edit everything at once in Notepad (changes apply when you save),
+- rebuild the glossary with AI.
+
+When you change one name, NanumPlayer offers to change the same character's family name, given name and full name together. Changes **re-translate the existing subtitles** that contain those names, in both tracks, saved subtitles and full translations, and apply immediately.
+
+<Aside type="caution">
+  Glossary quality depends on the translation model. Small local models may invent entries or misspell characters they do not know. Check the list, especially names the AI wrote down from misheard audio. Cloud models are far better at recognizing works.
+</Aside>
+
+## Translation style
+
+**Ctrl+N → Translation style** sets how the translation speaks:
+
+| Style | Meaning |
+|---|---|
+| Natural (default) | Keeps polite or casual speech consistent with the relationship between characters. |
+| Polite | Always polite speech. |
+| Casual | Always casual speech. |
+| Faithful to the original | Stays as close to the source wording as possible. |
+| Custom | Your own instruction, for example "warm, as if speaking to a child". |
+
+The style applies from the next translated line; existing subtitles stay as they are. Cached translations are separated by style and glossary.
+
+## Local model output repair
+
+Some local models output Korean as byte tokens such as `<0xED><0x9B><0xA0>`. NanumPlayer restores them to proper UTF-8 text, and lines that cannot be restored count as failed translations and are not saved.

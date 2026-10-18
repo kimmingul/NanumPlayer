@@ -1,0 +1,121 @@
+---
+title: Getting started
+description: Install NanumPlayer, open your first video, set up the Ollama translation server, download speech models and install OCR language packs.
+---
+
+import { Steps, Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+import Download from '../../components/Download.astro';
+import Shot from '../../components/Shot.astro';
+import startScreen from '../../assets/start-en.png';
+import components from '../../assets/components-en.png';
+
+This page takes you from the download to your first AI subtitles. Playing videos works right after installing; **AI subtitles need two more things**: a speech model (downloaded once) and a translation model (served by Ollama).
+
+## What you need
+
+| | Required? | Notes |
+|---|---|---|
+| Windows 10 or 11, 64-bit, CPU with AVX2 | Yes | Most CPUs made since about 2015 support AVX2. |
+| A speech model (Whisper) | For AI subtitles | 0.8 to 550 MiB, downloaded once. [Details](#speech-models). |
+| A translation server (Ollama) | For translated subtitles | Local or cloud. [Details](#translation-server). |
+| NVIDIA GPU (RTX 30 series or newer) | No | Speeds up speech recognition. [Details](#gpu-acceleration-optional). |
+| Windows OCR language pack | No | Only for reading image subtitles on discs. [Details](#ocr-language-packs-optional). |
+
+## 1. Install
+
+<Download lang="en" />
+
+<Tabs>
+  <TabItem label="Installer">
+    Run `NanumPlayer-Setup-<version>.exe`. It installs for your user account by default and does not need administrator rights; Windows offers an all-users install if you prefer.
+
+    The installer is available in English, Korean, Japanese, Simplified Chinese, Traditional Chinese and Spanish. On the optional-tasks page you can pick speech models, the NVIDIA cuBLAS download, the YouTube tools and a desktop icon. **Nothing is downloaded unless you tick it**, and you can do all of it later from inside the player.
+  </TabItem>
+  <TabItem label="Portable ZIP">
+    Unzip `NanumPlayer-<version>-portable.zip` anywhere and run `NanumPlayer.exe`. Settings are stored in `%APPDATA%\NanumPlayer` and models in `%LOCALAPPDATA%\NanumPlayer\models`, the same places the installed version uses.
+  </TabItem>
+</Tabs>
+
+Before you run the installer, compare its SHA-256 with the value shown above or in the release's `SHA256SUMS` file. If Windows SmartScreen warns about the file, see the [FAQ](/NanumPlayer/faq/#windows-smartscreen-warns-about-the-installer).
+
+## 2. First run
+
+<Steps>
+
+1. Start NanumPlayer. The interface language follows Windows (English if your language is not one of the six supported). Change it with the language button at the top right, with **Ctrl+Alt+L**, or in **Ctrl+N → Interface language**. The interface language is independent of the subtitle languages.
+2. Open a video with **Open file** (Ctrl+O), or drag a file into the window. Videos play at once, with no AI involved.
+3. Press **Ctrl+N** to open the settings menu. This is where everything lives: translation model, target language, models and acceleration, upscaling, picture quality and more. Type to search.
+4. Pick your **translation target language** in the menu. It defaults to your Windows display language and offers 33 languages plus any language name you type.
+
+</Steps>
+
+<Shot src={startScreen} alt="The NanumPlayer start screen with the Open file, Open Blu-ray, YouTube, Play from a web page and AI subtitle settings buttons." caption="The start screen. Drag a file or a Blu-ray folder into the window to play it." />
+
+Once a speech model and a translation server are ready, open a video with spoken dialogue. NanumPlayer waits at the start of the file (30 seconds by default, shown as *Preparing AI subtitles*) so the subtitles can stay ahead of playback. After that the **Subtitles** button lists the AI track, named after what it is made from, such as `Korean (based on English audio)`.
+
+<Aside type="note">
+  If the models or the server are missing, nothing breaks: the video simply plays normally and the status chip tells you what is missing. Downloads you start later apply from the next file, without restarting the player.
+</Aside>
+
+## Speech models
+
+Speech recognition uses [whisper.cpp](https://github.com/ggml-org/whisper.cpp) models plus a small voice-detection model (Silero VAD). They are **not** part of the installer, so the download stays small.
+
+| Choice | Size | Use it for |
+|---|---|---|
+| English Whisper + Silero | about 466 MiB | English audio. |
+| Multilingual Whisper + Silero | about 466 MiB | Any other language, and automatic language detection. |
+| Multilingual high-accuracy Whisper large-v3-turbo (q5_0) + Silero | about 548 MiB | Better recognition for non-English audio such as Japanese. Used instead of the small multilingual model when installed. Needs more GPU memory. |
+| Silero VAD only | about 0.8 MiB | Included automatically with any Whisper choice. |
+
+Get them at install time, or later in **Ctrl+N → AI component manager**. The manager shows real progress, verifies size and SHA-256 against pinned values, and lets you cancel. Closing the menu does not stop a download. Files are saved to `%LOCALAPPDATA%\NanumPlayer\models`, reused when you reinstall and kept when you uninstall.
+
+<Shot src={components} alt="The AI component manager listing model status, accelerator status, acceleration mode, the CPU engine, CUDA acceleration and the NVIDIA cuBLAS components." caption="The AI component manager (Ctrl+N). It lists the models, the CPU and CUDA engines and the NVIDIA components." />
+
+## Translation server
+
+Translated subtitles come from an **Ollama-compatible server**. Ollama runs models on your own PC, or forwards to cloud models you sign in to.
+
+<Steps>
+
+1. Install [Ollama](https://ollama.com) and make sure it is running. After installation it starts in the background; otherwise run `ollama serve`.
+2. Download a model, for example the default NanumPlayer expects:
+
+   ```powershell
+   ollama pull gemma4
+   ```
+
+3. In NanumPlayer press **Ctrl+N → Translation model**. The list shows the models installed in Ollama, with sizes for local models, and marks cloud models. You can also type a model name.
+
+</Steps>
+
+Defaults: server `http://127.0.0.1:11434`, model `gemma4:latest`. Change the address under **Ctrl+N → Translation server address**. Model, server and target language apply from the next file you open; translation style, glossary and original-language subtitles apply immediately.
+
+Choosing a model is a trade-off. Larger models translate names and idioms better but need more memory (the default is several gigabytes), and a model that does not fit in your GPU can be too slow for real-time use together with speech recognition. Smaller models of around 4 billion parameters keep up in real time on modest GPUs with lower quality. In our tests a cloud model gave the best quality. See [Privacy](/NanumPlayer/privacy/) for what a cloud model means for your subtitle text.
+
+If the server is unreachable, lines that cannot be translated are shown in the original language, so the screen never goes empty, and the status chip reports that the server is unavailable.
+
+## GPU acceleration (optional)
+
+The CPU engine is built in and always works. An optional CUDA engine is also included in the installer and is used automatically when it can be.
+
+- **Requirements:** an NVIDIA GPU with compute capability 8.6 or higher (RTX 30 series and newer), a current driver, and the cuBLAS libraries from a **CUDA 13** Toolkit. NanumPlayer finds an installed Toolkit by itself. CUDA 12 is not enough.
+- **No Toolkit?** Download just cuBLAS (about 507 MiB) from the installer or the AI component manager. You accept NVIDIA's terms first; the files are verified and cached independent of the app version.
+- **Modes:** Automatic (GPU when possible, otherwise CPU), CPU only, CUDA required. Change under **Ctrl+N → AI component manager → AI acceleration mode**; it applies from the next file.
+- A missing GPU never disables speech recognition (the CPU engine is used) or translation.
+
+GPU acceleration for speech recognition is separate from [video upscaling](/NanumPlayer/features/upscaling/), which needs no CUDA Toolkit.
+
+## OCR language packs (optional)
+
+Blu-ray and many DVD discs store subtitles as pictures. NanumPlayer reads them with the **Windows OCR engine** (nothing extra is bundled) and turns them into text it can translate. The OCR engine can only recognize languages that have an OCR pack installed in Windows.
+
+- Without an English pack, NanumPlayer falls back to an installed Latin-script recognizer, such as the one for your Windows language, and corrects common misreadings. Accuracy is lower.
+- For better accuracy open **Ctrl+N** and choose **Install the English OCR language pack (administrator, improves accuracy)**. Windows asks for administrator permission and installs the pack with `Add-WindowsCapability`. It applies from the next file you open. You can also add a language in Windows **Settings → Time & language → Language & region**.
+- Packs are offered for English, Japanese, Korean, Chinese, French, German, Spanish, Italian, Russian and Portuguese. A Japanese track needs the Japanese pack.
+
+## Next steps
+
+- [Features](/NanumPlayer/features/) for everything the player can do.
+- [Blu-ray and DVD discs](/NanumPlayer/disc-decryption/): what plays out of the box and what needs the optional component.
+- [FAQ](/NanumPlayer/faq/) when something does not work as expected.

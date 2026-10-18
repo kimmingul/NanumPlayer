@@ -1,0 +1,121 @@
+---
+title: 시작하기
+description: NanumPlayer를 설치하고 첫 영상을 연 다음, Ollama 번역 서버를 설정하고 음성 모델과 OCR 언어 팩을 설치하는 방법을 안내합니다.
+---
+
+import { Steps, Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+import Download from '../../../components/Download.astro';
+import Shot from '../../../components/Shot.astro';
+import startScreen from '../../../assets/start-ko.png';
+import components from '../../../assets/components-ko.png';
+
+이 문서는 다운로드부터 첫 AI 자막까지의 과정을 안내합니다. 영상 재생은 설치 직후부터 가능하며, **AI 자막에는 두 가지가 더 필요합니다**. 한 번만 내려받는 음성 모델과 Ollama가 제공하는 번역 모델입니다.
+
+## 필요한 것
+
+| | 필수 여부 | 설명 |
+|---|---|---|
+| Windows 10 또는 11 64비트, AVX2 지원 CPU | 필수 | 2015년경 이후에 나온 대부분의 CPU가 AVX2를 지원합니다. |
+| 음성 모델(Whisper) | AI 자막에 필요 | 0.8~550 MiB, 한 번만 내려받습니다. [자세히](#음성-모델) |
+| 번역 서버(Ollama) | 번역 자막에 필요 | 로컬 또는 클라우드. [자세히](#번역-서버) |
+| NVIDIA GPU(RTX 30 시리즈 이상) | 선택 | 음성 인식 속도를 높여 줍니다. [자세히](#gpu-가속-선택) |
+| Windows OCR 언어 팩 | 선택 | 디스크의 이미지 자막을 읽을 때만 필요합니다. [자세히](#ocr-언어-팩-선택) |
+
+## 1. 설치
+
+<Download lang="ko" />
+
+<Tabs>
+  <TabItem label="설치 파일">
+    `NanumPlayer-Setup-<version>.exe`를 실행합니다. 기본적으로 현재 사용자 계정에 설치되며 관리자 권한이 필요하지 않습니다. 원하면 Windows가 모든 사용자용 설치를 선택할 수 있게 해 줍니다.
+
+    설치 파일은 영어, 한국어, 일본어, 중국어 간체, 중국어 번체, 스페인어로 제공됩니다. 선택 작업 페이지에서 음성 모델, NVIDIA cuBLAS 내려받기, YouTube 도구, 바탕 화면 아이콘을 고를 수 있습니다. **체크하지 않으면 아무것도 내려받지 않으며**, 이 모든 것을 나중에 플레이어 안에서 할 수도 있습니다.
+  </TabItem>
+  <TabItem label="포터블 ZIP">
+    `NanumPlayer-<version>-portable.zip`을 원하는 곳에 압축을 풀고 `NanumPlayer.exe`를 실행합니다. 설정은 `%APPDATA%\NanumPlayer`에, 모델은 `%LOCALAPPDATA%\NanumPlayer\models`에 저장되며, 설치 버전과 같은 위치입니다.
+  </TabItem>
+</Tabs>
+
+설치 파일을 실행하기 전에 SHA-256 값을 위에 표시된 값 또는 릴리스의 `SHA256SUMS` 파일과 비교하세요. Windows SmartScreen이 파일에 경고를 표시하면 [FAQ](/NanumPlayer/ko/faq/#windows-smartscreen이-설치-파일에-경고를-표시합니다)를 참고하세요.
+
+## 2. 처음 실행
+
+<Steps>
+
+1. NanumPlayer를 시작합니다. 인터페이스 언어는 Windows 언어를 따릅니다(지원하는 여섯 언어에 없으면 영어). 오른쪽 위의 언어 버튼, **Ctrl+Alt+L**, 또는 **Ctrl+N → 인터페이스 언어**에서 바꿀 수 있습니다. 인터페이스 언어는 자막 언어와 별개입니다.
+2. **파일 열기**(Ctrl+O)로 영상을 열거나 파일을 창으로 끌어다 놓습니다. AI 없이 영상이 바로 재생됩니다.
+3. **Ctrl+N**을 눌러 설정 메뉴를 엽니다. 번역 모델, 목표 언어, 모델과 가속, 업스케일, 영상 화질 등 모든 설정이 여기에 있으며, 입력하면 검색됩니다.
+4. 메뉴에서 **번역 목표 언어**를 고르세요. 기본값은 Windows 표시 언어이며, 33개 언어 중에서 고르거나 원하는 언어 이름을 직접 입력할 수 있습니다.
+
+</Steps>
+
+<Shot src={startScreen} alt="파일 열기, Blu-ray 열기, YouTube, 웹페이지에서 재생하기, AI 자막 설정 버튼이 있는 NanumPlayer 시작 화면." caption="시작 화면입니다. 파일이나 Blu-ray 폴더를 창으로 끌어다 놓으면 재생됩니다." />
+
+음성 모델과 번역 서버가 준비되었다면 대사가 있는 영상을 여세요. NanumPlayer는 자막이 재생보다 앞서갈 수 있도록 파일 시작 부분에서 잠시 기다립니다(기본 30초, *AI 자막 준비 중*으로 표시). 그 뒤에는 **자막** 버튼에 AI 트랙이 나타나며, 트랙 이름은 만든 방식을 따라 `한국어 (영어 음성 기반)`처럼 표시됩니다.
+
+<Aside type="note">
+  모델이나 서버가 없어도 문제가 생기지 않습니다. 영상은 그대로 정상 재생되고, 상태 칩이 무엇이 없는지 알려 줍니다. 나중에 시작한 내려받기는 플레이어를 다시 시작하지 않아도 다음 파일부터 적용됩니다.
+</Aside>
+
+## 음성 모델
+
+음성 인식은 [whisper.cpp](https://github.com/ggml-org/whisper.cpp) 모델과 작은 음성 감지 모델(Silero VAD)을 사용합니다. 설치 파일 용량을 작게 유지하기 위해 이들은 설치 파일에 **포함되어 있지 않습니다**.
+
+| 선택 | 크기 | 용도 |
+|---|---|---|
+| 영어 Whisper + Silero | 약 466 MiB | 영어 음성 |
+| 다국어 Whisper + Silero | 약 466 MiB | 그 밖의 모든 언어와 자동 언어 감지 |
+| 다국어 고정밀 Whisper large-v3-turbo(q5_0) + Silero | 약 548 MiB | 일본어처럼 영어가 아닌 음성의 인식률을 높입니다. 설치하면 작은 다국어 모델 대신 사용되며, GPU 메모리가 더 필요합니다. |
+| Silero VAD만 | 약 0.8 MiB | 어떤 Whisper를 고르든 자동으로 포함됩니다. |
+
+설치할 때 받거나, 나중에 **Ctrl+N → AI 구성 요소 관리**에서 받으세요. 관리 화면에는 실제 진행률이 표시되고, 고정된 값에 대해 크기와 SHA-256을 검증하며, 취소할 수 있습니다. 메뉴를 닫아도 내려받기는 멈추지 않습니다. 파일은 `%LOCALAPPDATA%\NanumPlayer\models`에 저장되고, 재설치할 때 재사용되며 제거해도 남습니다.
+
+<Shot src={components} alt="모델 상태, 가속기 상태, 가속 모드, CPU 엔진, CUDA 가속, NVIDIA cuBLAS 구성 요소가 나열된 AI 구성 요소 관리 화면." caption="AI 구성 요소 관리(Ctrl+N)입니다. 모델, CPU와 CUDA 엔진, NVIDIA 구성 요소가 나열됩니다." />
+
+## 번역 서버
+
+번역 자막은 **Ollama 호환 서버**가 만듭니다. Ollama는 내 PC에서 모델을 실행하거나, 로그인한 클라우드 모델로 요청을 전달합니다.
+
+<Steps>
+
+1. [Ollama](https://ollama.com)를 설치하고 실행 중인지 확인합니다. 설치 후에는 백그라운드에서 시작되며, 그렇지 않으면 `ollama serve`를 실행하세요.
+2. 모델을 내려받습니다. 예를 들어 NanumPlayer의 기본 모델은 다음과 같습니다.
+
+   ```powershell
+   ollama pull gemma4
+   ```
+
+3. NanumPlayer에서 **Ctrl+N → 번역 모델**을 누릅니다. 목록에는 Ollama에 설치된 모델이 표시되고, 로컬 모델은 크기도 함께 보이며 클라우드 모델은 표시됩니다. 모델 이름을 직접 입력할 수도 있습니다.
+
+</Steps>
+
+기본값은 서버 `http://127.0.0.1:11434`, 모델 `gemma4:latest`입니다. 주소는 **Ctrl+N → 번역 서버 주소**에서 바꿀 수 있습니다. 모델, 서버, 목표 언어는 다음에 여는 파일부터 적용되고, 번역 말투, 용어집, 원어 자막은 즉시 적용됩니다.
+
+모델 선택은 절충의 문제입니다. 큰 모델일수록 이름과 관용구를 더 잘 번역하지만 메모리가 더 필요합니다(기본 모델은 수 GB). GPU에 다 올라가지 않는 모델은 음성 인식과 함께 실시간으로 쓰기에는 너무 느릴 수 있습니다. 40억 매개변수 안팎의 작은 모델은 품질이 낮은 대신 보급형 GPU에서도 실시간으로 따라옵니다. 저희 테스트에서는 클라우드 모델의 품질이 가장 좋았습니다. 클라우드 모델이 자막 텍스트에 어떤 의미인지는 [개인정보](/NanumPlayer/ko/privacy/)를 참고하세요.
+
+서버에 연결할 수 없으면 번역하지 못한 줄은 원어 그대로 표시되어 화면이 비지 않으며, 상태 칩에 서버를 사용할 수 없다고 표시됩니다.
+
+## GPU 가속 (선택)
+
+CPU 엔진은 기본 내장되어 있어 언제나 동작합니다. 선택 사항인 CUDA 엔진도 설치 파일에 포함되어 있으며, 쓸 수 있을 때 자동으로 사용됩니다.
+
+- **요구 사항:** 컴퓨트 capability 8.6 이상의 NVIDIA GPU(RTX 30 시리즈 이상), 최신 드라이버, 그리고 **CUDA 13** Toolkit의 cuBLAS 라이브러리가 필요합니다. 설치된 Toolkit은 NanumPlayer가 직접 찾습니다. CUDA 12로는 부족합니다.
+- **Toolkit이 없다면?** 설치 파일이나 AI 구성 요소 관리에서 cuBLAS만(약 507 MiB) 내려받을 수 있습니다. 먼저 NVIDIA의 약관에 동의해야 하며, 파일은 검증된 뒤 앱 버전과 무관하게 캐시됩니다.
+- **모드:** 자동(가능하면 GPU, 아니면 CPU), CPU 전용, CUDA 필수. **Ctrl+N → AI 구성 요소 관리 → AI 가속 모드**에서 바꾸며 다음 파일부터 적용됩니다.
+- GPU가 없어도 음성 인식(CPU 엔진 사용)이나 번역이 꺼지지 않습니다.
+
+음성 인식의 GPU 가속은 CUDA Toolkit이 필요 없는 [영상 업스케일](/NanumPlayer/ko/features/upscaling/)과는 별개입니다.
+
+## OCR 언어 팩 (선택)
+
+Blu-ray와 많은 DVD 디스크는 자막을 그림으로 저장합니다. NanumPlayer는 **Windows OCR 엔진**(별도로 포함된 것은 없음)으로 이를 읽어 번역할 수 있는 텍스트로 바꿉니다. OCR 엔진은 Windows에 OCR 팩이 설치된 언어만 인식할 수 있습니다.
+
+- 영어 팩이 없으면 NanumPlayer는 Windows 언어용 인식기처럼 설치된 라틴 문자 인식기로 대체하고 흔한 오인식을 보정합니다. 정확도는 낮아집니다.
+- 정확도를 높이려면 **Ctrl+N**을 열고 **영어 OCR 언어 팩 설치 (관리자 권한, 인식 정확도 향상)**를 선택하세요. Windows가 관리자 권한을 요청하고 `Add-WindowsCapability`로 팩을 설치합니다. 다음에 여는 파일부터 적용됩니다. Windows **설정 → 시간 및 언어 → 언어 및 지역**에서 언어를 추가할 수도 있습니다.
+- 영어, 일본어, 한국어, 중국어, 프랑스어, 독일어, 스페인어, 이탈리아어, 러시아어, 포르투갈어 팩을 제공합니다. 일본어 트랙에는 일본어 팩이 필요합니다.
+
+## 다음 단계
+
+- [기능](/NanumPlayer/ko/features/): 플레이어가 할 수 있는 모든 것.
+- [Blu-ray와 DVD 디스크](/NanumPlayer/ko/disc-decryption/): 바로 재생되는 것과 선택 구성 요소가 필요한 것.
+- [FAQ](/NanumPlayer/ko/faq/): 기대와 다르게 동작할 때.

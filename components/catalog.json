@@ -26,5 +26,106 @@
       "sha256": "fdcaca4277a72f87607f9804bf845ea8bb77785c97abb74179bdab058028c046",
       "url": "https://github.com/kimmingul/NanumPlayer/releases/download/v1.2.0/cublasLt64_13.dll"
     }
-  ]
+  ],
+  "disc_components": {
+    "id": "disc_components",
+    "version": "1.13.0",
+    "label": "Blu-ray/DVD decryption components",
+    "filename": "NanumPlayer-disc-components-1.13.0.zip",
+    "size": 10016821,
+    "sha256": "bade090a3782e27a856107aa5dce2ca87768ae627f0f6c0c38f7cc4c4713bc50",
+    "url": "https://github.com/kimmingul/NanumPlayer-disc-components/releases/download/v1.13.0/NanumPlayer-disc-components-1.13.0.zip",
+    "files": [
+      {
+        "name": "README.txt",
+        "size": 4728,
+        "sha256": "c18ebb5bfccf235315e7f7274ffbcc5daa02ce672274abd5e3a15998637db1bf"
+      },
+      {
+        "name": "libaacs.dll",
+        "size": 1942030,
+        "sha256": "f701f19cbc9828573f65f0b9392d25a593ab6b9b30cce5b1a32b89d29cadb816"
+      },
+      {
+        "name": "libbdplus.dll",
+        "size": 1976334,
+        "sha256": "eb828111783cb4d03c2adcccc1b50f07a860e74b43591c4689d3e50b5e6579ef"
+      },
+      {
+        "name": "libdvdcss-2.dll",
+        "size": 119296,
+        "sha256": "217492d7fa478a93ad4d4ddcf34b1dff9be6f3cf59b229de968722026b3504ae"
+      },
+      {
+        "name": "licenses/BUILD-LICENSE",
+        "size": 35149,
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      {
+        "name": "licenses/libaacs-COPYING",
+        "size": 26521,
+        "sha256": "592987e8510228d546540b84a22444bde98e48d03078d3b2eefcd889bec5ce8c"
+      },
+      {
+        "name": "licenses/libbdplus-COPYING",
+        "size": 26521,
+        "sha256": "592987e8510228d546540b84a22444bde98e48d03078d3b2eefcd889bec5ce8c"
+      },
+      {
+        "name": "licenses/libdvdcss-COPYING",
+        "size": 18092,
+        "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+      },
+      {
+        "name": "licenses/libgcrypt-COPYING",
+        "size": 17984,
+        "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+      },
+      {
+        "name": "licenses/libgcrypt-COPYING.LIB",
+        "size": 26419,
+        "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+      },
+      {
+        "name": "licenses/libgpg-error-COPYING",
+        "size": 18002,
+        "sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c"
+      },
+      {
+        "name": "licenses/libgpg-error-COPYING.LIB",
+        "size": 26527,
+        "sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861"
+      },
+      {
+        "name": "sources/Makefile",
+        "size": 5843,
+        "sha256": "b2d337ff502b56d13642d1917b52c496093acb515b91be9d71284329a922bdca"
+      },
+      {
+        "name": "sources/libaacs-0.12.0.tar.bz2",
+        "size": 76839,
+        "sha256": "25394f08b37ce944172ef7d67208864b079fa3594ede22b51028766a2fa88b6c"
+      },
+      {
+        "name": "sources/libbdplus-0.2.0.tar.bz2",
+        "size": 74498,
+        "sha256": "b2018f72ea07465a227f625b4d68ad1c8e7498b812a5e46f17d9f039cc948f9e"
+      },
+      {
+        "name": "sources/libgcrypt-1.12.2.tar.gz",
+        "size": 4515999,
+        "sha256": "3506339b02adb6148fa2365a4e748f3d30fcc351b8c443897cd0d6fbcd4cfaf8"
+      },
+      {
+        "name": "sources/libgpg-error-1.61.tar.gz",
+        "size": 1000567,
+        "sha256": "d856f3582d31fd754afe876abf6f269e4f2f4e75c7ca2047971fb6e9b1d6e552"
+      },
+      {
+        "name": "sources/mingw-w64-libdvdcss-1.6.0-1.src.tar.zst",
+        "size": 103178,
+        "sha256": "cc180aa06504341ebda02d64aae90cc9b9d8bcea60d003dbef2d1a61fe0e96ab"
+      }
+    ]
+  }
 }

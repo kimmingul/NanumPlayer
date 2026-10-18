@@ -1,0 +1,101 @@
+---
+title: FAQ
+description: Windows SmartScreen, GPU 요구 사항, 오프라인 사용, 지원 언어, 개인정보, 자주 겪는 문제에 대한 NanumPlayer 답변입니다.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## 설치
+
+### Windows SmartScreen이 설치 파일에 경고를 표시합니다
+
+NanumPlayer는 새로 나온 독립 오픈 소스 프로젝트입니다. Windows SmartScreen은 내려받은 파일을 평판으로 판단하기 때문에, 아직 내려받은 사람이 적은 파일은 **"Windows의 PC 보호"** 경고가 뜰 수 있습니다. 이것은 평판 경고일 뿐 바이러스 탐지가 아닙니다.
+
+1. [GitHub 릴리스 페이지](https://github.com/kimmingul/NanumPlayer/releases/latest) 또는 이 사이트의 다운로드 버튼에서만 내려받으세요.
+2. 파일의 SHA-256을 다운로드 패널 또는 릴리스의 `SHA256SUMS` 파일에 있는 값과 비교하세요.
+
+   ```powershell
+   Get-FileHash .\NanumPlayer-Setup-<version>.exe -Algorithm SHA256
+   ```
+
+3. 해시가 일치하고 출처를 신뢰한다면 **추가 정보 → 실행**을 선택하세요.
+
+포터블 ZIP을 사용하거나 [소스 코드](https://github.com/kimmingul/NanumPlayer)를 직접 읽고 빌드할 수도 있습니다.
+
+### 어떤 Windows와 하드웨어가 필요한가요?
+
+64비트 Windows 10 또는 11과 AVX2를 지원하는 CPU(2015년경 이후의 대부분의 CPU)가 필요합니다. NVIDIA GPU는 선택 사항입니다. Windows 전용이며 macOS나 Linux 빌드는 없습니다.
+
+### 설치 파일에 관리자 권한이 필요한가요?
+
+아니요. 기본적으로 현재 사용자 계정에 설치되며, 모든 사용자용으로 설치하려면 선택 창이 나타납니다.
+
+### 무엇을 내려받는 건가요? 포함되지 않은 것은 무엇인가요?
+
+설치 파일과 포터블 ZIP에는 플레이어, CPU와 CUDA 음성 인식 엔진, YouTube/웹 브라우저 도우미, **보호되지 않은** 디스크를 읽는 Blu-ray/DVD 라이브러리가 들어 있습니다. 용량이 크거나 선택 사항이라 포함되지 않은 것은 음성 모델, 번역 모델(Ollama), NVIDIA cuBLAS, YouTube 도구, [Blu-ray/DVD 복호화 구성 요소](/NanumPlayer/ko/disc-decryption/)입니다. 각각은 [시작하기](/NanumPlayer/ko/getting-started/)에 정리되어 있습니다.
+
+## 하드웨어와 속도
+
+### NVIDIA GPU가 꼭 필요한가요?
+
+아니요. CPU 엔진은 언제나 동작하며, GPU는 음성 인식을 더 빠르게 해 줍니다. CUDA 엔진에는 **compute capability 8.6 이상**의 NVIDIA GPU(RTX 30 시리즈 이상), 최신 드라이버, **CUDA 13** Toolkit의 cuBLAS(또는 507 MiB cuBLAS 내려받기)가 필요합니다. CUDA 12로는 부족합니다. **자동** 모드에서는 가능하면 GPU를, 아니면 CPU를 사용합니다.
+
+### RTX 업스케일에는 어떤 GPU가 필요한가요?
+
+지원되는 NVIDIA GPU와 드라이버, 그리고 NVIDIA 앱이나 제어판에서 켜 둔 RTX Video Super Resolution이 필요합니다. CUDA 음성 인식과는 관계가 없습니다. 다른 GPU에서는 **고품질 크기 조정**이나 직접 고른 셰이더를 사용할 수 있습니다. [영상 업스케일](/NanumPlayer/ko/features/upscaling/)을 참고하세요.
+
+### 자막이 늦거나 "AI 자막 준비 중"이 오래 걸립니다
+
+자막은 재생보다 앞서 만들어지므로 파일 시작 부분에서 30초의 프리롤을 기다립니다. 큰 모델을 처음 불러올 때는 더 오래 걸립니다. CPU나 GPU가 큰 모델을 감당하지 못하면 더 작은 음성 모델이나 번역 모델을 사용하세요. GPU 메모리에 다 올라가지 않는 로컬 번역 모델은 음성 인식이 동시에 실행되는 동안 시간 초과가 날 수 있습니다. 상태는 **Ctrl+K**로 확인하세요.
+
+### 자막이 나타나지 않습니다
+
+다음 순서로 확인하세요. (1) 음성 모델이 설치되어 있는지(**Ctrl+N → AI 구성 요소 관리**), (2) Ollama가 실행 중이고 모델이 선택되어 있는지(**Ctrl+N → 번역 모델**), (3) 영상에 들리는 대사가 있는지, (4) **자막** 목록에서 AI 항목을 골랐는지. 모델이나 서버가 없으면 영상은 그냥 정상 재생됩니다. [문제 해결](https://github.com/kimmingul/NanumPlayer/blob/main/docs/ko/troubleshooting.md)을 참고하세요.
+
+## 오프라인 사용과 개인정보
+
+### 오프라인에서도 동작하나요?
+
+네, 설정을 마친 뒤에는 가능합니다. 음성 인식은 내 PC에서 실행됩니다. **로컬** Ollama 모델을 쓰면 인터넷이 필요 없습니다. 음성 모델과 번역 모델을 내려받을 때 한 번은 인터넷이 필요합니다. 클라우드 번역 모델은 인터넷이 필요하며 텍스트를 해당 제공자에게 보냅니다.
+
+### 내 영상이나 소리를 업로드하나요?
+
+아니요. 소리는 절대 업로드되지 않습니다. **번역할 텍스트**만 설정한 번역 서버로 전송되며, 기본값은 내 PC의 서버입니다. 원격 측정(텔레메트리)은 없습니다. [개인정보](/NanumPlayer/ko/privacy/)를 참고하세요.
+
+### 시청 기록을 남기나요?
+
+아니요. 재생 기록, 로그, 캐시는 기본적으로 꺼져 있습니다. 설정, 모델, 직접 만든 파일은 남습니다.
+
+## 언어
+
+### 인터페이스는 어떤 언어를 지원하나요?
+
+영어, 한국어, 일본어, 중국어 간체, 중국어 번체, 스페인어를 지원합니다. 처음에는 Windows 언어를 따르며(지원하지 않는 언어면 영어), **Ctrl+Alt+L**로 바꿀 수 있습니다. 설치 파일도 같은 여섯 언어를 지원합니다.
+
+### 어떤 언어를 인식하고 번역할 수 있나요?
+
+인식에는 Whisper를 사용합니다. 영어 모델은 영어 음성용이고, 다국어 모델은 그 밖의 많은 언어를 처리하며 품질은 언어와 모델에 따라 달라집니다(특히 일본어는 large-v3-turbo 모델이 도움이 됩니다). **Ctrl+N → 번역 목표 언어**에서 **33개 목표 언어** 중 하나를 고르거나, 번역 모델이 이해하는 다른 언어 이름을 직접 입력할 수 있습니다. 인터페이스 언어, 음성 언어, 자막 언어는 서로 독립된 세 가지 설정입니다.
+
+## 디스크, YouTube, 웹
+
+### Blu-ray나 DVD가 재생되지 않습니다
+
+보호되지 않은 디스크, 폴더, ISO 이미지는 따로 받을 것 없이 재생됩니다. 복제 방지가 걸린 디스크에는 선택 사항인 [복호화 구성 요소](/NanumPlayer/ko/disc-decryption/)가 필요하며, 이는 별도로 설치하고 합법적으로 사용할 책임도 본인에게 있습니다. 일부 디스크는(키 없음, 지원하지 않는 보호 방식 등) 아예 열 수 없으며, 이 경우 오류로 알려 줍니다.
+
+### YouTube가 로봇이 아님을 확인하라고 하거나 사이트의 영상이 재생되지 않습니다
+
+NanumPlayer는 `yt-dlp`와 브라우저 창을 사용합니다. 비공식 도구로 로그인하면 YouTube가 추가 확인을 요구할 수 있고, yt-dlp는 사이트 변경을 따라가는 데 시간이 걸릴 수 있습니다(**Ctrl+N → YouTube**에서 YouTube 도구를 업데이트하세요). DRM으로 보호된 영상과 미디어 주소를 노출하지 않는 사이트는 지원하지 않습니다. [YouTube와 웹페이지](/NanumPlayer/ko/features/youtube-web/)를 참고하세요.
+
+## 프로젝트
+
+### 무료인가요? 라이선스는 무엇인가요?
+
+네. NanumPlayer는 GPL-2.0-or-later 오픈 소스입니다. [라이선스 및 고지](/NanumPlayer/ko/license/)를 참고하세요.
+
+### 버그를 신고하거나 질문하려면 어떻게 하나요?
+
+[GitHub 이슈](https://github.com/kimmingul/NanumPlayer/issues)를 열어 주세요. 먼저 [문제 해결](https://github.com/kimmingul/NanumPlayer/blob/main/docs/ko/troubleshooting.md)을 읽고 **Ctrl+K**의 상태를 첨부하세요. 비공개로 시청한 내용의 로그는 파일 이름이나 주소가 들어 있을 수 있으니 게시하지 마세요.
+
+### 완전히 제거하려면 어떻게 하나요?
+
+Windows **설정 → 앱**에서 제거합니다. 내려받은 모델, cuBLAS, YouTube 도구, 선택 구성 요소, 설정은 재설치할 때 다시 내려받지 않도록 남겨 둡니다. 모두 지우려면 `%LOCALAPPDATA%\NanumPlayer`와 `%APPDATA%\NanumPlayer`도 삭제하세요.

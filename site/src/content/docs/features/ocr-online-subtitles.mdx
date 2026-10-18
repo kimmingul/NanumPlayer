@@ -1,0 +1,27 @@
+---
+title: Image subtitles and online subtitles
+description: Read Blu-ray and DVD image subtitles (PGS) with Windows OCR, and import subtitles from OpenSubtitles or Jimaku with automatic timing alignment.
+---
+
+## Disc image subtitles (OCR)
+
+Blu-ray (PGS) and DVD subtitles are pictures. NanumPlayer decodes them from the same read as the video, converts them to black text on white, enlarges small text and reads them with **Windows OCR**. No models are bundled. The result becomes a track such as `Korean (based on English disc subtitles)`, with timing that matches the disc exactly and no additional disc reading.
+
+- A non-forced English track is preferred. Other languages need the Windows OCR pack for that language. See [OCR language packs](/NanumPlayer/getting-started/#ocr-language-packs-optional).
+- Without an English pack, an installed Latin-script recognizer is used with corrections for common misreadings, for example `50` → `So`, `tO` → `to`, `donlt` → `don't`. Installing the English pack improves accuracy. Some words are still misread by a recognizer for another language.
+- Image-subtitle work runs after the main speech-based subtitles, and by default the results are kept for the current playback only. **Ctrl+N** can turn disc-subtitle OCR off.
+
+## Online subtitles
+
+**Ctrl+N → Find online subtitles (OpenSubtitles · Jimaku)** opens the search page of OpenSubtitles (English, Japanese, Korean) or Jimaku (Japanese anime) in your browser with the title filled in. For Jimaku, which has no address-based search, the home page opens and the search words are copied to the clipboard.
+
+**You download the subtitle yourself**; NanumPlayer does not click or script those sites. It then watches your Downloads folder (changeable in the menu) for 20 minutes and imports what you saved, including `.zip` archives. You can also use **Import a subtitle file…** or drag a file onto the window.
+
+On import NanumPlayer:
+
+- detects the encoding (UTF-8, UTF-16, CP949, Shift-JIS, CP1252) and the language;
+- compares the timing with the recognized speech and corrects the offset (up to ±240 seconds) and the speed ratio (23.976, 24 and 25 fps conversions) automatically;
+- tells you when its confidence is low instead of guessing. Use **Fine-tune imported subtitle timing** (±0.1 s or ±1 s) to correct it;
+- shows Korean subtitles as they are, and translates other languages with your glossary and style.
+
+A new import replaces the previous imported track. Temporary working copies are deleted when you quit; your downloaded original is never deleted. Subtitles from other sites can differ in wording and editing from your video's version, so automatic alignment may be less certain.

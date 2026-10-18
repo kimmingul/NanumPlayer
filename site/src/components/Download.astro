@@ -1,0 +1,130 @@
+---
+// Download panel. The server-rendered HTML is the static fallback (a link to the latest release page,
+// which always works); the script upgrades it with the real installer asset from the GitHub API.
+interface Props {
+  lang?: 'en' | 'ko';
+}
+const { lang = 'en' } = Astro.props;
+const REPO = 'kimmingul/NanumPlayer';
+const releases = `https://github.com/${REPO}/releases/latest`;
+
+const t = {
+  en: {
+    button: 'Download for Windows',
+    buttonVersion: 'Download NanumPlayer {v} for Windows',
+    meta: 'Windows 10/11 (64-bit), CPU with AVX2. Free and open source (GPL-2.0-or-later).',
+    metaVersion: 'Installer {size} · Windows 10/11 (64-bit), CPU with AVX2 · Free and open source (GPL-2.0-or-later).',
+    portable: 'Portable ZIP',
+    sums: 'SHA-256 checksums',
+    all: 'All releases',
+    hash: 'SHA-256 of the installer:',
+    hashFallback:
+      'Every release lists the SHA-256 of each file. Compare it with Get-FileHash before you run the installer.',
+    verify: 'Verify in PowerShell:',
+    note: 'The installer does not include speech models or the optional Blu-ray/DVD decryption components. See Getting started for what to download next.',
+  },
+  ko: {
+    button: 'Windows용 다운로드',
+    buttonVersion: 'NanumPlayer {v} Windows용 다운로드',
+    meta: 'Windows 10/11 (64비트), AVX2 지원 CPU. 무료 오픈 소스 (GPL-2.0 이상).',
+    metaVersion: '설치 파일 {size} · Windows 10/11 (64비트), AVX2 지원 CPU · 무료 오픈 소스 (GPL-2.0 이상).',
+    portable: '포터블 ZIP',
+    sums: 'SHA-256 체크섬',
+    all: '모든 릴리스',
+    hash: '설치 파일의 SHA-256:',
+    hashFallback:
+      '모든 릴리스에 파일별 SHA-256이 적혀 있습니다. 설치 파일을 실행하기 전에 Get-FileHash 결과와 비교하세요.',
+    verify: 'PowerShell로 확인:',
+    note: '설치 파일에는 음성 모델과 선택 구성 요소인 Blu-ray/DVD 복호화 구성 요소가 들어 있지 않습니다. 다음에 받을 것은 시작하기를 참고하세요.',
+  },
+}[lang];
+---
+
+<div
+  class="download-panel"
+  id="download-panel"
+  data-lang={lang}
+  data-releases={releases}
+  data-repo={REPO}
+  data-t-button-version={t.buttonVersion}
+  data-t-meta-version={t.metaVersion}
+  data-t-hash={t.hash}
+>
+  <div class="download-panel__main">
+    <a class="download-btn" data-dl-main href={releases}>{t.button}</a>
+    <span><a data-dl-portable href={releases}>{t.portable}</a> · <a data-dl-sums href={releases}>{t.sums}</a> · <a href={`https://github.com/${REPO}/releases`}>{t.all}</a></span>
+  </div>
+  <p class="download-panel__meta" data-dl-meta>{t.meta}</p>
+  <p class="download-panel__hash" data-dl-hash>{t.hashFallback}</p>
+  <p class="download-panel__hash"><span>{t.verify}</span> <code data-dl-cmd>Get-FileHash .\NanumPlayer-Setup-&lt;version&gt;.exe -Algorithm SHA256</code></p>
+  <p class="download-panel__note">{t.note}</p>
+</div>
+
+<script>
+  interface Asset {
+    name: string;
+    size: number;
+    digest?: string | null;
+    browser_download_url: string;
+  }
+  const CACHE_KEY = 'nanumplayer-latest-release-v1';
+  const CACHE_MS = 30 * 60 * 1000;
+
+  async function latest(repo: string): Promise<{ tag: string; assets: Asset[] }> {
+    try {
+      const raw = sessionStorage.getItem(CACHE_KEY);
+      if (raw) {
+        const c = JSON.parse(raw);
+        if (Date.now() - c.at < CACHE_MS) return c.data;
+      }
+    } catch {
+      /* storage unavailable */
+    }
+    const res = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
+      headers: { Accept: 'application/vnd.github+json' },
+    });
+    if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+    const json = await res.json();
+    const data = { tag: String(json.tag_name), assets: json.assets as Asset[] };
+    try {
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), data }));
+    } catch {
+      /* ignore */
+    }
+    return data;
+  }
+
+  const mib = (n: number) => `${(n / 1048576).toFixed(0)} MiB`;
+
+  async function upgrade(panel: HTMLElement) {
+    const q = <T extends HTMLElement>(s: string) => panel.querySelector<T>(s);
+    const { tag, assets } = await latest(panel.dataset.repo!);
+    const version = tag.replace(/^v/, '');
+    const setup = assets.find((a) => /^NanumPlayer-Setup-.+\.exe$/i.test(a.name));
+    if (!setup) return; // keep the static fallback
+    const portable = assets.find((a) => /^NanumPlayer-.+-portable\.zip$/i.test(a.name));
+    const sums = assets.find((a) => /^SHA256SUMS.*\.txt$/i.test(a.name));
+
+    const main = q<HTMLAnchorElement>('[data-dl-main]')!;
+    main.href = setup.browser_download_url;
+    main.textContent = panel.dataset.tButtonVersion!.replace('{v}', version);
+    q('[data-dl-meta]')!.textContent = panel.dataset.tMetaVersion!.replace('{size}', mib(setup.size));
+    if (portable) q<HTMLAnchorElement>('[data-dl-portable]')!.href = portable.browser_download_url;
+    if (sums) q<HTMLAnchorElement>('[data-dl-sums]')!.href = sums.browser_download_url;
+    const digest = setup.digest?.replace(/^sha256:/i, '');
+    if (digest && /^[0-9a-f]{64}$/i.test(digest)) {
+      const hash = q('[data-dl-hash]')!;
+      hash.textContent = `${panel.dataset.tHash} `;
+      const code = document.createElement('code');
+      code.textContent = digest;
+      hash.append(code);
+    }
+    q('[data-dl-cmd]')!.textContent = `Get-FileHash .\\${setup.name} -Algorithm SHA256`;
+  }
+
+  document.querySelectorAll<HTMLElement>('.download-panel').forEach((panel) => {
+    upgrade(panel).catch(() => {
+      /* offline or rate-limited: the static link to the latest release stays */
+    });
+  });
+</script>

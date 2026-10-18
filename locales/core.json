@@ -209,12 +209,12 @@
   "zh-CN": "%s：%s",
   "zh-TW": "%s：%s"
  },
- "%s: %s — 한국어 부분을 찾지 못해 직접 수정 필요": {
-  "en": "%s: %s — the Korean part was not found; edit it by hand",
-  "es": "%s: %s — no se encontró la parte en coreano; hay que editarla a mano",
-  "ja": "%s: %s — 韓国語の部分が見つからないため手動で修正が必要",
-  "zh-CN": "%s：%s — 未找到韩语部分，需要手动修改",
-  "zh-TW": "%s：%s — 找不到韓語部分，需要手動修改"
+ "%s: %s — 번역어 부분을 찾지 못해 직접 수정 필요": {
+  "en": "%s: %s — the translated name was not found; edit it by hand",
+  "es": "%s: %s — no se encontró el nombre traducido; hay que editarlo a mano",
+  "ja": "%s: %s — 訳語の部分が見つからないため手動で修正が必要",
+  "zh-CN": "%s：%s — 未找到译名部分，需要手动修改",
+  "zh-TW": "%s：%s — 找不到譯名部分，需要手動修改"
  },
  "%s: AI가 작품 정보 조회 중": {
   "en": "%s: AI is looking up the work info",
@@ -1126,13 +1126,6 @@
   "zh-CN": "请重新安装 NanumPlayer 以修复 CPU 引擎",
   "zh-TW": "請重新安裝 NanumPlayer 以修復 CPU 引擎"
  },
- "NanumPlayer의 disc 폴더가 누락되었거나 손상되었습니다. 배포본을 다시 설치하세요.": {
-  "en": "NanumPlayer's disc folder is missing or damaged. Reinstall the distribution.",
-  "es": "Falta la carpeta disc de NanumPlayer o está dañada. Reinstala la distribución.",
-  "ja": "NanumPlayerのdiscフォルダーが見つからないか破損しています。配布版を再インストールしてください。",
-  "zh-CN": "NanumPlayer 的 disc 文件夹缺失或已损坏。请重新安装发行版。",
-  "zh-TW": "NanumPlayer 的 disc 資料夾遺失或已損毀。請重新安裝發行版。"
- },
  "OCR 언어 팩 설치 창을 열었습니다 — 허용하면 설치가 진행되고, 다음에 여는 파일부터 적용됩니다": {
   "en": "The OCR language pack installer window is open — allow it to install; it applies from the next file you open",
   "es": "Se abrió la ventana de instalación del paquete de idioma OCR — permítela para instalar; se aplica desde el siguiente archivo que abras",
@@ -1770,13 +1763,6 @@
   "zh-CN": "已下载的文件",
   "zh-TW": "已下載的檔案"
  },
- "내장 디스크 라이브러리를 찾을 수 없습니다": {
-  "en": "The built-in disc library was not found",
-  "es": "No se encontró la biblioteca de disco integrada",
-  "ja": "内蔵のディスクライブラリが見つかりません",
-  "zh-CN": "找不到内置的光盘库",
-  "zh-TW": "找不到內建的光碟程式庫"
- },
  "네트워크 오류로 YouTube에 연결하지 못했습니다": {
   "en": "Could not connect to YouTube because of a network error",
   "es": "No se pudo conectar con YouTube por un error de red",
@@ -2301,20 +2287,6 @@
   "ja": "訳語を修正",
   "zh-CN": "修改译文",
   "zh-TW": "修改譯文"
- },
- "번역+원문": {
-  "en": "Translation + original",
-  "es": "Traducción + original",
-  "ja": "翻訳+原文",
-  "zh-CN": "译文+原文",
-  "zh-TW": "譯文+原文"
- },
- "번역만": {
-  "en": "Translation only",
-  "es": "Solo traducción",
-  "ja": "翻訳のみ",
-  "zh-CN": "仅译文",
-  "zh-TW": "僅譯文"
  },
  "번역이 비어 있어 바꾸지 않았습니다": {
   "en": "The translation was empty, so nothing was changed",
@@ -2973,13 +2945,6 @@
   "ja": "原文の修正 (「%s」に翻訳される原文):",
   "zh-CN": "修改原文（翻译为“%s”的原文）：",
   "zh-TW": "修改原文（翻譯為「%s」的原文）："
- },
- "원문만": {
-  "en": "Original only",
-  "es": "Solo original",
-  "ja": "原文のみ",
-  "zh-CN": "仅原文",
-  "zh-TW": "僅原文"
  },
  "원문에 충실": {
   "en": "Faithful to the original",
@@ -4108,12 +4073,12 @@
   "zh-CN": "韩语",
   "zh-TW": "韓語"
  },
- "한국어 부분을 자동으로 찾지 못한 관련 항목은 직접 수정하세요: %s": {
-  "en": "Edit the related entries whose Korean part could not be found automatically: %s",
-  "es": "Edita a mano las entradas relacionadas cuya parte en coreano no se pudo encontrar automáticamente: %s",
-  "ja": "韓国語の部分を自動で見つけられなかった関連項目は手動で修正してください: %s",
-  "zh-CN": "未能自动找到韩语部分的相关条目，请手动修改：%s",
-  "zh-TW": "未能自動找到韓語部分的相關項目，請手動修改：%s"
+ "번역어 부분을 자동으로 찾지 못한 관련 항목은 직접 수정하세요: %s": {
+  "en": "Edit the related entries whose translated name could not be found automatically: %s",
+  "es": "Edita a mano las entradas relacionadas cuyo nombre traducido no se pudo encontrar automáticamente: %s",
+  "ja": "訳語の部分を自動で見つけられなかった関連項目は手動で修正してください: %s",
+  "zh-CN": "未能自动找到译名部分的相关条目，请手动修改：%s",
+  "zh-TW": "未能自動找到譯名部分的相關項目，請手動修改：%s"
  },
  "항목 추가": {
   "en": "Add entry",
@@ -4299,7 +4264,7 @@
  },
  "← 설정으로 돌아가기": {
   "en": "← Back to settings",
-  "es": "← Volver a ajustes",
+  "es": "← Volver a los ajustes",
   "ja": "← 設定に戻る",
   "zh-CN": "← 返回设置",
   "zh-TW": "← 返回設定"
@@ -4324,6 +4289,13 @@
   "ja": "高品質スケーリング (GPU レンダラー)",
   "zh-CN": "高质量缩放（GPU 渲染器）",
   "zh-TW": "高品質縮放（GPU 渲染器）"
+ },
+ "기본 — 추가 업스케일 없음": {
+  "en": "Default — no extra upscaling",
+  "es": "Predeterminado — sin ampliación adicional",
+  "ja": "標準 — 追加のアップスケールなし",
+  "zh-CN": "默认 — 不额外超分",
+  "zh-TW": "預設 — 不額外升頻"
  },
  "NVIDIA RTX 업스케일 (NVIDIA GPU·드라이버 RTX VSR 필요)": {
   "en": "NVIDIA RTX upscaling (needs NVIDIA GPU and driver RTX VSR)",
@@ -4610,168 +4582,168 @@
   "ja": "中国語（簡体字）",
   "zh-CN": "中文（简体）",
   "zh-TW": "中文（簡體）",
-  "es": "Chino (simplificado)"
+  "es": "chino (simplificado)"
  },
  "중국어 (번체)": {
   "en": "Chinese (Traditional)",
   "ja": "中国語（繁体字）",
   "zh-CN": "中文（繁体）",
   "zh-TW": "中文（繁體）",
-  "es": "Chino (tradicional)"
+  "es": "chino (tradicional)"
  },
  "아랍어": {
   "en": "Arabic",
   "ja": "アラビア語",
   "zh-CN": "阿拉伯语",
   "zh-TW": "阿拉伯語",
-  "es": "Árabe"
+  "es": "árabe"
  },
  "힌디어": {
   "en": "Hindi",
   "ja": "ヒンディー語",
   "zh-CN": "印地语",
   "zh-TW": "印地語",
-  "es": "Hindi"
+  "es": "hindi"
  },
  "태국어": {
   "en": "Thai",
   "ja": "タイ語",
   "zh-CN": "泰语",
   "zh-TW": "泰語",
-  "es": "Tailandés"
+  "es": "tailandés"
  },
  "베트남어": {
   "en": "Vietnamese",
   "ja": "ベトナム語",
   "zh-CN": "越南语",
   "zh-TW": "越南語",
-  "es": "Vietnamita"
+  "es": "vietnamita"
  },
  "인도네시아어": {
   "en": "Indonesian",
   "ja": "インドネシア語",
   "zh-CN": "印度尼西亚语",
   "zh-TW": "印尼語",
-  "es": "Indonesio"
+  "es": "indonesio"
  },
  "말레이어": {
   "en": "Malay",
   "ja": "マレー語",
   "zh-CN": "马来语",
   "zh-TW": "馬來語",
-  "es": "Malayo"
+  "es": "malayo"
  },
  "필리핀어": {
   "en": "Filipino",
   "ja": "フィリピン語",
   "zh-CN": "菲律宾语",
   "zh-TW": "菲律賓語",
-  "es": "Filipino"
+  "es": "filipino"
  },
  "벵골어": {
   "en": "Bengali",
   "ja": "ベンガル語",
   "zh-CN": "孟加拉语",
   "zh-TW": "孟加拉語",
-  "es": "Bengalí"
+  "es": "bengalí"
  },
  "네덜란드어": {
   "en": "Dutch",
   "ja": "オランダ語",
   "zh-CN": "荷兰语",
   "zh-TW": "荷蘭語",
-  "es": "Neerlandés"
+  "es": "neerlandés"
  },
  "폴란드어": {
   "en": "Polish",
   "ja": "ポーランド語",
   "zh-CN": "波兰语",
   "zh-TW": "波蘭語",
-  "es": "Polaco"
+  "es": "polaco"
  },
  "튀르키예어": {
   "en": "Turkish",
   "ja": "トルコ語",
   "zh-CN": "土耳其语",
   "zh-TW": "土耳其語",
-  "es": "Turco"
+  "es": "turco"
  },
  "스웨덴어": {
   "en": "Swedish",
   "ja": "スウェーデン語",
   "zh-CN": "瑞典语",
   "zh-TW": "瑞典語",
-  "es": "Sueco"
+  "es": "sueco"
  },
  "덴마크어": {
   "en": "Danish",
   "ja": "デンマーク語",
   "zh-CN": "丹麦语",
   "zh-TW": "丹麥語",
-  "es": "Danés"
+  "es": "danés"
  },
  "노르웨이어": {
   "en": "Norwegian",
   "ja": "ノルウェー語",
   "zh-CN": "挪威语",
   "zh-TW": "挪威語",
-  "es": "Noruego"
+  "es": "noruego"
  },
  "핀란드어": {
   "en": "Finnish",
   "ja": "フィンランド語",
   "zh-CN": "芬兰语",
   "zh-TW": "芬蘭語",
-  "es": "Finés"
+  "es": "finés"
  },
  "체코어": {
   "en": "Czech",
   "ja": "チェコ語",
   "zh-CN": "捷克语",
   "zh-TW": "捷克語",
-  "es": "Checo"
+  "es": "checo"
  },
  "그리스어": {
   "en": "Greek",
   "ja": "ギリシャ語",
   "zh-CN": "希腊语",
   "zh-TW": "希臘語",
-  "es": "Griego"
+  "es": "griego"
  },
  "히브리어": {
   "en": "Hebrew",
   "ja": "ヘブライ語",
   "zh-CN": "希伯来语",
   "zh-TW": "希伯來語",
-  "es": "Hebreo"
+  "es": "hebreo"
  },
  "헝가리어": {
   "en": "Hungarian",
   "ja": "ハンガリー語",
   "zh-CN": "匈牙利语",
   "zh-TW": "匈牙利語",
-  "es": "Húngaro"
+  "es": "húngaro"
  },
  "루마니아어": {
   "en": "Romanian",
   "ja": "ルーマニア語",
   "zh-CN": "罗马尼亚语",
   "zh-TW": "羅馬尼亞語",
-  "es": "Rumano"
+  "es": "rumano"
  },
  "우크라이나어": {
   "en": "Ukrainian",
   "ja": "ウクライナ語",
   "zh-CN": "乌克兰语",
   "zh-TW": "烏克蘭語",
-  "es": "Ucraniano"
+  "es": "ucraniano"
  },
  "페르시아어": {
   "en": "Persian",
   "ja": "ペルシア語",
   "zh-CN": "波斯语",
   "zh-TW": "波斯語",
-  "es": "Persa"
+  "es": "persa"
  },
  "%s (AI 번역)": {
   "en": "%s (AI translation)",
@@ -4836,12 +4808,26 @@
   "zh-TW": "正在顯示%s字幕 · 已略過 AI 處理",
   "es": "Mostrando subtítulos en %s · trabajo de IA omitido"
  },
+ "원본 자막 표시 중 · AI 작업 일시 중지": {
+  "en": "Showing original subtitles · AI work paused",
+  "ja": "元の字幕を表示中 · AI処理を一時停止",
+  "zh-CN": "正在显示原始字幕 · AI 处理已暂停",
+  "zh-TW": "正在顯示原始字幕 · AI 處理已暫停",
+  "es": "Mostrando subtítulos originales · trabajo de IA en pausa"
+ },
+ "원본 자막을 표시합니다 · AI 작업을 일시 중지합니다 (AI 자막을 고르면 다시 시작)": {
+  "en": "Showing the original subtitles and pausing the AI work (choose an AI subtitle to start it again)",
+  "ja": "元の字幕を表示し、AI処理を一時停止します（AI字幕を選ぶと再開）",
+  "zh-CN": "显示原始字幕并暂停 AI 处理（选择 AI 字幕即可重新开始）",
+  "zh-TW": "顯示原始字幕並暫停 AI 處理（選擇 AI 字幕即可重新開始）",
+  "es": "Se muestran los subtítulos originales y se pausa el trabajo de IA (elige un subtítulo de IA para reanudarlo)"
+ },
  "%s 자막이 있어 바로 표시합니다 · AI 작업은 건너뜁니다 (AI 자막을 고르면 다시 시작)": {
   "en": "%s subtitles found: showing them directly and skipping the AI work (choose an AI subtitle to start it again)",
   "ja": "%s字幕があるのでそのまま表示し、AI処理はスキップします（AI字幕を選ぶと再開）",
   "zh-CN": "已有%s字幕，直接显示并跳过 AI 处理（选择 AI 字幕即可重新开始）",
   "zh-TW": "已有%s字幕，直接顯示並略過 AI 處理（選擇 AI 字幕即可重新開始）",
-  "es": "Hay subtítulos en %s: se muestran directamente y se omite el trabajo de IA (elija un subtítulo IA para reanudarlo)"
+  "es": "Hay subtítulos en %s: se muestran directamente y se omite el trabajo de IA (elige un subtítulo IA para reanudarlo)"
  },
  "AI 자막 작업을 다시 시작합니다": {
   "en": "Restarting the AI subtitle work",
@@ -4855,7 +4841,7 @@
   "ja": "AI処理はオフです · 字幕リストでAI字幕を選ぶと開始します",
   "zh-CN": "AI 处理已关闭 · 在字幕列表中选择 AI 字幕即可开始",
   "zh-TW": "AI 處理已關閉 · 在字幕清單中選擇 AI 字幕即可開始",
-  "es": "Trabajo de IA desactivado · elija un subtítulo IA en la lista para iniciarlo"
+  "es": "Trabajo de IA desactivado · elige un subtítulo IA en la lista para iniciarlo"
  },
  "AI로 시간 맞추고 %s로 번역": {
   "en": "Align timing with AI and translate to %s",
@@ -4940,6 +4926,20 @@
   "zh-CN": "自动 — Windows 显示语言（%s）",
   "zh-TW": "自動 — Windows 顯示語言（%s）",
   "es": "Automático — idioma de Windows (%s)"
+ },
+ "자동 (Windows 언어)": {
+  "en": "Automatic (Windows language)",
+  "ja": "自動（Windowsの言語）",
+  "zh-CN": "自动（Windows 语言）",
+  "zh-TW": "自動（Windows 語言）",
+  "es": "Automático (idioma de Windows)"
+ },
+ "자동 — %s": {
+  "en": "Automatic — %s",
+  "ja": "自動 — %s",
+  "zh-CN": "自动 — %s",
+  "zh-TW": "自動 — %s",
+  "es": "Automático — %s"
  },
  "자동 생성": {
   "en": "auto-generated",
@@ -5045,5 +5045,271 @@
   "zh-CN": "无法连接翻译服务器 · 未翻译的行将显示原文",
   "zh-TW": "無法連線翻譯伺服器 · 未翻譯的行將顯示原文",
   "es": "No se puede conectar con el servidor de traducción · las líneas sin traducir muestran el texto original"
+ },
+ "내려받는 중 %d%%": {
+  "en": "Downloading %d%%",
+  "ja": "ダウンロード中 %d%%",
+  "zh-CN": "下载中 %d%%",
+  "zh-TW": "下載中 %d%%",
+  "es": "Descargando %d%%"
+ },
+ "설치 중…": {
+  "en": "Installing…",
+  "ja": "インストール中…",
+  "zh-CN": "正在安装…",
+  "zh-TW": "正在安裝…",
+  "es": "Instalando…"
+ },
+ "설치 안 됨 (선택 사항)": {
+  "en": "Not installed (optional)",
+  "ja": "未インストール (任意)",
+  "zh-CN": "未安装(可选)",
+  "zh-TW": "未安裝(選用)",
+  "es": "No instalado (opcional)"
+ },
+ "이 구성 요소는 기본 배포본에 포함되지 않은 선택 사항입니다. 복제 방지가 걸린 Blu-ray(AACS, BD+)와 DVD(CSS)를 읽을 때만 필요합니다.": {
+  "en": "This component is optional and not part of the default download. It is only needed to read copy-protected Blu-ray (AACS, BD+) and DVD (CSS) discs.",
+  "ja": "このコンポーネントは任意で、標準配布には含まれていません。コピー保護されたBlu-ray(AACS、BD+)とDVD(CSS)を読み込むときにのみ必要です。",
+  "zh-CN": "此组件为可选项，不包含在默认下载中。仅在读取带复制保护的 Blu-ray(AACS、BD+)和 DVD(CSS)时才需要。",
+  "zh-TW": "此元件為選用項目，不包含在預設下載中。僅在讀取有複製保護的 Blu-ray(AACS、BD+)和 DVD(CSS)時才需要。",
+  "es": "Este componente es opcional y no forma parte de la descarga predeterminada. Solo hace falta para leer discos Blu-ray (AACS, BD+) y DVD (CSS) con protección contra copia."
+ },
+ "복제 방지를 우회하는 일은 나라에 따라 법으로 제한되거나 금지됩니다. 거주 국가의 법을 지킬 책임은 사용자에게 있습니다.": {
+  "en": "Circumventing copy protection is restricted or prohibited by law in many countries. You are responsible for complying with the laws of your country.",
+  "ja": "コピー保護の回避は、国によって法律で制限または禁止されています。お住まいの国の法律を守る責任はユーザーにあります。",
+  "zh-CN": "规避复制保护在许多国家受到法律限制或禁止。遵守所在国家法律的责任由用户自行承担。",
+  "zh-TW": "規避複製保護在許多國家受到法律限制或禁止。遵守所在國家法律的責任由使用者自行承擔。",
+  "es": "Eludir la protección contra copia está restringido o prohibido por ley en muchos países. Eres responsable de cumplir las leyes de tu país."
+ },
+ "설치하면 필요할 때 공개 AACS 키 데이터베이스(FindVUK)를 인터넷에서 내려받는 것에 동의한 것으로 봅니다. Ctrl+N에서 철회할 수 있습니다.": {
+  "en": "By installing, you also agree that the public AACS key database (FindVUK) is downloaded from the internet when needed. You can withdraw this in Ctrl+N.",
+  "ja": "インストールすると、必要なときに公開AACSキーデータベース(FindVUK)をインターネットからダウンロードすることに同意したものとみなされます。Ctrl+Nで撤回できます。",
+  "zh-CN": "安装即表示同意在需要时从互联网下载公开的 AACS 密钥数据库(FindVUK)。可在 Ctrl+N 中撤回。",
+  "zh-TW": "安裝即表示同意在需要時從網際網路下載公開的 AACS 金鑰資料庫(FindVUK)。可在 Ctrl+N 中撤回。",
+  "es": "Al instalarlo, también aceptas que la base de datos pública de claves AACS (FindVUK) se descargue de Internet cuando haga falta. Puedes retirarlo en Ctrl+N."
+ },
+ "보호되지 않은 디스크는 이 구성 요소 없이도 재생됩니다.": {
+  "en": "Unprotected discs play without this component.",
+  "ja": "保護されていないディスクは、このコンポーネントなしでも再生できます。",
+  "zh-CN": "未受保护的光盘无需此组件即可播放。",
+  "zh-TW": "未受保護的光碟無需此元件即可播放。",
+  "es": "Los discos sin protección se reproducen sin este componente."
+ },
+ "Blu-ray/DVD 복호화 구성 요소": {
+  "en": "Blu-ray/DVD decryption components",
+  "ja": "Blu-ray/DVD 復号コンポーネント",
+  "zh-CN": "Blu-ray/DVD 解密组件",
+  "zh-TW": "Blu-ray/DVD 解密元件",
+  "es": "Componentes de descifrado de Blu-ray/DVD"
+ },
+ "구성 요소 ZIP 파일 선택": {
+  "en": "Choose the component ZIP file",
+  "ja": "コンポーネントのZIPファイルを選択",
+  "zh-CN": "选择组件 ZIP 文件",
+  "zh-TW": "選擇元件 ZIP 檔案",
+  "es": "Elegir el archivo ZIP del componente"
+ },
+ "구성 요소 패키지 (zip)|*.zip|모든 파일|*.*": {
+  "en": "Component package (zip)|*.zip|All files|*.*",
+  "ja": "コンポーネントパッケージ (zip)|*.zip|すべてのファイル|*.*",
+  "zh-CN": "组件包 (zip)|*.zip|所有文件|*.*",
+  "zh-TW": "元件套件 (zip)|*.zip|所有檔案|*.*",
+  "es": "Paquete de componentes (zip)|*.zip|Todos los archivos|*.*"
+ },
+ "디스크 구성 요소를 설치하지 못했습니다": {
+  "en": "The disc components could not be installed",
+  "ja": "ディスクコンポーネントをインストールできませんでした",
+  "zh-CN": "无法安装光盘组件",
+  "zh-TW": "無法安裝光碟元件",
+  "es": "No se pudieron instalar los componentes de disco"
+ },
+ "디스크 구성 요소를 준비하는 중…": {
+  "en": "Preparing the disc components…",
+  "ja": "ディスクコンポーネントを準備中…",
+  "zh-CN": "正在准备光盘组件…",
+  "zh-TW": "正在準備光碟元件…",
+  "es": "Preparando los componentes de disco…"
+ },
+ "디스크 구성 요소 정보(components\\catalog.json)를 읽을 수 없습니다: %s": {
+  "en": "Cannot read the disc component information (components\\catalog.json): %s",
+  "ja": "ディスクコンポーネント情報(components\\catalog.json)を読み取れません: %s",
+  "zh-CN": "无法读取光盘组件信息(components\\catalog.json):%s",
+  "zh-TW": "無法讀取光碟元件資訊(components\\catalog.json):%s",
+  "es": "No se puede leer la información de los componentes de disco (components\\catalog.json): %s"
+ },
+ "동의하고 내려받아 설치 (%s)": {
+  "en": "Agree, download and install (%s)",
+  "ja": "同意してダウンロードしてインストール (%s)",
+  "zh-CN": "同意并下载安装(%s)",
+  "zh-TW": "同意並下載安裝(%s)",
+  "es": "Aceptar, descargar e instalar (%s)"
+ },
+ "동의하고 내려받아 둔 ZIP 파일로 설치…": {
+  "en": "Agree and install from a ZIP file I downloaded…",
+  "ja": "同意して、ダウンロード済みのZIPファイルからインストール…",
+  "zh-CN": "同意并使用已下载的 ZIP 文件安装…",
+  "zh-TW": "同意並使用已下載的 ZIP 檔案安裝…",
+  "es": "Aceptar e instalar desde un archivo ZIP que ya descargué…"
+ },
+ "안내 전문 보기": {
+  "en": "Read the full notice",
+  "ja": "注意事項の全文を表示",
+  "zh-CN": "查看完整说明",
+  "zh-TW": "檢視完整說明",
+  "es": "Leer el aviso completo"
+ },
+ "Blu-ray/DVD 복호화 구성 요소: %s": {
+  "en": "Blu-ray/DVD decryption components: %s",
+  "ja": "Blu-ray/DVD 復号コンポーネント: %s",
+  "zh-CN": "Blu-ray/DVD 解密组件:%s",
+  "zh-TW": "Blu-ray/DVD 解密元件:%s",
+  "es": "Componentes de descifrado de Blu-ray/DVD: %s"
+ },
+ "설치 취소": {
+  "en": "Cancel installation",
+  "ja": "インストールをキャンセル",
+  "zh-CN": "取消安装",
+  "zh-TW": "取消安裝",
+  "es": "Cancelar la instalación"
+ },
+ "설치됨 (버전 %s) — 눌러서 폴더 열기": {
+  "en": "Installed (version %s) — click to open the folder",
+  "ja": "インストール済み (バージョン %s) — クリックでフォルダーを開く",
+  "zh-CN": "已安装(版本 %s)— 点击打开文件夹",
+  "zh-TW": "已安裝(版本 %s)— 按一下開啟資料夾",
+  "es": "Instalado (versión %s) — pulsa para abrir la carpeta"
+ },
+ "내려받아 설치 (%s)…": {
+  "en": "Download and install (%s)…",
+  "ja": "ダウンロードしてインストール (%s)…",
+  "zh-CN": "下载并安装(%s)…",
+  "zh-TW": "下載並安裝(%s)…",
+  "es": "Descargar e instalar (%s)…"
+ },
+ "내려받아 둔 ZIP 파일로 설치…": {
+  "en": "Install from a ZIP file I downloaded…",
+  "ja": "ダウンロード済みのZIPファイルからインストール…",
+  "zh-CN": "使用已下载的 ZIP 文件安装…",
+  "zh-TW": "使用已下載的 ZIP 檔案安裝…",
+  "es": "Instalar desde un archivo ZIP que ya descargué…"
+ },
+ "AACS 키 데이터베이스 자동 내려받기: %s": {
+  "en": "Automatic AACS key database download: %s",
+  "ja": "AACSキーデータベースの自動ダウンロード: %s",
+  "zh-CN": "自动下载 AACS 密钥数据库:%s",
+  "zh-TW": "自動下載 AACS 金鑰資料庫:%s",
+  "es": "Descarga automática de la base de claves AACS: %s"
+ },
+ "허용": {
+  "en": "allowed",
+  "ja": "許可",
+  "zh-CN": "允许",
+  "zh-TW": "允許",
+  "es": "permitida"
+ },
+ "허용 안 함": {
+  "en": "not allowed",
+  "ja": "許可しない",
+  "zh-CN": "不允许",
+  "zh-TW": "不允許",
+  "es": "no permitida"
+ },
+ "이 디스크의 키가 이 PC의 키 데이터베이스에 없습니다. 공개 FindVUK 키 데이터베이스(fvonline-db.bplaced.net, 약 25 MB)를 내려받아야 열 수 있습니다. 복제 방지 우회에 관한 법은 나라마다 다르며, 법을 지킬 책임은 사용자에게 있습니다. 동의는 Ctrl+N에서 철회할 수 있습니다.": {
+  "en": "The key for this disc is not in this PC's key database. It can only be opened after downloading the public FindVUK key database (fvonline-db.bplaced.net, about 25 MB). Laws on circumventing copy protection differ by country, and you are responsible for complying with them. You can withdraw your consent in Ctrl+N.",
+  "ja": "このディスクのキーはこのPCのキーデータベースにありません。公開FindVUKキーデータベース(fvonline-db.bplaced.net、約25 MB)をダウンロードすると開けます。コピー保護の回避に関する法律は国によって異なり、法律を守る責任はユーザーにあります。同意はCtrl+Nで撤回できます。",
+  "zh-CN": "此 PC 的密钥数据库中没有这张光盘的密钥。需要下载公开的 FindVUK 密钥数据库(fvonline-db.bplaced.net，约 25 MB)后才能打开。各国关于规避复制保护的法律不同，遵守法律的责任由用户自行承担。可在 Ctrl+N 中撤回同意。",
+  "zh-TW": "此 PC 的金鑰資料庫中沒有這張光碟的金鑰。需要下載公開的 FindVUK 金鑰資料庫(fvonline-db.bplaced.net，約 25 MB)後才能開啟。各國關於規避複製保護的法律不同，遵守法律的責任由使用者自行承擔。可在 Ctrl+N 中撤回同意。",
+  "es": "La clave de este disco no está en la base de claves de este PC. Solo se puede abrir tras descargar la base pública de claves FindVUK (fvonline-db.bplaced.net, unos 25 MB). Las leyes sobre eludir la protección contra copia varían según el país y eres responsable de cumplirlas. Puedes retirar tu consentimiento en Ctrl+N."
+ },
+ "허용하고 디스크 다시 열기": {
+  "en": "Allow and open the disc again",
+  "ja": "許可してディスクを開き直す",
+  "zh-CN": "允许并重新打开光盘",
+  "zh-TW": "允許並重新開啟光碟",
+  "es": "Permitir y volver a abrir el disco"
+ },
+ "AACS 키 데이터베이스를 내려받을까요?": {
+  "en": "Download the AACS key database?",
+  "ja": "AACSキーデータベースをダウンロードしますか?",
+  "zh-CN": "是否下载 AACS 密钥数据库?",
+  "zh-TW": "是否下載 AACS 金鑰資料庫?",
+  "es": "¿Descargar la base de claves AACS?"
+ },
+ "이 디스크는 복제 방지가 걸려 있어 선택 구성 요소가 필요합니다": {
+  "en": "This disc is copy protected and needs the optional component",
+  "ja": "このディスクはコピー保護されており、任意コンポーネントが必要です",
+  "zh-CN": "此光盘有复制保护，需要可选组件",
+  "zh-TW": "此光碟有複製保護，需要選用元件",
+  "es": "Este disco tiene protección contra copia y necesita el componente opcional"
+ },
+ "Blu-ray/DVD 복호화 구성 요소는 기본 배포본에 포함되지 않습니다. 설치하면 이 디스크를 열 수 있습니다.": {
+  "en": "The Blu-ray/DVD decryption components are not part of the default download. Install them to open this disc.",
+  "ja": "Blu-ray/DVD 復号コンポーネントは標準配布には含まれていません。インストールするとこのディスクを開けます。",
+  "zh-CN": "Blu-ray/DVD 解密组件不包含在默认下载中。安装后即可打开此光盘。",
+  "zh-TW": "Blu-ray/DVD 解密元件不包含在預設下載中。安裝後即可開啟此光碟。",
+  "es": "Los componentes de descifrado de Blu-ray/DVD no forman parte de la descarga predeterminada. Instálelos para abrir este disco."
+ },
+ "디스크 복호화 구성 요소를 불러오지 못했습니다": {
+  "en": "The disc decryption component could not be loaded",
+  "ja": "ディスク復号コンポーネントを読み込めませんでした",
+  "zh-CN": "无法加载光盘解密组件",
+  "zh-TW": "無法載入光碟解密元件",
+  "es": "No se pudo cargar el componente de descifrado de discos"
+ },
+ "설치된 구성 요소가 손상되었을 수 있습니다. Ctrl+N > Blu-ray/DVD 복호화 구성 요소에서 다시 설치하세요.": {
+  "en": "The installed component may be damaged. Install it again in Ctrl+N > Blu-ray/DVD decryption components.",
+  "ja": "インストール済みのコンポーネントが破損している可能性があります。Ctrl+N > Blu-ray/DVD 復号コンポーネントで再インストールしてください。",
+  "zh-CN": "已安装的组件可能已损坏。请在 Ctrl+N > Blu-ray/DVD 解密组件 中重新安装。",
+  "zh-TW": "已安裝的元件可能已損毀。請在 Ctrl+N > Blu-ray/DVD 解密元件 中重新安裝。",
+  "es": "Es posible que el componente instalado esté dañado. Vuelve a instalarlo en Ctrl+N > Componentes de descifrado de Blu-ray/DVD."
+ },
+ "디스크 구성 요소 내려받는 중… %d%%": {
+  "en": "Downloading the disc components… %d%%",
+  "ja": "ディスクコンポーネントをダウンロード中… %d%%",
+  "zh-CN": "正在下载光盘组件… %d%%",
+  "zh-TW": "正在下載光碟元件… %d%%",
+  "es": "Descargando los componentes de disco… %d%%"
+ },
+ "디스크 구성 요소 설치 중…": {
+  "en": "Installing the disc components…",
+  "ja": "ディスクコンポーネントをインストール中…",
+  "zh-CN": "正在安装光盘组件…",
+  "zh-TW": "正在安裝光碟元件…",
+  "es": "Instalando los componentes de disco…"
+ },
+ "디스크 구성 요소 확인 중…": {
+  "en": "Verifying the disc components…",
+  "ja": "ディスクコンポーネントを確認中…",
+  "zh-CN": "正在验证光盘组件…",
+  "zh-TW": "正在驗證光碟元件…",
+  "es": "Verificando los componentes de disco…"
+ },
+ "디스크 구성 요소를 설치했습니다 · 디스크를 다시 엽니다": {
+  "en": "Disc components installed · opening the disc again",
+  "ja": "ディスクコンポーネントをインストールしました · ディスクを開き直します",
+  "zh-CN": "光盘组件已安装 · 正在重新打开光盘",
+  "zh-TW": "光碟元件已安裝 · 正在重新開啟光碟",
+  "es": "Componentes de disco instalados · volviendo a abrir el disco"
+ },
+ "디스크 구성 요소를 설치했습니다 · 이제 보호된 디스크를 열 수 있습니다": {
+  "en": "Disc components installed · protected discs can be opened now",
+  "ja": "ディスクコンポーネントをインストールしました · 保護されたディスクを開けるようになりました",
+  "zh-CN": "光盘组件已安装 · 现在可以打开受保护的光盘",
+  "zh-TW": "光碟元件已安裝 · 現在可以開啟受保護的光碟",
+  "es": "Componentes de disco instalados · ya puede abrir discos protegidos"
+ },
+ "디스크 구성 요소 설치를 취소했습니다": {
+  "en": "Disc component installation cancelled",
+  "ja": "ディスクコンポーネントのインストールをキャンセルしました",
+  "zh-CN": "已取消安装光盘组件",
+  "zh-TW": "已取消安裝光碟元件",
+  "es": "Instalación de los componentes de disco cancelada"
+ },
+ "복호화 구성 요소를 설치할까요?": {
+  "en": "Install the decryption components?",
+  "ja": "復号コンポーネントをインストールしますか?",
+  "zh-CN": "是否安装解密组件?",
+  "zh-TW": "是否安裝解密元件?",
+  "es": "¿Instalar los componentes de descifrado?"
  }
 }

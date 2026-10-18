@@ -1,0 +1,46 @@
+---
+title: Privacy
+description: What NanumPlayer stores, what it downloads, what leaves your PC, and how its private web sessions work. No accounts, no telemetry, nothing kept by default.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+NanumPlayer is built so that, by default, **nothing about what you watched is kept**. It has no accounts, no telemetry or analytics and no automatic update check, and it contains no server of its own. This page summarizes the full [privacy document](https://github.com/kimmingul/NanumPlayer/blob/main/docs/privacy.md) in the repository, where every claim can be checked against the source code.
+
+## Not kept by default
+
+Unless you explicitly turn them on, these are not written to disk: playback logs, watch history and resume positions, visited addresses, translation caches, the subtitle library, GPU shader caches and crash dumps.
+
+Whole-file translations and subtitle-import working copies live in a temporary folder of the running process. It is emptied when the media ends and removed when the player exits. Subtitles are generated again the next time you play a video.
+
+Things that **are** stored: your settings (`%APPDATA%\NanumPlayer`), downloaded speech models, optional components, and files you create yourself, such as SRT files and MKV saves. If you edit a glossary, it is saved as a text file named after the work in `%APPDATA%\NanumPlayer\glossary`; delete the folder if you do not want a trace of what you watched.
+
+## What leaves your PC
+
+Speech recognition runs on your PC. NanumPlayer never uploads audio. These are the only connections:
+
+| When | Where | What |
+|---|---|---|
+| Translation, when on | Your **translation server**. By default `http://127.0.0.1:11434`, on your own PC. | The text to translate. The work's title and the audio languages for the glossary. |
+| You download speech models | Hugging Face (pinned revisions) | A file download, verified by size and SHA-256. |
+| You download cuBLAS | GitHub releases of this repository | A file download, verified. |
+| You use the YouTube tools | GitHub releases of `yt-dlp` and Deno | A file download and a version check. |
+| YouTube and web windows | The sites you visit, through WebView2 | Normal browsing traffic, in a private session. |
+| Playing online videos | The video's own server | The media request. |
+| Find online subtitles | Your own browser opens OpenSubtitles or Jimaku | The title as a search word. |
+| You install the optional disc component | GitHub, then the FindVUK key database after your consent | File downloads. |
+| You install an OCR language pack | Windows (Microsoft) | Windows' own installer. |
+
+<Aside type="caution" title="Cloud translation models">
+  The translated text goes to whichever server you configure. A local Ollama model keeps everything on your PC. If you choose an Ollama **cloud** model, that text is sent to the cloud provider; read its privacy terms. NanumPlayer cannot control what your chosen server does with it.
+</Aside>
+
+## Private web sessions
+
+YouTube and web-page windows always run as **InPrivate** sessions. Sign-ins and cookies last only for that session and are removed with the browser's temporary data when it ends (or when you choose **End the private web session (sign out)**). Cookies for ordinary web videos are handed to the player in memory and used only for that file.
+
+Private is not anonymous. It does not hide your traffic from websites, your network operator or your translation provider, and it cannot stop the operating system from paging memory or leaving deleted files recoverable.
+
+## Options that keep data
+
+Only if you pass them yourself: `--log-file` (may contain addresses and file names), `--nanum-cache`, `--nanum-library-db`, `--nanum-full-dir`, `NANUMPLAYER_CRASH_DUMP_DIR` (dumps may contain cookies and other memory) and the disc diagnostic log (no media content, keys or drive serial numbers). Web videos never use the persistent options.

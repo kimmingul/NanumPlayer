@@ -1,0 +1,33 @@
+---
+title: Picture quality
+description: Built-in lightweight GPU picture-correction presets for anime, old anime and compressed video, with noise reduction, debanding, line enhancement, sharpening and color.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import Shot from '../../../components/Shot.astro';
+import picture from '../../../assets/picture-en.png';
+
+**Ctrl+N → Picture quality** offers presets built from nine small GPU shaders (about 12.3 KiB in total) written for NanumPlayer, plus features built into mpv. There are no AI models and nothing to download, and this is separate from any external Anime4K shader pack.
+
+<Shot src={picture} alt="The Picture quality menu showing the Original, Sharper anime, Smoother old anime and Compressed video repair presets." caption="Picture quality presets (Ctrl+N)." widths={[480, 800]} />
+
+The default is **Original**, with no added correction. Presets: **Original**, **Sharper anime**, **Smoother old anime** and **Compressed video repair**.
+
+Each effect can be set to **Off, Weak, Medium or Strong**:
+
+- **Noise reduction:** an edge-preserving spatial filter that reduces small noise in flat color areas. Strong settings can erase background texture.
+- **Debanding:** reduces visible steps in gradients.
+- **Line enhancement and sharpening:** darkens dark lines slightly, or sharpens within a limited pixel range. This does not redraw lines with AI.
+- **Color correction:** raises saturation and contrast a little from your existing settings. It does not estimate original colors or unify character coloring.
+
+Individual changes are saved as a custom combination. **Compare before correction** temporarily switches off only these corrections (upscaling and your own filters stay) and is not saved. Choosing **Original** switches the corrections off and saves that choice.
+
+## With RTX upscaling
+
+When you choose [NVIDIA RTX upscaling](/NanumPlayer/features/upscaling/), line enhancement and sharpening **pause automatically** to avoid sharpening twice, and come back when you leave RTX. Noise reduction, debanding and color correction can stay on. NanumPlayer cannot tell what your custom shaders do, so avoid doubling up sharpening yourself.
+
+## Requirements and limits
+
+- Needs the `gpu-next` or `gpu` video output. Unsupported output or shader errors show in the menu. Settings live in `script-opts\nanum-picture.conf` and existing filters and shaders are preserved.
+- These are real-time spatial filters. Flicker reduction between frames, AI recoloring and redrawing in a modern style are not included.
+- With HDR, high resolution and concurrent AI subtitles, compare quality and playback load against Original.

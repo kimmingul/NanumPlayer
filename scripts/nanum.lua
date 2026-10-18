@@ -2952,7 +2952,7 @@ local function ask_related_update(list, rel, back_src, apply)
         local items = { input.core_tr("예 — 같은 인물의 관련 항목 %d개도 함께 수정", autos), input.core_tr("아니오 — 이 항목만 수정") }
         for _, r in ipairs(rel) do
             items[#items + 1] = "    " .. (r.manual
-                and input.core_tr("%s: %s — 한국어 부분을 찾지 못해 직접 수정 필요", list[r.index].src, list[r.index].tgt)
+                and input.core_tr("%s: %s — 번역어 부분을 찾지 못해 직접 수정 필요", list[r.index].src, list[r.index].tgt)
                 or (list[r.index].src .. ": " .. list[r.index].tgt .. " → " .. r.tgt))
         end
         input.select({
@@ -3007,7 +3007,7 @@ local function edit_glossary_target(src)
         end
         if autos == 0 then
             if #manual > 0 then
-                notify(input.core_tr("한국어 부분을 자동으로 찾지 못한 관련 항목은 직접 수정하세요: %s", table.concat(manual, ", ")), 7, "warn", "glossary-edit")
+                notify(input.core_tr("번역어 부분을 자동으로 찾지 못한 관련 항목은 직접 수정하세요: %s", table.concat(manual, ", ")), 7, "warn", "glossary-edit")
             end
             return apply(false)
         end
@@ -4164,13 +4164,14 @@ local SM = { actions = {}, keys = {} }      -- rows of the open settings menu (r
 -- Interface language (the display language only: the AI source / target languages are separate options).
 -- The native player owns the saved choice: `nanum-ui-language <auto|code>` stores it and publishes
 -- user-data/nanum/ui-language (resolved code) and user-data/nanum/ui-language-mode (chosen value).
+-- Language names stay in their own language (i18n-ignore); only "automatic" is translated.
 SM.LANGUAGES = {
-    { code = "auto", label = "자동/Automatic" },
-    { code = "ko", label = "한국어" },
+    { code = "auto" },
+    { code = "ko", label = "한국어" }, -- i18n-ignore
     { code = "en", label = "English" },
-    { code = "ja", label = "日本語" },
-    { code = "zh-CN", label = "简体中文" },
-    { code = "zh-TW", label = "繁體中文" },
+    { code = "ja", label = "日本語" }, -- i18n-ignore
+    { code = "zh-CN", label = "简体中文" }, -- i18n-ignore
+    { code = "zh-TW", label = "繁體中文" }, -- i18n-ignore
     { code = "es", label = "Español" },
 }
 
@@ -4180,17 +4181,18 @@ function SM.language_mode()
 end
 
 function SM.language_label(code)
+    if code == "auto" then return input.core_tr("자동 (Windows 언어)") end
     for _, l in ipairs(SM.LANGUAGES) do
         if l.code == code then return l.label end
     end
     return tostring(code)
 end
 
--- "자동/Automatic (English)" while following Windows, else the language's own name.
+-- "Automatic — English" while following Windows, else the language's own name.
 function SM.language_summary()
     local mode = SM.language_mode()
     if mode == "auto" then
-        return SM.language_label("auto") .. " (" .. SM.language_label(input.i18n.language()) .. ")"
+        return input.core_tr("자동 — %s", SM.language_label(input.i18n.language()))
     end
     return SM.language_label(mode)
 end
@@ -4200,7 +4202,7 @@ function SM.open_language_menu(from_menu)
     local mode = SM.language_mode()
     local items, default = {}, 1
     for i, l in ipairs(SM.LANGUAGES) do
-        items[i] = (l.code == mode and "● " or "  ") .. l.label
+        items[i] = (l.code == mode and "● " or "  ") .. SM.language_label(l.code)
         if l.code == mode then default = i end
     end
     input.select({
@@ -4791,6 +4793,9 @@ local function build_settings()
     end
     add("upscale", input.core_tr("영상 업스케일: %s", UPS.summary()), function() mp.add_timeout(0.1, UPS.open) end)
     add("picture", input.core_tr("영상 화질: %s", PIC.summary()), function() mp.add_timeout(0.1, PIC.open) end)
+    if SUBS.disc and SUBS.disc.ctl then
+        add("disc", input.core_tr("Blu-ray/DVD 복호화 구성 요소: %s", SUBS.disc.ctl.summary()), function() mp.add_timeout(0.1, SUBS.disc.ctl.open) end)
+    end
     add("bar_hide", input.core_tr("재생 바 자동 숨김: %s", TAGS.bar_hide_label()), function()
         TAGS.cycle_bar_hide()
         reopen_menu()
@@ -5151,8 +5156,15 @@ function YT.download()
     YT.toast_at = 0
     local bytes = YT.missing_bytes()
     local updating = YT.data and YT.data.installed == true
-    local msg = updating and "YouTube 구성 요소 업데이트를 시작합니다" or "YouTube 구성 요소 내려받기를 시작합니다"
-    notify(bytes > 0 and input.core_tr(msg .. " (%s)", AIM.fmt_size(bytes)) or input.core_tr(msg), 4, "busy", "yt-dl")
+    local text
+    if updating then
+        text = bytes > 0 and input.core_tr("YouTube 구성 요소 업데이트를 시작합니다 (%s)", AIM.fmt_size(bytes))
+            or input.core_tr("YouTube 구성 요소 업데이트를 시작합니다")
+    else
+        text = bytes > 0 and input.core_tr("YouTube 구성 요소 내려받기를 시작합니다 (%s)", AIM.fmt_size(bytes))
+            or input.core_tr("YouTube 구성 요소 내려받기를 시작합니다")
+    end
+    notify(text, 4, "busy", "yt-dl")
     return true
 end
 
@@ -5683,74 +5695,57 @@ mp.add_periodic_timer(1, YT.heartbeat)
 end
 
 ----------------------------------------------------------------------------
--- Independent disc backend errors. Own scope: the main chunk is near Lua's
--- 200-local limit. Missing libraries and unsupported encryption stay distinct.
+-- Encrypted-disc failures. Own scope: the main chunk is near Lua's 200-local limit.
+-- Decryption is an optional component (scripts/nanum-disc.lua): it explains what is missing and offers
+-- the verified install; the failed disc is opened again once it is there.
 ----------------------------------------------------------------------------
 do
 local DISC = { log = {}, path = nil }
 SUBS.disc = DISC
 
-function DISC.on_log(e)
-    if e.prefix ~= "bd" or (e.level ~= "error" and e.level ~= "fatal") then return end
+local function disc_log(e)
+    if e.level ~= "error" and e.level ~= "fatal" then return end
+    local text = tostring(e.text or "")
+    if e.prefix ~= "bd" and e.prefix ~= "dvdnav" and e.prefix ~= "dvd"
+        and not text:find("Disc decryption component", 1, true) then return end
     local log = DISC.log
-    log[#log + 1] = tostring(e.text or "")
+    log[#log + 1] = text
     while #log > 8 do table.remove(log, 1) end
 end
+DISC.on_log = disc_log
 
--- missing: no decryption library at all; failed: present but could not decrypt.
-function DISC.classify(text)
-    if text:find("cannot find libaacs", 1, true) or text:find("cannot find libbdplus", 1, true) then
-        return "missing"
+do
+    local factory = load_helper("nanum-disc.lua", "function")
+    if factory then
+        local ok, ctl = pcall(factory, {
+            notify = notify,
+            tr = input.core_tr,
+            select = function(spec) input.select(spec) end,
+            busy = function() return fluent.modal_busy() end,
+            back = function() reopen_menu() end,
+        })
+        if ok and type(ctl) == "table" then
+            DISC.ctl = ctl
+        else
+            mp.msg.error("nanum-disc.lua: " .. tostring(ctl))
+        end
     end
-    if text:find("AACS key database unavailable", 1, true) then return "database" end
-    if text:find("AACS error", 1, true) or text:find("Cannot decrypt BD+", 1, true) then
-        return "failed"
-    end
-    return nil
 end
+
+mp.add_key_binding(nil, "nanum-disc", function() if DISC.ctl then DISC.ctl.open() end end)
 
 -- -> true if the failure was an encrypted-disc one and has been explained.
 function DISC.on_play_error()
-    local kind = DISC.classify(table.concat(DISC.log, "\n"))
-    local path = DISC.path
+    local text, path = table.concat(DISC.log, "\n"), DISC.path
     DISC.log = {}
-    if not kind then return false end
-    local title, text
-    if kind == "missing" then
-        title = "내장 디스크 라이브러리를 찾을 수 없습니다"
-        text = "NanumPlayer의 disc 폴더가 누락되었거나 손상되었습니다. 배포본을 다시 설치하세요."
-    elseif kind == "database" then
-        title = "자동 키 DB를 준비하지 못했습니다"
-        text = "키 DB 다운로드 또는 검증에 실패했습니다. 인터넷 연결을 확인한 뒤 다시 시도하세요. 기존 DB는 유지됩니다."
-    else
-        title = "디스크 암호를 풀지 못했습니다"
-        text = "자동 키 DB 다운로드의 인터넷 연결을 확인하세요. DB에 키가 없거나 지원되지 않는 AACS·BD+ 보호 방식이면 열 수 없습니다."
-    end
-    mp.set_property_native("user-data/nanum/error-handled", true)
-    mp.msg.error(title)
-    title, text = input.core_tr(title), input.core_tr(text)
-    notify(title .. "\n" .. text, 12, "error", "disc")
-    local items, actions = {}, {}
-    local function add(label, fn)
-        items[#items + 1] = label
-        actions[#actions + 1] = fn
-    end
-    if path then
-        add(input.core_tr("다시 시도"), function() mp.commandv("loadfile", path, "replace") end)
-    end
-    add(input.core_tr("닫기"), function() end)
-    mp.add_timeout(0.6, function()
-        if fluent.modal_busy() then return end
-        input.select({ prompt = title, items = items, submit = function(i) actions[i]() end })
-    end)
-    return true
+    return DISC.ctl ~= nil and DISC.ctl.on_play_error(path, text)
 end
 
 mp.register_event("start-file", function()
     DISC.log = {}
     DISC.path = mp.get_property("path")
 end)
-mp.register_event("log-message", DISC.on_log)
+mp.register_event("log-message", disc_log)
 end
 
 ----------------------------------------------------------------------------

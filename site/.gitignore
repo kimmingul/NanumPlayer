@@ -1,0 +1,5 @@
+node_modules/
+dist/
+.astro/
+# The repository-wide rule ignores *.png (local test captures); the site's images are committed.
+!*.png

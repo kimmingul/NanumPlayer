@@ -472,6 +472,7 @@ local function layout_play(m)
 end
 
 -- Language names in their own language: readable whatever the UI language is.
+-- i18n-ignore: endonyms are deliberately never translated
 local LANG_NATIVE = { ko = "한국어", en = "English", ja = "日本語", ["zh-CN"] = "简体中文", ["zh-TW"] = "繁體中文", es = "Español" }
 
 local function layout_idle(m)
@@ -534,7 +535,7 @@ local function draw_idle(A, L)
     I.logo(A, L.logo.cx, L.logo.cy, L.logo.s)
     A:text(W / 2, L.title_y, "Nanum Player", { size = 34 * f, bold = true, color = C.text, an = 5 })
     local tagline_size = max(12, 15 * f)
-    A:text(W / 2, L.sub_y, fit(tr("AI 한국어 자막과 함께 즐기는 미디어 플레이어"), tagline_size, W - 32),
+    A:text(W / 2, L.sub_y, fit(tr("AI 자막과 함께 즐기는 미디어 플레이어"), tagline_size, W - 32),
         { size = tagline_size, color = C.text2, an = 5 })
 
     -- text sizes have floors so small windows stay readable; long labels are fitted, shortcut hints give way first

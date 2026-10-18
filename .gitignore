@@ -20,6 +20,10 @@ libbdplus.dll
 *.mkv
 *.m2ts
 *.png
+# ...except the screenshots used by the documentation and the website
+!/docs/assets/*.png
+!/site/src/assets/**/*.png
+!/site/public/**/*.png
 /poc/bd_backup/
 /poc/*.ass
 /poc/*.db

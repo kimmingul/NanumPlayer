@@ -367,7 +367,7 @@
     "en": "Subtitle track",
     "ja": "字幕トラック",
     "zh-CN": "字幕轨道",
-    "zh-TW": "字幕軌",
+    "zh-TW": "字幕軌道",
     "es": "Pista de subtítulos"
   },
   "자막": {
@@ -502,7 +502,7 @@
     "ja": "AIコンポーネント管理を開く",
     "zh-CN": "打开 AI 组件管理",
     "zh-TW": "開啟 AI 元件管理",
-    "es": "Abrir gestor de componentes IA"
+    "es": "Abrir gestión de componentes de IA"
   },
   "AI 자막 설정 열기": {
     "en": "Open AI subtitle settings",
@@ -560,12 +560,12 @@
     "zh-TW": "無法播放",
     "es": "No se pudo reproducir"
   },
-  "AI 한국어 자막과 함께 즐기는 미디어 플레이어": {
-    "en": "A media player with AI Korean subtitles",
-    "ja": "AI韓国語字幕で楽しむメディアプレーヤー",
-    "zh-CN": "搭载 AI 韩语字幕的媒体播放器",
-    "zh-TW": "搭載 AI 韓語字幕的媒體播放器",
-    "es": "Reproductor multimedia con subtítulos de IA en coreano"
+  "AI 자막과 함께 즐기는 미디어 플레이어": {
+    "en": "A media player with AI subtitles",
+    "ja": "AI字幕で楽しむメディアプレーヤー",
+    "zh-CN": "搭载 AI 字幕的媒体播放器",
+    "zh-TW": "搭載 AI 字幕的媒體播放器",
+    "es": "Reproductor multimedia con subtítulos de IA"
   },
   "동영상·음악 파일 재생": {
     "en": "Play video and music files",

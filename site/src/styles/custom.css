@@ -1,0 +1,96 @@
+/* NanumPlayer palette: the app icon's cyan-to-blue gradient on a dark UI. */
+:root {
+  --sl-color-accent-low: #0d2a4f;
+  --sl-color-accent: #2b63ff;
+  --sl-color-accent-high: #8fd8ff;
+  --sl-font-system-mono: ui-monospace, 'Cascadia Code', 'Cascadia Mono', Consolas, monospace;
+}
+:root[data-theme='light'] {
+  --sl-color-accent-low: #cfe2ff;
+  --sl-color-accent: #1f54e0;
+  --sl-color-accent-high: #0b2f87;
+}
+:lang(ko) {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* Download panel (components/Download.astro) */
+.download-panel {
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--sl-color-bg-nav);
+  margin-block: 1.5rem;
+}
+.download-panel__main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+}
+.download-panel .download-btn {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999rem;
+  background: var(--sl-color-accent);
+  color: var(--sl-color-white, #fff);
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid var(--sl-color-accent-high);
+}
+:root[data-theme='light'] .download-panel .download-btn {
+  color: #fff;
+}
+.download-panel .download-btn:hover,
+.download-panel .download-btn:focus-visible {
+  filter: brightness(1.15);
+}
+.download-panel__meta,
+.download-panel__hash,
+.download-panel__note {
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
+  margin: 0.5rem 0 0;
+}
+.download-panel__hash code {
+  word-break: break-all;
+}
+.download-panel ul {
+  margin: 0.5rem 0 0;
+  padding-inline-start: 1.2rem;
+  font-size: var(--sl-text-sm);
+}
+
+/* Screenshots */
+.shot {
+  margin-block: 1.5rem;
+}
+.shot img {
+  border-radius: 0.6rem;
+  border: 1px solid var(--sl-color-hairline);
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 0.35);
+  height: auto;
+  max-width: 100%;
+}
+.shot figcaption {
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
+  margin-top: 0.5rem;
+}
+.shot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: 1.25rem;
+}
+.shot-grid .shot {
+  margin-block: 0;
+}
+
+/* Wide hero screenshot under the splash hero */
+.hero-shot {
+  margin-block: 0 2rem;
+}
+.hero-shot .shot img {
+  width: 100%;
+}

@@ -1,0 +1,25 @@
+---
+title: 변경 내역
+description: NanumPlayer 릴리스 노트를 확인할 수 있는 곳과 최근 버전의 주요 변경점입니다.
+---
+
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <LinkCard title="CHANGELOG.md" description="버전별 전체 변경 내역입니다." href="https://github.com/kimmingul/NanumPlayer/blob/main/CHANGELOG.md" />
+  <LinkCard title="GitHub Releases" description="다운로드, 체크섬, 릴리스 노트입니다." href="https://github.com/kimmingul/NanumPlayer/releases" />
+</CardGrid>
+
+## 최근 주요 변경점
+
+**1.12.0.** `[AI]`, `[원본 자막]`, `[파일]`, `[OCR]` 배지가 붙는 **자막** 목록 하나로 통합했습니다. 목표 언어의 기존 자막은 AI 없이 그대로 사용합니다. 번역 목표 언어의 기본값은 Windows 표시 언어입니다. **전체 자막 생성…**으로 재생하지 않고 음성, 텍스트 자막, 이미지 자막 OCR에서 SRT 파일을 만듭니다. 번역 서버에 연결할 수 없을 때는 아무것도 표시하지 않는 대신 원문을 보여 줍니다.
+
+**1.11.0.** 약 12 KiB의 GPU 셰이더로 만든 **영상 화질** 프리셋(애니 선명하게, 옛날 애니 부드럽게, 압축 영상 보정)과 노이즈 줄이기, 색 띠 완화, 선 강조, 선명도, 색 보정, 그리고 보정 전후 비교를 추가했습니다.
+
+**1.10.0.** **영상 업스케일**: 고품질 크기 조정, NVIDIA RTX 업스케일, 사용자 셰이더.
+
+**1.9.0.** 영어, 한국어, 일본어, 중국어 간체, 중국어 번체, 스페인어 인터페이스.
+
+**1.8.x.** 일반 웹페이지의 영상 재생. YouTube와 웹 창은 항상 시크릿 세션이며, 재생과 관련된 정보는 기본적으로 아무것도 남기지 않습니다.
+
+정식 공개를 위한 선택 다운로드 변경(Blu-ray/DVD 복호화 라이브러리를 별도 구성 요소로 분리)은 [Blu-ray/DVD 복호화 구성 요소(선택)](/NanumPlayer/ko/disc-decryption/)에 설명되어 있습니다.

@@ -192,10 +192,11 @@ return function(ctx)
     -- Chinese script of a track: "hans" | "hant" | nil (unmarked).
     local function chinese_variant(t)
         local hay = ((t.lang or "") .. " " .. (t.title or "") .. " " .. basename(t["external-filename"])):lower()
-        if hay:find("hant", 1, true) or hay:find("traditional", 1, true) or hay:find("繁", 1, true)
-            or hay:find("tw", 1, true) or hay:find("hk", 1, true) or hay:find("번체", 1, true) then return "hant" end
-        if hay:find("hans", 1, true) or hay:find("simplified", 1, true) or hay:find("简", 1, true)
-            or hay:find("cn", 1, true) or hay:find("간체", 1, true) then return "hans" end
+        -- i18n-ignore: track titles come from files in any language; these are match patterns, not UI text
+        if hay:find("hant", 1, true) or hay:find("traditional", 1, true) or hay:find("繁", 1, true) -- i18n-ignore
+            or hay:find("tw", 1, true) or hay:find("hk", 1, true) or hay:find("번체", 1, true) then return "hant" end -- i18n-ignore
+        if hay:find("hans", 1, true) or hay:find("simplified", 1, true) or hay:find("简", 1, true) -- i18n-ignore
+            or hay:find("cn", 1, true) or hay:find("간체", 1, true) then return "hans" end -- i18n-ignore
         return nil
     end
 
@@ -214,6 +215,7 @@ return function(ctx)
     -- Tracks and entries
     ----------------------------------------------------------------------------
 
+    -- i18n-ignore: match patterns for auto-caption track titles in every UI language
     local AUTO_MARKS = { "auto-gen", "auto gen", "autogen", "(auto", "automatic", "자동 생성", "자동생성", "자동 자막", "自動生成", "自动生成", "自動字幕", "自动字幕", "generado automáticamente", "automático" }
 
     local function is_auto_caption(t)
@@ -226,7 +228,7 @@ return function(ctx)
 
     local function is_commentary(t)
         local title = tostring(t.title or ""):lower()
-        return title:find("commentary", 1, true) ~= nil or title:find("해설", 1, true) ~= nil
+        return title:find("commentary", 1, true) ~= nil or title:find("해설", 1, true) ~= nil -- i18n-ignore: title pattern
     end
 
     local CODEC = { hdmv_pgs_subtitle = "PGS", dvd_subtitle = "VobSub", subrip = "SRT", srt = "SRT", ass = "ASS", ssa = "SSA",
@@ -457,13 +459,21 @@ return function(ctx)
         return best
     end
 
-    function M.begin_skip(t)
-        if not opts.original_first or ctx.ai_off_by_user() then return end
+    -- manual: the user picked this original subtitle; the AI work pauses whatever its language
+    -- (the automatic choice only takes target-language originals and follows original_first).
+    function M.begin_skip(t, manual)
+        if ctx.ai_off_by_user() then return end
+        if not manual and not opts.original_first then return end
         if M.skip and M.skip.id == t.id then return end
         local was = M.skip ~= nil
-        M.skip = { id = t.id, label = orig_label(t, kind_of(t)), file = kind_of(t) == "file" }
+        local target = in_target(t, M.target())
+        M.skip = { id = t.id, label = orig_label(t, kind_of(t)), file = kind_of(t) == "file", target = target }
         if not was then ctx.skip_ai(true) end
-        notify(tr("%s 자막이 있어 바로 표시합니다 · AI 작업은 건너뜁니다 (AI 자막을 고르면 다시 시작)", M.target().label), 6, "ok", "sub-original")
+        if target then
+            notify(tr("%s 자막이 있어 바로 표시합니다 · AI 작업은 건너뜁니다 (AI 자막을 고르면 다시 시작)", M.target().label), 6, "ok", "sub-original")
+        else
+            notify(tr("원본 자막을 표시합니다 · AI 작업을 일시 중지합니다 (AI 자막을 고르면 다시 시작)"), 6, "ok", "sub-original")
+        end
     end
 
     function M.resume()
@@ -473,13 +483,14 @@ return function(ctx)
         notify(tr("AI 자막 작업을 다시 시작합니다"), 3, "info", "sub-original")
     end
 
-    -- A track was chosen (menu, keys, other script): does it stand for "the original is already there"?
+    -- A track was chosen (menu, keys, other script): an original subtitle is shown as it is, so the AI work of
+    -- the file pauses (forced / commentary tracks only accompany other subtitles and do not pause it).
     function M.consider(t)
         if not ctx.file_ready() then return end
         local k = kind_of(t)
         if k == "orig" or k == "file" then
-            if not t.forced and not is_commentary(t) and in_target(t, M.target()) then
-                M.begin_skip(t)
+            if not t.forced and not is_commentary(t) then
+                M.begin_skip(t, true)
             end
         elseif k == "primary" or k == "secondary" or k == "pgs" or k == "import" or k == "full" then
             if M.skip then M.resume() end
@@ -532,7 +543,8 @@ return function(ctx)
         if not (M.skip and ctx.ai_off_by_skip()) then return nil end
         local t = track_by_id(M.skip.id)
         if t and t.selected then
-            return tr("%s 자막 표시 중 · AI 작업 건너뜀", M.target().label), "ok"
+            if M.skip.target then return tr("%s 자막 표시 중 · AI 작업 건너뜀", M.target().label), "ok" end
+            return tr("원본 자막 표시 중 · AI 작업 일시 중지"), "ok"
         end
         return tr("AI 작업 꺼짐 · 자막 목록에서 AI 자막을 고르면 시작합니다"), "info"
     end

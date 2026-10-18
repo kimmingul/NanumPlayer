@@ -1,0 +1,45 @@
+name: Translation or wording problem
+description: A wrong, missing or awkward text in the interface or the documentation
+labels: ["translation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The interface exists in Korean, English, Spanish, Japanese, Simplified Chinese and Traditional Chinese; the documentation in English and Korean. Terms are fixed in the [glossary](https://github.com/kimmingul/NanumPlayer/blob/main/docs/glossary.md).
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options:
+        - Korean
+        - English
+        - Spanish
+        - Japanese
+        - Simplified Chinese
+        - Traditional Chinese
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where
+      options:
+        - Player menus and messages
+        - Start screen and playback bar
+        - Browser window (YouTube, web pages)
+        - Installer
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current text and where you saw it
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested text
+    validations:
+      required: true

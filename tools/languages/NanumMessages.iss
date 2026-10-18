@@ -205,6 +205,55 @@ chinesesimplified.ErrCudaDir=无法创建 CUDA 组件文件夹：%1
 chinesetraditional.ErrCudaDir=無法建立 CUDA 元件資料夾：%1
 spanish.ErrCudaDir=No se puede crear la carpeta de componentes CUDA: %1
 
+korean.GroupDisc=Blu-ray/DVD 복호화 (선택, 별도 다운로드, 인터넷 연결 필요):
+english.GroupDisc=Blu-ray/DVD decryption (optional, downloaded separately, internet connection required):
+japanese.GroupDisc=Blu-ray/DVD 復号 (任意、別途ダウンロード、インターネット接続が必要):
+chinesesimplified.GroupDisc=Blu-ray/DVD 解密（可选，单独下载，需要联网）：
+chinesetraditional.GroupDisc=Blu-ray/DVD 解密（選用，另外下載，需要網際網路連線）：
+spanish.GroupDisc=Descifrado de Blu-ray/DVD (opcional, se descarga por separado, requiere conexión a Internet):
+
+korean.TaskDisc=Blu-ray/DVD 복호화 구성 요소 (선택, 별도 다운로드: 약 10 MB) — 복제 방지된 디스크용, 사용자의 법적 책임
+english.TaskDisc=Blu-ray/DVD decryption components (optional, downloaded separately: about 10 MB) - for copy-protected discs, your own legal responsibility
+japanese.TaskDisc=Blu-ray/DVD 復号コンポーネント (任意、別途ダウンロード: 約 10 MB) — コピー保護されたディスク用、法的責任はユーザーにあります
+chinesesimplified.TaskDisc=Blu-ray/DVD 解密组件（可选，单独下载：约 10 MB）— 用于受复制保护的光盘，法律责任由用户自行承担
+chinesetraditional.TaskDisc=Blu-ray/DVD 解密元件（選用，另外下載：約 10 MB）— 用於受複製保護的光碟，法律責任由使用者自行承擔
+spanish.TaskDisc=Componentes de descifrado de Blu-ray/DVD (opcional, se descargan por separado: unos 10 MB): para discos con protección contra copia, bajo su propia responsabilidad legal
+
+korean.DiscNotice=Blu-ray/DVD 복호화 구성 요소는 기본 설치에 포함되지 않은 선택 사항입니다. 복제 방지(AACS, BD+, CSS)가 걸린 디스크를 읽을 때만 필요하며, 보호되지 않은 디스크는 이것 없이도 재생됩니다.%n%n복제 방지를 우회하는 일은 나라에 따라 법으로 제한되거나 금지됩니다. 거주 국가의 법을 지킬 책임은 사용자에게 있습니다.%n%n설치하면 플레이어가 필요할 때 공개 AACS 키 데이터베이스(FindVUK)를 내려받는 것에 대해 처음 사용할 때 한 번 동의를 묻습니다.%n%n계속해서 별도 패키지를 내려받아 설치할까요?
+english.DiscNotice=The Blu-ray/DVD decryption components are optional and not part of the default installation. They are only needed to read copy-protected discs (AACS, BD+, CSS); unprotected discs play without them.%n%nCircumventing copy protection is restricted or prohibited by law in many countries. You are responsible for complying with the laws of your country.%n%nThe first time it is needed, the player asks once whether it may download the public AACS key database (FindVUK).%n%nDownload and install the separate package now?
+japanese.DiscNotice=Blu-ray/DVD 復号コンポーネントは任意で、標準のインストールには含まれません。コピー保護(AACS、BD+、CSS)されたディスクを読み込むときにのみ必要で、保護されていないディスクはなくても再生できます。%n%nコピー保護の回避は、国によって法律で制限または禁止されています。お住まいの国の法律を守る責任はユーザーにあります。%n%n必要になった最初のときに、公開AACSキーデータベース(FindVUK)のダウンロードを許可するかどうかをプレーヤーが一度だけ確認します。%n%n別パッケージをダウンロードしてインストールしますか?
+chinesesimplified.DiscNotice=Blu-ray/DVD 解密组件为可选项，不包含在默认安装中。仅在读取带复制保护(AACS、BD+、CSS)的光盘时才需要，未受保护的光盘无需它即可播放。%n%n规避复制保护在许多国家受到法律限制或禁止。遵守所在国家法律的责任由用户自行承担。%n%n首次需要时，播放器会询问一次是否允许下载公开的 AACS 密钥数据库(FindVUK)。%n%n现在下载并安装这个单独的软件包吗？
+chinesetraditional.DiscNotice=Blu-ray/DVD 解密元件為選用項目，不包含在預設安裝中。僅在讀取有複製保護(AACS、BD+、CSS)的光碟時才需要，未受保護的光碟無需它即可播放。%n%n規避複製保護在許多國家受到法律限制或禁止。遵守所在國家法律的責任由使用者自行承擔。%n%n首次需要時，播放器會詢問一次是否允許下載公開的 AACS 金鑰資料庫(FindVUK)。%n%n現在下載並安裝這個獨立的套件嗎？
+spanish.DiscNotice=Los componentes de descifrado de Blu-ray/DVD son opcionales y no forman parte de la instalación predeterminada. Solo hacen falta para leer discos con protección contra copia (AACS, BD+, CSS); los discos sin protección se reproducen sin ellos.%n%nEludir la protección contra copia está restringido o prohibido por ley en muchos países. Usted es responsable de cumplir las leyes de su país.%n%nLa primera vez que haga falta, el reproductor preguntará una vez si puede descargar la base de datos pública de claves AACS (FindVUK).%n%n¿Descargar e instalar ahora el paquete independiente?
+
+korean.ErrDiscDir=디스크 구성 요소 폴더를 만들 수 없습니다: %1
+english.ErrDiscDir=Cannot create the disc components folder: %1
+japanese.ErrDiscDir=ディスクコンポーネントのフォルダーを作成できません: %1
+chinesesimplified.ErrDiscDir=无法创建光盘组件文件夹：%1
+chinesetraditional.ErrDiscDir=無法建立光碟元件資料夾：%1
+spanish.ErrDiscDir=No se puede crear la carpeta de componentes de disco: %1
+
+korean.ErrDiscUnpack=디스크 구성 요소 압축을 풀 수 없습니다 (Windows tar.exe 필요).
+english.ErrDiscUnpack=Cannot extract the disc components (Windows tar.exe is required).
+japanese.ErrDiscUnpack=ディスクコンポーネントを展開できません (Windows の tar.exe が必要です)。
+chinesesimplified.ErrDiscUnpack=无法解压光盘组件（需要 Windows tar.exe）。
+chinesetraditional.ErrDiscUnpack=無法解壓縮光碟元件（需要 Windows tar.exe）。
+spanish.ErrDiscUnpack=No se pueden extraer los componentes de disco (se requiere tar.exe de Windows).
+
+korean.ReadyDiscHeader=Blu-ray/DVD 복호화 구성 요소 (선택):
+english.ReadyDiscHeader=Blu-ray/DVD decryption components (optional):
+japanese.ReadyDiscHeader=Blu-ray/DVD 復号コンポーネント (任意):
+chinesesimplified.ReadyDiscHeader=Blu-ray/DVD 解密组件（可选）：
+chinesetraditional.ReadyDiscHeader=Blu-ray/DVD 解密元件（選用）：
+spanish.ReadyDiscHeader=Componentes de descifrado de Blu-ray/DVD (opcional):
+
+korean.ReadyDiscLegacy=참고: 이전 버전에 들어 있던 Blu-ray/DVD 복호화 라이브러리는 선택 구성 요소가 되어 이 업데이트에서 제거됩니다. 복제 방지된 디스크가 필요하면 위의 작업을 선택하거나, 플레이어에서 Ctrl+N > Blu-ray/DVD 복호화 구성 요소로 설치하세요.
+english.ReadyDiscLegacy=Note: the Blu-ray/DVD decryption libraries of earlier versions are an optional component now and are removed by this update. For copy-protected discs, select the task above or install them in the player with Ctrl+N > Blu-ray/DVD decryption components.
+japanese.ReadyDiscLegacy=注: 以前のバージョンに含まれていた Blu-ray/DVD 復号ライブラリは任意コンポーネントになり、このアップデートで削除されます。コピー保護されたディスクが必要な場合は、上のタスクを選ぶか、プレーヤーの Ctrl+N > Blu-ray/DVD 復号コンポーネントからインストールしてください。
+chinesesimplified.ReadyDiscLegacy=注意：早期版本中的 Blu-ray/DVD 解密库现已成为可选组件，本次更新将删除它们。如需读取受复制保护的光盘，请选择上面的任务，或在播放器中通过 Ctrl+N > Blu-ray/DVD 解密组件 安装。
+chinesetraditional.ReadyDiscLegacy=注意：早期版本中的 Blu-ray/DVD 解密程式庫現已成為選用元件，本次更新將移除它們。如需讀取受複製保護的光碟，請選擇上面的工作，或在播放器中透過 Ctrl+N > Blu-ray/DVD 解密元件 安裝。
+spanish.ReadyDiscLegacy=Nota: las bibliotecas de descifrado de Blu-ray/DVD de versiones anteriores ahora son un componente opcional y esta actualización las elimina. Para discos con protección contra copia, seleccione la tarea anterior o instálelas en el reproductor con Ctrl+N > Componentes de descifrado de Blu-ray/DVD.
+
 korean.SumInstalled=설치됨 (%1)
 english.SumInstalled=Installed (%1)
 japanese.SumInstalled=インストール済み (%1)

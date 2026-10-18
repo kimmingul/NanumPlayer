@@ -1,0 +1,34 @@
+---
+title: License and notices
+description: NanumPlayer is free, open-source software under GPL-2.0-or-later. Third-party licenses, NVIDIA terms and where to get the source code.
+---
+
+NanumPlayer is free software. You can use, study, change and share it under the terms of the **GNU General Public License, version 2 or (at your option) any later version** (SPDX: `GPL-2.0-or-later`).
+
+- [LICENSE](https://github.com/kimmingul/NanumPlayer/blob/main/LICENSE): the full license text.
+- [THIRD_PARTY_NOTICES.md](https://github.com/kimmingul/NanumPlayer/blob/main/THIRD_PARTY_NOTICES.md): every bundled component, its license and where to get its source.
+- [Source code](https://github.com/kimmingul/NanumPlayer), with the modified [mpv](https://github.com/kimmingul/mpv) and [whisper.cpp](https://github.com/kimmingul/whisper.cpp) forks it builds on.
+
+## What it is built on
+
+| Component | License |
+|---|---|
+| mpv (modified as `NanumPlayer.exe`) | GPL-2.0-or-later |
+| whisper.cpp and ggml (speech recognition) | MIT |
+| FFmpeg, as built in the released binaries | GPL-3.0-or-later |
+| libass (subtitle rendering) | ISC |
+| Silero VAD and Whisper model files (optional downloads) | MIT |
+
+Because the released binaries link a GPL-3.0 build of FFmpeg, the distributed binaries as a whole are governed by the GPL version 3. NanumPlayer's own source code permits this ("version 2 or any later version"). See the notices file for the complete list.
+
+## NVIDIA cuBLAS
+
+The optional cuBLAS download (`cublas64_13.dll`, `cublasLt64_13.dll`) is NVIDIA software and is subject to NVIDIA's CUDA redistribution terms, which you must accept before NanumPlayer downloads it. If you already have a CUDA 13 Toolkit installed, NanumPlayer uses its files in place and nothing is downloaded.
+
+## Disc libraries
+
+The Blu-ray/DVD decryption libraries are third-party components distributed separately, with their own licenses (LGPL-2.1-or-later for libaacs and libbdplus, GPL-2.0-or-later for libdvdcss). See [Optional Blu-ray/DVD decryption components](/NanumPlayer/disc-decryption/).
+
+## Name and warranty
+
+NanumPlayer comes with **no warranty**, as described in the license. It is an independent project and is not affiliated with mpv, OpenAI, NVIDIA, Ollama, Google or YouTube.

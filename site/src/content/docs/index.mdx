@@ -1,0 +1,88 @@
+---
+title: NanumPlayer
+description: A free, open-source Windows media player that recognizes and translates dialogue in real time and shows it as subtitles. Works with files, Blu-ray/DVD, YouTube and web pages.
+template: splash
+head:
+  - tag: title
+    content: 'NanumPlayer: real-time AI subtitles for any video on Windows'
+  - tag: meta
+    attrs:
+      property: og:title
+      content: 'NanumPlayer: real-time AI subtitles for any video on Windows'
+hero:
+  tagline: Watch anything in your own language. NanumPlayer listens to the dialogue, translates it on the fly and shows AI subtitles while you watch.
+  actions:
+    - text: Download
+      link: '#download'
+      icon: down-caret
+      variant: primary
+    - text: Get started
+      link: getting-started/
+      icon: right-arrow
+    - text: GitHub
+      link: https://github.com/kimmingul/NanumPlayer
+      icon: external
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import Download from '../../components/Download.astro';
+import Shot from '../../components/Shot.astro';
+import playerControls from '../../assets/player-controls-en.png';
+import subtitleList from '../../assets/subtitle-list-en.png';
+import settings from '../../assets/settings-en.png';
+import startScreen from '../../assets/start-en.png';
+import hero from '../../assets/hero-en.png';
+
+<div class="hero-shot">
+  <Shot src={hero} alt="NanumPlayer playing a lighthouse scene with an AI-translated Spanish subtitle, 'He mantenido esta lámpara encendida todas las noches durante 30 años', at the bottom of the video." widths={[640, 960, 1280]} />
+</div>
+
+## Download
+
+<Download lang="en" />
+
+New here? [Getting started](getting-started/) takes you from the installer to your first AI subtitles. Everything runs on your PC; the optional parts (speech models, a translation model) are downloaded only when you choose them.
+
+## What it does
+
+<CardGrid>
+  <Card title="Real-time AI subtitles" icon="document">
+    Speech recognition (Whisper) turns the audio into text, a translation model of your choice turns it into your language, and the result appears as a normal subtitle track, ahead of playback.
+  </Card>
+  <Card title="Files, discs and the web" icon="laptop">
+    Local video files, Blu-ray and DVD, YouTube and videos on ordinary web pages. Subtitles work the same everywhere.
+  </Card>
+  <Card title="Subtitle files without playing" icon="pencil">
+    Generate SRT files for a whole video from speech, from a text subtitle track or from disc image subtitles (OCR), with one translated file per language.
+  </Card>
+  <Card title="Glossary and style" icon="open-book">
+    Character and place names stay consistent. Review and edit the glossary, choose polite, casual or natural speech, and existing subtitles are re-translated.
+  </Card>
+  <Card title="Sharper pictures" icon="star">
+    GPU upscaling (high-quality scaling, NVIDIA RTX Video Super Resolution, your own shaders) and built-in picture-quality presets for anime and compressed video.
+  </Card>
+  <Card title="Private by default" icon="approve-check">
+    No playback history, logs or subtitle caches are kept unless you ask for them. Web and YouTube windows are always private sessions. No telemetry.
+  </Card>
+</CardGrid>
+
+## See it
+
+<Shot src={playerControls} alt="NanumPlayer's playback bar with status chips for speech recognition on the GPU, the large-v3-turbo model and the local translation model, over a lighthouse scene." caption="The playback bar shows how the selected AI subtitle track is made: speech model, GPU or CPU, and the translation model." />
+
+<div class="shot-grid">
+  <Shot src={subtitleList} alt="The Subtitles list with entries for AI translation, translation plus original, the original-language recognition track, Off and Load a subtitle file." caption="One subtitle list for AI tracks, disc and file subtitles." widths={[480, 800]} />
+  <Shot src={settings} alt="The NanumPlayer settings menu opened with Ctrl+N, listing interface language, AI component manager, subtitle, upscaling, picture quality and translation style." caption="Ctrl+N opens every setting, with search." widths={[480, 800]} />
+</div>
+
+<Shot src={startScreen} alt="The NanumPlayer start screen with buttons for Open file, Open Blu-ray, YouTube, Play from a web page and AI subtitle settings." caption="The start screen. Interface languages: English, Korean, Japanese, Simplified and Traditional Chinese, and Spanish." />
+
+## Good to know
+
+- **Windows only.** Windows 10 or 11, 64-bit, with a CPU that supports AVX2. An NVIDIA GPU is optional and speeds up speech recognition.
+- **You need a translation model.** Subtitles are translated by an Ollama-compatible server, local or cloud. See [Getting started](getting-started/#translation-server).
+- **Disc decryption is a separate, optional download.** Unprotected discs, folders and ISO images play with the normal installer. See [Optional Blu-ray/DVD decryption components](disc-decryption/).
+- **Open source.** NanumPlayer is a modified mpv (GPL-2.0-or-later) with whisper.cpp (MIT). See [License and notices](license/).
+
+<LinkCard title="FAQ" description="SmartScreen, GPU requirements, offline use and languages." href="faq/" />
+<LinkCard title="Privacy" description="What stays on your PC and what connects to the network." href="privacy/" />

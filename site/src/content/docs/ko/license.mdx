@@ -1,0 +1,34 @@
+---
+title: 라이선스 및 고지
+description: NanumPlayer는 GPL-2.0-or-later 무료 오픈 소스 소프트웨어입니다. 서드파티 라이선스, NVIDIA 약관, 소스 코드를 받을 수 있는 곳을 안내합니다.
+---
+
+NanumPlayer는 자유 소프트웨어입니다. **GNU 일반 공중 사용 허가서 2판 또는 (선택에 따라) 그 이후 판**(SPDX: `GPL-2.0-or-later`)의 조건에 따라 사용, 연구, 수정, 공유할 수 있습니다.
+
+- [LICENSE](https://github.com/kimmingul/NanumPlayer/blob/main/LICENSE): 라이선스 전문입니다.
+- [THIRD_PARTY_NOTICES.md](https://github.com/kimmingul/NanumPlayer/blob/main/THIRD_PARTY_NOTICES.md): 포함된 모든 구성 요소와 그 라이선스, 소스를 받을 수 있는 곳입니다.
+- [소스 코드](https://github.com/kimmingul/NanumPlayer)와, 이를 기반으로 빌드하는 수정된 [mpv](https://github.com/kimmingul/mpv) 및 [whisper.cpp](https://github.com/kimmingul/whisper.cpp) 포크입니다.
+
+## 기반이 되는 구성 요소
+
+| 구성 요소 | 라이선스 |
+|---|---|
+| mpv(`NanumPlayer.exe`로 수정) | GPL-2.0-or-later |
+| whisper.cpp와 ggml(음성 인식) | MIT |
+| FFmpeg(배포 바이너리에 빌드된 형태) | GPL-3.0-or-later |
+| libass(자막 렌더링) | ISC |
+| Silero VAD와 Whisper 모델 파일(선택 내려받기) | MIT |
+
+배포 바이너리가 FFmpeg의 GPL-3.0 빌드를 링크하므로, 배포되는 바이너리 전체는 GPL 3판의 적용을 받습니다. NanumPlayer 자체 소스 코드는 이를 허용합니다("2판 또는 그 이후 판"). 전체 목록은 고지 파일을 참고하세요.
+
+## NVIDIA cuBLAS
+
+선택 사항인 cuBLAS 내려받기(`cublas64_13.dll`, `cublasLt64_13.dll`)는 NVIDIA 소프트웨어이며 NVIDIA의 CUDA 재배포 약관을 따릅니다. NanumPlayer가 내려받기 전에 이 약관에 동의해야 합니다. 이미 CUDA 13 Toolkit이 설치되어 있다면 NanumPlayer는 그 파일을 그 자리에서 사용하며 아무것도 내려받지 않습니다.
+
+## 디스크 라이브러리
+
+Blu-ray/DVD 복호화 라이브러리는 별도로 배포되는 서드파티 구성 요소이며 각자의 라이선스를 따릅니다(libaacs와 libbdplus는 LGPL-2.1-or-later, libdvdcss는 GPL-2.0-or-later). [Blu-ray/DVD 복호화 구성 요소(선택)](/NanumPlayer/ko/disc-decryption/)를 참고하세요.
+
+## 이름과 보증
+
+NanumPlayer는 라이선스에 명시된 대로 **어떠한 보증도 제공하지 않습니다**. 독립 프로젝트이며 mpv, OpenAI, NVIDIA, Ollama, Google, YouTube와 관련이 없습니다.

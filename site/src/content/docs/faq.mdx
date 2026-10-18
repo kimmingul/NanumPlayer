@@ -1,0 +1,101 @@
+---
+title: FAQ
+description: Answers about Windows SmartScreen, GPU requirements, offline use, supported languages, privacy and common problems with NanumPlayer.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## Installing
+
+### Windows SmartScreen warns about the installer
+
+NanumPlayer is a new, independent open-source project. Windows SmartScreen judges a download by its reputation, and a file that few people have downloaded yet can trigger **"Windows protected your PC"**. That is a reputation warning, not a virus detection.
+
+1. Download only from the [GitHub release page](https://github.com/kimmingul/NanumPlayer/releases/latest) or this site's download button.
+2. Compare the file's SHA-256 with the value on the download panel or in the release's `SHA256SUMS` file:
+
+   ```powershell
+   Get-FileHash .\NanumPlayer-Setup-<version>.exe -Algorithm SHA256
+   ```
+
+3. If the hashes match and you trust the source, choose **More info → Run anyway**.
+
+You can also use the portable ZIP, or read and build the [source code](https://github.com/kimmingul/NanumPlayer) yourself.
+
+### Which Windows and hardware do I need?
+
+Windows 10 or 11, 64-bit, and a CPU with AVX2 (most CPUs from about 2015). An NVIDIA GPU is optional. Windows only; there is no macOS or Linux build.
+
+### Does the installer need administrator rights?
+
+No. It installs for your user account by default and shows a choice if you want an all-users install.
+
+### What did I download? What is not included?
+
+The installer and portable ZIP contain the player, the CPU and CUDA speech-recognition engines, the YouTube/web browser helper and the Blu-ray/DVD libraries that read **unprotected** discs. Not included, because they are large or optional: speech models, a translation model (Ollama), NVIDIA cuBLAS, the YouTube tools and the [Blu-ray/DVD decryption components](/NanumPlayer/disc-decryption/). [Getting started](/NanumPlayer/getting-started/) lists each.
+
+## Hardware and speed
+
+### Do I need an NVIDIA GPU?
+
+No. The CPU engine always works. A GPU makes speech recognition faster. The CUDA engine needs an NVIDIA GPU with **compute capability 8.6 or higher** (RTX 30 series and newer), a current driver and cuBLAS from a **CUDA 13** Toolkit (or the 507 MiB cuBLAS download). CUDA 12 is not enough. In **Automatic** mode NanumPlayer uses the GPU when it can and the CPU otherwise.
+
+### Which GPU do I need for RTX upscaling?
+
+A supported NVIDIA GPU and driver with RTX Video Super Resolution turned on in the NVIDIA app or control panel. It has nothing to do with CUDA speech recognition. Other GPUs can use **High-quality scaling** or your own shaders. See [Video upscaling](/NanumPlayer/features/upscaling/).
+
+### Subtitles are late, or "Preparing AI subtitles" waits a long time
+
+Subtitles are made ahead of playback, so a file waits for a 30 second pre-roll at the start. Loading a large model the first time takes longer. If your CPU or GPU is too slow for a big model, use a smaller speech model or translation model. A local translation model that does not fit into GPU memory can time out while speech recognition is running at the same time. Check **Ctrl+K** for the status.
+
+### No subtitles appear
+
+Check in this order: (1) a speech model is installed (**Ctrl+N → AI component manager**), (2) Ollama is running and a model is selected (**Ctrl+N → Translation model**), (3) the video has audible dialogue, (4) an AI entry is chosen in the **Subtitles** list. Without a model or server the video simply plays normally. See [Troubleshooting](https://github.com/kimmingul/NanumPlayer/blob/main/docs/troubleshooting.md).
+
+## Offline use and privacy
+
+### Does it work offline?
+
+Yes, after setup. Speech recognition runs on your PC. Use a **local** Ollama model and nothing needs the internet. You need the internet once to download the speech models and the translation model. A cloud translation model needs the internet and sends the text to its provider.
+
+### Does it upload my video or audio?
+
+No. Audio is never uploaded. Only the **text to translate** goes to the translation server you configure, which is on your own PC by default. There is no telemetry. See [Privacy](/NanumPlayer/privacy/).
+
+### Does it keep a history of what I watched?
+
+No. Playback history, logs and caches are off by default. Your settings, models and files you create yourself are kept.
+
+## Languages
+
+### Which languages does the interface support?
+
+English, Korean, Japanese, Simplified Chinese, Traditional Chinese and Spanish. It follows your Windows language the first time (English if yours is not supported) and can be changed with **Ctrl+Alt+L**. The installer has the same six languages.
+
+### Which languages can it recognize and translate?
+
+Recognition uses Whisper. The English model is for English audio, and the multilingual models handle many other languages, with quality depending on the language and model (Japanese in particular benefits from the large-v3-turbo model). Choose any of **33 target languages** in **Ctrl+N → Translation target language**, or type another language name that your translation model understands. The interface language, the audio language and the subtitle language are three independent settings.
+
+## Discs, YouTube and the web
+
+### My Blu-ray or DVD will not play
+
+Unprotected discs, folders and ISO images play without anything extra. Copy-protected discs need the optional [decryption components](/NanumPlayer/disc-decryption/), which you install separately and are responsible for using lawfully. Some discs cannot be opened at all (missing keys, unsupported protection), and that is reported as an error.
+
+### YouTube asks me to confirm I'm not a robot, or a site's video will not play
+
+NanumPlayer uses `yt-dlp` and a browser window; YouTube may add checks when sign-in is used through unofficial tools, and yt-dlp can lag behind site changes (update the YouTube tools in **Ctrl+N → YouTube**). DRM-protected video and sites that do not expose a media address are not supported. See [YouTube and web pages](/NanumPlayer/features/youtube-web/).
+
+## The project
+
+### Is it free? What is the license?
+
+Yes. NanumPlayer is open source under GPL-2.0-or-later. See [License and notices](/NanumPlayer/license/).
+
+### How do I report a bug or ask a question?
+
+Open an [issue on GitHub](https://github.com/kimmingul/NanumPlayer/issues). Read [Troubleshooting](https://github.com/kimmingul/NanumPlayer/blob/main/docs/troubleshooting.md) first and attach the status from **Ctrl+K**. Do not post logs from private viewing: they may contain file names or addresses.
+
+### How do I uninstall it completely?
+
+Uninstall from Windows **Settings → Apps**. Downloaded models, cuBLAS, YouTube tools, optional components and your settings are kept so a reinstall does not download them again. To remove everything, also delete `%LOCALAPPDATA%\NanumPlayer` and `%APPDATA%\NanumPlayer`.

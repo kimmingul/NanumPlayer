@@ -1,0 +1,16 @@
+---
+// Screenshot with caption. `src` is an imported image (astro:assets), `alt` is the localized description.
+import { Image } from 'astro:assets';
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  caption?: string;
+  widths?: number[];
+}
+const { src, alt, caption, widths = [480, 800, 1280] } = Astro.props;
+---
+
+<figure class="shot">
+  <Image src={src} alt={alt} widths={widths} sizes="(min-width: 50rem) 50rem, 100vw" loading="lazy" />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

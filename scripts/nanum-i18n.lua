@@ -36,11 +36,22 @@ function M.language()
     return language
 end
 
+local reported = {}
+
 function M.t(namespace, key, ...)
     local entries = catalog(namespace)
     local row = entries and entries[key]
     local text = type(row) == 'table' and row[language] or key
     if type(text) ~= 'string' then text = key end
+    if text == key and language ~= 'ko' and entries and type(row) ~= 'table' then
+        -- Not a catalog key: shown as written. Logged once (tools/check_i18n.py finds these statically;
+        -- dynamic text such as a subtitle site's name is expected here).
+        local id = namespace .. '\0' .. key
+        if not reported[id] then
+            reported[id] = true
+            mp.msg.verbose(string.format('no %s translation in the "%s" catalog for: %s', language, namespace, key))
+        end
+    end
     if select('#', ...) > 0 then return string.format(text, ...) end
     return text
 end

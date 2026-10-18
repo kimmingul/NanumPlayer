@@ -1,0 +1,55 @@
+---
+title: Blu-ray/DVD 복호화 구성 요소 (선택)
+description: 추가 내려받기 없이 재생되는 것과, 별도로 설치하는 선택 Blu-ray·DVD 복호화 구성 요소의 동작 방식. 법적 책임, 설치, 키 데이터베이스, 제거 방법을 설명합니다.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="caution" title="법적 고지">
+  복제 방지를 우회하는 행위는 많은 나라에서 법으로 제한되거나 금지되며, 일부 지역에서는 직접 소유한 디스크의 사본이라도 마찬가지입니다. NanumPlayer 프로젝트는 법률 자문을 드릴 수 없으며, 무엇이 합법인지 대신 판단할 수 없습니다. **적용되는 법률을 지킬 책임은 사용자에게 있습니다.** 이 구성 요소는 직접 소유했거나 합법적으로 사용할 수 있는 디스크에만 설치하고 사용하며, 저작물을 배포하지 마세요.
+</Aside>
+
+## 기본으로 재생되는 것
+
+NanumPlayer는 플레이어 안에서 Blu-ray와 DVD를 읽습니다. 디스크의 **구조와 메뉴**를 읽는 라이브러리(libbluray, libdvdread, libdvdnav)는 일반 다운로드에 포함되어 있습니다. 따라서 다음은 일반 설치 파일이나 포터블 ZIP만으로, 추가 설치 없이 재생됩니다.
+
+- 암호화되지 않은 Blu-ray와 DVD 디스크
+- 디스크 폴더(`BDMV`, `VIDEO_TS`)와 디스크 이미지(ISO)
+- NanumPlayer의 나머지 모든 기능: 파일, YouTube, AI 자막, 읽을 수 있는 디스크의 이미지 자막 OCR
+
+## 선택 구성 요소가 필요한 것
+
+복제 방지가 걸린 디스크에는 보호를 해제하는 라이브러리가 필요합니다.
+
+| 라이브러리 | 보호 방식 | 라이선스 |
+|---|---|---|
+| libaacs(libgcrypt, libgpg-error 포함) | AACS(Blu-ray) | LGPL-2.1-or-later |
+| libbdplus(libgcrypt, libgpg-error 포함) | BD+(Blu-ray) | LGPL-2.1-or-later |
+| libdvdcss | CSS(DVD) | GPL-2.0-or-later |
+
+이 라이브러리들은 다른 프로젝트가 만든 것입니다. **기본 다운로드에 포함되지 않으며**, 설치 파일에도 포터블 ZIP에도 들어 있지 않습니다. 사용자가 직접 설치하기로 선택하는 별도 패키지로 배포됩니다.
+
+## 설치 방법
+
+구성 요소는 [`kimmingul/NanumPlayer-disc-components`](https://github.com/kimmingul/NanumPlayer-disc-components/releases) 릴리스로 게시되는 ZIP 하나, `NanumPlayer-disc-components-<version>.zip`입니다. NanumPlayer는 자신의 버전이 고정한 정확한 ZIP(크기와 SHA-256)만 HTTPS로 받아들이고, 사용 전에 모든 파일을 다시 검사합니다. 네 가지 방법이 있습니다.
+
+1. **처음 사용할 때:** 암호화된 디스크를 엽니다. NanumPlayer가 이 구성 요소가 선택 사항이며 법률 준수 책임이 사용자에게 있음을 설명하고 내려받을지 묻습니다. 동의하지 않으면 아무것도 내려받지 않습니다.
+2. **메뉴:** 언제든 **Ctrl+N → Blu-ray/DVD 복호화 구성 요소**.
+3. **설치 파일:** 선택 작업이며 기본적으로 체크되어 있지 않습니다.
+4. **파일에서:** 직접 내려받은 ZIP(예: 오프라인일 때)을 같은 메뉴에서 설치합니다.
+
+파일은 `%LOCALAPPDATA%\NanumPlayer\components\disc\<version>`에 저장됩니다. **제거하려면 그 폴더를 삭제하세요.** NanumPlayer를 제거해도 다른 내려받은 구성 요소처럼 그대로 남습니다.
+
+## AACS 키 데이터베이스
+
+보호된 Blu-ray에는 키도 필요합니다. NanumPlayer는 공개 **FindVUK** 키 데이터베이스(약 25 MB, 압축을 풀면 65 MB)를 구성 요소를 설치한 **뒤에** 사용자가 한 번 동의한 **경우에만** 내려받습니다. 동의는 **Ctrl+N**에서 철회할 수 있습니다. 데이터베이스는 검사를 거쳐 `%APPDATA%\NanumPlayer\disc`에 `KEYDB.cfg`로 저장됩니다. 정상적인 사본이 있으면 네트워크가 필요 없고, 업데이트에 실패해도 기존 사본을 유지하며, 한 시간이 지나지 않은 데이터베이스는 다시 내려받지 않습니다. 이 데이터베이스는 제3자의 자원이며 이 프로젝트가 호스팅하거나 통제하지 않습니다.
+
+## 한계
+
+NanumPlayer는 MakeMKV를 사용하지 않습니다. 키가 공개 데이터베이스에 없는 디스크, BD+ 데이터가 없는 디스크, 지원하지 않는 AACS 버전, 드라이브 인증 실패는 모두 명시적인 오류로 끝납니다. UHD 디스크나 LibreDrive 기능에 대해서는 아무것도 보장하지 않으며, 이 구성 요소는 다른 도구와 동등하지 않습니다.
+
+**Ctrl+B**는 같은 라이브러리를 사용해 Blu-ray나 DVD 타이틀을 무손실 MKV 파일로 저장합니다(재인코딩 없음, 음성·자막·챕터 유지). 따라서 보호된 디스크는 이 저장에도 구성 요소가 필요합니다.
+
+이 라이브러리를 앱 폴더에 포함했던 1.12.0 이하 버전에서 업그레이드하면, 새 설치 파일이 정확히 그 파일들만 제거하고, 암호화된 디스크를 재생할 때 구성 요소 설치 방법을 NanumPlayer가 안내합니다. 설정, 모델, 키는 그대로 유지됩니다.
+
+자세한 내용은 저장소의 [Blu-ray/DVD 복호화 구성 요소(선택)](https://github.com/kimmingul/NanumPlayer/blob/main/docs/ko/disc-components.md) 문서에 있습니다.

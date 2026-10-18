@@ -1,0 +1,25 @@
+---
+title: Changelog
+description: Where to find NanumPlayer release notes, plus highlights of recent versions.
+---
+
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <LinkCard title="CHANGELOG.md" description="The complete history, version by version." href="https://github.com/kimmingul/NanumPlayer/blob/main/CHANGELOG.md" />
+  <LinkCard title="GitHub Releases" description="Downloads, checksums and release notes." href="https://github.com/kimmingul/NanumPlayer/releases" />
+</CardGrid>
+
+## Recent highlights
+
+**1.12.0.** One unified **Subtitles** list with `[AI]`, `[Original]`, `[File]` and `[OCR]` badges. Existing subtitles in your target language are used without AI. The translation target defaults to the Windows display language. **Generate full subtitles…** makes SRT files from speech, text subtitles or image-subtitle OCR without playing. When the translation server is unreachable, original text is shown instead of nothing.
+
+**1.11.0.** **Picture quality** presets (Sharper anime, Smoother old anime, Compressed video repair) with noise reduction, debanding, line enhancement, sharpening and color correction, built from about 12 KiB of GPU shaders, with a before/after comparison.
+
+**1.10.0.** **Video upscale**: high-quality scaling, NVIDIA RTX upscaling and user shaders.
+
+**1.9.0.** Interface in English, Korean, Japanese, Simplified Chinese, Traditional Chinese and Spanish.
+
+**1.8.x.** Play videos from ordinary web pages; YouTube and web windows always private; nothing about playback is kept by default.
+
+Optional download changes for the public launch (Blu-ray/DVD decryption libraries moving to a separate component) are described in [Optional Blu-ray/DVD decryption components](/NanumPlayer/disc-decryption/).

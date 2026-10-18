@@ -95,13 +95,13 @@
     "ja": "オフ",
     "zh-CN": "关",
     "zh-TW": "關",
-    "es": "No"
+    "es": "Desactivado"
   },
   "네덜란드어": {
     "en": "Dutch",
     "ja": "オランダ語",
     "zh-CN": "荷兰语",
-    "zh-TW": "荷蘭文",
+    "zh-TW": "荷蘭語",
     "es": "neerlandés"
   },
   "다른 폴더 직접 입력…": {
@@ -122,7 +122,7 @@
     "en": "German",
     "ja": "ドイツ語",
     "zh-CN": "德语",
-    "zh-TW": "德文",
+    "zh-TW": "德語",
     "es": "alemán"
   },
   "동영상\\NanumPlayer 폴더": {
@@ -144,13 +144,13 @@
     "ja": "ディスクの字幕は動画の隣に保存できません。保存先を選んでください",
     "zh-CN": "光盘的字幕无法保存在视频旁边，请选择保存位置",
     "zh-TW": "光碟的字幕無法儲存在影片旁邊，請選擇儲存位置",
-    "es": "Los subtítulos de un disco no se pueden guardar junto al vídeo. Elija dónde guardarlos"
+    "es": "Los subtítulos de un disco no se pueden guardar junto al vídeo. Elige dónde guardarlos"
   },
   "러시아어": {
     "en": "Russian",
     "ja": "ロシア語",
     "zh-CN": "俄语",
-    "zh-TW": "俄文",
+    "zh-TW": "俄語",
     "es": "ruso"
   },
   "먼저 영상을 열거나 대상 파일을 지정하세요": {
@@ -158,7 +158,7 @@
     "ja": "先に動画を開くか、処理するファイルを指定してください",
     "zh-CN": "请先打开视频或指定要处理的文件",
     "zh-TW": "請先開啟影片或指定要處理的檔案",
-    "es": "Abra primero un vídeo o indique el archivo que desea procesar"
+    "es": "Abre primero un vídeo o indica el archivo que quieres procesar"
   },
   "메뉴를 열 수 없습니다": {
     "en": "The menu cannot be opened",
@@ -199,14 +199,14 @@
     "en": "Vietnamese",
     "ja": "ベトナム語",
     "zh-CN": "越南语",
-    "zh-TW": "越南文",
+    "zh-TW": "越南語",
     "es": "vietnamita"
   },
   "스페인어": {
     "en": "Spanish",
     "ja": "スペイン語",
     "zh-CN": "西班牙语",
-    "zh-TW": "西班牙文",
+    "zh-TW": "西班牙語",
     "es": "español"
   },
   "시작하는 중...": {
@@ -220,7 +220,7 @@
     "en": "Arabic",
     "ja": "アラビア語",
     "zh-CN": "阿拉伯语",
-    "zh-TW": "阿拉伯文",
+    "zh-TW": "阿拉伯語",
     "es": "árabe"
   },
   "알 수 없는 오류": {
@@ -283,7 +283,7 @@
     "en": "English",
     "ja": "英語",
     "zh-CN": "英语",
-    "zh-TW": "英文",
+    "zh-TW": "英語",
     "es": "inglés"
   },
   "외부 자막 파일 — %s · %s": {
@@ -326,7 +326,7 @@
     "ja": "原本を選んでください:",
     "zh-CN": "请选择来源：",
     "zh-TW": "請選擇來源：",
-    "es": "Elija el origen:"
+    "es": "Elige el origen:"
   },
   "음성 인식 — %s 음성%s": {
     "en": "Speech recognition — %s audio%s",
@@ -381,21 +381,21 @@
     "en": "Italian",
     "ja": "イタリア語",
     "zh-CN": "意大利语",
-    "zh-TW": "義大利文",
+    "zh-TW": "義大利語",
     "es": "italiano"
   },
   "인도네시아어": {
     "en": "Indonesian",
     "ja": "インドネシア語",
     "zh-CN": "印度尼西亚语",
-    "zh-TW": "印尼文",
+    "zh-TW": "印尼語",
     "es": "indonesio"
   },
   "일본어": {
     "en": "Japanese",
     "ja": "日本語",
     "zh-CN": "日语",
-    "zh-TW": "日文",
+    "zh-TW": "日語",
     "es": "japonés"
   },
   "자막 생성 실패: %s": {
@@ -564,7 +564,7 @@
     "ja": "オン",
     "zh-CN": "开",
     "zh-TW": "開",
-    "es": "Sí"
+    "es": "Activado"
   },
   "탐색기에서 보기: %s": {
     "en": "Show in Explorer: %s",
@@ -577,14 +577,14 @@
     "en": "Thai",
     "ja": "タイ語",
     "zh-CN": "泰语",
-    "zh-TW": "泰文",
+    "zh-TW": "泰語",
     "es": "tailandés"
   },
   "터키어": {
     "en": "Turkish",
     "ja": "トルコ語",
     "zh-CN": "土耳其语",
-    "zh-TW": "土耳其文",
+    "zh-TW": "土耳其語",
     "es": "turco"
   },
   "텍스트 자막 — %s%s": {
@@ -606,41 +606,41 @@
     "ja": "ファイルとBlu-rayディスクのみ処理できます（Web動画は再生中のAI字幕をご利用ください）",
     "zh-CN": "只能处理文件和蓝光光盘（网页视频请在播放时使用 AI 字幕）",
     "zh-TW": "只能處理檔案與藍光光碟（網頁影片請在播放時使用 AI 字幕）",
-    "es": "Solo se pueden procesar archivos y discos Blu-ray (para vídeos web use los subtítulos de IA durante la reproducción)"
+    "es": "Solo se pueden procesar archivos y discos Blu-ray (para vídeos web usa los subtítulos de IA durante la reproducción)"
   },
   "포르투갈어": {
     "en": "Portuguese",
     "ja": "ポルトガル語",
     "zh-CN": "葡萄牙语",
-    "zh-TW": "葡萄牙文",
+    "zh-TW": "葡萄牙語",
     "es": "portugués"
   },
   "폴란드어": {
     "en": "Polish",
     "ja": "ポーランド語",
     "zh-CN": "波兰语",
-    "zh-TW": "波蘭文",
+    "zh-TW": "波蘭語",
     "es": "polaco"
   },
   "프랑스어": {
     "en": "French",
     "ja": "フランス語",
     "zh-CN": "法语",
-    "zh-TW": "法文",
+    "zh-TW": "法語",
     "es": "francés"
   },
   "한국어": {
     "en": "Korean",
     "ja": "韓国語",
     "zh-CN": "韩语",
-    "zh-TW": "韓文",
+    "zh-TW": "韓語",
     "es": "coreano"
   },
   "힌디어": {
     "en": "Hindi",
     "ja": "ヒンディー語",
     "zh-CN": "印地语",
-    "zh-TW": "印地文",
+    "zh-TW": "印地語",
     "es": "hindi"
   }
 }

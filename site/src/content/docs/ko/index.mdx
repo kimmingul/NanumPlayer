@@ -1,0 +1,88 @@
+---
+title: NanumPlayer
+description: 대사를 실시간으로 인식하고 번역해 자막으로 보여 주는 무료 오픈 소스 Windows 미디어 플레이어입니다. 파일, Blu-ray/DVD, YouTube, 웹페이지 영상을 지원합니다.
+template: splash
+head:
+  - tag: title
+    content: 'NanumPlayer: Windows용 실시간 AI 자막 플레이어'
+  - tag: meta
+    attrs:
+      property: og:title
+      content: 'NanumPlayer: Windows용 실시간 AI 자막 플레이어'
+hero:
+  tagline: 어떤 영상이든 내 언어로 보세요. NanumPlayer가 대사를 듣고 바로 번역해 AI 자막으로 보여 줍니다.
+  actions:
+    - text: 다운로드
+      link: '#다운로드'
+      icon: down-caret
+      variant: primary
+    - text: 시작하기
+      link: getting-started/
+      icon: right-arrow
+    - text: GitHub
+      link: https://github.com/kimmingul/NanumPlayer
+      icon: external
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import Download from '../../../components/Download.astro';
+import Shot from '../../../components/Shot.astro';
+import playerControls from '../../../assets/player-controls-ko.png';
+import subtitleList from '../../../assets/subtitle-list-ko.png';
+import settings from '../../../assets/settings-ko.png';
+import startScreen from '../../../assets/start-ko.png';
+import hero from '../../../assets/hero-ko.png';
+
+<div class="hero-shot">
+  <Shot src={hero} alt="등대 장면을 재생하는 NanumPlayer. 영상 아래쪽에 AI가 번역한 한국어 자막 '저는 이 등불을 매일 밤 30년 동안 지켜왔어요.'가 표시되어 있습니다." widths={[640, 960, 1280]} />
+</div>
+
+## 다운로드
+
+<Download lang="ko" />
+
+처음이신가요? [시작하기](getting-started/)에서 설치 파일부터 첫 AI 자막까지 차근차근 안내합니다. 모든 처리는 내 PC에서 이루어지며, 선택 구성 요소(음성 모델, 번역 모델)는 직접 선택했을 때만 내려받습니다.
+
+## 주요 기능
+
+<CardGrid>
+  <Card title="실시간 AI 자막" icon="document">
+    음성 인식(Whisper)이 소리를 글로 바꾸고, 선택한 번역 모델이 내 언어로 옮깁니다. 결과는 재생보다 앞서 일반 자막 트랙으로 나타납니다.
+  </Card>
+  <Card title="파일, 디스크, 웹" icon="laptop">
+    로컬 영상 파일, Blu-ray와 DVD, YouTube, 일반 웹페이지의 영상을 지원합니다. 어디서나 자막이 똑같이 동작합니다.
+  </Card>
+  <Card title="재생하지 않고 자막 파일 만들기" icon="pencil">
+    음성, 텍스트 자막 트랙, 디스크 이미지 자막(OCR)에서 영상 전체의 SRT 파일을 만들고, 언어별로 번역 파일을 하나씩 저장합니다.
+  </Card>
+  <Card title="용어집과 말투" icon="open-book">
+    인물과 지명이 일관되게 유지됩니다. 용어집을 검토하고 고칠 수 있고, 존댓말·반말·자연스러운 말투를 고를 수 있으며, 이미 만든 자막도 다시 번역됩니다.
+  </Card>
+  <Card title="더 선명한 화면" icon="star">
+    GPU 업스케일(고품질 크기 조정, NVIDIA RTX Video Super Resolution, 직접 고른 셰이더)과 애니메이션·압축 영상용 영상 화질 프리셋을 제공합니다.
+  </Card>
+  <Card title="기본 비공개" icon="approve-check">
+    요청하지 않으면 재생 기록, 로그, 자막 캐시를 남기지 않습니다. 웹과 YouTube 창은 항상 시크릿 세션이며, 원격 측정(텔레메트리)도 없습니다.
+  </Card>
+</CardGrid>
+
+## 화면 살펴보기
+
+<Shot src={playerControls} alt="등대 장면 위에 표시된 NanumPlayer의 재생 바. GPU 음성 인식, large-v3-turbo 모델, 로컬 번역 모델을 나타내는 상태 칩이 보입니다." caption="재생 바에서 선택한 AI 자막 트랙이 어떻게 만들어지는지(음성 모델, GPU 또는 CPU, 번역 모델) 확인할 수 있습니다." />
+
+<div class="shot-grid">
+  <Shot src={subtitleList} alt="AI 번역, 번역+원문, 원어 인식 트랙, 끔, 자막 파일 불러오기 항목이 나열된 자막 목록." caption="AI 트랙, 디스크 자막, 파일 자막을 하나의 자막 목록에서 고릅니다." widths={[480, 800]} />
+  <Shot src={settings} alt="Ctrl+N으로 연 NanumPlayer 설정 메뉴. 인터페이스 언어, AI 구성 요소 관리, 자막, 업스케일, 영상 화질, 번역 말투가 나열되어 있습니다." caption="Ctrl+N으로 모든 설정을 열 수 있으며, 검색도 지원합니다." widths={[480, 800]} />
+</div>
+
+<Shot src={startScreen} alt="파일 열기, Blu-ray 열기, YouTube, 웹페이지에서 재생하기, AI 자막 설정 버튼이 있는 NanumPlayer 시작 화면." caption="시작 화면입니다. 인터페이스 언어는 한국어, 영어, 일본어, 중국어 간체와 번체, 스페인어를 지원합니다." />
+
+## 알아 두세요
+
+- **Windows 전용입니다.** AVX2를 지원하는 CPU의 64비트 Windows 10 또는 11이 필요합니다. NVIDIA GPU는 선택 사항이며 음성 인식 속도를 높여 줍니다.
+- **번역 모델이 필요합니다.** 자막은 로컬 또는 클라우드의 Ollama 호환 서버가 번역합니다. [시작하기](getting-started/#번역-서버)를 참고하세요.
+- **디스크 복호화는 별도의 선택 다운로드입니다.** 보호되지 않은 디스크, 폴더, ISO 이미지는 일반 설치 파일만으로 재생됩니다. [Blu-ray/DVD 복호화 구성 요소(선택)](disc-decryption/)를 참고하세요.
+- **오픈 소스입니다.** NanumPlayer는 수정한 mpv(GPL-2.0-or-later)와 whisper.cpp(MIT)를 기반으로 합니다. [라이선스 및 고지](license/)를 참고하세요.
+
+<LinkCard title="FAQ" description="SmartScreen, GPU 요구 사항, 오프라인 사용, 지원 언어." href="faq/" />
+<LinkCard title="개인정보" description="내 PC에 남는 것과 네트워크에 연결되는 것." href="privacy/" />

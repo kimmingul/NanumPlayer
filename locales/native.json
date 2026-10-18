@@ -410,7 +410,7 @@
   "ja": "CUDAアクセラレーションを利用できません: %s。復元するには NanumPlayer を再インストールしてください。",
   "zh-CN": "CUDA 加速不可用：%s。请重新安装 NanumPlayer 以恢复。",
   "zh-TW": "CUDA 加速無法使用：%s。請重新安裝 NanumPlayer 以還原。",
-  "es": "La aceleración CUDA no está disponible: %s. Reinstale NanumPlayer para restaurarla.",
+  "es": "La aceleración CUDA no está disponible: %s. Reinstala NanumPlayer para restaurarla.",
   "ko": "CUDA 가속을 사용할 수 없습니다: %s. 복원하려면 NanumPlayer를 다시 설치하세요."
  },
  "CUDA is not used by the engine set by --nanum-ai-dll: %s": {
@@ -426,21 +426,21 @@
   "ja": "CUDAアクセラレーション: CUDA %d Toolkit をインストールするか、cuBLAS(約 %lld MiB)をダウンロードしてください",
   "zh-CN": "CUDA 加速：请安装 CUDA %d Toolkit，或下载 cuBLAS（约 %lld MiB）",
   "zh-TW": "CUDA 加速：請安裝 CUDA %d Toolkit，或下載 cuBLAS（約 %lld MiB）",
-  "es": "Aceleración CUDA: instale el CUDA %d Toolkit o descargue cuBLAS (unos %lld MiB)"
+  "es": "Aceleración CUDA: instala el CUDA %d Toolkit o descarga cuBLAS (unos %lld MiB)"
  },
  "CUDA 엔진 손상 또는 버전 불일치: NanumPlayer를 다시 설치하거나 업데이트하세요": {
   "en": "CUDA engine is damaged or the version does not match: reinstall or update NanumPlayer",
   "ja": "CUDAエンジンが破損しているか、バージョンが一致しません: NanumPlayer を再インストールするか更新してください",
   "zh-CN": "CUDA 引擎已损坏或版本不匹配：请重新安装或更新 NanumPlayer",
   "zh-TW": "CUDA 引擎已損毀或版本不符：請重新安裝或更新 NanumPlayer",
-  "es": "El motor CUDA está dañado o su versión no coincide: reinstale o actualice NanumPlayer"
+  "es": "El motor CUDA está dañado o su versión no coincide: reinstala o actualiza NanumPlayer"
  },
  "CUDA 엔진(%s)이 없습니다: NanumPlayer를 다시 설치하거나 업데이트하세요": {
   "en": "The CUDA engine (%s) is missing: reinstall or update NanumPlayer",
   "ja": "CUDAエンジン(%s)がありません: NanumPlayer を再インストールするか更新してください",
   "zh-CN": "缺少 CUDA 引擎（%s）：请重新安装或更新 NanumPlayer",
   "zh-TW": "缺少 CUDA 引擎（%s）：請重新安裝或更新 NanumPlayer",
-  "es": "Falta el motor CUDA (%s): reinstale o actualice NanumPlayer"
+  "es": "Falta el motor CUDA (%s): reinstala o actualiza NanumPlayer"
  },
  "Cancelled.": {
   "ko": "취소되었습니다.",
@@ -584,7 +584,7 @@
   "ja": "字幕ファイルの保存先フォルダーを選択してください。",
   "zh-CN": "请选择保存字幕文件的文件夹。",
   "zh-TW": "請選擇儲存字幕檔案的資料夾。",
-  "es": "Elija una carpeta para los archivos de subtítulos."
+  "es": "Elige una carpeta para los archivos de subtítulos."
  },
  "Closing the output file failed: %s": {
   "ko": "출력 파일을 닫지 못했습니다: %s",
@@ -622,7 +622,7 @@
   "ja": "AI設定でインストールするか、アクセラレーションモードを自動またはCPUに設定してください。",
   "zh-CN": "请在 AI 设置中安装，或将加速模式设为“自动”或“CPU”。",
   "zh-TW": "請在 AI 設定中安裝，或將加速模式設為「自動」或「CPU」。",
-  "es": "Instálela en los ajustes de IA o cambie el modo de aceleración a Automático o CPU.",
+  "es": "Instálala en los ajustes de IA o cambia el modo de aceleración a Automático o CPU.",
   "ko": "AI 설정에서 설치하거나 가속 모드를 자동 또는 CPU로 설정하세요."
  },
  "Matroska header could not be written: %s": {
@@ -726,7 +726,7 @@
   "ja": "CPUエンジンを使用するには、アクセラレーションモードを自動またはCPUに設定してください。",
   "zh-CN": "要使用 CPU 引擎，请将加速模式设为“自动”或“CPU”。",
   "zh-TW": "若要使用 CPU 引擎，請將加速模式設為「自動」或「CPU」。",
-  "es": "Para usar el motor de CPU, cambie el modo de aceleración a Automático o CPU.",
+  "es": "Para usar el motor de CPU, cambia el modo de aceleración a Automático o CPU.",
   "ko": "CPU 엔진을 사용하려면 가속 모드를 자동 또는 CPU로 설정하세요."
  },
  "Silero VAD (음성 감지)": {
@@ -781,7 +781,7 @@
   "ja": "CPU AIエンジン %s がありません。NanumPlayer を再インストールしてください。",
   "zh-CN": "缺少 CPU AI 引擎 %s。请重新安装 NanumPlayer。",
   "zh-TW": "缺少 CPU AI 引擎 %s。請重新安裝 NanumPlayer。",
-  "es": "Falta el motor de IA para CPU %s. Reinstale NanumPlayer.",
+  "es": "Falta el motor de IA para CPU %s. Reinstala NanumPlayer.",
   "ko": "CPU AI 엔진 %s이(가) 없습니다. NanumPlayer를 다시 설치하세요."
  },
  "The CPU AI engine %s is missing: %s. Reinstall NanumPlayer.": {
@@ -789,7 +789,7 @@
   "ja": "CPU AIエンジン %s がありません: %s。NanumPlayer を再インストールしてください。",
   "zh-CN": "缺少 CPU AI 引擎 %s：%s。请重新安装 NanumPlayer。",
   "zh-TW": "缺少 CPU AI 引擎 %s：%s。請重新安裝 NanumPlayer。",
-  "es": "Falta el motor de IA para CPU %s: %s. Reinstale NanumPlayer.",
+  "es": "Falta el motor de IA para CPU %s: %s. Reinstala NanumPlayer.",
   "ko": "CPU AI 엔진 %s이(가) 없습니다: %s. NanumPlayer를 다시 설치하세요."
  },
  "The CUDA component folder cannot be determined (%%LOCALAPPDATA%% is unavailable).": {
@@ -885,7 +885,7 @@
   "ja": "同梱の CUDA エンジン %s が破損しているか、この NanumPlayer のバージョンのものではありません(%s)。NanumPlayer を再インストールするか更新してください。",
   "zh-CN": "内置的 CUDA 引擎 %s 已损坏，或不属于此版本的 NanumPlayer（%s）。请重新安装或更新 NanumPlayer。",
   "zh-TW": "內建的 CUDA 引擎 %s 已損毀，或不屬於此版本的 NanumPlayer（%s）。請重新安裝或更新 NanumPlayer。",
-  "es": "El motor CUDA incluido %s está dañado o no pertenece a esta versión de NanumPlayer (%s). Reinstale o actualice NanumPlayer.",
+  "es": "El motor CUDA incluido %s está dañado o no pertenece a esta versión de NanumPlayer (%s). Reinstala o actualiza NanumPlayer.",
   "ko": "내장 CUDA 엔진 %s이(가) 손상되었거나 이 NanumPlayer 버전의 파일이 아닙니다(%s). NanumPlayer를 다시 설치하거나 업데이트하세요."
  },
  "The bundled CUDA engine %s is missing (%s). Reinstall or update NanumPlayer.": {
@@ -893,7 +893,7 @@
   "ja": "同梱の CUDA エンジン %s がありません(%s)。NanumPlayer を再インストールするか更新してください。",
   "zh-CN": "缺少内置的 CUDA 引擎 %s（%s）。请重新安装或更新 NanumPlayer。",
   "zh-TW": "缺少內建的 CUDA 引擎 %s（%s）。請重新安裝或更新 NanumPlayer。",
-  "es": "Falta el motor CUDA incluido %s (%s). Reinstale o actualice NanumPlayer.",
+  "es": "Falta el motor CUDA incluido %s (%s). Reinstala o actualiza NanumPlayer.",
   "ko": "내장 CUDA 엔진 %s이(가) 없습니다(%s). NanumPlayer를 다시 설치하거나 업데이트하세요."
  },
  "The checksum file %s of the %s release %s has no SHA-256 for %s.": {
@@ -1014,7 +1014,7 @@
   "ja": "再生中のファイルがこのファイルを使用している可能性があります。閉じてからやり直してください。",
   "zh-CN": "该文件可能正被正在播放的文件占用,请关闭后重试。",
   "zh-TW": "該檔案可能正被播放中的檔案佔用,請關閉後重試。",
-  "es": "Es posible que un archivo en reproducción esté usando este archivo; ciérrelo y vuelva a intentarlo."
+  "es": "Es posible que un archivo en reproducción esté usando este archivo; ciérralo y vuelve a intentarlo."
  },
  "The folder %s cannot be created.": {
   "ko": "%s 폴더를 만들 수 없습니다.",
@@ -1945,7 +1945,7 @@
   "ja": "CPU AIエンジン %s が %s に見つかりません。NanumPlayer を再インストールしてください。",
   "zh-CN": "找不到 CPU AI 引擎 %s（位置：%s）。请重新安装 NanumPlayer。",
   "zh-TW": "找不到 CPU AI 引擎 %s（位置：%s）。請重新安裝 NanumPlayer。",
-  "es": "No se encontró el motor de IA para CPU %s en %s. Reinstale NanumPlayer.",
+  "es": "No se encontró el motor de IA para CPU %s en %s. Reinstala NanumPlayer.",
   "ko": "CPU AI 엔진 %s을(를) %s에서 찾을 수 없습니다. NanumPlayer를 다시 설치하세요."
  },
  "the CPU AI engine %s was not found. Reinstall NanumPlayer.": {
@@ -1953,7 +1953,7 @@
   "ja": "CPU AIエンジン %s が見つかりません。NanumPlayer を再インストールしてください。",
   "zh-CN": "找不到 CPU AI 引擎 %s。请重新安装 NanumPlayer。",
   "zh-TW": "找不到 CPU AI 引擎 %s。請重新安裝 NanumPlayer。",
-  "es": "No se encontró el motor de IA para CPU %s. Reinstale NanumPlayer.",
+  "es": "No se encontró el motor de IA para CPU %s. Reinstala NanumPlayer.",
   "ko": "CPU AI 엔진 %s을(를) 찾을 수 없습니다. NanumPlayer를 다시 설치하세요."
  },
  "the CUDA Toolkit at %s has no %s (CUDA %d is required)": {
@@ -2391,7 +2391,7 @@
   "en": "German",
   "ja": "ドイツ語",
   "zh-CN": "德语",
-  "zh-TW": "德文",
+  "zh-TW": "德語",
   "es": "alemán"
  },
  "동영상 · 오디오 파일": {
@@ -2405,7 +2405,7 @@
   "en": "Russian",
   "ja": "ロシア語",
   "zh-CN": "俄语",
-  "zh-TW": "俄文",
+  "zh-TW": "俄語",
   "es": "ruso"
  },
  "모든 파일": {
@@ -2433,7 +2433,7 @@
   "en": "Spanish",
   "ja": "スペイン語",
   "zh-CN": "西班牙语",
-  "zh-TW": "西班牙文",
+  "zh-TW": "西班牙語",
   "es": "español"
  },
  "알 수 없는 표시 언어입니다: %s": {
@@ -2454,7 +2454,7 @@
   "en": "English",
   "ja": "英語",
   "zh-CN": "英语",
-  "zh-TW": "英文",
+  "zh-TW": "英語",
   "es": "inglés"
  },
  "음성 인식 자막과 시간 맞추는 중": {
@@ -2475,14 +2475,14 @@
   "en": "Italian",
   "ja": "イタリア語",
   "zh-CN": "意大利语",
-  "zh-TW": "義大利文",
+  "zh-TW": "義大利語",
   "es": "italiano"
  },
  "일본어": {
   "en": "Japanese",
   "ja": "日本語",
   "zh-CN": "日语",
-  "zh-TW": "日文",
+  "zh-TW": "日語",
   "es": "japonés"
  },
  "자막을 읽는 중": {
@@ -2559,7 +2559,7 @@
   "en": "Portuguese",
   "ja": "ポルトガル語",
   "zh-CN": "葡萄牙语",
-  "zh-TW": "葡萄牙文",
+  "zh-TW": "葡萄牙語",
   "es": "portugués"
  },
  "표시 언어를 저장하지 못했습니다: %s": {
@@ -2573,14 +2573,14 @@
   "en": "French",
   "ja": "フランス語",
   "zh-CN": "法语",
-  "zh-TW": "法文",
+  "zh-TW": "法語",
   "es": "francés"
  },
  "한국어": {
   "en": "Korean",
   "ja": "韓国語",
   "zh-CN": "韩语",
-  "zh-TW": "韓文",
+  "zh-TW": "韓語",
   "es": "coreano"
  },
  "중국어 (간체)": {
@@ -2588,167 +2588,263 @@
   "ja": "中国語（簡体字）",
   "zh-CN": "中文（简体）",
   "zh-TW": "中文（簡體）",
-  "es": "Chino (simplificado)"
+  "es": "chino (simplificado)"
  },
  "중국어 (번체)": {
   "en": "Chinese (Traditional)",
   "ja": "中国語（繁体字）",
   "zh-CN": "中文（繁体）",
   "zh-TW": "中文（繁體）",
-  "es": "Chino (tradicional)"
+  "es": "chino (tradicional)"
  },
  "아랍어": {
   "en": "Arabic",
   "ja": "アラビア語",
   "zh-CN": "阿拉伯语",
   "zh-TW": "阿拉伯語",
-  "es": "Árabe"
+  "es": "árabe"
  },
  "힌디어": {
   "en": "Hindi",
   "ja": "ヒンディー語",
   "zh-CN": "印地语",
   "zh-TW": "印地語",
-  "es": "Hindi"
+  "es": "hindi"
  },
  "태국어": {
   "en": "Thai",
   "ja": "タイ語",
   "zh-CN": "泰语",
   "zh-TW": "泰語",
-  "es": "Tailandés"
+  "es": "tailandés"
  },
  "베트남어": {
   "en": "Vietnamese",
   "ja": "ベトナム語",
   "zh-CN": "越南语",
   "zh-TW": "越南語",
-  "es": "Vietnamita"
+  "es": "vietnamita"
  },
  "인도네시아어": {
   "en": "Indonesian",
   "ja": "インドネシア語",
   "zh-CN": "印度尼西亚语",
   "zh-TW": "印尼語",
-  "es": "Indonesio"
+  "es": "indonesio"
  },
  "말레이어": {
   "en": "Malay",
   "ja": "マレー語",
   "zh-CN": "马来语",
   "zh-TW": "馬來語",
-  "es": "Malayo"
+  "es": "malayo"
  },
  "필리핀어": {
   "en": "Filipino",
   "ja": "フィリピン語",
   "zh-CN": "菲律宾语",
   "zh-TW": "菲律賓語",
-  "es": "Filipino"
+  "es": "filipino"
  },
  "벵골어": {
   "en": "Bengali",
   "ja": "ベンガル語",
   "zh-CN": "孟加拉语",
   "zh-TW": "孟加拉語",
-  "es": "Bengalí"
+  "es": "bengalí"
  },
  "네덜란드어": {
   "en": "Dutch",
   "ja": "オランダ語",
   "zh-CN": "荷兰语",
   "zh-TW": "荷蘭語",
-  "es": "Neerlandés"
+  "es": "neerlandés"
  },
  "폴란드어": {
   "en": "Polish",
   "ja": "ポーランド語",
   "zh-CN": "波兰语",
   "zh-TW": "波蘭語",
-  "es": "Polaco"
+  "es": "polaco"
  },
  "튀르키예어": {
   "en": "Turkish",
   "ja": "トルコ語",
   "zh-CN": "土耳其语",
   "zh-TW": "土耳其語",
-  "es": "Turco"
+  "es": "turco"
  },
  "스웨덴어": {
   "en": "Swedish",
   "ja": "スウェーデン語",
   "zh-CN": "瑞典语",
   "zh-TW": "瑞典語",
-  "es": "Sueco"
+  "es": "sueco"
  },
  "덴마크어": {
   "en": "Danish",
   "ja": "デンマーク語",
   "zh-CN": "丹麦语",
   "zh-TW": "丹麥語",
-  "es": "Danés"
+  "es": "danés"
  },
  "노르웨이어": {
   "en": "Norwegian",
   "ja": "ノルウェー語",
   "zh-CN": "挪威语",
   "zh-TW": "挪威語",
-  "es": "Noruego"
+  "es": "noruego"
  },
  "핀란드어": {
   "en": "Finnish",
   "ja": "フィンランド語",
   "zh-CN": "芬兰语",
   "zh-TW": "芬蘭語",
-  "es": "Finés"
+  "es": "finés"
  },
  "체코어": {
   "en": "Czech",
   "ja": "チェコ語",
   "zh-CN": "捷克语",
   "zh-TW": "捷克語",
-  "es": "Checo"
+  "es": "checo"
  },
  "그리스어": {
   "en": "Greek",
   "ja": "ギリシャ語",
   "zh-CN": "希腊语",
   "zh-TW": "希臘語",
-  "es": "Griego"
+  "es": "griego"
  },
  "히브리어": {
   "en": "Hebrew",
   "ja": "ヘブライ語",
   "zh-CN": "希伯来语",
   "zh-TW": "希伯來語",
-  "es": "Hebreo"
+  "es": "hebreo"
  },
  "헝가리어": {
   "en": "Hungarian",
   "ja": "ハンガリー語",
   "zh-CN": "匈牙利语",
   "zh-TW": "匈牙利語",
-  "es": "Húngaro"
+  "es": "húngaro"
  },
  "루마니아어": {
   "en": "Romanian",
   "ja": "ルーマニア語",
   "zh-CN": "罗马尼亚语",
   "zh-TW": "羅馬尼亞語",
-  "es": "Rumano"
+  "es": "rumano"
  },
  "우크라이나어": {
   "en": "Ukrainian",
   "ja": "ウクライナ語",
   "zh-CN": "乌克兰语",
   "zh-TW": "烏克蘭語",
-  "es": "Ucraniano"
+  "es": "ucraniano"
  },
  "페르시아어": {
   "en": "Persian",
   "ja": "ペルシア語",
   "zh-CN": "波斯语",
   "zh-TW": "波斯語",
-  "es": "Persa"
+  "es": "persa"
+ },
+ "This Blu-ray is copy protected. The optional Blu-ray/DVD decryption component is not installed (Ctrl+N > Blu-ray/DVD decryption components).": {
+  "ko": "이 Blu-ray는 복제 방지가 걸려 있습니다. 선택 구성 요소인 Blu-ray/DVD 복호화 구성 요소가 설치되어 있지 않습니다(Ctrl+N > Blu-ray/DVD 복호화 구성 요소).",
+  "en": "This Blu-ray is copy protected. The optional Blu-ray/DVD decryption component is not installed (Ctrl+N > Blu-ray/DVD decryption components).",
+  "ja": "このBlu-rayはコピー保護されています。任意コンポーネントの Blu-ray/DVD 復号コンポーネントがインストールされていません(Ctrl+N > Blu-ray/DVD 復号コンポーネント)。",
+  "zh-CN": "此 Blu-ray 受复制保护。可选组件 Blu-ray/DVD 解密组件尚未安装(Ctrl+N > Blu-ray/DVD 解密组件)。",
+  "zh-TW": "此 Blu-ray 受複製保護。選用元件 Blu-ray/DVD 解密元件尚未安裝(Ctrl+N > Blu-ray/DVD 解密元件)。",
+  "es": "Este Blu-ray tiene protección contra copia. El componente opcional de descifrado de Blu-ray/DVD no está instalado (Ctrl+N > Componentes de descifrado de Blu-ray/DVD)."
+ },
+ "This DVD is CSS protected. The optional Blu-ray/DVD decryption component is not installed (Ctrl+N > Blu-ray/DVD decryption components).": {
+  "ko": "이 DVD는 CSS로 보호되어 있습니다. 선택 구성 요소인 Blu-ray/DVD 복호화 구성 요소가 설치되어 있지 않습니다(Ctrl+N > Blu-ray/DVD 복호화 구성 요소).",
+  "en": "This DVD is CSS protected. The optional Blu-ray/DVD decryption component is not installed (Ctrl+N > Blu-ray/DVD decryption components).",
+  "ja": "このDVDはCSSで保護されています。任意コンポーネントの Blu-ray/DVD 復号コンポーネントがインストールされていません(Ctrl+N > Blu-ray/DVD 復号コンポーネント)。",
+  "zh-CN": "此 DVD 受 CSS 保护。可选组件 Blu-ray/DVD 解密组件尚未安装(Ctrl+N > Blu-ray/DVD 解密组件)。",
+  "zh-TW": "此 DVD 受 CSS 保護。選用元件 Blu-ray/DVD 解密元件尚未安裝(Ctrl+N > Blu-ray/DVD 解密元件)。",
+  "es": "Este DVD está protegido con CSS. El componente opcional de descifrado de Blu-ray/DVD no está instalado (Ctrl+N > Componentes de descifrado de Blu-ray/DVD)."
+ },
+ "The ZIP file is not a valid component package.": {
+  "ko": "ZIP 파일이 올바른 구성 요소 패키지가 아닙니다.",
+  "en": "The ZIP file is not a valid component package.",
+  "ja": "ZIPファイルは有効なコンポーネントパッケージではありません。",
+  "zh-CN": "该 ZIP 文件不是有效的组件包。",
+  "zh-TW": "該 ZIP 檔案不是有效的元件套件。",
+  "es": "El archivo ZIP no es un paquete de componentes válido."
+ },
+ "The ZIP file is not the component package this version of NanumPlayer expects.": {
+  "ko": "이 ZIP 파일은 이 버전의 NanumPlayer가 요구하는 구성 요소 패키지가 아닙니다.",
+  "en": "The ZIP file is not the component package this version of NanumPlayer expects.",
+  "ja": "このZIPファイルは、このバージョンのNanumPlayerが想定するコンポーネントパッケージではありません。",
+  "zh-CN": "该 ZIP 文件不是此版本 NanumPlayer 所需的组件包。",
+  "zh-TW": "該 ZIP 檔案不是此版本 NanumPlayer 所需的元件套件。",
+  "es": "El archivo ZIP no es el paquete de componentes que espera esta versión de NanumPlayer."
+ },
+ "The ZIP file is not the component package this version of NanumPlayer expects (%s).": {
+  "ko": "이 ZIP 파일은 이 버전의 NanumPlayer가 요구하는 구성 요소 패키지가 아닙니다(%s).",
+  "en": "The ZIP file is not the component package this version of NanumPlayer expects (%s).",
+  "ja": "このZIPファイルは、このバージョンのNanumPlayerが想定するコンポーネントパッケージではありません(%s)。",
+  "zh-CN": "该 ZIP 文件不是此版本 NanumPlayer 所需的组件包(%s)。",
+  "zh-TW": "該 ZIP 檔案不是此版本 NanumPlayer 所需的元件套件(%s)。",
+  "es": "El archivo ZIP no es el paquete de componentes que espera esta versión de NanumPlayer (%s)."
+ },
+ "Cannot read %s": {
+  "ko": "%s을(를) 읽을 수 없습니다",
+  "en": "Cannot read %s",
+  "ja": "%sを読み取れません",
+  "zh-CN": "无法读取 %s",
+  "zh-TW": "無法讀取 %s",
+  "es": "No se puede leer %s"
+ },
+ "Integrity check failed for %s (size or SHA-256 differs).": {
+  "ko": "%s의 무결성 검사에 실패했습니다(크기 또는 SHA-256이 다릅니다).",
+  "en": "Integrity check failed for %s (size or SHA-256 differs).",
+  "ja": "%sの整合性チェックに失敗しました(サイズまたはSHA-256が一致しません)。",
+  "zh-CN": "%s 的完整性检查失败(大小或 SHA-256 不一致)。",
+  "zh-TW": "%s 的完整性檢查失敗(大小或 SHA-256 不一致)。",
+  "es": "Falló la comprobación de integridad de %s (el tamaño o el SHA-256 no coinciden)."
+ },
+ "The installed component could not be verified.": {
+  "ko": "설치된 구성 요소를 검증하지 못했습니다.",
+  "en": "The installed component could not be verified.",
+  "ja": "インストールされたコンポーネントを検証できませんでした。",
+  "zh-CN": "无法验证已安装的组件。",
+  "zh-TW": "無法驗證已安裝的元件。",
+  "es": "No se pudo verificar el componente instalado."
+ },
+ "Cannot start the disc component thread.": {
+  "ko": "디스크 구성 요소 작업 스레드를 시작할 수 없습니다.",
+  "en": "Cannot start the disc component thread.",
+  "ja": "ディスクコンポーネントのスレッドを開始できません。",
+  "zh-CN": "无法启动光盘组件线程。",
+  "zh-TW": "無法啟動光碟元件執行緒。",
+  "es": "No se puede iniciar el hilo del componente de disco."
+ },
+ "The disc component manager is not initialized.": {
+  "ko": "디스크 구성 요소 관리자가 초기화되지 않았습니다.",
+  "en": "The disc component manager is not initialized.",
+  "ja": "ディスクコンポーネントの管理が初期化されていません。",
+  "zh-CN": "光盘组件管理器尚未初始化。",
+  "zh-TW": "光碟元件管理員尚未初始化。",
+  "es": "El administrador de componentes de disco no está inicializado."
+ },
+ "The disc components cannot be installed: %s.": {
+  "ko": "디스크 구성 요소를 설치할 수 없습니다: %s.",
+  "en": "The disc components cannot be installed: %s.",
+  "ja": "ディスクコンポーネントをインストールできません: %s。",
+  "zh-CN": "无法安装光盘组件:%s。",
+  "zh-TW": "無法安裝光碟元件:%s。",
+  "es": "No se pueden instalar los componentes de disco: %s."
+ },
+ "The disc component folder cannot be determined (%%LOCALAPPDATA%% is unavailable).": {
+  "ko": "디스크 구성 요소 폴더를 알 수 없습니다(%%LOCALAPPDATA%%를 사용할 수 없음).",
+  "en": "The disc component folder cannot be determined (%%LOCALAPPDATA%% is unavailable).",
+  "ja": "ディスクコンポーネントのフォルダーを特定できません(%%LOCALAPPDATA%%が利用できません)。",
+  "zh-CN": "无法确定光盘组件文件夹(%%LOCALAPPDATA%% 不可用)。",
+  "zh-TW": "無法確定光碟元件資料夾(%%LOCALAPPDATA%% 無法使用)。",
+  "es": "No se puede determinar la carpeta de componentes de disco (%%LOCALAPPDATA%% no está disponible)."
  }
 }

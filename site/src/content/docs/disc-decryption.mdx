@@ -1,0 +1,55 @@
+---
+title: Optional Blu-ray/DVD decryption components
+description: What plays without any extra download, and how the optional, separately installed Blu-ray and DVD decryption components work. Legal responsibility, installation, key database and removal.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="caution" title="Legal notice">
+  Circumventing copy protection is restricted or prohibited by law in many countries, in some places even for a copy of a disc you own. The NanumPlayer project cannot give legal advice and cannot decide what is lawful for you. **You are responsible for complying with the laws that apply to you.** Install and use these components only with discs you own or may lawfully use, and do not distribute copyrighted material.
+</Aside>
+
+## What plays out of the box
+
+NanumPlayer reads Blu-ray and DVD inside the player. The libraries that read a disc's **structure and menus** (libbluray, libdvdread, libdvdnav) are part of the normal download. So these play with the normal installer or portable ZIP, with nothing extra:
+
+- unencrypted Blu-ray and DVD discs,
+- disc folders (`BDMV`, `VIDEO_TS`) and disc images (ISO),
+- everything else NanumPlayer does: files, YouTube, AI subtitles, OCR of image subtitles on readable discs.
+
+## What needs the optional component
+
+Copy-protected discs need the libraries that remove the protection:
+
+| Library | Protection | License |
+|---|---|---|
+| libaacs (with libgcrypt and libgpg-error) | AACS (Blu-ray) | LGPL-2.1-or-later |
+| libbdplus (with libgcrypt and libgpg-error) | BD+ (Blu-ray) | LGPL-2.1-or-later |
+| libdvdcss | CSS (DVD) | GPL-2.0-or-later |
+
+These libraries are written by other projects. They are **not part of the default download**: not in the installer and not in the portable ZIP. They are distributed as a separate package that you choose to install.
+
+## How to install it
+
+The component is a single ZIP, `NanumPlayer-disc-components-<version>.zip`, published as a release of [`kimmingul/NanumPlayer-disc-components`](https://github.com/kimmingul/NanumPlayer-disc-components/releases). NanumPlayer accepts only the exact ZIP its own version pins (size and SHA-256), over HTTPS, and re-checks every file before use. Four ways:
+
+1. **First use:** open an encrypted disc. NanumPlayer explains that the component is optional and that you are responsible for the law, and offers to download it. Nothing is downloaded unless you agree.
+2. **Menu:** **Ctrl+N → Blu-ray/DVD decryption components**, any time.
+3. **Installer:** an optional task, unchecked by default.
+4. **From a file:** install a ZIP you downloaded yourself (for example when offline) from the same menu.
+
+Files go to `%LOCALAPPDATA%\NanumPlayer\components\disc\<version>`. **To remove it, delete that folder.** Uninstalling NanumPlayer keeps it, like the other downloaded components.
+
+## The AACS key database
+
+Protected Blu-rays also need keys. NanumPlayer downloads the public **FindVUK** key database (about 25 MB, 65 MB unpacked) only **after** the component is installed **and** you have agreed once. You can withdraw the agreement in **Ctrl+N**. It is checked and stored as `KEYDB.cfg` in `%APPDATA%\NanumPlayer\disc`. A working copy needs no network, a failed update keeps the old one, and a database less than an hour old is not downloaded again. The database is a third-party resource that this project does not host or control.
+
+## Limits
+
+NanumPlayer does not use MakeMKV. A disc whose keys are not in the public database, a disc whose BD+ data is missing, an unsupported AACS version and a failing drive authentication all end with an explicit error. Nothing is claimed about UHD discs or LibreDrive features, and the component is not equivalent to other tools.
+
+**Ctrl+B** saves Blu-ray or DVD titles as lossless MKV files (no re-encoding, audio, subtitles and chapters kept) using the same libraries, so protected discs need the component for that too.
+
+If you upgrade from 1.12.0 or earlier, which shipped these libraries in the app folder, the new installer removes exactly those files and NanumPlayer tells you how to install the component if you play encrypted discs. Your settings, models and keys are untouched.
+
+Full details are in the repository: [Optional Blu-ray/DVD decryption components](https://github.com/kimmingul/NanumPlayer/blob/main/docs/disc-components.md).

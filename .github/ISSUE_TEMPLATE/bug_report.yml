@@ -1,0 +1,98 @@
+name: Bug report
+description: Something does not work as documented
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please check the [troubleshooting guide](https://github.com/kimmingul/NanumPlayer/blob/main/docs/troubleshooting.md) and the existing issues first.
+        **Do not attach copyrighted media.** Do not report security problems here; see the [security policy](https://github.com/kimmingul/NanumPlayer/security/policy).
+  - type: input
+    id: version
+    attributes:
+      label: NanumPlayer version
+      description: Shown at the top left of the start screen and in Ctrl+K.
+      placeholder: "1.12.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How did you install it?
+      options:
+        - Installer (NanumPlayer-Setup)
+        - Portable ZIP
+        - Built from source
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: "Windows 11 24H2"
+    validations:
+      required: true
+  - type: input
+    id: gpu
+    attributes:
+      label: GPU and driver
+      description: Needed for CUDA, upscaling and picture-quality problems.
+      placeholder: "NVIDIA GeForce RTX 3070 Ti, driver 5xx.xx / none"
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - AI subtitles (speech recognition, translation)
+        - Subtitle list, import or online subtitle search
+        - Generate full subtitles (SRT)
+        - Glossary or translation style
+        - Video upscaling or picture quality
+        - YouTube or web-page playback
+        - Blu-ray or DVD
+        - Installer, downloads or components
+        - Interface language or translation text
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: AI setup
+      description: Translation server and model, speech model (English, Multilingual, large-v3-turbo), acceleration mode (Auto, CPU, CUDA required), target language, and what Ctrl+K shows.
+  - type: textarea
+    id: media
+    attributes:
+      label: Media
+      description: File, disc, YouTube or web page; container and codecs. Do not attach copyrighted media.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: The player keeps no playback log by default. Remove addresses, file names and paths you want to keep private before you paste a log.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: I searched the existing issues and the troubleshooting guide.
+          required: true
+        - label: I did not include private information or copyrighted media.
+          required: true

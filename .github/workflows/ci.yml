@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  i18n:
+    name: Translations and Lua syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The native interface texts live in the mpv fork (third_party/mpv); the whisper.cpp
+      # submodule is not needed here.
+      - name: Fetch the mpv submodule
+        run: git submodule update --init --depth 1 third_party/mpv
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Interface-language checks (catalogs, call sites, hardcoded text, installer messages)
+        run: python tools/check_i18n.py --verbose
+
+      # The build compiles the catalogs into C lookup tables (tools/compile_translations.py); make sure that
+      # still works for the same inputs and options as third_party/mpv/meson.build and tools/build_youtube.bat.
+      - name: Compile translation catalogs
+        run: |
+          set -e
+          compile() { python tools/compile_translations.py --input "locales/$1.json" --output "$RUNNER_TEMP/$2.h" --prefix "$2" "${@:3}"; }
+          compile native nanum_native
+          compile native nanum_native_w --wide
+          compile web nanum_web --wide
+
+      # The player's scripts run on Lua 5.1 syntax (LuaJIT); a bytecode listing fails on any syntax error.
+      - name: Lua syntax
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q luajit
+          set -e
+          for f in scripts/*.lua; do
+            echo "luajit -bl $f"
+            luajit -bl "$f" > /dev/null
+          done

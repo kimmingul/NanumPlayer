@@ -1,0 +1,58 @@
+---
+title: YouTube and web pages
+description: Play YouTube and videos from ordinary web pages in NanumPlayer with AI subtitles, always in a private browser session.
+---
+
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+NanumPlayer can play online videos with the same speech recognition, translation, glossary and style as local files. The picture and sound play in NanumPlayer, and subtitles are drawn by NanumPlayer, not on top of the website.
+
+Both features use a small built-in browser window (Microsoft **WebView2**, normally already installed on Windows 11) provided by `nanum_youtube.exe`.
+
+## YouTube
+
+<Steps>
+
+1. Press **Ctrl+Y** or choose **YouTube** on the start screen. A YouTube window opens.
+2. Browse and sign in as you normally would. Sign-in is optional and only needed for videos that require it.
+3. Pick a video. NanumPlayer plays it using the window's session through `yt-dlp`, and AI subtitles start as usual.
+
+</Steps>
+
+- **First use:** the YouTube tools (`yt-dlp` and Deno) are downloaded on demand, either from the installer's optional tasks or from **Ctrl+N → YouTube**. Downloads are checked against a size and SHA-256 and update checks are offered; there is a cancel button.
+- **Paste an address:** **Ctrl+N → Play from a YouTube address…** plays a copied link directly.
+- **Browser bookmark:** an *Open in NanumPlayer* bookmark uses the `nanumplayer://open?url=` link that the installer registers.
+- **Subtitles:** if the video has uploader-provided subtitles, they are used as the source text instead of speech recognition (you can switch to speech recognition in the menu). Auto-generated YouTube captions are not requested.
+- YouTube may ask for extra checks or limit access when sign-in is used through unofficial tools. Respect YouTube's terms of service.
+
+## Web page videos
+
+For videos on ordinary sites:
+
+<Steps>
+
+1. Choose **Play from a web page** on the start screen, press **Ctrl+Shift+Y**, or use **Ctrl+N → Play from a web page video address…**, and paste the page address.
+2. In the window that opens, sign in if the site needs it, and **start playing the video** on the page.
+3. Click **Play in NanumPlayer** at the top. NanumPlayer takes over playback and AI subtitles.
+
+</Steps>
+
+NanumPlayer detects the real media address the page loaded, including videos inside iframes and HLS or DASH streams. Cookies, Referer and User-Agent for that video apply to that file only and do not carry over to the next one. Audio without a language tag starts with multilingual language detection, so install a multilingual speech model.
+
+### What does not work
+
+- DRM-protected video.
+- Sites that never expose a playable media or manifest address.
+- Servers that refuse playback outside the browser. An address that expires has to be reloaded from the page.
+
+Playback of every site is not guaranteed.
+
+## Private by design
+
+YouTube and web windows **always run as InPrivate sessions**. Sign-ins and cookies live only for that session and are removed with the browser's temporary data when the session ends. General web cookies are passed to the player in memory; YouTube cookies use only a temporary file that is deleted at the end of the session. Use **Ctrl+N → YouTube → End the private web session (sign out)** to end it at any time.
+
+<Aside type="caution">
+  A private session is not anonymity. Websites, your network, and the translation provider can still see what they can see, and the operating system may page memory or keep deleted files recoverable. See [Privacy](/NanumPlayer/privacy/).
+</Aside>
+
+Web videos are never saved to the subtitle library, and a whole-file translation of a web video always goes to a temporary folder.

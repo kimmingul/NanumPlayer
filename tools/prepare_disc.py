@@ -25,11 +25,16 @@ BINARIES = {
     "libaacs.dll": "f701f19cbc9828573f65f0b9392d25a593ab6b9b30cce5b1a32b89d29cadb816",
     "libbdplus.dll": "eb828111783cb4d03c2adcccc1b50f07a860e74b43591c4689d3e50b5e6579ef",
 }
+# MSYS2 CLANG64 binaries. libdvdread is NOT taken from MSYS2: that build links libdvdcss-2.dll as an
+# import, so the player could not start without the optional decryption component. It is built from
+# the pinned source with libdvdcss loaded dynamically instead (build_dvdread).
 DVD_BINARIES = {
     "libdvdcss-2.dll": "217492d7fa478a93ad4d4ddcf34b1dff9be6f3cf59b229de968722026b3504ae",
-    "libdvdread-8.dll": "306c1fa5a60a09b1a15a0aa94ab5e29db88981ad77b5f8e93077fcc4ec1fb534",
     "libdvdnav-4.dll": "2f1b18d790b9a103a694cc0472e9dd97d2a3bd78272697ea544ec851b3db3274",
 }
+DVDREAD_SOURCE = "mingw-w64-libdvdread-7.1.1-1.src.tar.zst"
+DVDREAD_TARBALL = "libdvdread-7.1.1.tar.gz"
+DVDREAD_TARBALL_SHA = "01a690d1b442dfbbf66e5bbe58604ddc42d5aba4334b7c9680d9d4dbd116c74d"
 SOURCES = {
     "libbluray-1.5.0.tar.xz": (
         "https://download.videolan.org/pub/videolan/libbluray/1.5.0/libbluray-1.5.0.tar.xz",
@@ -143,6 +148,46 @@ def build_bluray(destination):
             shutil.copy2(source_file, target)
 
 
+def build_dvdread(destination):
+    """libdvdread without a link-time libdvdcss: CSS support is loaded by name at run time and only
+    exists when the optional decryption component provides libdvdcss-2.dll."""
+    clang = Path("C:/msys64/clang64/bin")
+    env = dict(os.environ, PATH=str(clang) + os.pathsep + os.environ.get("PATH", ""),
+               CC="clang", CXX="clang++")
+    source_package = destination / "sources" / DVDREAD_SOURCE
+    with tempfile.TemporaryDirectory(prefix="nanum-libdvdread-") as temporary:
+        work = Path(temporary)
+        listing = subprocess.run(["tar", "--zstd", "-tf", str(source_package)], check=True,
+                                 capture_output=True, text=True).stdout.split()
+        for name in listing:
+            parts = Path(name).parts
+            if Path(name).is_absolute() or ".." in parts or parts[:1] != ("mingw-w64-libdvdread",):
+                raise ValueError("Unexpected libdvdread source package member: " + name)
+        subprocess.run(["tar", "--zstd", "-xf", str(source_package), "-C", str(work),
+                        "mingw-w64-libdvdread/" + DVDREAD_TARBALL], check=True)
+        tarball = work / "mingw-w64-libdvdread" / DVDREAD_TARBALL
+        if hashlib.sha256(tarball.read_bytes()).hexdigest() != DVDREAD_TARBALL_SHA:
+            raise ValueError("Refusing modified libdvdread source tarball")
+        with tarfile.open(tarball) as archive:
+            members = archive.getmembers()
+            for member in members:
+                parts = Path(member.name).parts
+                if (not (member.isfile() or member.isdir()) or not parts or
+                        parts[0] != "libdvdread-7.1.1" or ".." in parts):
+                    raise ValueError("Unexpected libdvdread source archive member")
+            archive.extractall(work, members=members)
+        build = work / "build"
+        meson = str(clang / "meson.exe")
+        subprocess.run([meson, "setup", str(build), str(work / "libdvdread-7.1.1"),
+                        "--buildtype=release", "--default-library=shared", "--wrap-mode=nodownload",
+                        "-Dlibdvdcss=disabled"], env=env, check=True)
+        subprocess.run([meson, "compile", "-C", str(build)], env=env, check=True)
+        libraries = list(build.rglob("libdvdread-8.dll"))
+        if len(libraries) != 1:
+            raise ValueError("The libdvdread build did not produce exactly one DLL")
+        shutil.copy2(libraries[0], destination / "libdvdread-8.dll")
+
+
 def prepare_disc(destination):
     destination = Path(destination)
     missing = [name for name, digest in BINARIES.items()
@@ -173,7 +218,85 @@ def prepare_disc(destination):
                         label = "libgpg-error-" + entry.name.rsplit("/", 1)[1]
                     publish(destination / label, data, hashlib.sha256(data).hexdigest())
     build_bluray(destination)
+    build_dvdread(destination)
     return destination
+
+
+# ---------------------------------------------------------------------------
+# Default package versus optional decryption component
+# ---------------------------------------------------------------------------
+# The default download keeps the libraries that read and play unprotected discs
+# (libbluray, libdvdread, libdvdnav) with their licenses and corresponding sources. Everything
+# that circumvents copy protection (libaacs, libbdplus and their libgcrypt/libgpg-error
+# build inputs, libdvdcss) is a separate, optional asset, NanumPlayer-disc-components-<version>.zip.
+CLANG_BIN = Path("C:/msys64/clang64/bin")
+CLANG_LICENSES = CLANG_BIN.parent / "share" / "licenses"
+# Files of third_party/disc that only the optional component carries (by zip folder).
+COMPONENT_FROM_DISC = {
+    "libaacs.dll": "libaacs.dll",
+    "libbdplus.dll": "libbdplus.dll",
+    "licenses/libaacs-COPYING": "libaacs-COPYING",
+    "licenses/libbdplus-COPYING": "libbdplus-COPYING",
+    "licenses/libgcrypt-COPYING": "libgcrypt-COPYING",
+    "licenses/libgcrypt-COPYING.LIB": "libgcrypt-COPYING.LIB",
+    "licenses/libgpg-error-COPYING": "libgpg-error-COPYING",
+    "licenses/libgpg-error-COPYING.LIB": "libgpg-error-COPYING.LIB",
+    "licenses/BUILD-LICENSE": "BUILD-LICENSE",
+}
+COMPONENT_SOURCES = ("libaacs-0.12.0.tar.bz2", "libbdplus-0.2.0.tar.bz2", "libgcrypt-1.12.2.tar.gz",
+                     "libgpg-error-1.61.tar.gz", "Makefile",
+                     "mingw-w64-libdvdcss-1.6.0-1.src.tar.zst")
+# What stays in the default package's disc\ folder (relative to third_party/disc / MSYS2).
+APP_SOURCES = ("libbluray-1.5.0.tar.xz", "disc-libbluray.patch", "prepare_disc.py",
+               "mingw-w64-libdvdread-7.1.1-1.src.tar.zst", "mingw-w64-libdvdnav-7.0.0-2.src.tar.zst")
+# Names that must never be in the default package (checked by package.py).
+DECRYPTION_NAMES = ("libaacs", "libbdplus", "libdvdcss", "libmmbd", "libmakemkv", "libgcrypt",
+                    "libgpg-error", "build-license")
+
+
+def stage_default_disc(destination, disc_dir):
+    """Licenses and sources of the non-circumvention libraries into <stage>\\disc."""
+    destination = Path(destination)
+    (destination / "sources").mkdir(parents=True)
+    shutil.copy2(disc_dir / "libbluray-COPYING", destination / "libbluray-COPYING")
+    for library in ("libdvdread", "libdvdnav"):
+        shutil.copy2(CLANG_LICENSES / library / "COPYING", destination / (library + "-COPYING"))
+    for name in APP_SOURCES:
+        shutil.copy2(disc_dir / "sources" / name, destination / "sources" / name)
+
+
+def build_component_zip(disc_dir, readme, output):
+    """Writes the optional component ZIP (stored, fixed timestamps, sorted: byte-reproducible).
+
+    Returns [(name, size, sha256)] of every entry; the ZIP itself is pinned by its own digest.
+    """
+    disc_dir = Path(disc_dir)
+    css = CLANG_BIN / "libdvdcss-2.dll"
+    if not verified(css, DVD_BINARIES["libdvdcss-2.dll"]):
+        raise SystemExit(f"Missing independent DVD library: {css}")
+    sources = {}
+    for name, original in COMPONENT_FROM_DISC.items():
+        sources[name] = disc_dir / original
+    sources["libdvdcss-2.dll"] = css
+    sources["licenses/libdvdcss-COPYING"] = CLANG_LICENSES / "libdvdcss" / "COPYING"
+    for name in COMPONENT_SOURCES:
+        sources["sources/" + name] = disc_dir / "sources" / name
+    sources["README.txt"] = Path(readme)
+    entries = []
+    output = Path(output)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    temporary = output.with_suffix(".zip.tmp")
+    with zipfile.ZipFile(temporary, "w", zipfile.ZIP_STORED) as archive:
+        for name in sorted(sources):
+            data = sources[name].read_bytes()
+            info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_STORED
+            info.create_system = 0
+            info.external_attr = 0o644 << 16
+            archive.writestr(info, data)
+            entries.append((name, len(data), hashlib.sha256(data).hexdigest()))
+    os.replace(temporary, output)
+    return entries
 
 
 if __name__ == "__main__":

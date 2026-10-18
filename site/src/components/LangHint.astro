@@ -1,0 +1,83 @@
+---
+// Unobtrusive language hint: when the browser prefers the other language than the page,
+// offer a link to the same page in that language. It never redirects on its own.
+const base = import.meta.env.BASE_URL; // "/NanumPlayer/"
+const path = Astro.url.pathname;
+const isKo = path.startsWith(`${base}ko/`) || path === `${base}ko`;
+const rest = isKo ? path.slice(`${base}ko/`.length) : path.slice(base.length);
+const here = isKo ? 'ko' : 'en';
+const otherHref = isKo ? `${base}${rest}` : `${base}ko/${rest}`;
+---
+
+<div class="lang-hint" data-here={here} hidden data-pagefind-ignore>
+  <span class="lang-hint__text" lang={isKo ? 'en' : 'ko'} data-for={isKo ? 'en' : 'ko'}>
+    {
+      isKo
+        ? 'This page is also available in English.'
+        : '이 페이지는 한국어로도 볼 수 있습니다.'
+    }
+  </span>
+  <a class="lang-hint__link" href={otherHref} hreflang={isKo ? 'en' : 'ko'} lang={isKo ? 'en' : 'ko'}>
+    {isKo ? 'View in English' : '한국어로 보기'}
+  </a>
+  <button type="button" class="lang-hint__close" aria-label={isKo ? 'Dismiss' : '닫기'}>×</button>
+</div>
+
+<script>
+  const hint = document.querySelector<HTMLElement>('.lang-hint');
+  if (hint) {
+    const KEY = 'nanumplayer-lang-hint-dismissed';
+    const here = hint.dataset.here;
+    // First preferred browser language decides: Korean browsers see the hint on the English
+    // pages; everyone else sees it on the Korean pages.
+    const first = (navigator.languages?.[0] ?? navigator.language ?? '').toLowerCase();
+    const prefersKo = first === 'ko' || first.startsWith('ko-');
+    const wantsOther = here === 'en' ? prefersKo : !prefersKo;
+    let dismissed = false;
+    try {
+      dismissed = localStorage.getItem(KEY) === '1';
+    } catch {
+      /* storage unavailable: show the hint every time */
+    }
+    if (wantsOther && !dismissed) hint.hidden = false;
+    hint.querySelector('.lang-hint__close')?.addEventListener('click', () => {
+      hint.hidden = true;
+      try {
+        localStorage.setItem(KEY, '1');
+      } catch {
+        /* ignore */
+      }
+    });
+  }
+</script>
+
+<style>
+  .lang-hint {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--sl-color-accent-low);
+    color: var(--sl-color-white);
+    font-size: var(--sl-text-sm);
+  }
+  .lang-hint[hidden] {
+    display: none;
+  }
+  .lang-hint__link {
+    color: var(--sl-color-white);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  .lang-hint__close {
+    background: none;
+    border: 0;
+    color: inherit;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 0.25rem;
+  }
+</style>

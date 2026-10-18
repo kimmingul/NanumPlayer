@@ -1,5 +1,5 @@
 ﻿; NanumPlayer installer. Built by tools\package.py (passes /DAppVersion, /DStageDir,
-; /DModelCatalogFile and /DComponentCatalogFile).
+; /DModelCatalogFile, /DComponentCatalogFile and /DDiscCatalogFile).
 #ifndef AppVersion
 #define AppVersion "0.0.0"
 #endif
@@ -11,6 +11,9 @@
 #endif
 #ifndef ComponentCatalogFile
 #error Package with tools/package.py to generate the pinned CUDA component catalogue.
+#endif
+#ifndef DiscCatalogFile
+#error Package with tools/package.py to generate the pinned optional disc component catalogue.
 #endif
 ; The cuBLAS cache of the optional CUDA payload: %LOCALAPPDATA%\NanumPlayer\accelerators\cuda\<CUDA major>.
 ; (The CUDA engine itself is part of the application.)
@@ -63,6 +66,9 @@ Name: "model_multilingual_large"; Description: "{cm:TaskModelLarge}"; GroupDescr
 Name: "model_vad"; Description: "{cm:TaskModelVad}"; GroupDescription: "{cm:GroupModels}"; Flags: unchecked
 Name: "cuda_accel"; Description: "{cm:TaskCuda}"; GroupDescription: "{cm:GroupAccel}"; Flags: unchecked
 Name: "youtube_tools"; Description: "{cm:TaskYoutube}"; GroupDescription: "{cm:GroupYoutube}"; Flags: unchecked
+; Not part of the default package: the copy protection circumvention libraries (libaacs, libbdplus,
+; libdvdcss) are a separate optional download, pinned like the other components.
+Name: "disc_components"; Description: "{cm:TaskDisc}"; GroupDescription: "{cm:GroupDisc}"; Flags: unchecked
 
 #include "languages\NanumMessages.iss"
 
@@ -93,7 +99,7 @@ Root: HKCU; Subkey: "Software\Classes\nanumplayer\shell\open\command"; ValueType
 Filename: "{app}\NanumPlayer.exe"; Description: "{cm:LaunchProgram,NanumPlayer}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
-; user settings/caches in %APPDATA%\NanumPlayer, models and CUDA components in %LOCALAPPDATA%\NanumPlayer are kept on purpose
+; user settings/caches in %APPDATA%\NanumPlayer, models, CUDA and disc components in %LOCALAPPDATA%\NanumPlayer are kept on purpose
 Type: files; Name: "{app}\*.tmp"
 
 [Code]
@@ -124,6 +130,7 @@ end;
 
 #include ModelCatalogFile
 #include ComponentCatalogFile
+#include DiscCatalogFile
 
 function MoveFileEx(Source, Destination: String; Flags: Integer): Boolean;
   external 'MoveFileExW@kernel32.dll stdcall';
@@ -136,6 +143,27 @@ end;
 function CudaDirectory: String;
 begin
   Result := ExpandConstant('{localappdata}\NanumPlayer\accelerators\cuda\{#CudaMajor}');
+end;
+
+// The optional Blu-ray/DVD decryption components (the player's disc component manager uses the same
+// folder and checks the same pinned file list before it loads anything).
+function DiscDirectory: String;
+begin
+  Result := ExpandConstant('{localappdata}\NanumPlayer\components\disc\{#DiscVersion}');
+end;
+
+function DiscWanted: Boolean;
+begin
+  Result := WizardIsTaskSelected('disc_components');
+end;
+
+function DiscFilePath(const Root: String; Index: Integer): String;
+var
+  Name: String;
+begin
+  Name := DiscFileFilename(Index);
+  StringChangeEx(Name, '/', '\', True);
+  Result := Root + '\' + Name;
 end;
 
 function ModelWanted(Index: Integer): Boolean;
@@ -385,6 +413,58 @@ begin
   end;
 end;
 
+{ ---- Blu-ray/DVD decryption components (optional) ------------------------------- }
+{ One pinned ZIP; every file of the pinned list is verified (name, size, SHA-256) after it is
+  unpacked into a staging folder, and only then is the folder renamed into place. }
+
+function DiscFilesVerified(const Root: String): Boolean;
+var
+  I: Integer;
+begin
+  Result := DirExists(Root);
+  for I := 0 to {#DiscFileCount} - 1 do
+    if Result then
+      Result := VerifiedFile(DiscFilePath(Root, I), DiscFileSize(I), DiscFileHash(I));
+end;
+
+procedure PrepareDisc(Interactive: Boolean);
+var
+  Stage, Zip: String;
+  Code: Integer;
+begin
+  if DiscFilesVerified(DiscDirectory) then begin
+    Log('Disc components already installed and verified: ' + DiscDirectory);
+    Exit;
+  end;
+  if not ForceDirectories(ExtractFileDir(DiscDirectory)) then
+    RaiseException(MF('ErrDiscDir', DiscDirectory));
+  if Interactive then begin
+    ModelDownloadPage.Clear;
+    ModelDownloadPage.Add(DiscPackURL(0), DiscPackFilename(0), DiscPackHash(0));
+    ModelDownloadPage.Download;
+  end else
+    DownloadTemporaryFile(DiscPackURL(0), DiscPackFilename(0), DiscPackHash(0), nil);
+  Zip := ExpandConstant('{tmp}\') + DiscPackFilename(0);
+  Stage := DiscDirectory + '.setup-part';
+  try
+    DelTree(Stage, True, True, True);
+    if not ForceDirectories(Stage) then
+      RaiseException(MF('ErrDiscDir', Stage));
+    if not Exec(ExpandConstant('{sys}\tar.exe'), '-xf "' + Zip + '" -C "' + Stage + '"', '',
+                SW_HIDE, ewWaitUntilTerminated, Code) or (Code <> 0) then
+      RaiseException(M('ErrDiscUnpack'));
+    if not DiscFilesVerified(Stage) then
+      RaiseException(MF('ErrIntegrity', DiscPackFilename(0)));
+    if DirExists(DiscDirectory) then
+      DelTree(DiscDirectory, True, True, True);
+    if not MoveFileEx(Stage, DiscDirectory, 8) then
+      RaiseException(MF('ErrApply', DiscDirectory));
+  finally
+    DelTree(Stage, True, True, True);
+    DeleteFile(Zip);
+  end;
+end;
+
 { ---- YouTube tools (yt-dlp + Deno, latest official releases) ---------------- }
 { Unlike the models these are not pinned: the tag of the latest release is read from the
   GitHub API, the files are fetched from that exact tag and verified against the release's
@@ -572,6 +652,7 @@ begin
     end;
   end;
   if YoutubeWanted then PrepareYoutube(Interactive);
+  if DiscWanted then PrepareDisc(Interactive);
   if CudaWanted then begin
     ToolkitDir := FindToolkitDirectory;
     if ToolkitDir <> '' then
@@ -746,6 +827,7 @@ begin
         ', model wanted: ' + IntToStr(Ord(ModelWanted(I))));
   Log('Task cuda_accel selected: ' + IntToStr(Ord(CudaWanted)) + ', download wanted: ' + IntToStr(Ord(CudaDownloadWanted)));
   Log('Task youtube_tools selected: ' + IntToStr(Ord(YoutubeWanted)));
+  Log('Task disc_components selected: ' + IntToStr(Ord(DiscWanted)));
 end;
 
 // Appends the state to the task's caption; Block unchecks and disables it (so a silent
@@ -788,6 +870,8 @@ begin
     AnnotateTask(M('TaskCuda'), M('NoteCublasOnly'), False);
   if YoutubeToolsInstalled then
     AnnotateTask(M('TaskYoutube'), M('NoteYoutubeInstalled'), False);
+  if DiscFilesVerified(DiscDirectory) then
+    AnnotateTask(M('TaskDisc'), M('NoteInstalled'), True);
 end;
 
 { ---- Wizard ---------------------------------------------------------------- }
@@ -865,6 +949,16 @@ begin
       Result := Result + Space + M('ReadyCublasDownload') + NewLine;
     Result := Result + Space + MF('ReadyDownloadSize', IntToStr((Bytes + 1048575) div 1048576));
   end;
+  if DiscWanted and not DiscFilesVerified(DiscDirectory) then begin
+    Result := Result + NewLine + NewLine + M('ReadyDiscHeader') + NewLine;
+    Result := Result + Space + MF('ReadyLocation', DiscDirectory) + NewLine;
+    Result := Result + Space + MF('ReadyDownloadSize', IntToStr((DiscPackSize(0) + 1048575) div 1048576));
+  end;
+  // An upgrade removes the decryption libraries of earlier versions (they are an optional
+  // component now): say so, and how to get them back.
+  if (not DiscWanted) and FileExists(AddBackslash(WizardDirValue) + 'disc\libaacs.dll') and
+     not DiscFilesVerified(DiscDirectory) then
+    Result := Result + NewLine + NewLine + M('ReadyDiscLegacy');
 end;
 
 function NextButtonClick(CurPageID: Integer): Boolean;
@@ -883,7 +977,13 @@ begin
     Exit;
   end;
   if CurPageID <> wpReady then Exit;
-  if not (AnyModelWanted or CudaDownloadWanted or YoutubeWanted) then Exit;
+  // The notice of the optional decryption components is shown before anything is downloaded.
+  if DiscWanted and not DiscFilesVerified(DiscDirectory) then
+    if MsgBox(M('DiscNotice'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDNO then begin
+      Result := False;
+      Exit;
+    end;
+  if not (AnyModelWanted or CudaDownloadWanted or YoutubeWanted or DiscWanted) then Exit;
   if CudaDownloadWanted and not DriverAsked and not NvidiaDriverPresent then begin
     DriverAsked := True;
     if SuppressibleMsgBox(M('DriverMissing'),
@@ -918,7 +1018,7 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
 begin
   Result := '';
   LogDetection;
-  if WizardSilent and (AnyModelWanted or CudaDownloadWanted or YoutubeWanted) then begin
+  if WizardSilent and (AnyModelWanted or CudaDownloadWanted or YoutubeWanted or DiscWanted) then begin
     try
       if CudaDownloadWanted and not NvidiaDriverPresent then
         Log('NVIDIA driver (nvcuda.dll) not found; CUDA components are fetched because the task was selected.');
