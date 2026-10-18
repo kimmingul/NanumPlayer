@@ -1709,7 +1709,7 @@ void ReleaseWebView() {
 void OnWebViewReady() {
     g.controller->get_CoreWebView2(&g.wv);
     if (!VerifyPrivateSession()) {
-        FailInit(T(L"시크릿(InPrivate) 브라우저 세션을 확인할 수 없어 창을 열지 않습니다."), E_FAIL);
+        FailInit(T(L"InPrivate 브라우저 세션을 확인할 수 없어 창을 열지 않습니다."), E_FAIL);
         return;
     }
     g.ready = true;
@@ -1889,7 +1889,7 @@ void StartWebView() {
                             })
                             .Get());
                 if (FAILED(r))
-                    FailInit(T(L"시크릿(InPrivate) 브라우저를 만들 수 없습니다. WebView2 런타임을 최신으로 업데이트하세요."), r);
+                    FailInit(T(L"InPrivate 브라우저를 만들 수 없습니다. WebView2 런타임을 최신으로 업데이트하세요."), r);
                 return S_OK;
             })
             .Get());

@@ -1182,12 +1182,12 @@
   "zh-CN": "User-Agent 不正确",
   "zh-TW": "User-Agent 不正確"
  },
- "YouTube · 시크릿 웹:": {
-  "en": "YouTube · Private web:",
-  "es": "YouTube · Web privada:",
-  "ja": "YouTube · プライベートWeb:",
-  "zh-CN": "YouTube · 隐私网页：",
-  "zh-TW": "YouTube · 私密網頁："
+ "YouTube · 웹:": {
+  "en": "YouTube · Web:",
+  "es": "YouTube · Web:",
+  "ja": "YouTube · Web:",
+  "zh-CN": "YouTube · 网页：",
+  "zh-TW": "YouTube · 網頁："
  },
  "YouTube 구성 요소 내려받기": {
   "en": "Download the YouTube components",
@@ -1287,12 +1287,12 @@
   "zh-CN": "找不到 YouTube 浏览器（nanum_youtube.exe）— 请重新安装 NanumPlayer",
   "zh-TW": "找不到 YouTube 瀏覽器（nanum_youtube.exe）— 請重新安裝 NanumPlayer"
  },
- "YouTube 시크릿 창 열기 (로그인은 이번 세션에서만 유지)": {
-  "en": "Open a private YouTube window (sign-in lasts only for this session)",
-  "es": "Abrir una ventana privada de YouTube (el inicio de sesión solo dura esta sesión)",
-  "ja": "YouTubeのプライベートウィンドウを開く (ログインはこのセッションのみ有効)",
-  "zh-CN": "打开 YouTube 隐私窗口（登录仅在本次会话中保留）",
-  "zh-TW": "開啟 YouTube 私密視窗（登入僅在本次工作階段中保留）"
+ "YouTube 창 열기 (로그인은 이번 세션에서만 유지)": {
+  "en": "Open the YouTube window (sign-in lasts only for this session)",
+  "es": "Abrir la ventana de YouTube (el inicio de sesión solo dura esta sesión)",
+  "ja": "YouTubeのウィンドウを開く (ログインはこのセッションのみ有効)",
+  "zh-CN": "打开 YouTube 窗口（登录仅在本次会话中保留）",
+  "zh-TW": "開啟 YouTube 視窗（登入僅在本次工作階段中保留）"
  },
  "YouTube 영상 주소가 아닙니다: %s\n(https://www.youtube.com/watch?v=… 또는 https://youtu.be/… 형식)": {
   "en": "Not a YouTube video address: %s\n(use the form https://www.youtube.com/watch?v=… or https://youtu.be/…)",
@@ -2554,47 +2554,47 @@
   "zh-CN": "起始预缓冲：%d 秒",
   "zh-TW": "起始預緩衝：%d 秒"
  },
- "시크릿 세션 정리를 완료하지 못했습니다. 웹 창을 닫고 다시 시도하세요": {
-  "en": "Could not finish cleaning up the private session. Close the web window and try again",
-  "es": "No se pudo terminar de limpiar la sesión privada. Cierra la ventana web y vuelve a intentarlo",
-  "ja": "プライベートセッションの整理を完了できませんでした。Webウィンドウを閉じてもう一度お試しください",
-  "zh-CN": "未能完成隐私会话清理。请关闭网页窗口后重试",
-  "zh-TW": "未能完成私密工作階段清理。請關閉網頁視窗後重試"
+ "웹 세션 정리를 완료하지 못했습니다. 웹 창을 닫고 다시 시도하세요": {
+  "en": "Could not finish cleaning up the web session. Close the web window and try again",
+  "es": "No se pudo terminar de limpiar la sesión web. Cierra la ventana web y vuelve a intentarlo",
+  "ja": "Webセッションの整理を完了できませんでした。Webウィンドウを閉じてもう一度お試しください",
+  "zh-CN": "未能完成网页会话清理。请关闭网页窗口后重试",
+  "zh-TW": "未能完成網頁工作階段清理。請關閉網頁視窗後重試"
  },
- "시크릿 웹 세션 종료 (로그아웃)": {
-  "en": "End the private web session (sign out)",
-  "es": "Cerrar la sesión web privada (salir)",
-  "ja": "プライベートWebセッションを終了 (ログアウト)",
-  "zh-CN": "结束隐私网页会话（退出登录）",
-  "zh-TW": "結束私密網頁工作階段（登出）"
+ "웹 세션 종료 (로그아웃)": {
+  "en": "End web session (sign out)",
+  "es": "Cerrar la sesión web (salir)",
+  "ja": "Webセッションを終了 (ログアウト)",
+  "zh-CN": "结束网页会话（退出登录）",
+  "zh-TW": "結束網頁工作階段（登出）"
  },
- "시크릿 웹 세션을 종료하는 중…": {
-  "en": "Ending the private web session…",
-  "es": "Cerrando la sesión web privada…",
-  "ja": "プライベートWebセッションを終了しています…",
-  "zh-CN": "正在结束隐私网页会话…",
-  "zh-TW": "正在結束私密網頁工作階段…"
+ "웹 세션을 종료하는 중…": {
+  "en": "Ending the web session…",
+  "es": "Cerrando la sesión web…",
+  "ja": "Webセッションを終了しています…",
+  "zh-CN": "正在结束网页会话…",
+  "zh-TW": "正在結束網頁工作階段…"
  },
- "시크릿 웹 세션을 종료할까요?": {
-  "en": "End the private web session?",
-  "es": "¿Cerrar la sesión web privada?",
-  "ja": "プライベートWebセッションを終了しますか?",
-  "zh-CN": "要结束隐私网页会话吗？",
-  "zh-TW": "要結束私密網頁工作階段嗎？"
+ "웹 세션을 종료할까요?": {
+  "en": "End the web session?",
+  "es": "¿Cerrar la sesión web?",
+  "ja": "Webセッションを終了しますか?",
+  "zh-CN": "要结束网页会话吗？",
+  "zh-TW": "要結束網頁工作階段嗎？"
  },
- "시크릿 웹 세션을 종료했습니다. 다음 창에서는 다시 로그인해야 합니다": {
-  "en": "The private web session was ended. You will need to sign in again in the next window",
-  "es": "Se cerró la sesión web privada. Tendrás que volver a iniciar sesión en la próxima ventana",
-  "ja": "プライベートWebセッションを終了しました。次のウィンドウでは再度ログインが必要です",
-  "zh-CN": "已结束隐私网页会话。下次打开窗口时需要重新登录",
-  "zh-TW": "已結束私密網頁工作階段。下次開啟視窗時需要重新登入"
+ "웹 세션을 종료했습니다. 다음 창에서는 다시 로그인해야 합니다": {
+  "en": "The web session was ended. You will need to sign in again in the next window",
+  "es": "Se cerró la sesión web. Tendrás que volver a iniciar sesión en la próxima ventana",
+  "ja": "Webセッションを終了しました。次のウィンドウでは再度ログインが必要です",
+  "zh-CN": "已结束网页会话。下次打开窗口时需要重新登录",
+  "zh-TW": "已結束網頁工作階段。下次開啟視窗時需要重新登入"
  },
- "시크릿 웹페이지 주소 (영상이 있는 페이지):": {
-  "en": "Private web page address (the page that has the video):",
-  "es": "Dirección de la página web privada (la página con el vídeo):",
-  "ja": "プライベートWebページのアドレス (動画があるページ):",
-  "zh-CN": "隐私网页地址（包含视频的页面）：",
-  "zh-TW": "私密網頁網址（包含影片的頁面）："
+ "웹페이지 주소 (영상이 있는 페이지):": {
+  "en": "Web page address (the page that has the video):",
+  "es": "Dirección de la página web (la página con el vídeo):",
+  "ja": "Webページのアドレス (動画があるページ):",
+  "zh-CN": "网页地址（包含视频的页面）：",
+  "zh-TW": "網頁網址（包含影片的頁面）："
  },
  "식별된 작품·원어: %s": {
   "en": "Identified work · original language: %s",

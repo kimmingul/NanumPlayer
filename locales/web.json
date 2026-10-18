@@ -160,12 +160,12 @@
     "zh-TW": "這不是可播放的影片頁面。\n請在 YouTube 上選擇影片。",
     "es": "Esta no es una página de vídeo reproducible.\nElige un vídeo en YouTube."
   },
-  "시크릿(InPrivate) 브라우저 세션을 확인할 수 없어 창을 열지 않습니다.": {
-    "en": "The private (InPrivate) browser session could not be verified, so the window will not be opened.",
-    "ja": "プライベート（InPrivate）ブラウザーセッションを確認できないため、ウィンドウを開きません。",
-    "zh-CN": "无法确认无痕（InPrivate）浏览会话，因此不会打开窗口。",
-    "zh-TW": "無法確認無痕（InPrivate）瀏覽工作階段，因此不會開啟視窗。",
-    "es": "No se pudo comprobar la sesión de navegación privada (InPrivate), por lo que no se abrirá la ventana."
+  "InPrivate 브라우저 세션을 확인할 수 없어 창을 열지 않습니다.": {
+    "en": "The InPrivate browser session could not be verified, so the window will not be opened.",
+    "ja": "InPrivateブラウザーセッションを確認できないため、ウィンドウを開きません。",
+    "zh-CN": "无法确认 InPrivate 浏览会话，因此不会打开窗口。",
+    "zh-TW": "無法確認 InPrivate 瀏覽工作階段，因此不會開啟視窗。",
+    "es": "No se pudo comprobar la sesión de navegación InPrivate, por lo que no se abrirá la ventana."
   },
   "WebView2를 시작할 수 없습니다.": {
     "en": "WebView2 could not be started.",
@@ -181,12 +181,12 @@
     "zh-TW": "無法建立 WebView2 視窗。",
     "es": "No se puede crear la ventana de WebView2."
   },
-  "시크릿(InPrivate) 브라우저를 만들 수 없습니다. WebView2 런타임을 최신으로 업데이트하세요.": {
-    "en": "The private (InPrivate) browser could not be created. Update the WebView2 runtime to the latest version.",
-    "ja": "プライベート（InPrivate）ブラウザーを作成できません。WebView2ランタイムを最新に更新してください。",
-    "zh-CN": "无法创建无痕（InPrivate）浏览器。请将 WebView2 运行时更新到最新版本。",
-    "zh-TW": "無法建立無痕（InPrivate）瀏覽器。請將 WebView2 執行階段更新到最新版本。",
-    "es": "No se puede crear el navegador privado (InPrivate). Actualiza el runtime de WebView2 a la última versión."
+  "InPrivate 브라우저를 만들 수 없습니다. WebView2 런타임을 최신으로 업데이트하세요.": {
+    "en": "The InPrivate browser could not be created. Update the WebView2 runtime to the latest version.",
+    "ja": "InPrivateブラウザーを作成できません。WebView2ランタイムを最新に更新してください。",
+    "zh-CN": "无法创建 InPrivate 浏览器。请将 WebView2 运行时更新到最新版本。",
+    "zh-TW": "無法建立 InPrivate 瀏覽器。請將 WebView2 執行階段更新到最新版本。",
+    "es": "No se puede crear el navegador InPrivate. Actualiza el runtime de WebView2 a la última versión."
   },
   "사용법: nanum_youtube.exe [--pipe <mpv 파이프>] [--url <주소>] [--language <auto|ko|en|ja|zh-CN|zh-TW|es>] [--export-cookies-only] [--quit]": {
     "en": "Usage: nanum_youtube.exe [--pipe <mpv pipe>] [--url <address>] [--language <auto|ko|en|ja|zh-CN|zh-TW|es>] [--export-cookies-only] [--quit]",

@@ -1,6 +1,6 @@
 ---
 title: Privacy
-description: What NanumPlayer stores, what it downloads, what leaves your PC, and how its private web sessions work. No accounts, no telemetry, nothing kept by default.
+description: What NanumPlayer stores, what it downloads, what leaves your PC, and how its web sessions work. No accounts, no telemetry, nothing kept by default.
 ---
 
 import { Aside } from '@astrojs/starlight/components';
@@ -25,7 +25,7 @@ Speech recognition runs on your PC. NanumPlayer never uploads audio. These are t
 | You download speech models | Hugging Face (pinned revisions) | A file download, verified by size and SHA-256. |
 | You download cuBLAS | GitHub releases of this repository | A file download, verified. |
 | You use the YouTube tools | GitHub releases of `yt-dlp` and Deno | A file download and a version check. |
-| YouTube and web windows | The sites you visit, through WebView2 | Normal browsing traffic, in a private session. |
+| YouTube and web windows | The sites you visit, through WebView2 | Normal browsing traffic, in an InPrivate session. |
 | Playing online videos | The video's own server | The media request. |
 | Find online subtitles | Your own browser opens OpenSubtitles or Jimaku | The title as a search word. |
 | You install the optional disc component | GitHub, then the FindVUK key database after your consent | File downloads. |
@@ -35,11 +35,11 @@ Speech recognition runs on your PC. NanumPlayer never uploads audio. These are t
   The translated text goes to whichever server you configure. A local Ollama model keeps everything on your PC. If you choose an Ollama **cloud** model, that text is sent to the cloud provider; read its privacy terms. NanumPlayer cannot control what your chosen server does with it.
 </Aside>
 
-## Private web sessions
+## Web sessions
 
-YouTube and web-page windows always run as **InPrivate** sessions. Sign-ins and cookies last only for that session and are removed with the browser's temporary data when it ends (or when you choose **End the private web session (sign out)**). Cookies for ordinary web videos are handed to the player in memory and used only for that file.
+YouTube and web-page windows always run as **InPrivate** sessions. Sign-ins and cookies last only for that session and are removed with the browser's temporary data when it ends (or when you choose **End web session (sign out)**). Cookies for ordinary web videos are handed to the player in memory and used only for that file.
 
-Private is not anonymous. It does not hide your traffic from websites, your network operator or your translation provider, and it cannot stop the operating system from paging memory or leaving deleted files recoverable.
+InPrivate mode is not anonymous. It does not hide your traffic from websites, your network operator or your translation provider, and it cannot stop the operating system from paging memory or leaving deleted files recoverable.
 
 ## Options that keep data
 

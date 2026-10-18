@@ -1,6 +1,6 @@
 ---
 title: YouTube and web pages
-description: Play YouTube and videos from ordinary web pages in NanumPlayer with AI subtitles, always in a private browser session.
+description: Play YouTube and videos from ordinary web pages in NanumPlayer with AI subtitles, always in an InPrivate browser session.
 ---
 
 import { Steps, Aside } from '@astrojs/starlight/components';
@@ -47,12 +47,12 @@ NanumPlayer detects the real media address the page loaded, including videos ins
 
 Playback of every site is not guaranteed.
 
-## Private by design
+## Nothing is kept
 
-YouTube and web windows **always run as InPrivate sessions**. Sign-ins and cookies live only for that session and are removed with the browser's temporary data when the session ends. General web cookies are passed to the player in memory; YouTube cookies use only a temporary file that is deleted at the end of the session. Use **Ctrl+N → YouTube → End the private web session (sign out)** to end it at any time.
+YouTube and web windows **always run as InPrivate sessions**. Sign-ins and cookies live only for that session and are removed with the browser's temporary data when the session ends. General web cookies are passed to the player in memory; YouTube cookies use only a temporary file that is deleted at the end of the session. Use **Ctrl+N → YouTube → End web session (sign out)** to end it at any time.
 
 <Aside type="caution">
-  A private session is not anonymity. Websites, your network, and the translation provider can still see what they can see, and the operating system may page memory or keep deleted files recoverable. See [Privacy](/NanumPlayer/privacy/).
+  InPrivate mode is not anonymity. Websites, your network, and the translation provider can still see what they can see, and the operating system may page memory or keep deleted files recoverable. See [Privacy](/NanumPlayer/privacy/).
 </Aside>
 
 Web videos are never saved to the subtitle library, and a whole-file translation of a web video always goes to a temporary folder.

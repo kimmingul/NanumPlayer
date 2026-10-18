@@ -22,7 +22,7 @@ Interface language and version
   your setup-language choice. Choose Automatic to follow Windows again.
 - ui-language.conf in the settings directory retains the choice. The command-line
   --nanum-ui-language=auto|ko|en|ja|zh-CN|zh-TW|es overrides it for that run only.
-- A running browser relabels its app buttons without losing the private session;
+- A running browser relabels its app buttons without losing the web session;
   WebView2's own menus use the new language when the next browser session starts.
 
 GPU video upscaling (Picture button / Ctrl+I > Upscale; also Ctrl+N > Picture quality)
@@ -81,7 +81,7 @@ Web-page videos (Ctrl+Shift+Y)
 - DRM, streams without an accessible media/manifest URL, and servers blocking
   playback outside the browser are unsupported. Reopen the page if a URL expires.
 - YouTube and web pages always use an InPrivate session. Login lasts only for
-  that session. Ctrl+N > YouTube > End the private web session (sign out) ends it.
+  that session. Ctrl+N > YouTube > End web session (sign out) ends it.
 - General-web cookies are passed in memory with domain/path scope. YouTube's
   helper cookie file is removed when its session ends. The extractor gets a
   player-owned temporary copy, removed with the player session, so yt-dlp cannot

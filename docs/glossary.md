@@ -27,7 +27,7 @@ Rules of thumb:
 | settings folder | 설정 폴더 | `%APPDATA%\NanumPlayer`. |
 | interface language | 인터페이스 언어 | Language of menus and dialogs. Independent of the speech and subtitle languages. |
 | Automatic (interface language) | 자동 | Follows the Windows display language. |
-| private session (InPrivate) | 시크릿 세션 | YouTube and web windows. Not anonymisation. |
+| web session (InPrivate) | 웹 세션 (InPrivate) | YouTube and web windows. Not anonymisation. |
 
 ## AI subtitles
 

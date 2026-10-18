@@ -67,7 +67,7 @@ Uninstalling keeps models, the cuBLAS runtime and your settings.
 | You choose to download speech models (installer or **AI component manager**) | Hugging Face, at pinned revisions of `ggerganov/whisper.cpp` and `ggml-org/whisper-vad` | A file download. Size and SHA-256 are verified. |
 | You choose to download cuBLAS | GitHub releases of this repository | A file download, verified. |
 | You choose to install the YouTube tools, and when you use YouTube playback | GitHub releases of `yt-dlp` and `denoland/deno` (and their release API to find the latest version) | A file download, verified; a version check. |
-| YouTube and web windows | The sites you visit, through WebView2 (Microsoft Edge engine) | Normal browsing traffic. See [private web sessions](#private-web-sessions). |
+| YouTube and web windows | The sites you visit, through WebView2 (Microsoft Edge engine) | Normal browsing traffic. See [web sessions](#web-sessions). |
 | Playing YouTube | YouTube, through `yt-dlp` | The video request, using the window's cookies. |
 | Playing a web page video | The video's own server | The media request with that video's cookies, Referer and User-Agent. |
 | **Find online subtitles** | Your default browser opens OpenSubtitles or Jimaku | The title search text appears in the address for OpenSubtitles; for Jimaku it is copied to the clipboard. NanumPlayer does not control the site and does not read it. |
@@ -78,10 +78,10 @@ Every download goes through one HTTPS-only module with fixed size and SHA-256 ch
 pinned, progress and cancel. A failed or cancelled download leaves existing good files untouched and
 removes its temporary file.
 
-## Private web sessions
+## Web sessions
 
 The YouTube and web-page windows always run in an **InPrivate** WebView2 session. Sign-in lasts only
-for that session; when the session ends (or when you choose **End the private web session (sign out)**),
+for that session; when the session ends (or when you choose **End web session (sign out)**),
 login, cookies and browser temporary data are removed. The session folder is deleted after the browser
 process exits, and a leftover session from a crash is cleaned at the next start.
 

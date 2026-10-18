@@ -5398,13 +5398,13 @@ function YT.delete_login()
         notify(input.core_tr("웹 도우미를 찾을 수 없습니다"), 6, "error", "yt")
         return
     end
-    notify(input.core_tr("시크릿 웹 세션을 종료하는 중…"), 6, "busy", "yt")
+    notify(input.core_tr("웹 세션을 종료하는 중…"), 6, "busy", "yt")
     mp.command_native_async({ name = "subprocess", playback_only = false,
         args = { exe, "--quit" } }, function(ok, res)
         if ok and res and res.status == 0 then
-            notify(input.core_tr("시크릿 웹 세션을 종료했습니다. 다음 창에서는 다시 로그인해야 합니다"), 6, "ok", "yt")
+            notify(input.core_tr("웹 세션을 종료했습니다. 다음 창에서는 다시 로그인해야 합니다"), 6, "ok", "yt")
         else
-            notify(input.core_tr("시크릿 세션 정리를 완료하지 못했습니다. 웹 창을 닫고 다시 시도하세요"), 8, "error", "yt")
+            notify(input.core_tr("웹 세션 정리를 완료하지 못했습니다. 웹 창을 닫고 다시 시도하세요"), 8, "error", "yt")
         end
     end)
 end
@@ -5412,7 +5412,7 @@ end
 function YT.open_delete_confirm()
     local chosen = false
     input.select({
-        prompt = input.core_tr("시크릿 웹 세션을 종료할까요?"),
+        prompt = input.core_tr("웹 세션을 종료할까요?"),
         items = { input.core_tr("종료 및 로그아웃 (YouTube·웹페이지)"), input.core_tr("취소") },
         default_item = 2,
         submit = function(i)
@@ -5505,11 +5505,11 @@ function YT.build_menu()
         end)
         add("cancel", input.core_tr("내려받기 취소: %s", input.core_tr(YT.downloading() and "진행 중인 작업 중단" or "진행 중인 작업 없음")), YT.cancel)
     end
-    add("browser", input.core_tr("YouTube 시크릿 창 열기 (로그인은 이번 세션에서만 유지)"), function() mp.add_timeout(0.1, YT.open_browser) end)
+    add("browser", input.core_tr("YouTube 창 열기 (로그인은 이번 세션에서만 유지)"), function() mp.add_timeout(0.1, YT.open_browser) end)
     add("url", input.core_tr("YouTube 주소로 재생…"), function() mp.add_timeout(0.1, YT.ask_url) end)
     add("web", input.core_tr("웹페이지 영상 주소로 재생… (Ctrl+Shift+Y)"), function() mp.add_timeout(0.1, SUBS.web.ask_url) end)
     add("bookmarklet", input.core_tr("'NanumPlayer로 열기' 북마클릿 복사 (다른 브라우저용)"), function() mp.add_timeout(0.1, YT.open_bookmarklet) end)
-    add("logout", input.core_tr("시크릿 웹 세션 종료 (로그아웃)"), function() mp.add_timeout(0.1, YT.open_delete_confirm) end)
+    add("logout", input.core_tr("웹 세션 종료 (로그아웃)"), function() mp.add_timeout(0.1, YT.open_delete_confirm) end)
     add("back", input.core_tr("설정 메뉴로 돌아가기"), function()
         menu_keep = true
         mp.add_timeout(0.1, open_menu)
@@ -5529,7 +5529,7 @@ function YT.open_menu()
     YT.actions = actions
     input.select({
         id = "nanum-youtube",
-        prompt = input.core_tr("YouTube · 시크릿 웹:"),
+        prompt = input.core_tr("YouTube · 웹:"),
         style = "settings",
         marks = true,
         keep_open = true,
@@ -5662,7 +5662,7 @@ end
 
 function SUBS.web.ask_url()
     input.get({
-        prompt = input.core_tr("시크릿 웹페이지 주소 (영상이 있는 페이지):"),
+        prompt = input.core_tr("웹페이지 주소 (영상이 있는 페이지):"),
         default_text = SUBS.web.clipboard_url(),
         submit = function(text)
             input.terminate()

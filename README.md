@@ -44,7 +44,7 @@ English · [한국어](README.ko.md)
   enhancement, sharpening, color) use 9 small GPU shaders, and the Picture button (or Ctrl+I) opens one menu
   with high-quality scaling, NVIDIA RTX Video Super Resolution and your own mpv shaders.
 - **YouTube and web pages.** Sign in and pick videos in a built-in browser window; NanumPlayer plays the
-  video and adds the AI subtitles. These windows always use an InPrivate session.
+  video and adds the AI subtitles. These windows always run in InPrivate mode, so nothing is kept after they close.
 - **Private by default.** No playback log, history, translation cache or crash dump is kept unless you
   turn it on. See [Privacy](docs/privacy.md).
 - **Blu-ray and DVD.** Play discs and save titles to lossless MKV. The components that decrypt

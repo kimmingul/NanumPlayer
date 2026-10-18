@@ -421,9 +421,9 @@ Referer and User-Agent are applied only to that file. DRM-protected video, pages
 playable media or manifest URL, and servers that refuse playback outside the browser do not work. If the
 address expires, reload the page. Nothing guarantees that every site works.
 
-Both windows share an **InPrivate (private) session**: sign-in lasts only for that session, browser
-data is removed at the end, and **Ctrl+N → YouTube → End the private web session (sign out)** ends it
-right away. See [Privacy](privacy.md#private-web-sessions) for what is and is not protected.
+Both windows share an **InPrivate session**: sign-in lasts only for that session, browser
+data is removed at the end, and **Ctrl+N → YouTube → End web session (sign out)** ends it
+right away. See [Privacy](privacy.md#web-sessions) for what is and is not protected.
 
 ## Interface language and shortcuts
 
