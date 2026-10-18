@@ -10,6 +10,12 @@ shipped in the release named after them. Dates are release dates (UTC); internal
 
 ## [Unreleased]
 
+## [1.13.3] - 2026-10-19
+
+### Changed
+- The optional cuBLAS download now comes from the dedicated `cuda-runtime-13` release instead of the old
+  v1.2.0 release, so old releases can be removed. The files and their SHA-256 pins are unchanged.
+
 ## [1.13.2] - 2026-10-18
 
 ### Added
@@ -365,7 +371,8 @@ below.
 
 - Packaging output is separated into per-version folders so a running older package is not deleted.
 
-[Unreleased]: https://github.com/kimmingul/NanumPlayer/compare/v1.13.2...HEAD
+[Unreleased]: https://github.com/kimmingul/NanumPlayer/compare/v1.13.3...HEAD
+[1.13.3]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.13.3
 [1.13.2]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.13.2
 [1.13.1]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.13.1
 [1.13.0]: https://github.com/kimmingul/NanumPlayer/releases/tag/v1.13.0

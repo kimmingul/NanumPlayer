@@ -16,7 +16,7 @@
       "filename": "cublas64_13.dll",
       "size": 51561584,
       "sha256": "6abcf26071ff69bb01346613f05abac085778efb8a7a9f91e23da478e3938562",
-      "url": "https://github.com/kimmingul/NanumPlayer/releases/download/v1.2.0/cublas64_13.dll"
+      "url": "https://github.com/kimmingul/NanumPlayer/releases/download/cuda-runtime-13/cublas64_13.dll"
     },
     {
       "id": "cublas_lt",
@@ -24,17 +24,17 @@
       "filename": "cublasLt64_13.dll",
       "size": 480401520,
       "sha256": "fdcaca4277a72f87607f9804bf845ea8bb77785c97abb74179bdab058028c046",
-      "url": "https://github.com/kimmingul/NanumPlayer/releases/download/v1.2.0/cublasLt64_13.dll"
+      "url": "https://github.com/kimmingul/NanumPlayer/releases/download/cuda-runtime-13/cublasLt64_13.dll"
     }
   ],
   "disc_components": {
     "id": "disc_components",
-    "version": "1.13.2",
+    "version": "1.13.3",
     "label": "Blu-ray/DVD decryption components",
-    "filename": "NanumPlayer-disc-components-1.13.2.zip",
+    "filename": "NanumPlayer-disc-components-1.13.3.zip",
     "size": 10016821,
     "sha256": "bade090a3782e27a856107aa5dce2ca87768ae627f0f6c0c38f7cc4c4713bc50",
-    "url": "https://github.com/kimmingul/NanumPlayer-disc-components/releases/download/v1.13.2/NanumPlayer-disc-components-1.13.2.zip",
+    "url": "https://github.com/kimmingul/NanumPlayer-disc-components/releases/download/v1.13.3/NanumPlayer-disc-components-1.13.3.zip",
     "files": [
       {
         "name": "README.txt",
