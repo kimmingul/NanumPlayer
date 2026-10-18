@@ -6,10 +6,13 @@ description: Built-in lightweight GPU picture-correction presets for anime, old 
 import { Aside } from '@astrojs/starlight/components';
 import Shot from '../../../components/Shot.astro';
 import picture from '../../../assets/picture-en.png';
+import detail from '../../../assets/picture-detail-en.png';
 
 The **Picture** button on the playback bar (or **Ctrl+I**, or **Ctrl+N → Picture quality**) opens one menu with the **Correction** presets, built from nine small GPU shaders (about 12.3 KiB in total) written for NanumPlayer, plus features built into mpv. The same menu holds the [upscale](/NanumPlayer/features/upscaling/) choices. There are no AI models and nothing to download, and this is separate from any external Anime4K shader pack.
 
-<Shot src={picture} alt="The Picture quality menu showing the Original, Sharper anime, Smoother old anime and Compressed video repair presets." caption="Picture quality presets (Ctrl+N)." widths={[480, 800]} />
+<Shot src={picture} alt="The Picture quality menu scrolled to the Correction section, listing the Original, Sharper anime, Smoother old anime and Compressed video repair presets and the Compare before correction switch." caption="Correction presets in the Picture menu (Picture button or Ctrl+I)." widths={[480, 800]} />
+
+<Shot src={detail} alt="The Picture quality details window listing Noise reduction, Debanding, Line enhancement, Sharpening and Color correction, each set to Off, and the user shader list." caption="Details…: set each effect to Off, Weak, Medium or Strong." widths={[480, 800]} />
 
 The default is **Original**, with no added correction. Presets: **Original**, **Sharper anime**, **Smoother old anime** and **Compressed video repair**.
 

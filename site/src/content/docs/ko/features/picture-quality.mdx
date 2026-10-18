@@ -6,10 +6,13 @@ description: 애니메이션, 옛날 애니메이션, 압축 영상을 위한 �
 import { Aside } from '@astrojs/starlight/components';
 import Shot from '../../../../components/Shot.astro';
 import picture from '../../../../assets/picture-ko.png';
+import detail from '../../../../assets/picture-detail-ko.png';
 
 재생 바의 **화질** 버튼(또는 **Ctrl+I**, **Ctrl+N → 영상 화질**)은 하나의 메뉴로 **보정** 프리셋을 제공합니다. NanumPlayer를 위해 작성한 아홉 개의 작은 GPU 셰이더(합계 약 12.3 KiB)와 mpv에 내장된 기능으로 만들었으며, 같은 메뉴에 [업스케일](/NanumPlayer/ko/features/upscaling/) 선택도 있습니다. AI 모델도, 내려받을 것도 없으며, 외부 Anime4K 셰이더 팩과는 별개입니다.
 
-<Shot src={picture} alt="원본, 애니 선명하게, 옛날 애니 부드럽게, 압축 영상 보정 프리셋이 표시된 영상 화질 메뉴." caption="영상 화질 프리셋(Ctrl+N)." widths={[480, 800]} />
+<Shot src={picture} alt="보정 구역으로 스크롤한 영상 화질 메뉴. 원본, 애니 선명하게, 옛날 애니 부드럽게, 압축 영상 보정 프리셋과 보정 전 화면 비교 스위치가 보입니다." caption="화질 메뉴의 보정 프리셋입니다(화질 버튼 또는 Ctrl+I)." widths={[480, 800]} />
+
+<Shot src={detail} alt="노이즈 줄이기, 색 띠 완화, 선 강조, 선명도, 색 보정이 모두 끔으로 표시되고 사용자 셰이더 목록 관리 항목이 있는 영상 화질 세부 설정 창." caption="세부 설정: 효과마다 끔·약함·중간·강함을 고릅니다." widths={[480, 800]} />
 
 기본값은 보정을 더하지 않는 **원본**입니다. 프리셋은 **원본**, **애니 선명하게**, **옛날 애니 부드럽게**, **압축 영상 보정**입니다.
 
