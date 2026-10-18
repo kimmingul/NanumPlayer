@@ -1037,16 +1037,18 @@ local function want_controls(t)
 end
 
 -- Subtitles sit above the bar while it is shown, and above the AI tags when those are drawn too.
+-- sub-pos (percent of the picture height) moves text, ASS (the AI tracks are ASS) and image
+-- subtitles alike; sub-margin-y would reach only converted text subtitles.
 local function apply_sub_margin(lift, tags)
     local key = lift and (tags and 2 or 1) or 0
     if key == S.sub_lifted then return end
     S.sub_lifted = key
-    if not S.sub_base then S.sub_base = mp.get_property_number("sub-margin-y") or 22 end
+    if not S.sub_base then S.sub_base = mp.get_property_number("sub-pos") or 100 end
     if lift and S.m then
-        local extra = (112 + 20 + 14 + (tags and 28 or 0)) * S.m.ky * 720 / S.m.ph
-        mp.set_property_number("sub-margin-y", floor(S.sub_base + extra))
+        local extra = (112 + 20 + 14 + (tags and 28 or 0)) * S.m.ky / S.m.ph * 100
+        mp.set_property_number("sub-pos", math.max(0, floor(S.sub_base - extra)))
     else
-        mp.set_property_number("sub-margin-y", S.sub_base)
+        mp.set_property_number("sub-pos", S.sub_base)
     end
 end
 
