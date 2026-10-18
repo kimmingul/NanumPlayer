@@ -138,3 +138,8 @@ If something is not covered here, [open an issue](https://github.com/kimmingul/N
 and include the version (shown on the start screen and in **Ctrl+K**), your Windows version, GPU, the
 translation model, and what **Ctrl+K** says. Do not attach logs that contain addresses you want to keep
 private.
+
+## Security problems and privacy questions
+
+Do not report a security problem in a public issue. Use [private vulnerability reporting](https://github.com/kimmingul/NanumPlayer/security/advisories/new)
+or e-mail [mgkim@nanumspace.com](mailto:mgkim@nanumspace.com) with the subject "NanumPlayer security". See [SECURITY.md](../SECURITY.md).

@@ -102,3 +102,8 @@ subtitle search) follows that browser's privacy settings.
 Speech recognition runs on your PC (whisper.cpp); no audio is uploaded by NanumPlayer. The text that is
 translated is sent to the translation server you chose, which is why a local server keeps everything on
 your PC and a cloud server does not.
+
+## Contact
+
+Do not report a security problem in a public issue. Use [private vulnerability reporting](https://github.com/kimmingul/NanumPlayer/security/advisories/new)
+or e-mail [mgkim@nanumspace.com](mailto:mgkim@nanumspace.com) with the subject "NanumPlayer security". See [SECURITY.md](../SECURITY.md).

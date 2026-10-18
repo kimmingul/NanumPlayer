@@ -100,3 +100,8 @@ YouTube와 웹페이지 창은 항상 **InPrivate** WebView2 세션에서 실행
 음성 인식은 사용자의 PC에서 실행되며(whisper.cpp), NanumPlayer는 어떤 오디오도 업로드하지 않습니다.
 번역되는 텍스트는 사용자가 고른 번역 서버로 전송됩니다. 그래서 로컬 서버는 모든 것을 PC 안에 두지만
 클라우드 서버는 그렇지 않습니다.
+
+## 문의
+
+보안 문제는 공개 이슈로 올리지 마세요. [비공개 취약점 신고](https://github.com/kimmingul/NanumPlayer/security/advisories/new)를
+이용하거나 [mgkim@nanumspace.com](mailto:mgkim@nanumspace.com)로 제목을 "NanumPlayer security"로 하여 메일을 보내 주세요. [SECURITY.md](../../SECURITY.md)를 참고하세요.

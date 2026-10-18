@@ -36,7 +36,7 @@ This Code of Conduct applies within all community spaces, and also applies when 
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement through the private reporting form of this repository (the **Security** tab, then **Report a vulnerability**; please start the report title with "Code of Conduct") or by e-mail to the maintainer, [kimmingul@outlook.com](mailto:kimmingul@outlook.com). All complaints will be reviewed and investigated promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement through the private reporting form of this repository (the **Security** tab, then **Report a vulnerability**; please start the report title with "Code of Conduct") or by e-mail to the maintainer, [mgkim@nanumspace.com](mailto:mgkim@nanumspace.com). All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the reporter of any incident.
 

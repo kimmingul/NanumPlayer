@@ -13,7 +13,7 @@ report it.
 1. Use GitHub's private reporting form: the **Security** tab of the repository, then
    **Report a vulnerability**
    ([github.com/kimmingul/NanumPlayer/security/advisories/new](https://github.com/kimmingul/NanumPlayer/security/advisories/new)); or
-2. send an e-mail to [kimmingul@outlook.com](mailto:kimmingul@outlook.com) with the subject
+2. send an e-mail to [mgkim@nanumspace.com](mailto:mgkim@nanumspace.com) with the subject
    "NanumPlayer security".
 
 Please include the NanumPlayer version, your Windows version, what you did, what happened, why you think

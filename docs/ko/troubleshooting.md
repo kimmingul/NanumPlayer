@@ -132,3 +132,8 @@ DRM으로 보호된 영상, 재생 가능한 미디어나 매니페스트 주소
 여기에서 다루지 않은 문제는 [이슈를 열고](https://github.com/kimmingul/NanumPlayer/issues/new/choose)
 버전(시작 화면과 **Ctrl+K**에 표시됨), Windows 버전, GPU, 번역 모델, **Ctrl+K**에 표시된 내용을
 함께 적어 주세요. 비공개로 유지하려는 주소가 들어 있는 로그는 첨부하지 마세요.
+
+## 보안 문제와 개인정보 문의
+
+보안 문제는 공개 이슈로 올리지 마세요. [비공개 취약점 신고](https://github.com/kimmingul/NanumPlayer/security/advisories/new)를
+이용하거나 [mgkim@nanumspace.com](mailto:mgkim@nanumspace.com)로 제목을 "NanumPlayer security"로 하여 메일을 보내 주세요. [SECURITY.md](../../SECURITY.md)를 참고하세요.
